@@ -45,3 +45,29 @@ Khi dev yêu cầu viết code để gọi API trong `src/services/`, bạn BẮ
   - KHÔNG tự ý tạo thêm các file `.css` rời (ví dụ: `HomePage.css`) để viết style. 
   - Chỉ trong trường hợp bất khả kháng không thể dùng Tailwind (ví dụ: ghi đè style của thư viện ngoài quá phức tạp), mới được phép sử dụng CSS Modules (ví dụ: `HomePage.module.css`).
 - Khai báo TypeScript Interfaces/Types đầy đủ cho Props và API Responses. Tuyệt đối không lạm dụng type `any`.
+
+## 6. GLOBAL DESIGN SYSTEM (UI/UX)
+Dự án là nền tảng Luyện Phỏng Vấn AI. Trang chủ đã theo phong cách "ElevenLabs" (Editorial, Minimalism, Off-white & Ink). Các trang App/Dashboard (Admin/User) BẮT BUỘC phải tuân thủ các token Tailwind sau để giữ tính đồng nhất:
+
+### A. Color Palette (Tailwind Classes)
+- **Background (Nền App):** `bg-zinc-50` (Tạo cảm giác off-white, ấm nhẹ).
+- **Surface (Nền Card/Modal):** `bg-white`. Tách biệt với nền App bằng viền mỏng `border border-zinc-200` thay vì dùng drop-shadow đậm.
+- **Primary Text:** `text-zinc-900` (Cho Heading) và `text-zinc-600` (Cho Body/Description). Không dùng màu đen thuần `#000000`.
+- **Primary Action (Nút bấm chính):** `bg-zinc-900 text-white hover:bg-zinc-800` (Đồng bộ với màu "Ink" của trang chủ).
+- **Secondary Action (Nút phụ):** `bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50`.
+- **AI & Accent (Điểm nhấn):** `text-indigo-600` hoặc `bg-indigo-50` (Dùng cho các vùng Feedback của AI, biểu đồ, vùng nổi bật. Kế thừa từ các gradient pastel của homepage nhưng chuyên nghiệp hơn).
+- **Status (Trạng thái phỏng vấn):**
+  - Tốt/Thành công: `bg-emerald-50 text-emerald-700 border-emerald-200`
+  - Cảnh báo/Cần cải thiện: `bg-amber-50 text-amber-700 border-amber-200`
+  - Lỗi: `bg-rose-50 text-rose-700 border-rose-200`
+
+### B. Typography & Shape
+- **Font:** Chỉ sử dụng Sans-serif (Inter hoặc Tailwind default) cho trang Dashboard để dễ đọc dữ liệu. Bỏ hoàn toàn font Serif của trang chủ.
+- **Border Radius (Độ bo góc):**
+  - Nút bấm chính (CTA), Badge: `rounded-full` (kiểu hình viên thuốc - pill).
+  - Thẻ thông tin (Cards), Modal, Input form: `rounded-xl` hoặc `rounded-lg`. Không dùng góc nhọn vuông vức `rounded-none`.
+
+### C. Layout & Component Rules
+- Các form điền thông tin (chuẩn bị phỏng vấn) phải có khoảng trống (padding) rộng rãi (VD: `p-6` hoặc `p-8` cho form cards).
+- Bảng dữ liệu (Data Table) trong trang Admin cần thiết kế tối giản, dùng divider `divide-y divide-zinc-200`, không kẻ bảng caro.
+- KHÔNG lạm dụng các icon màu mè. Dùng icon nét đơn, màu xám (`text-zinc-500`).
