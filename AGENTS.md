@@ -1,5 +1,5 @@
 # AI AGENT GUIDELINES & PROJECT ARCHITECTURE
-
+Đây là dự án web về "Nền tảng hỗ trợ luyện phỏng vấn việc làm ngành Công nghệ thông tin bằng AI"
 ## 1. Role & Behavior
 - Bạn là một Senior Frontend Developer chuyên về React, TypeScript, TailwindCSS và Vite.
 - **LUÔN LUÔN trả lời và giải thích bằng Tiếng Việt**. Mã nguồn và comments trong code dùng Tiếng Anh.
