@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "brand": "Interview with AI",
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "badge": "#1 IT Interview Practice Platform",
+    "title": "Practice IT\nInterviews with AI",
+    "subtitle": "An AI-powered platform to help you practice job interviews in Information Technology. Practice with real-world questions and receive detailed, instant feedback.",
+    "cta": "Start Practicing",
+    "ctaSecondary": "Learn More"
+  },
+  "features": {
+    "label": "Features",
+    "title": "Everything you need to ace your interview",
+    "aiInterview": {
+      "title": "AI-Powered Interview",
+      "description": "Experience realistic interviews with AI trained on thousands of real IT interviews. From technical questions to behavioral questions."
+    },
+    "feedback": {
+      "title": "Instant Feedback",
+      "description": "Get detailed evaluations of your answers immediately. AI analyzes content, delivery, and provides specific improvement suggestions."
+    },
+    "industries": {
+      "title": "Multiple IT Roles",
+      "description": "Practice for various positions: Frontend, Backend, Fullstack, DevOps, Data Engineer, QA, and many more."
+    }
+  },
+  "howItWorks": {
+    "label": "How It Works",
+    "title": "3 simple steps to get started",
+    "step1": {
+      "title": "Choose a Role",
+      "description": "Select the IT position you want to practice interviewing for and your experience level."
+    },
+    "step2": {
+      "title": "Interview with AI",
+      "description": "Start a simulated interview session. AI will ask questions tailored to your chosen position."
+    },
+    "step3": {
+      "title": "Get Feedback",
+      "description": "View detailed evaluations, strengths, areas for improvement, and specific advice from AI."
+    }
+  },
+  "cta": {
+    "title": "Ready for your next interview?",
+    "subtitle": "Start practicing today — completely free.",
+    "button": "Get Started Now"
+  },
+  "footer": {
+    "brand": "Interview with AI",
+    "description": "An AI-powered platform to help you practice IT job interviews.",
+    "product": "Product",
+    "features": "Features",
+    "pricing": "Pricing",
+    "changelog": "Changelog",
+    "company": "Company",
+    "about": "About",
+    "blog": "Blog",
+    "careers": "Careers",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookies",
+    "copyright": "© 2026 Interview with AI. All rights reserved."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "brand": "Interview with AI",
+    "features": "Tính năng",
+    "howItWorks": "Cách hoạt động",
+    "getStarted": "Bắt đầu"
+  },
+  "hero": {
+    "badge": "Nền tảng luyện phỏng vấn IT #1",
+    "title": "Luyện phỏng vấn\nngành IT cùng AI",
+    "subtitle": "Nền tảng hỗ trợ luyện phỏng vấn việc làm ngành Công nghệ thông tin bằng trí tuệ nhân tạo. Thực hành với các câu hỏi thực tế, nhận phản hồi chi tiết tức thì.",
+    "cta": "Bắt đầu luyện tập",
+    "ctaSecondary": "Tìm hiểu thêm"
+  },
+  "features": {
+    "label": "Tính năng nổi bật",
+    "title": "Mọi thứ bạn cần để sẵn sàng cho buổi phỏng vấn",
+    "aiInterview": {
+      "title": "Phỏng vấn với AI",
+      "description": "Trải nghiệm phỏng vấn thực tế với AI được huấn luyện dựa trên hàng nghìn cuộc phỏng vấn IT thực tế. Từ câu hỏi kỹ thuật đến behavioral questions."
+    },
+    "feedback": {
+      "title": "Phản hồi tức thì",
+      "description": "Nhận đánh giá chi tiết về câu trả lời của bạn ngay lập tức. AI phân tích nội dung, cách diễn đạt và đề xuất cải thiện cụ thể."
+    },
+    "industries": {
+      "title": "Đa dạng vị trí IT",
+      "description": "Luyện tập cho nhiều vị trí khác nhau: Frontend, Backend, Fullstack, DevOps, Data Engineer, QA và many more."
+    }
+  },
+  "howItWorks": {
+    "label": "Cách hoạt động",
+    "title": "3 bước đơn giản để bắt đầu",
+    "step1": {
+      "title": "Chọn vị trí",
+      "description": "Chọn vị trí công việc IT bạn muốn luyện phỏng vấn và cấp độ kinh nghiệm."
+    },
+    "step2": {
+      "title": "Phỏng vấn với AI",
+      "description": "Bắt đầu buổi phỏng vấn mô phỏng. AI sẽ đặt câu hỏi phù hợp với vị trí bạn chọn."
+    },
+    "step3": {
+      "title": "Nhận phản hồi",
+      "description": "Xem đánh giá chi tiết, điểm mạnh, điểm cần cải thiện và lời khuyên cụ thể từ AI."
+    }
+  },
+  "cta": {
+    "title": "Sẵn sàng cho buổi phỏng vấn tiếp theo?",
+    "subtitle": "Bắt đầu luyện tập ngay hôm nay — hoàn toàn miễn phí.",
+    "button": "Bắt đầu ngay"
+  },
+  "footer": {
+    "brand": "Interview with AI",
+    "description": "Nền tảng hỗ trợ luyện phỏng vấn việc làm ngành Công nghệ thông tin bằng AI.",
+    "product": "Sản phẩm",
+    "features": "Tính năng",
+    "pricing": "Bảng giá",
+    "changelog": "Cập nhật",
+    "company": "Công ty",
+    "about": "Giới thiệu",
+    "blog": "Blog",
+    "careers": "Tuyển dụng",
+    "legal": "Pháp lý",
+    "privacy": "Chính sách bảo mật",
+    "terms": "Điều khoản sử dụng",
+    "cookies": "Cookie",
+    "copyright": "© 2026 Interview with AI. All rights reserved."
+  }
+}
