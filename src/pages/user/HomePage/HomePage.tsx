@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import useAuthStore from "../../../store/authStore";
 
 /* ─────────────── SVG Icon Components ─────────────── */
 
@@ -110,7 +112,18 @@ const IconArrowRight = () => (
 
 const HomePage = () => {
   const { t } = useTranslation("HomePage");
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const roles = useAuthStore((s) => s.roles);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleCTA = useCallback(() => {
+    if (isAuthenticated) {
+      navigate(roles.includes("ADMIN") ? "/admin/dashboard" : "/dashboard");
+    } else {
+      navigate("/register");
+    }
+  }, [isAuthenticated, roles, navigate]);
 
   const features = [
     {
@@ -183,6 +196,7 @@ const HomePage = () => {
             </a>
             <button
               id="nav-cta"
+              onClick={handleCTA}
               className="bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-5 py-2.5 h-10 hover:bg-primary-active transition-colors cursor-pointer border-none"
             >
               {t("nav.getStarted")}
@@ -220,7 +234,7 @@ const HomePage = () => {
               </a>
               <button
                 className="bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-5 py-2.5 h-10 hover:bg-primary-active transition-colors cursor-pointer border-none w-full"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => { setMobileMenuOpen(false); handleCTA(); }}
               >
                 {t("nav.getStarted")}
               </button>
@@ -278,6 +292,7 @@ const HomePage = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               id="hero-cta-primary"
+              onClick={handleCTA}
               className="group bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-7 py-3 h-12 hover:bg-primary-active transition-all cursor-pointer border-none flex items-center gap-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             >
               {t("hero.cta")}
@@ -416,6 +431,7 @@ const HomePage = () => {
           </p>
           <button
             id="cta-button"
+            onClick={handleCTA}
             className="group bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-8 py-3 h-12 hover:bg-primary-active transition-all cursor-pointer border-none inline-flex items-center gap-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
           >
             {t("cta.button")}
