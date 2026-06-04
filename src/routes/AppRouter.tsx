@@ -4,6 +4,8 @@ import LoginPage from "../pages/user/LoginPage/LoginPage";
 import RegisterPage from "../pages/user/RegisterPage/RegisterPage";
 import VerifyEmailPage from "../pages/user/VerifyEmailPage/VerifyEmailPage";
 import GuestRoute from "../components/GuestRoute";
+import ProtectedRoute from "../components/ProtectedRoute";
+import AdminRoutes from "./adminRoutes";
 
 const AppRouter = () => {
   return (
@@ -15,6 +17,11 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+      </Route>
+
+
+      <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+        <Route path="/admin/dashboard/*" element={<AdminRoutes />} />
       </Route>
     </Routes>
   );

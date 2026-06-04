@@ -234,7 +234,10 @@ const HomePage = () => {
               </a>
               <button
                 className="bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-5 py-2.5 h-10 hover:bg-primary-active transition-colors cursor-pointer border-none w-full"
-                onClick={() => { setMobileMenuOpen(false); handleCTA(); }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleCTA();
+                }}
               >
                 {t("nav.getStarted")}
               </button>
@@ -443,7 +446,10 @@ const HomePage = () => {
       </section>
 
       {/* ════════ FOOTER ════════ */}
-      <footer id="footer" className="py-16 px-6 border-t border-hairline-soft bg-canvas">
+      <footer
+        id="footer"
+        className="py-16 px-6 border-t border-hairline-soft bg-canvas"
+      >
         <div className="max-w-[1200px] mx-auto">
           {/* Footer Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
