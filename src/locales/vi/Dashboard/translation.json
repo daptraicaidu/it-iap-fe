@@ -1,0 +1,39 @@
+{
+  "brand": "Interview with AI",
+  "logout": "Đăng xuất",
+  "badge": "Không gian luyện tập cá nhân",
+  "title": "Chọn cách bạn muốn luyện phỏng vấn hôm nay",
+  "subtitle": "Dashboard tập trung vào ba luồng chính: bắt đầu buổi phỏng vấn mô phỏng, hỏi chatbot khi cần chuẩn bị nhanh, hoặc xem lại feedback để cải thiện câu trả lời.",
+  "openAction": "Mở",
+  "navigation": {
+    "label": "Điều hướng Dashboard",
+    "dashboard": "Dashboard",
+    "history": "Lịch sử phỏng vấn",
+    "chatbot": "Chatbot"
+  },
+  "user": {
+    "name": "Nguyễn Minh Anh",
+    "avatarAlt": "Ảnh đại diện người dùng"
+  },
+  "userMenu": {
+    "personalInfo": "Thông tin cá nhân",
+    "manageProfile": "Quản lý hồ sơ"
+  },
+  "actions": {
+    "interview": {
+      "label": "Interview",
+      "title": "Phỏng vấn",
+      "description": "Bắt đầu một buổi phỏng vấn mô phỏng với AI theo vai trò IT và cấp độ kinh nghiệm của bạn."
+    },
+    "chatbot": {
+      "label": "Chatbot",
+      "title": "Chatbot",
+      "description": "Trao đổi nhanh với trợ lý AI để ôn câu hỏi kỹ thuật, behavioral questions và cách trình bày câu trả lời."
+    },
+    "feedback": {
+      "label": "Feedback",
+      "title": "Feedback",
+      "description": "Xem lại nhận xét, điểm mạnh và các phần cần cải thiện sau những phiên luyện tập trước đó."
+    }
+  }
+}
