@@ -1,0 +1,39 @@
+{
+  "brand": "Interview with AI",
+  "logout": "Log out",
+  "badge": "Personal practice workspace",
+  "title": "Choose how you want to practice today",
+  "subtitle": "The dashboard focuses on three core flows: start a simulated interview, ask the chatbot when you need quick preparation, or review feedback to improve your answers.",
+  "openAction": "Open",
+  "navigation": {
+    "label": "Dashboard navigation",
+    "dashboard": "Dashboard",
+    "history": "Interview history",
+    "chatbot": "Chatbot"
+  },
+  "user": {
+    "name": "Nguyen Minh Anh",
+    "avatarAlt": "User avatar"
+  },
+  "userMenu": {
+    "personalInfo": "Personal information",
+    "manageProfile": "Manage profile"
+  },
+  "actions": {
+    "interview": {
+      "label": "Interview",
+      "title": "Interview",
+      "description": "Start a simulated AI interview based on your IT role and experience level."
+    },
+    "chatbot": {
+      "label": "Chatbot",
+      "title": "Chatbot",
+      "description": "Talk with the AI assistant to review technical questions, behavioral questions, and answer structure."
+    },
+    "feedback": {
+      "label": "Feedback",
+      "title": "Feedback",
+      "description": "Review comments, strengths, and improvement areas from your previous practice sessions."
+    }
+  }
+}
