@@ -6,18 +6,20 @@ import enHomePage from "../locales/en/HomePage/translation.json";
 import viHomePage from "../locales/vi/HomePage/translation.json";
 import enAuth from "../locales/en/Auth/translation.json";
 import viAuth from "../locales/vi/Auth/translation.json";
+import enDashboard from "../locales/en/Dashboard/translation.json";
+import viDashboard from "../locales/vi/Dashboard/translation.json";
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { HomePage: enHomePage, Auth: enAuth },
-      vi: { HomePage: viHomePage, Auth: viAuth },
+      en: { HomePage: enHomePage, Auth: enAuth, Dashboard: enDashboard },
+      vi: { HomePage: viHomePage, Auth: viAuth, Dashboard: viDashboard },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth"],
+    ns: ["HomePage", "Auth", "Dashboard"],
     interpolation: {
       escapeValue: false,
     },
