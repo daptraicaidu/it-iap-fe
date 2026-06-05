@@ -1,0 +1,69 @@
+{
+  "common": {
+    "backToDashboard": "Back to Dashboard"
+  },
+  "info": {
+    "title": "Personal information",
+    "description": "The personal information route has been changed to /info. Detailed account content can be added when the matching API is available."
+  },
+  "manage": {
+    "title": "Manage profile",
+    "description": "Create and update job profiles so the AI can use the right skills, experience, and projects during interview practice."
+  },
+  "list": {
+    "title": "Profile list",
+    "count": "{{count}} profiles",
+    "empty": "No profiles yet. Create your first profile to get started.",
+    "untitled": "Untitled profile"
+  },
+  "form": {
+    "modeCreate": "Create",
+    "modeEdit": "Edit",
+    "newProfile": "New profile"
+  },
+  "sections": {
+    "skills": "Skills",
+    "experiences": "Experience",
+    "projects": "Projects"
+  },
+  "fields": {
+    "title": "Profile name",
+    "targetPosition": "Target position",
+    "targetPositionPlaceholder": "Select position",
+    "targetLevel": "Target level",
+    "targetLevelPlaceholder": "Select level",
+    "skillName": "Skill name",
+    "skillLevel": "Level",
+    "skillYears": "Years",
+    "position": "Position",
+    "descriptions": "Descriptions, one item per line",
+    "projectName": "Project name",
+    "projectRole": "Role",
+    "technologies": "Technologies, one item per line"
+  },
+  "actions": {
+    "create": "Create profile",
+    "save": "Save profile",
+    "delete": "Delete",
+    "remove": "Remove item",
+    "addSkill": "Add skill",
+    "addExperience": "Add experience",
+    "addProject": "Add project"
+  },
+  "messages": {
+    "loadListError": "Could not load profiles.",
+    "loadDetailError": "Could not load profile details.",
+    "saveSuccess": "Profile saved.",
+    "saveError": "Could not save profile.",
+    "deleteSuccess": "Profile deleted.",
+    "deleteError": "Could not delete profile.",
+    "deleteConfirm": "Are you sure you want to delete this profile?",
+    "titleRequired": "Please enter a profile name."
+  },
+  "deleteDialog": {
+    "title": "Delete profile?",
+    "description": "This profile will be removed from your list. This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete profile"
+  }
+}

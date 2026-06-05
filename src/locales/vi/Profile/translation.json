@@ -1,0 +1,69 @@
+{
+  "common": {
+    "backToDashboard": "Quay lại Dashboard"
+  },
+  "info": {
+    "title": "Thông tin cá nhân",
+    "description": "Đường dẫn trang thông tin cá nhân đã được đổi sang /info. Nội dung chi tiết của hồ sơ người dùng có thể được bổ sung khi có API tương ứng."
+  },
+  "manage": {
+    "title": "Quản lý hồ sơ",
+    "description": "Tạo và cập nhật các hồ sơ ứng tuyển để AI sử dụng đúng kỹ năng, kinh nghiệm và dự án khi luyện phỏng vấn."
+  },
+  "list": {
+    "title": "Danh sách hồ sơ",
+    "count": "{{count}} hồ sơ",
+    "empty": "Chưa có hồ sơ nào. Hãy tạo hồ sơ đầu tiên để bắt đầu.",
+    "untitled": "Hồ sơ chưa đặt tên"
+  },
+  "form": {
+    "modeCreate": "Tạo mới",
+    "modeEdit": "Chỉnh sửa",
+    "newProfile": "Hồ sơ mới"
+  },
+  "sections": {
+    "skills": "Kỹ năng",
+    "experiences": "Kinh nghiệm",
+    "projects": "Dự án"
+  },
+  "fields": {
+    "title": "Tên hồ sơ",
+    "targetPosition": "Vị trí mục tiêu",
+    "targetPositionPlaceholder": "Chọn vị trí",
+    "targetLevel": "Cấp độ mục tiêu",
+    "targetLevelPlaceholder": "Chọn cấp độ",
+    "skillName": "Tên kỹ năng",
+    "skillLevel": "Mức độ",
+    "skillYears": "Số năm",
+    "position": "Vị trí",
+    "descriptions": "Mô tả, mỗi dòng một ý",
+    "projectName": "Tên dự án",
+    "projectRole": "Vai trò",
+    "technologies": "Công nghệ, mỗi dòng một mục"
+  },
+  "actions": {
+    "create": "Tạo hồ sơ",
+    "save": "Lưu hồ sơ",
+    "delete": "Xóa",
+    "remove": "Xóa mục",
+    "addSkill": "Thêm kỹ năng",
+    "addExperience": "Thêm kinh nghiệm",
+    "addProject": "Thêm dự án"
+  },
+  "messages": {
+    "loadListError": "Không thể tải danh sách hồ sơ.",
+    "loadDetailError": "Không thể tải chi tiết hồ sơ.",
+    "saveSuccess": "Đã lưu hồ sơ.",
+    "saveError": "Không thể lưu hồ sơ.",
+    "deleteSuccess": "Đã xóa hồ sơ.",
+    "deleteError": "Không thể xóa hồ sơ.",
+    "deleteConfirm": "Bạn có chắc muốn xóa hồ sơ này?",
+    "titleRequired": "Vui lòng nhập tên hồ sơ."
+  },
+  "deleteDialog": {
+    "title": "Xóa hồ sơ?",
+    "description": "Hồ sơ này sẽ bị xóa khỏi danh sách của bạn. Hành động này không thể hoàn tác.",
+    "cancel": "Hủy",
+    "confirm": "Xóa hồ sơ"
+  }
+}
