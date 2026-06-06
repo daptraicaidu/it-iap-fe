@@ -153,7 +153,7 @@ const DashboardPage = () => {
                   className="absolute right-0 z-20 mt-2 w-full min-w-56 rounded-xl border border-zinc-200 bg-white p-2 shadow-[0_16px_40px_rgba(24,24,27,0.08)] md:w-64"
                 >
                   <Link
-                    to="/profile"
+                    to="/info"
                     role="menuitem"
                     onClick={() => setIsUserMenuOpen(false)}
                     className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
@@ -162,7 +162,7 @@ const DashboardPage = () => {
                     {t("userMenu.personalInfo")}
                   </Link>
                   <Link
-                    to="/profile/manage"
+                    to="/profile"
                     role="menuitem"
                     onClick={() => setIsUserMenuOpen(false)}
                     className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"

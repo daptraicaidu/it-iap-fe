@@ -4,6 +4,8 @@ import LoginPage from "../pages/user/LoginPage/LoginPage";
 import RegisterPage from "../pages/user/RegisterPage/RegisterPage";
 import VerifyEmailPage from "../pages/user/VerifyEmailPage/VerifyEmailPage";
 import DashboardPage from "../pages/user/DashboardPage/DashboardPage";
+import ProfileInfoPage from "../pages/user/ProfileInfoPage/ProfileInfoPage";
+import ProfileManagePage from "../pages/user/ProfileManagePage/ProfileManagePage";
 import GuestRoute from "../components/GuestRoute";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AdminRoutes from "./adminRoutes";
@@ -26,6 +28,8 @@ const AppRouter = () => {
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/info" element={<ProfileInfoPage />} />
+        <Route path="/profile" element={<ProfileManagePage />} />
       </Route>
     </Routes>
   );
