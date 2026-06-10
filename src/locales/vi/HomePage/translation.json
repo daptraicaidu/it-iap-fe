@@ -16,16 +16,16 @@
     "label": "Tính năng nổi bật",
     "title": "Mọi thứ bạn cần để sẵn sàng cho buổi phỏng vấn",
     "aiInterview": {
-      "title": "Phỏng vấn với AI",
-      "description": "Trải nghiệm phỏng vấn thực tế với AI được huấn luyện dựa trên hàng nghìn cuộc phỏng vấn IT thực tế. Từ câu hỏi kỹ thuật đến behavioral questions."
+      "title": "Mentor AI Đa Chiều",
+      "description": "Đối diện với Mentor AI có khả năng thích ứng linh hoạt, liên tục đặt câu hỏi xoáy sâu vào kỹ năng chuyên môn và kinh nghiệm thực tế của bạn."
     },
     "feedback": {
-      "title": "Phản hồi tức thì",
-      "description": "Nhận đánh giá chi tiết về câu trả lời của bạn ngay lập tức. AI phân tích nội dung, cách diễn đạt và đề xuất cải thiện cụ thể."
+      "title": "Báo Cáo Chi Tiết Tức Thì",
+      "description": "Nhận phân tích chuyên sâu ngay sau khi phỏng vấn, chỉ ra điểm mạnh, điểm yếu và đề xuất hướng cải thiện tối ưu nhất."
     },
-    "industries": {
-      "title": "Đa dạng vị trí IT",
-      "description": "Luyện tập cho nhiều vị trí khác nhau: Frontend, Backend, Fullstack, DevOps, Data Engineer, QA và many more."
+    "criteria": {
+      "title": "Bộ Tiêu Chí Đánh Giá Chuẩn",
+      "description": "Hệ thống tự động chấm điểm dựa trên năng lực chuyên môn, tư duy giải quyết vấn đề, cấu trúc câu trả lời và mức độ tự tin qua giọng nói."
     }
   },
   "howItWorks": {
