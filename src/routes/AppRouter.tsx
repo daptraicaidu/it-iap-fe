@@ -25,24 +25,24 @@ const AppRouter = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
 
-        {/* Guest-only routes: redirect to dashboard if already authenticated */}
         <Route element={<GuestRoute />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
         </Route>
 
+        <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+          <Route path="/admin/dashboard/*" element={<AdminRoutes />} />
+        </Route>
 
-      <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
-        <Route path="/admin/dashboard/*" element={<AdminRoutes />} />
-      </Route>
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/info" element={<ProfileInfoPage />} />
-        <Route path="/info/changepassword" element={<ChangePasswordPage />} />
-        <Route path="/profile" element={<ProfileManagePage />} />
-      </Route>
-    </Routes>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/info" element={<ProfileInfoPage />} />
+          <Route path="/info/changepassword" element={<ChangePasswordPage />} />
+          <Route path="/profile" element={<ProfileManagePage />} />
+        </Route>
+      </Routes>
+    </>
   );
 };
 
