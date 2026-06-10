@@ -4,7 +4,39 @@
   },
   "info": {
     "title": "Thông tin cá nhân",
-    "description": "Đường dẫn trang thông tin cá nhân đã được đổi sang /info. Nội dung chi tiết của hồ sơ người dùng có thể được bổ sung khi có API tương ứng."
+    "description": "Đường dẫn trang thông tin cá nhân đã được đổi sang /info. Nội dung chi tiết của hồ sơ người dùng có thể được bổ sung khi có API tương ứng.",
+    "changePasswordTitle": "Thay đổi mật khẩu",
+    "changePasswordDescription": "Cập nhật mật khẩu đăng nhập để bảo vệ tài khoản của bạn."
+  },
+  "changePassword": {
+    "backToInfo": "Quay lại thông tin cá nhân",
+    "title": "Thay đổi mật khẩu",
+    "description": "Nhập mật khẩu hiện tại và tạo mật khẩu mới đủ mạnh cho tài khoản luyện phỏng vấn AI.",
+    "securityNote": "Mật khẩu của bạn được cập nhật qua yêu cầu bảo mật tới server. Hãy dùng mật khẩu không trùng với dịch vụ khác.",
+    "fields": {
+      "currentPassword": "Mật khẩu hiện tại",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu mới"
+    },
+    "rules": {
+      "title": "Yêu cầu mật khẩu",
+      "minLength": "Tối thiểu 8 ký tự",
+      "uppercase": "Có ít nhất 1 chữ in hoa",
+      "number": "Có ít nhất 1 chữ số",
+      "specialChar": "Có ít nhất 1 ký tự đặc biệt",
+      "different": "Khác mật khẩu hiện tại"
+    },
+    "actions": {
+      "reset": "Nhập lại",
+      "submit": "Cập nhật mật khẩu",
+      "submitting": "Đang cập nhật..."
+    },
+    "messages": {
+      "invalid": "Vui lòng kiểm tra lại các trường và yêu cầu mật khẩu.",
+      "mismatch": "Mật khẩu xác nhận chưa khớp với mật khẩu mới.",
+      "success": "Đã cập nhật mật khẩu thành công.",
+      "error": "Không thể cập nhật mật khẩu. Vui lòng thử lại."
+    }
   },
   "manage": {
     "title": "Quản lý hồ sơ",

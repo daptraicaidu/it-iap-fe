@@ -22,9 +22,15 @@ export interface ResendOtpRequest {
   userId: string;
 }
 
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+}
+
 // ── Response Interfaces ──
 export interface ApiResponse<T = undefined> {
   code: number;
+  message?: string;
   data?: T;
   timestamp: string;
 }
@@ -53,6 +59,11 @@ const authService = {
 
   refreshToken: () =>
     apiClient.post<ApiResponse<AuthData>>("/auth/refresh"),
+
+  logout: () => apiClient.post<ApiResponse<string>>("/auth/logout"),
+
+  changePassword: (payload: ChangePasswordRequest) =>
+    apiClient.post<ApiResponse<string>>("/users/change-password", payload),
 };
 
 export default authService;

@@ -6,6 +6,7 @@ import VerifyEmailPage from "../pages/user/VerifyEmailPage/VerifyEmailPage";
 import DashboardPage from "../pages/user/DashboardPage/DashboardPage";
 import ProfileInfoPage from "../pages/user/ProfileInfoPage/ProfileInfoPage";
 import ProfileManagePage from "../pages/user/ProfileManagePage/ProfileManagePage";
+import ChangePasswordPage from "../pages/user/ChangePasswordPage/ChangePasswordPage";
 import GuestRoute from "../components/GuestRoute";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AdminRoutes from "./adminRoutes";
@@ -29,6 +30,7 @@ const AppRouter = () => {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/info" element={<ProfileInfoPage />} />
+        <Route path="/info/changepassword" element={<ChangePasswordPage />} />
         <Route path="/profile" element={<ProfileManagePage />} />
       </Route>
     </Routes>
