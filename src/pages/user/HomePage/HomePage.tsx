@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import useAuthStore from "../../../store/authStore";
 
@@ -44,7 +44,7 @@ const IconFeedback = () => (
   </svg>
 );
 
-const IconRoles = () => (
+const IconCriteria = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -139,9 +139,9 @@ const HomePage = () => {
       gradient: "from-gradient-peach/40 to-gradient-rose/20",
     },
     {
-      icon: <IconRoles />,
-      title: t("features.industries.title"),
-      description: t("features.industries.description"),
+      icon: <IconCriteria />,
+      title: t("features.criteria.title"),
+      description: t("features.criteria.description"),
       gradient: "from-gradient-lavender/40 to-gradient-sky/20",
     },
   ];
@@ -503,12 +503,12 @@ const HomePage = () => {
               </h4>
               <ul className="list-none p-0 m-0 flex flex-col gap-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/introduction"
                     className="font-body text-[15px] text-body hover:text-ink transition-colors no-underline tracking-[0.15px]"
                   >
                     {t("footer.about")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
@@ -536,20 +536,20 @@ const HomePage = () => {
               </h4>
               <ul className="list-none p-0 m-0 flex flex-col gap-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/privacy-policy"
                     className="font-body text-[15px] text-body hover:text-ink transition-colors no-underline tracking-[0.15px]"
                   >
                     {t("footer.privacy")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/terms-of-service"
                     className="font-body text-[15px] text-body hover:text-ink transition-colors no-underline tracking-[0.15px]"
                   >
                     {t("footer.terms")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
