@@ -17,7 +17,7 @@ interface AuthState {
   verifyEmail: (userId: string, otp: string) => Promise<void>;
   resendOtp: (userId: string) => Promise<void>;
   refreshToken: () => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -97,8 +97,18 @@ const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  logout: () => {
-    set({ roles: [], isAuthenticated: false, error: null });
+  logout: async () => {
+    set({ roles: [], isAuthenticated: false, isLoading: true, error: null });
+    try {
+      await authService.logout();
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message ?? "Logout failed";
+      set({ error: message });
+    } finally {
+      set({ isLoading: false });
+    }
   },
 
   clearError: () => set({ error: null }),

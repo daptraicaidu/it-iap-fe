@@ -4,7 +4,39 @@
   },
   "info": {
     "title": "Personal information",
-    "description": "The personal information route has been changed to /info. Detailed account content can be added when the matching API is available."
+    "description": "The personal information route has been changed to /info. Detailed account content can be added when the matching API is available.",
+    "changePasswordTitle": "Change password",
+    "changePasswordDescription": "Update your sign-in password to keep your account protected."
+  },
+  "changePassword": {
+    "backToInfo": "Back to personal information",
+    "title": "Change password",
+    "description": "Enter your current password and create a stronger new password for your AI interview practice account.",
+    "securityNote": "Your password is updated through a secure server request. Use a password that is not reused on other services.",
+    "fields": {
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password"
+    },
+    "rules": {
+      "title": "Password requirements",
+      "minLength": "At least 8 characters",
+      "uppercase": "Includes at least 1 uppercase letter",
+      "number": "Includes at least 1 number",
+      "specialChar": "Includes at least 1 special character",
+      "different": "Different from current password"
+    },
+    "actions": {
+      "reset": "Reset",
+      "submit": "Update password",
+      "submitting": "Updating..."
+    },
+    "messages": {
+      "invalid": "Please check the fields and password requirements.",
+      "mismatch": "The confirmation password does not match the new password.",
+      "success": "Password updated successfully.",
+      "error": "Could not update password. Please try again."
+    }
   },
   "manage": {
     "title": "Manage profile",
