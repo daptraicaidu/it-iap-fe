@@ -1,0 +1,91 @@
+{
+  "hero": {
+    "headline_prefix": "",
+    "headline_highlight": "AI Powered",
+    "headline_suffix": " IT Interview Platform",
+    "subtext": "Simulate real interviews with specialized AI Mentors. We analyze your CV, personalize your learning path, and comprehensively evaluate your skills to help you ace any technical interview."
+  },
+  "tech": {
+    "feature1": {
+      "title": "CV Analysis & Unique Question Generation",
+      "description": "Our AI understands your CV to generate interview questions tailored to your actual experience, accurately mirroring employer expectations."
+    },
+    "feature2": {
+      "title": "Time Pressure Mock Exams",
+      "description": "Sharpen your quick thinking skills under time constraints with a countdown mode that simulates the most rigorous interview environments."
+    },
+    "feature3": {
+      "title": "Tough Questioning AI Mentors",
+      "description": "Face off against AI Mentors with diverse interview styles, from friendly to extremely challenging, helping you adapt to any scenario."
+    },
+    "feature4": {
+      "title": "Voice Processing & Detailed Evaluation",
+      "description": "Proprietary voice analysis technology evaluates your attitude, intonation, and technical knowledge, returning a detailed report with actionable feedback."
+    }
+  },
+  "team": {
+    "headline": "The Development Team",
+    "subtext": "The passionate individuals behind the AI interview platform."
+  },
+  "back_home": "Back to Home",
+  "privacy": {
+    "header": {
+      "title": "Privacy Policy",
+      "date": "Last updated: June 10, 2026",
+      "promise": "We are fully committed to safeguarding your personal information and data. Candidate privacy is the highest priority in our system design."
+    },
+    "menu": {
+      "section1": "1. Data Collection",
+      "section2": "2. AI Data Processing",
+      "section3": "3. Security Safeguards",
+      "section4": "4. Candidate Rights"
+    },
+    "section1": {
+      "title": "Article 1: Transparent Data Collection",
+      "body": "Our system solely collects basic registration data including your Email, text information extracted from your submitted PDF or Word CV, and temporary raw audio data from your microphone during the interview session."
+    },
+    "section2": {
+      "title": "Article 2: Secure AI Data Processing",
+      "body": "Your CV data is utilized strictly as internal context for the AI to generate relevant questions. Voice data sent through the speech recognition service is processed on the fly.",
+      "callout": "The system automatically destroys all raw audio files immediately after scoring is completed, pledging absolutely no retention of voice biometric data and prohibiting the use of profile data to train public AI models."
+    },
+    "section3": {
+      "title": "Article 3: Advanced Technical Security Safeguards",
+      "body": "The platform is fortified by cutting edge technology standards, featuring data encryption over HTTPS, strict role based API access control, and absolute account security via two factor authentication to prevent unauthorized intrusion."
+    },
+    "section4": {
+      "title": "Article 4: Candidate Control Rights",
+      "body": "You maintain total authority to edit, update, or execute a permanent deletion of your CV profile and entire interview history from our servers at any time."
+    }
+  },
+  "terms": {
+    "header": {
+      "title": "Terms of Service",
+      "date": "Last updated: June 10, 2026",
+      "promise": "Please read these terms carefully before using the platform. Your continued use of the system constitutes your acceptance of these regulations."
+    },
+    "menu": {
+      "section1": "1. Eligibility",
+      "section2": "2. Rules of AI Usage",
+      "section3": "3. AI Liability Limitation",
+      "section4": "4. Intellectual Property"
+    },
+    "section1": {
+      "title": "Article 1: Eligibility",
+      "body": "Users must ensure the provision of accurate and valid information when creating an account. The system strictly prohibits any acts of impersonation, account sharing, or submission of forged documents for the purpose of fraud during the interview process."
+    },
+    "section2": {
+      "title": "Article 2: Rules of AI Usage",
+      "body": "The platform provides AI Mentors to assist in competency assessment. Users pledge to interact civilly and not to use abusive or inciting language, nor to intentionally employ technical methods to sabotage or deceive the AI scoring system."
+    },
+    "section3": {
+      "title": "Article 3: AI Liability Limitation",
+      "body": "AI technology may generate errors or provide incomplete assessments in certain unique situations.",
+      "callout": "The platform utilizes AI technology to assist in simulating scenarios and suggesting reference answers. The system assumes no legal responsibility for the absolute accuracy of the content generated by AI, and the assessment results do not replace the actual hiring decisions of enterprises."
+    },
+    "section4": {
+      "title": "Article 4: Intellectual Property",
+      "body": "All content, algorithms, interview questions, and source code of the platform are our copyrighted property. Users are not permitted to copy, distribute, or use them for commercial purposes without prior written consent."
+    }
+  }
+}

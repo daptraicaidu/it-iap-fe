@@ -1,0 +1,91 @@
+{
+  "hero": {
+    "headline_prefix": "Nền tảng luyện phỏng vấn IT bằng ",
+    "headline_highlight": "AI",
+    "headline_suffix": "",
+    "subtext": "Mô phỏng trải nghiệm phỏng vấn thực tế với các Mentor AI chuyên sâu. Phân tích CV, cá nhân hóa lộ trình và đánh giá năng lực một cách toàn diện để giúp bạn tự tin vượt qua mọi vòng tuyển dụng."
+  },
+  "tech": {
+    "feature1": {
+      "title": "Phân tích CV & Sinh đề độc bản",
+      "description": "AI đọc hiểu CV của bạn, từ đó sinh ra bộ câu hỏi phỏng vấn sát với kinh nghiệm thực tế, mô phỏng chính xác kỳ vọng của nhà tuyển dụng."
+    },
+    "feature2": {
+      "title": "Thi thử áp lực đếm ngược",
+      "description": "Rèn luyện khả năng tư duy nhanh nhạy dưới áp lực thời gian với chế độ đếm ngược mô phỏng môi trường phỏng vấn khắt khe nhất."
+    },
+    "feature3": {
+      "title": "Mentor AI Hỏi xoáy đáp xoay",
+      "description": "Đối mặt với các Mentor AI sở hữu phong cách phỏng vấn đa dạng từ thân thiện đến hóc búa, giúp bạn làm quen với mọi tình huống."
+    },
+    "feature4": {
+      "title": "Xử lý giọng nói & Đánh giá chi tiết",
+      "description": "Công nghệ phân tích giọng nói độc quyền giúp đánh giá cả thái độ, ngữ điệu lẫn kiến thức chuyên môn, trả về báo cáo chi tiết kèm gợi ý cải thiện."
+    }
+  },
+  "team": {
+    "headline": "Đội ngũ phát triển",
+    "subtext": "Những con người đam mê công nghệ và giáo dục đứng sau hệ thống luyện phỏng vấn AI."
+  },
+  "back_home": "Về trang chủ",
+  "privacy": {
+    "header": {
+      "title": "Chính sách bảo mật",
+      "date": "Cập nhật lần cuối: 10/06/2026",
+      "promise": "Chúng tôi cam kết bảo vệ tuyệt đối thông tin và dữ liệu cá nhân của bạn. Sự riêng tư của ứng viên là ưu tiên hàng đầu trong mọi thiết kế hệ thống."
+    },
+    "menu": {
+      "section1": "1. Thu thập dữ liệu",
+      "section2": "2. Xử lý Trí tuệ nhân tạo",
+      "section3": "3. Lá chắn bảo mật",
+      "section4": "4. Quyền ứng viên"
+    },
+    "section1": {
+      "title": "Điều 1: Thu thập thông tin minh bạch",
+      "body": "Hệ thống chỉ thu thập dữ liệu đăng ký cơ bản bao gồm Email, thông tin văn bản trích xuất từ file CV ứng tuyển định dạng PDF hoặc Word và dữ liệu âm thanh thô tạm thời từ Microphone trong phiên trả lời phỏng vấn."
+    },
+    "section2": {
+      "title": "Điều 2: Cơ chế xử lý dữ liệu AI an toàn",
+      "body": "Dữ liệu CV của bạn chỉ được sử dụng làm ngữ cảnh nội bộ để AI sinh đề thi phù hợp. Dữ liệu giọng nói qua bộ chuyển đổi âm thanh thành văn bản được xử lý tức thì.",
+      "callout": "Hệ thống tự động hủy toàn bộ file ghi âm thô ngay sau khi hoàn thành chấm điểm, cam kết tuyệt đối không lưu giữ dữ liệu sinh trắc học giọng nói và không dùng dữ liệu hồ sơ để huấn luyện các mô hình AI công cộng."
+    },
+    "section3": {
+      "title": "Điều 3: Giải pháp bảo mật kỹ thuật nâng cao",
+      "body": "Hệ thống được bảo vệ bởi các tiêu chuẩn công nghệ tiên tiến nhất bao gồm mã hóa dữ liệu truyền tải qua HTTPS, kiểm soát API nghiêm ngặt theo phân quyền người dùng và bảo mật tài khoản tuyệt đối với lớp xác thực hai yếu tố nhằm chống lại mọi nỗ lực xâm nhập trái phép."
+    },
+    "section4": {
+      "title": "Điều 4: Quyền kiểm soát của ứng viên",
+      "body": "Bạn có toàn quyền chỉnh sửa, cập nhật hoặc thực hiện lệnh xóa vĩnh viễn hồ sơ CV cùng toàn bộ lịch sử phỏng vấn ra khỏi máy chủ hệ thống bất cứ lúc nào bạn muốn."
+    }
+  },
+  "terms": {
+    "header": {
+      "title": "Điều khoản sử dụng",
+      "date": "Cập nhật lần cuối: 10/06/2026",
+      "promise": "Vui lòng đọc kỹ các điều khoản dưới đây trước khi sử dụng nền tảng. Việc bạn tiếp tục sử dụng hệ thống đồng nghĩa với việc chấp nhận các quy định này."
+    },
+    "menu": {
+      "section1": "1. Điều kiện tham gia",
+      "section2": "2. Quy tắc sử dụng AI",
+      "section3": "3. Giới hạn trách nhiệm AI",
+      "section4": "4. Sở hữu trí tuệ"
+    },
+    "section1": {
+      "title": "Điều 1: Điều kiện tham gia",
+      "body": "Người dùng phải đảm bảo cung cấp thông tin chính xác và hợp lệ khi tạo tài khoản. Hệ thống nghiêm cấm mọi hành vi mạo danh, sử dụng tài khoản chung hoặc cung cấp tài liệu giả mạo nhằm mục đích gian lận trong quá trình phỏng vấn."
+    },
+    "section2": {
+      "title": "Điều 2: Quy tắc sử dụng AI",
+      "body": "Nền tảng cung cấp các Mentor AI để hỗ trợ đánh giá năng lực. Người dùng cam kết tương tác văn minh, không sử dụng ngôn từ xúc phạm, kích động hoặc cố tình thực hiện các phương thức kỹ thuật nhằm phá hoại, đánh lừa hệ thống chấm điểm của AI."
+    },
+    "section3": {
+      "title": "Điều 3: Giới hạn trách nhiệm AI",
+      "body": "Công nghệ AI có thể phát sinh sai sót hoặc đánh giá chưa toàn diện trong một số tình huống đặc thù.",
+      "callout": "Nền tảng ứng dụng công nghệ AI để hỗ trợ mô phỏng kịch bản và gợi ý đáp án tham khảo. Hệ thống không chịu trách nhiệm pháp lý đối với tính chính xác tuyệt đối của nội dung do AI sinh ra, và kết quả đánh giá không thay thế cho quyết định tuyển dụng thực tế của doanh nghiệp."
+    },
+    "section4": {
+      "title": "Điều 4: Sở hữu trí tuệ",
+      "body": "Toàn bộ nội dung, thuật toán, câu hỏi phỏng vấn và bộ mã nguồn của nền tảng đều thuộc bản quyền của chúng tôi. Người dùng không được phép sao chép, phát tán hoặc sử dụng cho mục đích thương mại khi chưa có sự đồng ý bằng văn bản."
+    }
+  }
+}
