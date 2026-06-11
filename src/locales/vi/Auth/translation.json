@@ -11,7 +11,8 @@
     "noAccount": "Chưa có tài khoản?",
     "register": "Đăng ký",
     "orContinueWith": "hoặc tiếp tục với",
-    "google": "Tiếp tục với Google"
+    "google": "Tiếp tục với Google",
+    "forgotPassword": "Quên mật khẩu?"
   },
   "register": {
     "title": "Tạo tài khoản",
@@ -43,6 +44,42 @@
     "resendSuccess": "Mã mới đã được gửi đến email của bạn",
     "autoLogin": "Đang đăng nhập..."
   },
+  "forgotPassword": {
+    "title": "Đặt lại mật khẩu",
+    "subtitleEmail": "Nhập email tài khoản của bạn để nhận mã xác thực",
+    "subtitleOtp": "Nhập mã OTP 6 chữ số đã gửi đến email của bạn",
+    "subtitlePassword": "Tạo mật khẩu mới cho tài khoản của bạn",
+    "emailLabel": "Địa chỉ email",
+    "sendOtp": "Gửi mã xác thực",
+    "sending": "Đang gửi...",
+    "continue": "Tiếp tục",
+    "wrongEmail": "Nhập sai email? Quay lại để sửa",
+    "otpResent": "Mã xác thực mới đã được gửi đến email của bạn",
+    "newPasswordLabel": "Mật khẩu mới",
+    "newPasswordPlaceholder": "Nhập mật khẩu mới",
+    "confirmPasswordLabel": "Xác nhận mật khẩu",
+    "confirmPasswordPlaceholder": "Nhập lại mật khẩu mới",
+    "confirmPasswordRequired": "Vui lòng xác nhận mật khẩu",
+    "passwordMismatch": "Mật khẩu xác nhận không khớp",
+    "passwordMatch": "Mật khẩu khớp",
+    "resetPassword": "Đặt lại mật khẩu",
+    "resetting": "Đang đặt lại...",
+    "editOtp": "Sửa mã OTP",
+    "backToLogin": "Về đăng nhập",
+    "rememberPassword": "Đã nhớ mật khẩu?",
+    "signIn": "Đăng nhập",
+    "successTitle": "Đặt lại mật khẩu thành công!",
+    "successMessage": "Mật khẩu của bạn đã được cập nhật. Bạn sẽ được chuyển hướng về trang đăng nhập.",
+    "emailSendError": "Không thể gửi mã xác thực. Vui lòng thử lại.",
+    "resetError": "Đặt lại mật khẩu thất bại. Vui lòng thử lại.",
+    "rules": {
+      "minLength": "Ít nhất 8 ký tự",
+      "uppercase": "Có ít nhất 1 chữ hoa",
+      "lowercase": "Có ít nhất 1 chữ thường",
+      "number": "Có ít nhất 1 chữ số",
+      "special": "Có ít nhất 1 ký tự đặc biệt"
+    }
+  },
   "validation": {
     "emailRequired": "Vui lòng nhập email",
     "emailInvalid": "Email không hợp lệ",
@@ -55,3 +92,4 @@
     "otpRequired": "Vui lòng nhập đủ mã 6 chữ số"
   }
 }
+
