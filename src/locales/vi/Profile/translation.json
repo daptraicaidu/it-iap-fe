@@ -95,7 +95,25 @@
   "deleteDialog": {
     "title": "Xóa hồ sơ?",
     "description": "Hồ sơ này sẽ bị xóa khỏi danh sách của bạn. Hành động này không thể hoàn tác.",
-    "cancel": "Hủy",
-    "confirm": "Xóa hồ sơ"
+    "cancel": "Hủy"
+  },
+  "settings": {
+    "menu": {
+      "userInfo": "Thông tin cá nhân",
+      "profiles": "Quản lý hồ sơ",
+      "general": "Cài đặt chung",
+      "password": "Đổi mật khẩu",
+      "activities": "Hoạt động"
+    },
+    "activities": {
+      "title": "Hoạt động",
+      "description": "Lịch sử các hoạt động, đăng nhập và các sự kiện bảo mật khác sẽ được hiển thị tại đây.",
+      "emptyTitle": "Chưa có hoạt động nào",
+      "emptyDescription": "Các hoạt động gần đây của bạn sẽ xuất hiện ở đây."
+    },
+    "general": {
+      "title": "Cài đặt chung",
+      "description": "Quản lý các cài đặt chung cho giao diện và tài khoản của bạn."
+    }
   }
 }

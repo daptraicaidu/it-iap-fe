@@ -111,7 +111,7 @@ const IconArrowRight = () => (
 /* ─────────────── HomePage Component ─────────────── */
 
 const HomePage = () => {
-  const { t } = useTranslation("HomePage");
+  const { t, i18n } = useTranslation("HomePage");
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const roles = useAuthStore((s) => s.roles);
@@ -124,6 +124,11 @@ const HomePage = () => {
       navigate("/register");
     }
   }, [isAuthenticated, roles, navigate]);
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "vi" ? "en" : "vi";
+    i18n.changeLanguage(newLang);
+  };
 
   const features = [
     {
@@ -194,6 +199,12 @@ const HomePage = () => {
             >
               {t("nav.howItWorks")}
             </a>
+            <button
+              onClick={toggleLanguage}
+              className="font-body text-[15px] font-medium text-body hover:text-ink transition-colors bg-transparent border-none cursor-pointer uppercase"
+            >
+              {i18n.language === "vi" ? "EN" : "VI"}
+            </button>
             <button
               id="nav-cta"
               onClick={handleCTA}

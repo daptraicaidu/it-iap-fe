@@ -94,7 +94,7 @@ const fromLines = (value: string) =>
     .map((item) => item.trim())
     .filter(Boolean);
 
-const ProfileManagePage = () => {
+const ProfilesPage = () => {
   const { t } = useTranslation("Profile");
   const [profiles, setProfiles] = useState<ProfileSummary[]>([]);
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(
@@ -251,17 +251,9 @@ const ProfileManagePage = () => {
   };
 
   return (
-    <main className="min-h-[100dvh] bg-zinc-50 text-zinc-900">
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
-            >
-              <ArrowLeft className="h-4 w-4 text-zinc-500" />
-              {t("common.backToDashboard")}
-            </Link>
+    <div className="w-full">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
             <h1 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-900">
               {t("manage.title")}
             </h1>
@@ -642,7 +634,6 @@ const ProfileManagePage = () => {
             )}
           </section>
         </div>
-      </section>
 
       <ConfirmDialog
         isOpen={isDeleteDialogOpen}
@@ -654,7 +645,7 @@ const ProfileManagePage = () => {
         onCancel={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
       />
-    </main>
+    </div>
   );
 };
 
@@ -880,4 +871,4 @@ const ConfirmDialog = ({
   );
 };
 
-export default ProfileManagePage;
+export default ProfilesPage;

@@ -26,7 +26,7 @@ const initialForm: PasswordForm = {
   confirmPassword: "",
 };
 
-const ChangePasswordPage = () => {
+const PasswordAndSecurityPage = () => {
   const { t } = useTranslation("Profile");
   const [form, setForm] = useState<PasswordForm>(initialForm);
   const [visibleFields, setVisibleFields] = useState<
@@ -113,17 +113,8 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <main className="min-h-[100dvh] bg-zinc-50 text-zinc-900">
-      <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <Link
-          to="/info"
-          className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
-        >
-          <ArrowLeft className="h-4 w-4 text-zinc-500" />
-          {t("changePassword.backToInfo")}
-        </Link>
-
-        <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="w-full">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <section className="rounded-xl border border-zinc-200 bg-white">
             <div className="border-b border-zinc-200 px-6 py-6 sm:px-8">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
@@ -241,9 +232,8 @@ const ChangePasswordPage = () => {
               {t("changePassword.securityNote")}
             </div>
           </aside>
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 };
 
@@ -284,4 +274,4 @@ const PasswordField = ({
   </label>
 );
 
-export default ChangePasswordPage;
+export default PasswordAndSecurityPage;
