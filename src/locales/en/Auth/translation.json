@@ -11,7 +11,8 @@
     "noAccount": "Don't have an account?",
     "register": "Sign up",
     "orContinueWith": "or continue with",
-    "google": "Continue with Google"
+    "google": "Continue with Google",
+    "forgotPassword": "Forgot password?"
   },
   "register": {
     "title": "Create an account",
@@ -43,6 +44,42 @@
     "resendSuccess": "A new code has been sent to your email",
     "autoLogin": "Logging you in..."
   },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "subtitleEmail": "Enter your account email to receive a verification code",
+    "subtitleOtp": "Enter the 6-digit OTP code sent to your email",
+    "subtitlePassword": "Create a new password for your account",
+    "emailLabel": "Email address",
+    "sendOtp": "Send verification code",
+    "sending": "Sending...",
+    "continue": "Continue",
+    "wrongEmail": "Wrong email? Go back to change it",
+    "otpResent": "A new verification code has been sent to your email",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Re-enter new password",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordMatch": "Passwords match",
+    "resetPassword": "Reset password",
+    "resetting": "Resetting...",
+    "editOtp": "Edit OTP code",
+    "backToLogin": "Back to login",
+    "rememberPassword": "Remember your password?",
+    "signIn": "Sign in",
+    "successTitle": "Password reset successful!",
+    "successMessage": "Your password has been updated. You will be redirected to the login page.",
+    "emailSendError": "Failed to send verification code. Please try again.",
+    "resetError": "Password reset failed. Please try again.",
+    "rules": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter",
+      "lowercase": "At least 1 lowercase letter",
+      "number": "At least 1 number",
+      "special": "At least 1 special character"
+    }
+  },
   "validation": {
     "emailRequired": "Email is required",
     "emailInvalid": "Please enter a valid email address",
@@ -55,3 +92,4 @@
     "otpRequired": "Please enter the full 6-digit code"
   }
 }
+

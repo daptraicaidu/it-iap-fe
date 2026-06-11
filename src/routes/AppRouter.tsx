@@ -6,6 +6,7 @@ import TermsOfServicePage from "../pages/user/TermsOfServicePage/TermsOfServiceP
 import LoginPage from "../pages/user/LoginPage/LoginPage";
 import RegisterPage from "../pages/user/RegisterPage/RegisterPage";
 import VerifyEmailPage from "../pages/user/VerifyEmailPage/VerifyEmailPage";
+import ForgotPasswordPage from "../pages/user/ForgotPasswordPage/ForgotPasswordPage";
 import DashboardPage from "../pages/user/DashboardPage/DashboardPage";
 import UserInfoPage from "../pages/user/UserInfoPage/UserInfoPage";
 import ProfilesPage from "../pages/user/ProfilesPage/ProfilesPage";
@@ -33,6 +34,7 @@ const AppRouter = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
