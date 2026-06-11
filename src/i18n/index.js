@@ -8,18 +8,34 @@ import enAuth from "../locales/en/Auth/translation.json";
 import viAuth from "../locales/vi/Auth/translation.json";
 import enDashboard from "../locales/en/Dashboard/translation.json";
 import viDashboard from "../locales/vi/Dashboard/translation.json";
+import enProfile from "../locales/en/Profile/translation.json";
+import viProfile from "../locales/vi/Profile/translation.json";
+import enFooterPages from "../locales/en/FooterPages/translation.json";
+import viFooterPages from "../locales/vi/FooterPages/translation.json";
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { HomePage: enHomePage, Auth: enAuth, Dashboard: enDashboard },
-      vi: { HomePage: viHomePage, Auth: viAuth, Dashboard: viDashboard },
+      en: {
+        HomePage: enHomePage,
+        Auth: enAuth,
+        Dashboard: enDashboard,
+        Profile: enProfile,
+        FooterPages: enFooterPages,
+      },
+      vi: {
+        HomePage: viHomePage,
+        Auth: viAuth,
+        Dashboard: viDashboard,
+        Profile: viProfile,
+        FooterPages: viFooterPages,
+      },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth", "Dashboard"],
+    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages"],
     interpolation: {
       escapeValue: false,
     },

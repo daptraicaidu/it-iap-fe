@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import useAuthStore from "../../../store/authStore";
 
@@ -44,7 +44,7 @@ const IconFeedback = () => (
   </svg>
 );
 
-const IconRoles = () => (
+const IconCriteria = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -111,7 +111,7 @@ const IconArrowRight = () => (
 /* ─────────────── HomePage Component ─────────────── */
 
 const HomePage = () => {
-  const { t } = useTranslation("HomePage");
+  const { t, i18n } = useTranslation("HomePage");
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const roles = useAuthStore((s) => s.roles);
@@ -124,6 +124,11 @@ const HomePage = () => {
       navigate("/register");
     }
   }, [isAuthenticated, roles, navigate]);
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "vi" ? "en" : "vi";
+    i18n.changeLanguage(newLang);
+  };
 
   const features = [
     {
@@ -139,9 +144,9 @@ const HomePage = () => {
       gradient: "from-gradient-peach/40 to-gradient-rose/20",
     },
     {
-      icon: <IconRoles />,
-      title: t("features.industries.title"),
-      description: t("features.industries.description"),
+      icon: <IconCriteria />,
+      title: t("features.criteria.title"),
+      description: t("features.criteria.description"),
       gradient: "from-gradient-lavender/40 to-gradient-sky/20",
     },
   ];
@@ -195,6 +200,12 @@ const HomePage = () => {
               {t("nav.howItWorks")}
             </a>
             <button
+              onClick={toggleLanguage}
+              className="font-body text-[15px] font-medium text-body hover:text-ink transition-colors bg-transparent border-none cursor-pointer uppercase"
+            >
+              {i18n.language === "vi" ? "EN" : "VI"}
+            </button>
+            <button
               id="nav-cta"
               onClick={handleCTA}
               className="bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-5 py-2.5 h-10 hover:bg-primary-active transition-colors cursor-pointer border-none"
@@ -234,7 +245,10 @@ const HomePage = () => {
               </a>
               <button
                 className="bg-primary text-on-primary font-body text-[15px] font-medium rounded-pill px-5 py-2.5 h-10 hover:bg-primary-active transition-colors cursor-pointer border-none w-full"
-                onClick={() => { setMobileMenuOpen(false); handleCTA(); }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleCTA();
+                }}
               >
                 {t("nav.getStarted")}
               </button>
@@ -443,7 +457,10 @@ const HomePage = () => {
       </section>
 
       {/* ════════ FOOTER ════════ */}
-      <footer id="footer" className="py-16 px-6 border-t border-hairline-soft bg-canvas">
+      <footer
+        id="footer"
+        className="py-16 px-6 border-t border-hairline-soft bg-canvas"
+      >
         <div className="max-w-[1200px] mx-auto">
           {/* Footer Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
@@ -497,12 +514,12 @@ const HomePage = () => {
               </h4>
               <ul className="list-none p-0 m-0 flex flex-col gap-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/introduction"
                     className="font-body text-[15px] text-body hover:text-ink transition-colors no-underline tracking-[0.15px]"
                   >
                     {t("footer.about")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
@@ -530,20 +547,20 @@ const HomePage = () => {
               </h4>
               <ul className="list-none p-0 m-0 flex flex-col gap-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/privacy-policy"
                     className="font-body text-[15px] text-body hover:text-ink transition-colors no-underline tracking-[0.15px]"
                   >
                     {t("footer.privacy")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/terms-of-service"
                     className="font-body text-[15px] text-body hover:text-ink transition-colors no-underline tracking-[0.15px]"
                   >
                     {t("footer.terms")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a

@@ -1,0 +1,119 @@
+{
+  "common": {
+    "backToDashboard": "Back to Dashboard"
+  },
+  "info": {
+    "title": "Personal information",
+    "description": "The personal information route has been changed to /info. Detailed account content can be added when the matching API is available.",
+    "changePasswordTitle": "Change password",
+    "changePasswordDescription": "Update your sign-in password to keep your account protected."
+  },
+  "changePassword": {
+    "backToInfo": "Back to personal information",
+    "title": "Change password",
+    "description": "Enter your current password and create a stronger new password for your AI interview practice account.",
+    "securityNote": "Your password is updated through a secure server request. Use a password that is not reused on other services.",
+    "fields": {
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password"
+    },
+    "rules": {
+      "title": "Password requirements",
+      "minLength": "At least 8 characters",
+      "uppercase": "Includes at least 1 uppercase letter",
+      "number": "Includes at least 1 number",
+      "specialChar": "Includes at least 1 special character",
+      "different": "Different from current password"
+    },
+    "actions": {
+      "reset": "Reset",
+      "submit": "Update password",
+      "submitting": "Updating..."
+    },
+    "messages": {
+      "invalid": "Please check the fields and password requirements.",
+      "mismatch": "The confirmation password does not match the new password.",
+      "success": "Password updated successfully.",
+      "error": "Could not update password. Please try again."
+    }
+  },
+  "manage": {
+    "title": "Manage profile",
+    "description": "Create and update job profiles so the AI can use the right skills, experience, and projects during interview practice."
+  },
+  "list": {
+    "title": "Profile list",
+    "count": "{{count}} profiles",
+    "empty": "No profiles yet. Create your first profile to get started.",
+    "untitled": "Untitled profile"
+  },
+  "form": {
+    "modeCreate": "Create",
+    "modeEdit": "Edit",
+    "newProfile": "New profile"
+  },
+  "sections": {
+    "skills": "Skills",
+    "experiences": "Experience",
+    "projects": "Projects"
+  },
+  "fields": {
+    "title": "Profile name",
+    "targetPosition": "Target position",
+    "targetPositionPlaceholder": "Select position",
+    "targetLevel": "Target level",
+    "targetLevelPlaceholder": "Select level",
+    "skillName": "Skill name",
+    "skillLevel": "Level",
+    "skillYears": "Years",
+    "position": "Position",
+    "descriptions": "Descriptions, one item per line",
+    "projectName": "Project name",
+    "projectRole": "Role",
+    "technologies": "Technologies, one item per line"
+  },
+  "actions": {
+    "create": "Create profile",
+    "save": "Save profile",
+    "delete": "Delete",
+    "remove": "Remove item",
+    "addSkill": "Add skill",
+    "addExperience": "Add experience",
+    "addProject": "Add project"
+  },
+  "messages": {
+    "loadListError": "Could not load profiles.",
+    "loadDetailError": "Could not load profile details.",
+    "saveSuccess": "Profile saved.",
+    "saveError": "Could not save profile.",
+    "deleteSuccess": "Profile deleted.",
+    "deleteError": "Could not delete profile.",
+    "deleteConfirm": "Are you sure you want to delete this profile?",
+    "titleRequired": "Please enter a profile name."
+  },
+  "deleteDialog": {
+    "title": "Delete profile?",
+    "description": "This profile will be removed from your list. This action cannot be undone.",
+    "cancel": "Cancel"
+  },
+  "settings": {
+    "menu": {
+      "userInfo": "Personal Information",
+      "profiles": "Manage Profiles",
+      "general": "General Settings",
+      "password": "Change Password",
+      "activities": "Activities"
+    },
+    "activities": {
+      "title": "Activities",
+      "description": "Your activity history, logins, and other security events will be displayed here.",
+      "emptyTitle": "No activities yet",
+      "emptyDescription": "Your recent activities will appear here."
+    },
+    "general": {
+      "title": "General Settings",
+      "description": "Manage general settings for your interface and account."
+    }
+  }
+}
