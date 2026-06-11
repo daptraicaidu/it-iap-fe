@@ -27,6 +27,16 @@ export interface ChangePasswordRequest {
   newPassword: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  otp: string;
+  newPassword: string;
+}
+
 // ── Response Interfaces ──
 export interface ApiResponse<T = undefined> {
   code: number;
@@ -64,6 +74,12 @@ const authService = {
 
   changePassword: (payload: ChangePasswordRequest) =>
     apiClient.post<ApiResponse<string>>("/users/change-password", payload),
+
+  forgotPassword: (payload: ForgotPasswordRequest) =>
+    apiClient.post<ApiResponse>("/auth/password/forgot", payload),
+
+  resetPassword: (payload: ResetPasswordRequest) =>
+    apiClient.post<ApiResponse>("/auth/password/reset", payload),
 };
 
 export default authService;
