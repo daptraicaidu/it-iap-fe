@@ -51,19 +51,19 @@ export interface ProfilePayload {
 }
 
 const profileService = {
-  getProfiles: () => apiClient.get<ApiResponse<ProfileSummary[]>>("/profile"),
+  getProfiles: () => apiClient.get<ApiResponse<ProfileSummary[]>>("/profiles"),
 
   getProfile: (profileId: number) =>
-    apiClient.get<ApiResponse<ProfileDetail>>(`/profile/${profileId}`),
+    apiClient.get<ApiResponse<ProfileDetail>>(`/profiles/${profileId}`),
 
   createProfile: (payload: ProfilePayload) =>
-    apiClient.post<ApiResponse<ProfileDetail>>("/profile", payload),
+    apiClient.post<ApiResponse<ProfileDetail>>("/profiles", payload),
 
   updateProfile: (profileId: number, payload: ProfilePayload) =>
-    apiClient.put<ApiResponse<ProfileDetail>>(`/profile/${profileId}`, payload),
+    apiClient.put<ApiResponse<ProfileDetail>>(`/profiles/${profileId}`, payload),
 
   deleteProfile: (profileId: number) =>
-    apiClient.delete<ApiResponse<string>>(`/profile/${profileId}`),
+    apiClient.delete<ApiResponse<string>>(`/profiles/${profileId}`),
 };
 
 export const getProfileTitle = (profile: ProfileSummary | ProfileDetail) =>

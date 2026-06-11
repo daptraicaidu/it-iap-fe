@@ -95,7 +95,25 @@
   "deleteDialog": {
     "title": "Delete profile?",
     "description": "This profile will be removed from your list. This action cannot be undone.",
-    "cancel": "Cancel",
-    "confirm": "Delete profile"
+    "cancel": "Cancel"
+  },
+  "settings": {
+    "menu": {
+      "userInfo": "Personal Information",
+      "profiles": "Manage Profiles",
+      "general": "General Settings",
+      "password": "Change Password",
+      "activities": "Activities"
+    },
+    "activities": {
+      "title": "Activities",
+      "description": "Your activity history, logins, and other security events will be displayed here.",
+      "emptyTitle": "No activities yet",
+      "emptyDescription": "Your recent activities will appear here."
+    },
+    "general": {
+      "title": "General Settings",
+      "description": "Manage general settings for your interface and account."
+    }
   }
 }

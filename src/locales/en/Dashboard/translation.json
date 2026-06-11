@@ -9,7 +9,9 @@
     "label": "Dashboard navigation",
     "dashboard": "Dashboard",
     "history": "Interview history",
-    "chatbot": "Chatbot"
+    "chatbot": "Chatbot",
+    "interview": "Start Interview",
+    "reviewResult": "Review Result"
   },
   "user": {
     "name": "Nguyen Minh Anh",

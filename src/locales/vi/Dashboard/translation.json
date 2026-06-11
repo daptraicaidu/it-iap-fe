@@ -9,7 +9,9 @@
     "label": "Điều hướng Dashboard",
     "dashboard": "Dashboard",
     "history": "Lịch sử phỏng vấn",
-    "chatbot": "Chatbot"
+    "chatbot": "Chatbot",
+    "interview": "Bắt đầu phỏng vấn",
+    "reviewResult": "Kết quả phỏng vấn"
   },
   "user": {
     "name": "Nguyễn Minh Anh",

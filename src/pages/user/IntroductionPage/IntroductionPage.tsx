@@ -27,31 +27,31 @@ const MEMBERS = [
     name: "Bùi Tiến Thành",
     id: "BIT230385",
     role: "Frontend Developer",
-    src: "/avatar/TienThanh.jpg"
+    src: "src/assets/avatar/TienThanh.jpg"
   },
   {
     name: "Nguyễn Quang Thái",
     id: "BIT230373",
     role: "Frontend Developer",
-    src: "/avatar/QuangThai.png"
+    src: "src/assets/avatar/QuangThai.png"
   },
   {
     name: "Trần Phạm Minh Sơn",
     id: "BIT230367",
     role: "Frontend Developer",
-    src: "/avatar/Son.png"
+    src: "src/assets/avatar/Son.png"
   },
   {
     name: "Mai Thanh Tùng",
     id: "BIT230434",
     role: "Backend Developer",
-    src: "/avatar/ThanhTung.png"
+    src: "src/assets/avatar/ThanhTung.png"
   },
   {
     name: "Vũ Minh Thắng",
     id: "BIT230377",
     role: "Backend Developer",
-    src: "/avatar/MinhThang.png"
+    src: "src/assets/avatar/MinhThang.png"
   }
 ];
 

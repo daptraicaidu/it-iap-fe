@@ -91,101 +91,7 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <main className="min-h-[100dvh] bg-zinc-50 text-zinc-900">
-      <header className="border-b border-zinc-200 bg-zinc-50/85 backdrop-blur">
-        <div className="mx-auto flex min-h-16 max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 md:h-16 md:flex-row md:items-center md:justify-between md:py-0 lg:px-8">
-          <Link
-            to="/"
-            className="shrink-0 text-sm font-semibold tracking-tight text-zinc-900"
-          >
-            {t("brand")}
-          </Link>
-
-          <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:gap-6">
-            <nav
-              aria-label={t("navigation.label")}
-              className="flex w-full gap-1 overflow-x-auto rounded-full border border-zinc-200 bg-white p-1 md:w-auto"
-            >
-              {navigationItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
-                    [
-                      "whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition",
-                      isActive
-                        ? "bg-zinc-900 text-white"
-                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900",
-                    ].join(" ")
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-            </nav>
-
-            <div ref={userMenuRef} className="relative">
-              <button
-                type="button"
-                aria-haspopup="menu"
-                aria-expanded={isUserMenuOpen}
-                onClick={() => setIsUserMenuOpen((current) => !current)}
-                className="flex h-11 w-full items-center justify-between gap-3 rounded-full border border-zinc-200 bg-white py-1.5 pl-1.5 pr-3 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98] md:w-auto"
-              >
-                <span className="flex min-w-0 items-center gap-3">
-                  <img
-                    src={user.avatarUrl}
-                    alt={t("user.avatarAlt")}
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
-                  <span className="truncate">{user.name}</span>
-                </span>
-                <ChevronDown
-                  className={`h-4 w-4 shrink-0 text-zinc-500 transition ${
-                    isUserMenuOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {isUserMenuOpen ? (
-                <div
-                  role="menu"
-                  className="absolute right-0 z-20 mt-2 w-full min-w-56 rounded-xl border border-zinc-200 bg-white p-2 shadow-[0_16px_40px_rgba(24,24,27,0.08)] md:w-64"
-                >
-                  <Link
-                    to="/info"
-                    role="menuitem"
-                    onClick={() => setIsUserMenuOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
-                  >
-                    <User className="h-4 w-4 text-zinc-500" />
-                    {t("userMenu.personalInfo")}
-                  </Link>
-                  <Link
-                    to="/profile"
-                    role="menuitem"
-                    onClick={() => setIsUserMenuOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
-                  >
-                    <UserCog className="h-4 w-4 text-zinc-500" />
-                    {t("userMenu.manageProfile")}
-                  </Link>
-                  <div className="my-2 h-px bg-zinc-200" />
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={handleLogout}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-rose-700 transition hover:bg-rose-50"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    {t("logout")}
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="w-full">
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div className="mb-8 max-w-3xl sm:mb-10">
@@ -237,7 +143,7 @@ const DashboardPage = () => {
           })}
         </div>
       </section>
-    </main>
+    </div>
   );
 };
 

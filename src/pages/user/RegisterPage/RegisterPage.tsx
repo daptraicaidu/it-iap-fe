@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Eye, EyeOff, Mail, Lock, User, Phone, Loader2 } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Phone, Loader2 } from "lucide-react";
 import useAuthStore from "../../../store/authStore";
 
 const RegisterPage = () => {
@@ -80,7 +80,15 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12">
+    <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12 relative">
+      <Link 
+        to="/" 
+        className="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 shadow-sm"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        {t("common.backToHome", "Về trang chủ")}
+      </Link>
+
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
