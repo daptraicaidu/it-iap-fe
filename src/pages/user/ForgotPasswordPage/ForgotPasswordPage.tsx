@@ -439,13 +439,15 @@ const ForgotPasswordPage = () => {
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || resendCooldown > 0}
                   className="flex w-full items-center justify-center gap-2 rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {isLoading
                     ? t("forgotPassword.sending")
-                    : t("forgotPassword.sendOtp")}
+                    : resendCooldown > 0
+                      ? t("verify.resendIn", { seconds: resendCooldown })
+                      : t("forgotPassword.sendOtp")}
                 </button>
               </motion.form>
             )}

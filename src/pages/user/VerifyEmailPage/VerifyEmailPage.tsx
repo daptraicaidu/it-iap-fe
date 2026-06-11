@@ -120,12 +120,8 @@ const VerifyEmailPage = () => {
       if (userEmail && userPassword) {
         setIsAutoLogging(true);
         try {
-          const roles = await login({ email: userEmail, password: userPassword });
-          if (roles.includes("ADMIN")) {
-            navigate("/admin/dashboard", { replace: true });
-          } else {
-            navigate("/dashboard", { replace: true });
-          }
+          await login({ email: userEmail, password: userPassword });
+          // GuestRoute will automatically redirect based on roles
         } catch {
           // If auto-login fails, redirect to login page
           navigate("/login", { replace: true });
