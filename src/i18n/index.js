@@ -12,6 +12,8 @@ import enProfile from "../locales/en/Profile/translation.json";
 import viProfile from "../locales/vi/Profile/translation.json";
 import enFooterPages from "../locales/en/FooterPages/translation.json";
 import viFooterPages from "../locales/vi/FooterPages/translation.json";
+import enAdminUsers from "../locales/en/AdminUsers/translation.json";
+import viAdminUsers from "../locales/vi/AdminUsers/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -24,6 +26,7 @@ i18n
         Dashboard: enDashboard,
         Profile: enProfile,
         FooterPages: enFooterPages,
+        AdminUsers: enAdminUsers,
       },
       vi: {
         HomePage: viHomePage,
@@ -31,11 +34,12 @@ i18n
         Dashboard: viDashboard,
         Profile: viProfile,
         FooterPages: viFooterPages,
+        AdminUsers: viAdminUsers,
       },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages"],
+    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers"],
     interpolation: {
       escapeValue: false,
     },
