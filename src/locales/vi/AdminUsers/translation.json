@@ -1,0 +1,80 @@
+{
+  "title": "Quản lý người dùng",
+  "subtitle": "Quản lý tất cả tài khoản người dùng trong hệ thống",
+  "addUser": "Thêm người dùng",
+  "filter": {
+    "email": "Email",
+    "emailPlaceholder": "Tìm theo email...",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "Tìm theo số điện thoại...",
+    "name": "Họ tên",
+    "namePlaceholder": "Tìm theo họ tên...",
+    "search": "Tìm kiếm",
+    "clear": "Xoá bộ lọc"
+  },
+  "table": {
+    "avatar": "Ảnh",
+    "fullName": "Họ tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
+    "actions": "Thao tác",
+    "active": "Hoạt động",
+    "inactive": "Vô hiệu",
+    "noData": "Không tìm thấy người dùng nào",
+    "noDataDesc": "Thử thay đổi bộ lọc hoặc thêm người dùng mới",
+    "loading": "Đang tải dữ liệu..."
+  },
+  "pagination": {
+    "page": "Trang",
+    "of": "của",
+    "goToPage": "Đi tới trang",
+    "go": "Đi",
+    "showing": "Hiển thị",
+    "to": "đến",
+    "total": "tổng",
+    "entries": "mục"
+  },
+  "createModal": {
+    "title": "Thêm người dùng mới",
+    "desc": "Nhập thông tin để tạo tài khoản người dùng mới",
+    "email": "Email",
+    "emailPlaceholder": "example@gmail.com",
+    "fullName": "Họ tên",
+    "fullNamePlaceholder": "Nguyễn Văn A",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "0987654321",
+    "cancel": "Huỷ",
+    "submit": "Tạo người dùng",
+    "submitting": "Đang tạo...",
+    "success": "Tạo người dùng thành công!"
+  },
+  "editModal": {
+    "title": "Chỉnh sửa người dùng",
+    "desc": "Cập nhật thông tin tài khoản người dùng",
+    "email": "Email",
+    "emailPlaceholder": "example@gmail.com",
+    "fullName": "Họ tên",
+    "fullNamePlaceholder": "Nguyễn Văn A",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "0987654321",
+    "avatarUrl": "URL ảnh đại diện",
+    "avatarUrlPlaceholder": "https://example.com/avatar.jpg",
+    "activeLabel": "Trạng thái hoạt động",
+    "activeOn": "Đang hoạt động",
+    "activeOff": "Đã vô hiệu hoá",
+    "cancel": "Huỷ",
+    "submit": "Lưu thay đổi",
+    "submitting": "Đang lưu...",
+    "success": "Cập nhật người dùng thành công!"
+  },
+  "confirmToggle": {
+    "activateTitle": "Kích hoạt người dùng",
+    "deactivateTitle": "Vô hiệu hoá người dùng",
+    "activateDesc": "Bạn có chắc muốn kích hoạt lại tài khoản này?",
+    "deactivateDesc": "Bạn có chắc muốn vô hiệu hoá tài khoản này?",
+    "confirm": "Xác nhận",
+    "cancel": "Huỷ"
+  }
+}
