@@ -64,6 +64,7 @@
     "activeLabel": "Trạng thái hoạt động",
     "activeOn": "Đang hoạt động",
     "activeOff": "Đã vô hiệu hoá",
+    "deactivatedSince": "Đã vô hiệu hoá từ {{date}}",
     "cancel": "Huỷ",
     "submit": "Lưu thay đổi",
     "submitting": "Đang lưu...",
