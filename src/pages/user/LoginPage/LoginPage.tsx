@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
 import useAuthStore from "../../../store/authStore";
 
 const LoginPage = () => {
   const { t } = useTranslation("Auth");
-  const navigate = useNavigate();
+
   const { login, isLoading, error, clearError } = useAuthStore();
 
   const [email, setEmail] = useState("");
@@ -38,18 +38,15 @@ const LoginPage = () => {
     if (!validate()) return;
 
     try {
-      const roles = await login({ email, password });
-      if (roles.includes("ADMIN")) {
-        navigate("/admin/dashboard", { replace: true });
-      } else {
-        navigate("/dashboard", { replace: true });
-      }
+      await login({ email, password });
+      // GuestRoute will automatically redirect based on roles
     } catch {
       // Error is handled by the store
     }
   };
 
   const handleGoogleLogin = () => {
+    sessionStorage.setItem("oauth_pending", "true");
     window.location.href = "/oauth2/authorization/google";
   };
 

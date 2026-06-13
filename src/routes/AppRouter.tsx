@@ -19,11 +19,13 @@ import GuestRoute from "./guards/GuestRoute";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import AdminRoutes from "./AdminRoutes";
 import ScrollToTop from "../components/ScrollToTop";
+import OAuthRedirectHandler from "./guards/OAuthRedirectHandler";
 
 const AppRouter = () => {
   return (
     <>
       <ScrollToTop />
+      <OAuthRedirectHandler />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/introduction" element={<IntroductionPage />} />
@@ -38,7 +40,7 @@ const AppRouter = () => {
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
-          <Route path="/admin/dashboard/*" element={<AdminRoutes />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
         </Route>
 
         <Route element={<ProtectedRoute />}>

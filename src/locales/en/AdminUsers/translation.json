@@ -1,0 +1,81 @@
+{
+  "title": "User Management",
+  "subtitle": "Manage all user accounts in the system",
+  "addUser": "Add User",
+  "filter": {
+    "email": "Email",
+    "emailPlaceholder": "Search by email...",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Search by phone...",
+    "name": "Full Name",
+    "namePlaceholder": "Search by name...",
+    "search": "Search",
+    "clear": "Clear Filters"
+  },
+  "table": {
+    "avatar": "Avatar",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "noData": "No users found",
+    "noDataDesc": "Try changing your filters or add a new user",
+    "loading": "Loading data..."
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "goToPage": "Go to page",
+    "go": "Go",
+    "showing": "Showing",
+    "to": "to",
+    "total": "total",
+    "entries": "entries"
+  },
+  "createModal": {
+    "title": "Add New User",
+    "desc": "Enter the information to create a new user account",
+    "email": "Email",
+    "emailPlaceholder": "example@gmail.com",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
+    "phone": "Phone Number",
+    "phonePlaceholder": "0987654321",
+    "cancel": "Cancel",
+    "submit": "Create User",
+    "submitting": "Creating...",
+    "success": "User created successfully!"
+  },
+  "editModal": {
+    "title": "Edit User",
+    "desc": "Update user account information",
+    "email": "Email",
+    "emailPlaceholder": "example@gmail.com",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
+    "phone": "Phone Number",
+    "phonePlaceholder": "0987654321",
+    "avatarUrl": "Avatar URL",
+    "avatarUrlPlaceholder": "https://example.com/avatar.jpg",
+    "activeLabel": "Account Status",
+    "activeOn": "Active",
+    "activeOff": "Deactivated",
+    "deactivatedSince": "Deactivated since {{date}}",
+    "cancel": "Cancel",
+    "submit": "Save Changes",
+    "submitting": "Saving...",
+    "success": "User updated successfully!"
+  },
+  "confirmToggle": {
+    "activateTitle": "Activate User",
+    "deactivateTitle": "Deactivate User",
+    "activateDesc": "Are you sure you want to reactivate this account?",
+    "deactivateDesc": "Are you sure you want to deactivate this account?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  }
+}

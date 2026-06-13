@@ -70,6 +70,7 @@ const RegisterPage = () => {
   };
 
   const handleGoogleRegister = () => {
+    sessionStorage.setItem("oauth_pending", "true");
     window.location.href = "/oauth2/authorization/google";
   };
 

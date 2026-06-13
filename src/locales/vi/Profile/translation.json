@@ -4,7 +4,64 @@
   },
   "info": {
     "title": "Thông tin cá nhân",
-    "description": "Đường dẫn trang thông tin cá nhân đã được đổi sang /info. Nội dung chi tiết của hồ sơ người dùng có thể được bổ sung khi có API tương ứng.",
+    "description": "Quản lý thông tin cá nhân và tài khoản của bạn.",
+    "avatar": {
+      "title": "Ảnh đại diện",
+      "change": "Thay đổi ảnh",
+      "uploading": "Đang tải lên...",
+      "sizeError": "Dung lượng ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 1MB.",
+      "formatError": "Định dạng ảnh không hỗ trợ.",
+      "success": "Đã cập nhật ảnh đại diện.",
+      "error": "Không thể cập nhật ảnh đại diện. Vui lòng thử lại."
+    },
+    "fields": {
+      "fullName": "Họ và tên",
+      "fullNamePlaceholder": "Nhập họ và tên",
+      "email": "Địa chỉ email",
+      "phoneNumber": "Số điện thoại",
+      "phoneNumberPlaceholder": "Nhập số điện thoại",
+      "createdAt": "Ngày tạo tài khoản",
+      "status": "Trạng thái",
+      "active": "Đang hoạt động",
+      "inactive": "Ngưng hoạt động"
+    },
+    "sections": {
+      "basicInfo": "Thông tin cơ bản",
+      "basicInfoDesc": "Cập nhật tên hiển thị và số điện thoại của bạn.",
+      "emailSection": "Địa chỉ email",
+      "emailSectionDesc": "Quản lý địa chỉ email liên kết với tài khoản.",
+      "accountInfo": "Thông tin tài khoản"
+    },
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "cancel": "Hủy",
+      "save": "Lưu thay đổi",
+      "saving": "Đang lưu...",
+      "changeEmail": "Đổi email",
+      "sendOtp": "Gửi mã xác minh",
+      "sendingOtp": "Đang gửi...",
+      "verifyOtp": "Xác minh",
+      "verifyingOtp": "Đang xác minh..."
+    },
+    "emailChange": {
+      "title": "Thay đổi email",
+      "description": "Nhập địa chỉ email mới. Chúng tôi sẽ gửi mã OTP đến email mới để xác minh.",
+      "newEmail": "Email mới",
+      "newEmailPlaceholder": "Nhập email mới",
+      "otpTitle": "Xác minh OTP",
+      "otpDescription": "Nhập mã xác minh đã được gửi đến email mới của bạn.",
+      "otpCode": "Mã OTP",
+      "otpCodePlaceholder": "Nhập mã OTP",
+      "success": "Đã thay đổi email thành công.",
+      "otpSent": "Đã gửi mã xác minh đến email mới.",
+      "otpFailed": "Xác thực OTP thất bại. Vui lòng thử lại.",
+      "error": "Không thể thay đổi email. Vui lòng thử lại."
+    },
+    "messages": {
+      "loadError": "Không thể tải thông tin cá nhân.",
+      "updateSuccess": "Đã cập nhật thông tin cá nhân.",
+      "updateError": "Không thể cập nhật thông tin. Vui lòng thử lại."
+    },
     "changePasswordTitle": "Thay đổi mật khẩu",
     "changePasswordDescription": "Cập nhật mật khẩu đăng nhập để bảo vệ tài khoản của bạn."
   },
