@@ -3,8 +3,65 @@
     "backToDashboard": "Back to Dashboard"
   },
   "info": {
-    "title": "Personal information",
-    "description": "The personal information route has been changed to /info. Detailed account content can be added when the matching API is available.",
+    "title": "Personal Information",
+    "description": "Manage your personal information and account.",
+    "avatar": {
+      "title": "Avatar",
+      "change": "Change photo",
+      "uploading": "Uploading...",
+      "sizeError": "File is too large. Please choose an image under 1MB.",
+      "formatError": "Unsupported image format.",
+      "success": "Avatar updated successfully.",
+      "error": "Could not update avatar. Please try again."
+    },
+    "fields": {
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email address",
+      "phoneNumber": "Phone number",
+      "phoneNumberPlaceholder": "Enter your phone number",
+      "createdAt": "Account created",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "sections": {
+      "basicInfo": "Basic Information",
+      "basicInfoDesc": "Update your display name and phone number.",
+      "emailSection": "Email Address",
+      "emailSectionDesc": "Manage the email address associated with your account.",
+      "accountInfo": "Account Information"
+    },
+    "actions": {
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "changeEmail": "Change email",
+      "sendOtp": "Send verification code",
+      "sendingOtp": "Sending...",
+      "verifyOtp": "Verify",
+      "verifyingOtp": "Verifying..."
+    },
+    "emailChange": {
+      "title": "Change Email",
+      "description": "Enter a new email address. We will send an OTP code to the new email for verification.",
+      "newEmail": "New email",
+      "newEmailPlaceholder": "Enter new email",
+      "otpTitle": "Verify OTP",
+      "otpDescription": "Enter the verification code sent to your new email.",
+      "otpCode": "OTP code",
+      "otpCodePlaceholder": "Enter OTP code",
+      "success": "Email changed successfully.",
+      "otpSent": "Verification code sent to the new email.",
+      "otpFailed": "OTP verification failed. Please try again.",
+      "error": "Could not change email. Please try again."
+    },
+    "messages": {
+      "loadError": "Could not load personal information.",
+      "updateSuccess": "Personal information updated.",
+      "updateError": "Could not update information. Please try again."
+    },
     "changePasswordTitle": "Change password",
     "changePasswordDescription": "Update your sign-in password to keep your account protected."
   },
