@@ -153,7 +153,7 @@ const EmailChangeModal = ({
     setIsLoading(true);
     setError("");
     try {
-      await userInfoService.verifyChangeEmail({ otpCode: otpCode.trim() });
+      await userInfoService.verifyChangeEmail({ otp: otpCode.trim() });
       showToast(t("info.emailChange.success"), "success");
       handleClose();
       onSuccess();

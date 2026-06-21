@@ -225,6 +225,48 @@ const EditUserModal = ({ isOpen, user, onClose, onSuccess }: EditUserModalProps)
                   />
                 </button>
               </div>
+              {/* Deactivated since info */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  !form.active
+                    ? "mt-2.5 max-h-12 opacity-100"
+                    : "mt-0 max-h-0 opacity-0"
+                }`}
+              >
+                <div className="flex items-center gap-1.5 rounded-md bg-amber-50 border border-amber-200 px-3 py-2">
+                  <svg
+                    className="h-3.5 w-3.5 shrink-0 text-amber-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+                  <p className="text-xs font-medium text-amber-700">
+                    {t("editModal.deactivatedSince", {
+                      date: (() => {
+                        // If user was originally deactivated and toggle is still off, show API date
+                        if (user.deletedAt && !user.active) {
+                          return user.deletedAt;
+                        }
+                        // Otherwise (user was active, admin just toggled off), show today
+                        const now = new Date();
+                        const dd = String(now.getDate()).padStart(2, "0");
+                        const mm = String(now.getMonth() + 1).padStart(2, "0");
+                        const yyyy = now.getFullYear();
+                        const hh = String(now.getHours()).padStart(2, "0");
+                        const min = String(now.getMinutes()).padStart(2, "0");
+                        return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+                      })(),
+                    })}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 

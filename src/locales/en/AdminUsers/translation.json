@@ -64,6 +64,7 @@
     "activeLabel": "Account Status",
     "activeOn": "Active",
     "activeOff": "Deactivated",
+    "deactivatedSince": "Deactivated since {{date}}",
     "cancel": "Cancel",
     "submit": "Save Changes",
     "submitting": "Saving...",

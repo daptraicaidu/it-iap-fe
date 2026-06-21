@@ -23,7 +23,7 @@ export interface ChangeEmailPayload {
 }
 
 export interface VerifyChangeEmailPayload {
-  otpCode: string;
+  otp: string;
 }
 
 export interface ApiResponse<T = undefined> {
