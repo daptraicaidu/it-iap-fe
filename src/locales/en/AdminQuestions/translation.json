@@ -1,0 +1,126 @@
+{
+  "title": "Question Management",
+  "subtitle": "Manage the interview question bank",
+  "addQuestion": "Add Question",
+  "filter": {
+    "content": "Content",
+    "contentPlaceholder": "Search by content...",
+    "position": "Position",
+    "level": "Level",
+    "category": "Category",
+    "source": "Source",
+    "status": "Status",
+    "allPositions": "All positions",
+    "allLevels": "All levels",
+    "allCategories": "All categories",
+    "allSources": "All sources",
+    "allStatuses": "All statuses",
+    "search": "Search",
+    "clear": "Clear"
+  },
+  "table": {
+    "id": "ID",
+    "content": "Content",
+    "suggestedAnswer": "Suggested Answer",
+    "hintContent": "Hint",
+    "position": "Position",
+    "level": "Level",
+    "category": "Category",
+    "source": "Source",
+    "status": "Status",
+    "timeLimit": "Time Limit (s)",
+    "skillTags": "Skills",
+    "deleteAt": "Deleted At",
+    "notDeleted": "Active",
+    "actions": "Actions",
+    "noData": "No questions found",
+    "noDataDesc": "Try adjusting your filters or add a new question"
+  },
+  "position": {
+    "FRONTEND": "Frontend",
+    "BACKEND": "Backend",
+    "TESTER": "Tester",
+    "DATA_ANALYST": "Data Analyst"
+  },
+  "level": {
+    "INTERN": "Intern",
+    "FRESHER": "Fresher"
+  },
+  "category": {
+    "TECHNICAL": "Technical",
+    "SITUATIONAL": "Situational",
+    "BEHAVIORAL": "Behavioral"
+  },
+  "source": {
+    "ADMIN": "Admin",
+    "AI": "AI"
+  },
+  "status": {
+    "APPROVED": "Approved",
+    "PENDING": "Pending",
+    "REJECTED": "Rejected"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "entries": "entries",
+    "goToPage": "Go to page",
+    "go": "Go"
+  },
+  "createModal": {
+    "title": "Add New Question",
+    "content": "Question Content",
+    "contentPlaceholder": "Enter question content...",
+    "suggestedAnswer": "Suggested Answer",
+    "suggestedAnswerPlaceholder": "Enter a suggested answer...",
+    "hintContent": "Hint",
+    "hintContentPlaceholder": "Enter hint content for candidates...",
+    "position": "Position",
+    "selectPosition": "Select position",
+    "level": "Level",
+    "selectLevel": "Select level",
+    "category": "Category",
+    "selectCategory": "Select category",
+    "skillTags": "Skill Tags",
+    "skillTagsPlaceholder": "Type a skill and press Enter...",
+    "timeLimit": "Time Limit (seconds)",
+    "timeLimitPlaceholder": "E.g. 120",
+    "cancel": "Cancel",
+    "create": "Create Question",
+    "creating": "Creating...",
+    "success": "Question created successfully!",
+    "error": "Failed to create question. Please try again.",
+    "validation": {
+      "contentRequired": "Question content is required",
+      "positionRequired": "Please select a position",
+      "levelRequired": "Please select a level",
+      "categoryRequired": "Please select a category",
+      "timeLimitRequired": "Time limit is required",
+      "timeLimitMin": "Time limit must be greater than 0",
+      "suggestedAnswerRequired": "Suggested answer is required",
+      "hintContentRequired": "Hint content is required",
+      "statusRequired": "Please select a status"
+    }
+  },
+  "editModal": {
+    "title": "Edit Question",
+    "status": "Status",
+    "selectStatus": "Select status",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "success": "Question updated successfully!",
+    "error": "Failed to update question. Please try again.",
+    "deleteBtn": "Delete Question",
+    "deleteLabel": "Mark question as deleted",
+    "deleteDesc": "Toggle to mark this question as deleted",
+    "deleteConfirmTitle": "Confirm Delete Question",
+    "deleteConfirmDesc": "Are you sure you want to delete this question? This action will mark the question as deleted.",
+    "deleteConfirm": "Confirm Delete",
+    "deleteCancel": "Cancel",
+    "deleting": "Deleting...",
+    "deleteSuccess": "Question deleted successfully!",
+    "deleteError": "Failed to delete question. Please try again."
+  }
+}
