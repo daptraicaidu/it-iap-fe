@@ -1,0 +1,126 @@
+{
+  "title": "Quản lý câu hỏi",
+  "subtitle": "Quản lý ngân hàng câu hỏi phỏng vấn",
+  "addQuestion": "Thêm câu hỏi",
+  "filter": {
+    "content": "Nội dung",
+    "contentPlaceholder": "Tìm kiếm theo nội dung...",
+    "position": "Vị trí",
+    "level": "Cấp độ",
+    "category": "Loại câu hỏi",
+    "source": "Nguồn",
+    "status": "Trạng thái",
+    "allPositions": "Tất cả vị trí",
+    "allLevels": "Tất cả cấp độ",
+    "allCategories": "Tất cả loại",
+    "allSources": "Tất cả nguồn",
+    "allStatuses": "Tất cả trạng thái",
+    "search": "Tìm kiếm",
+    "clear": "Xóa lọc"
+  },
+  "table": {
+    "id": "ID",
+    "content": "Nội dung",
+    "suggestedAnswer": "Câu trả lời gợi ý",
+    "hintContent": "Gợi ý",
+    "position": "Vị trí",
+    "level": "Cấp độ",
+    "category": "Loại",
+    "source": "Nguồn",
+    "status": "Trạng thái",
+    "timeLimit": "Giới hạn (s)",
+    "skillTags": "Kỹ năng",
+    "deleteAt": "Ngày xóa",
+    "notDeleted": "Chưa xóa",
+    "actions": "Hành động",
+    "noData": "Không tìm thấy câu hỏi nào",
+    "noDataDesc": "Thử thay đổi bộ lọc hoặc thêm câu hỏi mới"
+  },
+  "position": {
+    "FRONTEND": "Frontend",
+    "BACKEND": "Backend",
+    "TESTER": "Tester",
+    "DATA_ANALYST": "Data Analyst"
+  },
+  "level": {
+    "INTERN": "Intern",
+    "FRESHER": "Fresher"
+  },
+  "category": {
+    "TECHNICAL": "Kỹ thuật",
+    "SITUATIONAL": "Tình huống",
+    "BEHAVIORAL": "Hành vi"
+  },
+  "source": {
+    "ADMIN": "Admin",
+    "AI": "AI"
+  },
+  "status": {
+    "APPROVED": "Đã duyệt",
+    "PENDING": "Chờ duyệt",
+    "REJECTED": "Từ chối"
+  },
+  "pagination": {
+    "showing": "Hiển thị",
+    "to": "đến",
+    "of": "trong",
+    "entries": "kết quả",
+    "goToPage": "Đến trang",
+    "go": "Đi"
+  },
+  "createModal": {
+    "title": "Thêm câu hỏi mới",
+    "content": "Nội dung câu hỏi",
+    "contentPlaceholder": "Nhập nội dung câu hỏi...",
+    "suggestedAnswer": "Câu trả lời gợi ý",
+    "suggestedAnswerPlaceholder": "Nhập câu trả lời gợi ý...",
+    "hintContent": "Gợi ý",
+    "hintContentPlaceholder": "Nhập nội dung gợi ý cho ứng viên...",
+    "position": "Vị trí",
+    "selectPosition": "Chọn vị trí",
+    "level": "Cấp độ",
+    "selectLevel": "Chọn cấp độ",
+    "category": "Loại câu hỏi",
+    "selectCategory": "Chọn loại",
+    "skillTags": "Thẻ kỹ năng",
+    "skillTagsPlaceholder": "Nhập kỹ năng rồi nhấn Enter...",
+    "timeLimit": "Thời gian giới hạn (giây)",
+    "timeLimitPlaceholder": "VD: 120",
+    "cancel": "Hủy",
+    "create": "Tạo câu hỏi",
+    "creating": "Đang tạo...",
+    "success": "Tạo câu hỏi thành công!",
+    "error": "Không thể tạo câu hỏi. Vui lòng thử lại.",
+    "validation": {
+      "contentRequired": "Nội dung câu hỏi là bắt buộc",
+      "positionRequired": "Vui lòng chọn vị trí",
+      "levelRequired": "Vui lòng chọn cấp độ",
+      "categoryRequired": "Vui lòng chọn loại câu hỏi",
+      "timeLimitRequired": "Thời gian giới hạn là bắt buộc",
+      "timeLimitMin": "Thời gian giới hạn phải lớn hơn 0",
+      "suggestedAnswerRequired": "Câu trả lời gợi ý là bắt buộc",
+      "hintContentRequired": "Nội dung gợi ý là bắt buộc",
+      "statusRequired": "Vui lòng chọn trạng thái"
+    }
+  },
+  "editModal": {
+    "title": "Chỉnh sửa câu hỏi",
+    "status": "Trạng thái",
+    "selectStatus": "Chọn trạng thái",
+    "cancel": "Hủy",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu...",
+    "success": "Cập nhật câu hỏi thành công!",
+    "error": "Không thể cập nhật câu hỏi. Vui lòng thử lại.",
+    "deleteBtn": "Xóa câu hỏi",
+    "deleteLabel": "Đánh dấu xóa câu hỏi",
+    "deleteDesc": "Bật để đánh dấu câu hỏi này là đã xóa",
+    "deleteConfirmTitle": "Xác nhận xóa câu hỏi",
+    "deleteConfirmDesc": "Bạn có chắc chắn muốn xóa câu hỏi này? Hành động này sẽ đánh dấu câu hỏi là đã xóa.",
+    "deleteConfirm": "Xác nhận xóa",
+    "deleteCancel": "Hủy bỏ",
+    "deleting": "Đang xóa...",
+    "deleteSuccess": "Xóa câu hỏi thành công!",
+    "deleteError": "Không thể xóa câu hỏi. Vui lòng thử lại."
+  }
+}
