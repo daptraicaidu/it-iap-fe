@@ -2,6 +2,7 @@
   "title": "Question Management",
   "subtitle": "Manage the interview question bank",
   "addQuestion": "Add Question",
+  "addQuestionAI": "AI Generate",
   "filter": {
     "content": "Content",
     "contentPlaceholder": "Search by content...",
@@ -122,5 +123,24 @@
     "deleting": "Deleting...",
     "deleteSuccess": "Question deleted successfully!",
     "deleteError": "Failed to delete question. Please try again."
+  },
+  "aiModal": {
+    "title": "AI Question Generator",
+    "subtitle": "AI will automatically generate interview questions",
+    "quantity": "Number of Questions",
+    "position": "Target Position",
+    "selectPosition": "Select position",
+    "level": "Target Level",
+    "selectLevel": "Select level",
+    "generate": "Generate with AI",
+    "generating": "Generating...",
+    "cancel": "Cancel",
+    "success": "AI questions generated successfully!",
+    "error": "Failed to generate questions. Please try again.",
+    "validation": {
+      "quantityInvalid": "Quantity must be between 1 and 10",
+      "levelRequired": "Please select a level",
+      "positionRequired": "Please select a position"
+    }
   }
 }

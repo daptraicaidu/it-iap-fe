@@ -73,6 +73,19 @@ export interface UpdateQuestionRequest {
   delete?: boolean;
 }
 
+// ── POST /api/v1/ai/generate-question Request ──
+export interface AIGenerateQuestionRequest {
+  quantity: number;
+  level: string;
+  position: string;
+}
+
+export interface AIGenerateQuestionErrorData {
+  quantity?: string;
+  level?: string;
+  position?: string;
+}
+
 // ── Admin Question Service ──
 const adminQuestionService = {
   getQuestions: (params: GetQuestionsParams) =>
@@ -83,6 +96,9 @@ const adminQuestionService = {
 
   updateQuestion: (id: number, payload: UpdateQuestionRequest) =>
     apiClient.put<ApiResponse<QuestionEntity>>(`/questions/${id}`, payload),
+
+  generateQuestionByAI: (payload: AIGenerateQuestionRequest) =>
+    apiClient.post<ApiResponse<null>>("/ai/generate-question", payload),
 };
 
 export default adminQuestionService;

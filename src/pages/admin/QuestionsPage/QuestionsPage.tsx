@@ -11,6 +11,7 @@ import {
   ChevronsRight,
   Clock,
   Trash2,
+  Sparkles,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import adminQuestionService, {
@@ -24,6 +25,7 @@ import adminQuestionService, {
 } from "../../../services/admin/questionService";
 import CreateQuestionModal from "./CreateQuestionModal";
 import EditQuestionModal from "./EditQuestionModal";
+import AIGenerateModal from "./AIGenerateModal";
 
 // ── Status Badge ──
 const StatusBadge = ({ status, label }: { status: string; label: string }) => {
@@ -273,6 +275,7 @@ const QuestionsPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<QuestionEntity | null>(null);
+  const [showAIGenerateModal, setShowAIGenerateModal] = useState(false);
 
   // Fetch questions
   const fetchQuestions = useCallback(async (page: number, filters: GetQuestionsParams) => {
@@ -338,6 +341,10 @@ const QuestionsPage = () => {
     fetchQuestions(currentPage, appliedFilters);
   };
 
+  const handleAIGenerateSuccess = () => {
+    fetchQuestions(currentPage, appliedFilters);
+  };
+
   const handleEditClick = (question: QuestionEntity) => {
     setEditingQuestion(question);
     setShowEditModal(true);
@@ -372,13 +379,30 @@ const QuestionsPage = () => {
           <h1 className="text-xl font-semibold text-zinc-900">{t("title")}</h1>
           <p className="mt-1 text-sm text-zinc-500">{t("subtitle")}</p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
-        >
-          <Plus className="h-4 w-4" strokeWidth={2} />
-          {t("addQuestion")}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowAIGenerateModal(true)}
+            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium text-white transition-all active:scale-[0.98]"
+          >
+            {/* Animated gradient background */}
+            <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-500 to-purple-600 bg-[length:200%_100%] transition-all duration-700 ease-out group-hover:bg-[length:300%_100%] group-hover:animate-[shimmer_2s_linear_infinite]" />
+            {/* Glow effect on hover */}
+            <span className="absolute inset-0 rounded-full opacity-0 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-opacity duration-500 group-hover:opacity-100" />
+            {/* Shine sweep overlay */}
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+            <span className="relative flex items-center gap-2">
+              <Sparkles className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+              {t("addQuestionAI")}
+            </span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
+          >
+            <Plus className="h-4 w-4" strokeWidth={2} />
+            {t("addQuestion")}
+          </button>
+        </div>
       </div>
 
       {/* Filter Card */}
@@ -697,7 +721,7 @@ const QuestionsPage = () => {
                       {q.deleteAt ? (
                         <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">
                           <Trash2 className="h-3 w-3" strokeWidth={1.5} />
-                          {new Date(q.deleteAt).toLocaleDateString()}
+                          {new Date(q.deleteAt).toLocaleDateString('vi-VN')}
                         </span>
                       ) : (
                         <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
@@ -755,6 +779,11 @@ const QuestionsPage = () => {
           setEditingQuestion(null);
         }}
         onSuccess={handleEditSuccess}
+      />
+      <AIGenerateModal
+        isOpen={showAIGenerateModal}
+        onClose={() => setShowAIGenerateModal(false)}
+        onSuccess={handleAIGenerateSuccess}
       />
     </div>
   );

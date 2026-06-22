@@ -2,6 +2,7 @@
   "title": "Quản lý câu hỏi",
   "subtitle": "Quản lý ngân hàng câu hỏi phỏng vấn",
   "addQuestion": "Thêm câu hỏi",
+  "addQuestionAI": "Thêm câu hỏi AI",
   "filter": {
     "content": "Nội dung",
     "contentPlaceholder": "Tìm kiếm theo nội dung...",
@@ -122,5 +123,24 @@
     "deleting": "Đang xóa...",
     "deleteSuccess": "Xóa câu hỏi thành công!",
     "deleteError": "Không thể xóa câu hỏi. Vui lòng thử lại."
+  },
+  "aiModal": {
+    "title": "Tạo câu hỏi bằng AI",
+    "subtitle": "AI sẽ tự động tạo câu hỏi phỏng vấn",
+    "quantity": "Số lượng câu hỏi",
+    "position": "Vị trí mục tiêu",
+    "selectPosition": "Chọn vị trí",
+    "level": "Cấp độ mục tiêu",
+    "selectLevel": "Chọn cấp độ",
+    "generate": "Tạo bằng AI",
+    "generating": "Đang tạo...",
+    "cancel": "Hủy",
+    "success": "Tạo câu hỏi AI thành công!",
+    "error": "Không thể tạo câu hỏi. Vui lòng thử lại.",
+    "validation": {
+      "quantityInvalid": "Số lượng phải từ 1 đến 10",
+      "levelRequired": "Vui lòng chọn cấp độ",
+      "positionRequired": "Vui lòng chọn vị trí"
+    }
   }
 }

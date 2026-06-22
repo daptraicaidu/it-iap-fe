@@ -136,7 +136,7 @@ const CreateQuestionModal = ({ isOpen, onClose, onSuccess }: CreateQuestionModal
         className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm"
         onClick={handleClose}
       />
-      <div className="relative w-full max-w-2xl rounded-xl border border-zinc-200 bg-white shadow-xl">
+      <div className="relative w-full max-w-4xl rounded-xl border border-zinc-200 bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
           <h2 className="text-base font-semibold text-zinc-900">
@@ -176,7 +176,7 @@ const CreateQuestionModal = ({ isOpen, onClose, onSuccess }: CreateQuestionModal
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder={t("createModal.contentPlaceholder")}
-                rows={3}
+                rows={5}
                 className={`w-full resize-none rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                   errors.content
                     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"
@@ -197,7 +197,7 @@ const CreateQuestionModal = ({ isOpen, onClose, onSuccess }: CreateQuestionModal
                 value={suggestedAnswer}
                 onChange={(e) => setSuggestedAnswer(e.target.value)}
                 placeholder={t("createModal.suggestedAnswerPlaceholder")}
-                rows={3}
+                rows={15}
                 className={`w-full resize-none rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                   errors.suggestedAnswer
                     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"
@@ -218,7 +218,7 @@ const CreateQuestionModal = ({ isOpen, onClose, onSuccess }: CreateQuestionModal
                 value={hintContent}
                 onChange={(e) => setHintContent(e.target.value)}
                 placeholder={t("createModal.hintContentPlaceholder")}
-                rows={2}
+                rows={3}
                 className={`w-full resize-none rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                   errors.hintContent
                     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"

@@ -1,4 +1,4 @@
-import { BarChart3, Briefcase, HelpCircle, Home, LogOut, Menu, Settings, Users } from "lucide-react";
+import { BarChart3, Briefcase, FileText, HelpCircle, Home, LogOut, Menu, Settings, Users } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 
@@ -23,6 +23,11 @@ const sidebarItems: SidebarItem[] = [
     label: "Questions",
     to: "/admin/questions",
     icon: HelpCircle,
+  },
+  {
+    label: "Prompts",
+    to: "/admin/prompts",
+    icon: FileText,
   },
   {
     label: "Interviews",

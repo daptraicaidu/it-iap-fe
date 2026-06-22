@@ -191,7 +191,7 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder={t("createModal.contentPlaceholder")}
-                rows={4}
+                rows={5}
                 className={`w-full resize-none rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                   errors.content
                     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"
@@ -212,7 +212,7 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
                 value={suggestedAnswer}
                 onChange={(e) => setSuggestedAnswer(e.target.value)}
                 placeholder={t("createModal.suggestedAnswerPlaceholder")}
-                rows={4}
+                rows={18}
                 className={`w-full resize-none rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                   errors.suggestedAnswer
                     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"
@@ -233,7 +233,7 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
                 value={hintContent}
                 onChange={(e) => setHintContent(e.target.value)}
                 placeholder={t("createModal.hintContentPlaceholder")}
-                rows={4}
+                rows={5}
                 className={`w-full resize-none rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                   errors.hintContent
                     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"
