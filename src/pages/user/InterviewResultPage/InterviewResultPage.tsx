@@ -1,0 +1,523 @@
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  Trophy,
+  ArrowLeft,
+  RotateCcw,
+  Loader2,
+  AlertCircle,
+  ChevronDown,
+  MessageSquare,
+  Star,
+  Target,
+  CheckCircle2,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
+import interviewService from "../../../services/user/interviewService";
+import type {
+  InterviewFeedbackData,
+  FeedbackQuestion,
+  ApiErrorResponse,
+} from "../../../services/user/interviewService";
+import { useSpeechSynthesis } from "../../../hooks/useSpeechSynthesis";
+import useInterviewStore from "../../../store/interviewStore";
+import type { AxiosError } from "axios";
+
+// Animated counter component
+function AnimatedScore({
+  value,
+  duration = 1.5,
+}: {
+  value: number;
+  duration?: number;
+}) {
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / (duration * 1000);
+      if (elapsed >= 1) {
+        setDisplay(value);
+        clearInterval(interval);
+      } else {
+        // Ease out
+        const progress = 1 - Math.pow(1 - elapsed, 3);
+        setDisplay(Math.round(progress * value * 10) / 10);
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [value, duration]);
+
+  return <>{display.toFixed(1)}</>;
+}
+
+function getScoreColor(score: number): string {
+  if (score >= 8) return "text-emerald-600";
+  if (score >= 6) return "text-indigo-600";
+  if (score >= 4) return "text-amber-600";
+  return "text-rose-600";
+}
+
+function getScoreBg(score: number): string {
+  if (score >= 8) return "bg-emerald-50 border-emerald-200";
+  if (score >= 6) return "bg-indigo-50 border-indigo-200";
+  if (score >= 4) return "bg-amber-50 border-amber-200";
+  return "bg-rose-50 border-rose-200";
+}
+
+function getScoreLabel(score: number, t: (key: string) => string): string {
+  if (score >= 8) return t("resultPage.scoreLevel.excellent");
+  if (score >= 6) return t("resultPage.scoreLevel.good");
+  if (score >= 4) return t("resultPage.scoreLevel.average");
+  return t("resultPage.scoreLevel.needsWork");
+}
+
+function getQuestionTypeBadge(type: string) {
+  switch (type) {
+    case "TECHNICAL":
+      return "bg-indigo-50 text-indigo-700";
+    case "BEHAVIORAL":
+      return "bg-emerald-50 text-emerald-700";
+    case "SITUATIONAL":
+      return "bg-amber-50 text-amber-700";
+    default:
+      return "bg-zinc-100 text-zinc-600";
+  }
+}
+
+const InterviewResultPage = () => {
+  const { t } = useTranslation("Interview");
+  const navigate = useNavigate();
+  const { interviewId } = useParams<{ interviewId: string }>();
+  const resetStore = useInterviewStore((s) => s.reset);
+  const { speak, stop, isSpeaking, isSupported: ttsSupported } = useSpeechSynthesis();
+
+  const [feedbackData, setFeedbackData] =
+    useState<InterviewFeedbackData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(
+    new Set()
+  );
+
+  const fetchFeedback = useCallback(async () => {
+    if (!interviewId) return;
+
+    try {
+      const res = await interviewService.getInterviewFeedback(
+        Number(interviewId)
+      );
+      const data = res.data.data;
+
+      if (data.processing) {
+        // Poll again after 5 seconds
+        setTimeout(fetchFeedback, 5000);
+        setFeedbackData(data);
+      } else {
+        setFeedbackData(data);
+        // Expand all questions by default
+        const allIndexes = new Set(
+          data.feedbackForQuestions.map((_: FeedbackQuestion, i: number) => i)
+        );
+        setExpandedQuestions(allIndexes);
+      }
+    } catch (err) {
+      const axiosErr = err as AxiosError<ApiErrorResponse>;
+      setError(
+        axiosErr.response?.data?.message || t("errors.feedbackFailed")
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [interviewId, t]);
+
+  useEffect(() => {
+    fetchFeedback();
+    return () => {
+      // Cleanup store when leaving result page
+    };
+  }, [fetchFeedback]);
+
+  const toggleQuestion = (index: number) => {
+    setExpandedQuestions((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  };
+
+  const handleRetry = () => {
+    resetStore();
+    navigate("/interviews");
+  };
+
+  // ── Loading ──
+  if (isLoading) {
+    return (
+      <div className="w-full">
+        <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center py-20">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            >
+              <Loader2 className="h-10 w-10 text-indigo-500" />
+            </motion.div>
+            <p className="mt-4 text-sm text-zinc-500">
+              {t("resultPage.processing")}
+            </p>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // ── Error ──
+  if (error) {
+    return (
+      <div className="w-full">
+        <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mx-auto max-w-md rounded-xl border border-rose-200 bg-rose-50 p-6 text-center"
+          >
+            <AlertCircle className="mx-auto mb-3 h-8 w-8 text-rose-500" />
+            <p className="text-sm text-rose-700">{error}</p>
+            <button
+              onClick={() => navigate("/interviews")}
+              className="mt-4 rounded-full bg-zinc-900 px-6 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+            >
+              {t("resultPage.retryInterview")}
+            </button>
+          </motion.div>
+        </section>
+      </div>
+    );
+  }
+
+  // ── Processing ──
+  if (feedbackData?.processing) {
+    return (
+      <div className="w-full">
+        <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center py-20"
+          >
+            <motion.div
+              className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Target className="h-10 w-10 text-indigo-600" />
+            </motion.div>
+            <h2 className="mb-2 text-xl font-semibold text-zinc-900">
+              {t("resultPage.processing")}
+            </h2>
+            <p className="text-sm text-zinc-500">
+              {t("resultPage.processingDesc")}
+            </p>
+            <div className="mt-6 flex gap-1">
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  className="h-2.5 w-2.5 rounded-full bg-indigo-400"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{
+                    duration: 0.8,
+                    delay: i * 0.2,
+                    repeat: Infinity,
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </section>
+      </div>
+    );
+  }
+
+  if (!feedbackData) return null;
+
+  return (
+    <div className="w-full">
+      <section className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
+            {t("resultPage.title")}
+          </h1>
+          <p className="mt-2 text-base text-zinc-600">
+            {t("resultPage.subtitle")}
+          </p>
+        </motion.div>
+
+        {/* Overall Score Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-6 rounded-xl border border-zinc-200 bg-white p-6 sm:p-8"
+        >
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+            {/* Score Circle */}
+            <div className="relative flex h-32 w-32 shrink-0 items-center justify-center">
+              {/* Background ring */}
+              <svg className="absolute h-full w-full -rotate-90" viewBox="0 0 120 120">
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  fill="none"
+                  stroke="#f4f4f5"
+                  strokeWidth="8"
+                />
+                <motion.circle
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  fill="none"
+                  stroke={
+                    feedbackData.overallResult.totalPoint >= 8
+                      ? "#059669"
+                      : feedbackData.overallResult.totalPoint >= 6
+                        ? "#4f46e5"
+                        : feedbackData.overallResult.totalPoint >= 4
+                          ? "#d97706"
+                          : "#dc2626"
+                  }
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 52}`}
+                  initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
+                  animate={{
+                    strokeDashoffset:
+                      2 * Math.PI * 52 * (1 - feedbackData.overallResult.totalPoint / 10),
+                  }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                />
+              </svg>
+              <div className="text-center">
+                <div
+                  className={`text-3xl font-bold ${getScoreColor(feedbackData.overallResult.totalPoint)}`}
+                >
+                  <AnimatedScore
+                    value={feedbackData.overallResult.totalPoint}
+                  />
+                </div>
+                <div className="text-xs text-zinc-400">
+                  {t("resultPage.outOf")}
+                </div>
+              </div>
+            </div>
+
+            {/* Overall Feedback */}
+            <div className="flex-1">
+              <div className="mb-3 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-zinc-900">
+                  {t("resultPage.overallFeedback")}
+                </h2>
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${getScoreBg(feedbackData.overallResult.totalPoint)}`}
+                >
+                  {getScoreLabel(feedbackData.overallResult.totalPoint, t)}
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed text-zinc-600">
+                {feedbackData.overallResult.feedback}
+              </p>
+
+              {/* TTS */}
+              {ttsSupported && (
+                <button
+                  onClick={() =>
+                    isSpeaking ? stop() : speak(feedbackData.overallResult.feedback)
+                  }
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-zinc-200"
+                >
+                  {isSpeaking ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+                  {isSpeaking ? t("sessionPage.stopListening") : t("sessionPage.listenAI")}
+                </button>
+              )}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Question Results */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-8"
+        >
+          <h2 className="mb-4 text-lg font-semibold text-zinc-900">
+            {t("resultPage.questionResults")}
+          </h2>
+
+          <div className="space-y-3">
+            {feedbackData.feedbackForQuestions.map(
+              (q: FeedbackQuestion, index: number) => {
+                const isExpanded = expandedQuestions.has(index);
+
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.25 + index * 0.08 }}
+                    className="rounded-xl border border-zinc-200 bg-white overflow-hidden"
+                  >
+                    {/* Question Header (Clickable) */}
+                    <button
+                      type="button"
+                      onClick={() => toggleQuestion(index)}
+                      className="flex w-full items-center gap-3 px-5 py-4 text-left transition hover:bg-zinc-50"
+                    >
+                      {/* Order Number */}
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm font-semibold text-zinc-600">
+                        {q.orderIndex}
+                      </div>
+
+                      {/* Question Text */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-zinc-900 line-clamp-2">
+                          {q.questionContent}
+                        </p>
+                      </div>
+
+                      {/* Score Badge */}
+                      <div
+                        className={`flex items-center gap-1 rounded-full border px-2.5 py-1 ${getScoreBg(q.feedback.point)}`}
+                      >
+                        <Star
+                          className={`h-3.5 w-3.5 ${getScoreColor(q.feedback.point)}`}
+                        />
+                        <span
+                          className={`text-sm font-semibold ${getScoreColor(q.feedback.point)}`}
+                        >
+                          {q.feedback.point}
+                        </span>
+                      </div>
+
+                      {/* Type Badge */}
+                      <span
+                        className={`hidden sm:inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${getQuestionTypeBadge(q.questionType)}`}
+                      >
+                        {t(`resultPage.questionType.${q.questionType}`, {
+                          defaultValue: q.questionType,
+                        })}
+                      </span>
+
+                      {/* Expand Icon */}
+                      <ChevronDown
+                        className={`h-5 w-5 shrink-0 text-zinc-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                      />
+                    </button>
+
+                    {/* Expanded Content */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="border-t border-zinc-100 px-5 py-4 space-y-4">
+                            {/* Mobile type badge */}
+                            <span
+                              className={`sm:hidden inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${getQuestionTypeBadge(q.questionType)}`}
+                            >
+                              {t(
+                                `resultPage.questionType.${q.questionType}`,
+                                { defaultValue: q.questionType }
+                              )}
+                            </span>
+
+                            {/* User Answer */}
+                            <div>
+                              <div className="mb-2 flex items-center gap-1.5">
+                                <MessageSquare className="h-4 w-4 text-zinc-400" />
+                                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+                                  {t("resultPage.yourAnswer")}
+                                </span>
+                              </div>
+                              <div className="rounded-lg bg-zinc-50 p-3">
+                                <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
+                                  {q.userAnswer}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* AI Feedback */}
+                            <div>
+                              <div className="mb-2 flex items-center gap-1.5">
+                                <CheckCircle2 className="h-4 w-4 text-indigo-500" />
+                                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+                                  {t("resultPage.aiFeedback")}
+                                </span>
+                              </div>
+                              <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3">
+                                <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
+                                  {q.feedback.feedback}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              }
+            )}
+          </div>
+        </motion.div>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="flex flex-wrap items-center gap-3"
+        >
+          <button
+            onClick={handleRetry}
+            className="group inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98]"
+          >
+            <RotateCcw className="h-4 w-4 transition-transform group-hover:-rotate-45" />
+            {t("resultPage.retryInterview")}
+          </button>
+          <button
+            onClick={() => {
+              resetStore();
+              navigate("/dashboard");
+            }}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t("resultPage.backToDashboard")}
+          </button>
+        </motion.div>
+      </section>
+    </div>
+  );
+};
+
+export default InterviewResultPage;
