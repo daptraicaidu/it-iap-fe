@@ -26,8 +26,7 @@ const UserLayout = () => {
 
   const navigationItems = [
     { label: t("navigation.dashboard", "Dashboard"), to: "/dashboard", end: false },
-    { label: t("navigation.interview", "Bắt đầu phỏng vấn"), to: "/interview", end: true },
-    { label: t("navigation.reviewResult", "Kết quả phỏng vấn"), to: "/interview/review_result", end: false },
+    { label: t("navigation.interview", "Phỏng vấn"), to: "/interviews", end: false },
     { label: t("navigation.chatbot", "Chatbot"), to: "/chatbot", end: false },
   ];
 

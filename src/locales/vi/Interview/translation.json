@@ -1,0 +1,128 @@
+{
+  "createPage": {
+    "title": "Tạo buổi phỏng vấn",
+    "subtitle": "Thiết lập phiên phỏng vấn mới với AI — chọn chế độ, hồ sơ và bắt đầu luyện tập",
+    "badge": "Phỏng vấn AI",
+    "interviewTitle": "Tên buổi phỏng vấn",
+    "interviewTitlePlaceholder": "VD: Phỏng vấn Frontend Developer...",
+    "selectProfile": "Chọn hồ sơ",
+    "selectProfilePlaceholder": "Chọn hồ sơ phỏng vấn...",
+    "noProfiles": "Chưa có hồ sơ nào. Hãy tạo hồ sơ trước.",
+    "goToProfiles": "Tạo hồ sơ",
+    "selectMode": "Chọn chế độ phỏng vấn",
+    "createButton": "Tạo phỏng vấn",
+    "creating": "Đang tạo...",
+    "modes": {
+      "interactive": {
+        "title": "Phỏng vấn tương tác",
+        "description": "Trả lời câu hỏi và thảo luận sâu với AI. Nhận phản hồi chi tiết sau mỗi câu trả lời, AI sẽ hỏi thêm nếu cần.",
+        "features": ["Hỏi đáp 2 chiều", "Đánh giá theo thời gian thực", "Gợi ý cải thiện ngay"]
+      },
+      "stress": {
+        "title": "Phỏng vấn áp lực",
+        "description": "Mô phỏng môi trường phỏng vấn thật. Trả lời lần lượt từng câu, giới hạn thời gian. Xem kết quả tổng hợp khi hoàn thành.",
+        "features": ["Giới hạn thời gian", "Áp lực thực tế", "Đánh giá toàn diện cuối"]
+      }
+    }
+  },
+  "prepPage": {
+    "title": "Sẵn sàng phỏng vấn",
+    "subtitle": "Kiểm tra lại thông tin trước khi bắt đầu",
+    "interviewName": "Tên phỏng vấn",
+    "mode": "Chế độ",
+    "profile": "Hồ sơ",
+    "startButton": "Bắt đầu phỏng vấn",
+    "starting": "Đang khởi tạo...",
+    "tips": {
+      "title": "Lưu ý trước khi bắt đầu",
+      "items": [
+        "Đảm bảo kết nối internet ổn định",
+        "Chuẩn bị microphone nếu muốn trả lời bằng giọng nói",
+        "Đọc kỹ câu hỏi trước khi trả lời",
+        "Không rời khỏi trang khi đang phỏng vấn"
+      ]
+    },
+    "interactiveMode": "Phỏng vấn tương tác",
+    "stressMode": "Phỏng vấn áp lực"
+  },
+  "sessionPage": {
+    "question": "Câu hỏi",
+    "of": "trên",
+    "category": {
+      "TECHNICAL": "Kỹ thuật",
+      "BEHAVIORAL": "Hành vi",
+      "SITUATIONAL": "Tình huống"
+    },
+    "categoryLabel": {
+      "Câu hỏi kỹ thuật": "Kỹ thuật",
+      "Câu hỏi hành vi": "Hành vi",
+      "Câu hỏi tình huống": "Tình huống"
+    },
+    "answerPlaceholder": "Nhập câu trả lời của bạn...",
+    "sendAnswer": "Gửi",
+    "sending": "Đang gửi...",
+    "nextQuestion": "Câu tiếp theo",
+    "previousQuestion": "Câu trước",
+    "viewResult": "Xem kết quả",
+    "showHint": "Xem gợi ý",
+    "hideHint": "Ẩn gợi ý",
+    "hintTitle": "Gợi ý",
+    "loadingHint": "Đang tải gợi ý...",
+    "listenQuestion": "Nghe câu hỏi",
+    "stopListening": "Dừng nghe",
+    "startMic": "Bật microphone",
+    "stopMic": "Tắt microphone",
+    "micNotSupported": "Trình duyệt không hỗ trợ nhận diện giọng nói",
+    "ttsNotSupported": "Trình duyệt không hỗ trợ đọc văn bản",
+    "timeRemaining": "Thời gian còn lại",
+    "timeElapsed": "Thời gian",
+    "interactiveNotComplete": "Hãy trả lời đầy đủ để chuyển câu tiếp theo",
+    "viewingPrevious": "Đang xem lại câu trước (chỉ đọc)",
+    "backToCurrent": "Quay lại câu hiện tại",
+    "chatPlaceholder": "Thảo luận thêm về câu hỏi này...",
+    "completedBadge": "Đã hoàn thành",
+    "listenAI": "Nghe phản hồi AI",
+    "exitInterview": "Thoát phỏng vấn",
+    "exitConfirm": "Bạn có chắc muốn thoát? Tiến trình sẽ bị mất.",
+    "exitYes": "Thoát",
+    "exitNo": "Tiếp tục phỏng vấn",
+    "timeUp": "Hết thời gian!"
+  },
+  "resultPage": {
+    "title": "Kết quả phỏng vấn",
+    "subtitle": "Xem đánh giá chi tiết từ AI cho buổi phỏng vấn của bạn",
+    "processing": "AI đang phân tích kết quả...",
+    "processingDesc": "Vui lòng đợi trong giây lát, hệ thống đang xử lý đánh giá.",
+    "overallScore": "Điểm tổng",
+    "overallFeedback": "Nhận xét tổng quan",
+    "questionResults": "Kết quả từng câu hỏi",
+    "questionLabel": "Câu hỏi",
+    "yourAnswer": "Câu trả lời của bạn",
+    "aiFeedback": "Nhận xét từ AI",
+    "score": "Điểm",
+    "outOf": "/ 10",
+    "retryInterview": "Phỏng vấn lại",
+    "backToDashboard": "Về Dashboard",
+    "questionType": {
+      "TECHNICAL": "Kỹ thuật",
+      "BEHAVIORAL": "Hành vi",
+      "SITUATIONAL": "Tình huống"
+    },
+    "scoreLevel": {
+      "excellent": "Xuất sắc",
+      "good": "Tốt",
+      "average": "Trung bình",
+      "needsWork": "Cần cải thiện"
+    }
+  },
+  "errors": {
+    "createFailed": "Không thể tạo buổi phỏng vấn",
+    "startFailed": "Không thể bắt đầu phỏng vấn",
+    "answerFailed": "Không thể gửi câu trả lời",
+    "nextFailed": "Không thể chuyển câu tiếp theo",
+    "hintFailed": "Không thể tải gợi ý",
+    "feedbackFailed": "Không thể tải kết quả",
+    "sessionNotFound": "Phiên phỏng vấn không tồn tại",
+    "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+  }
+}

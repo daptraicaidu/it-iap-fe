@@ -1,0 +1,128 @@
+{
+  "createPage": {
+    "title": "Create Interview",
+    "subtitle": "Set up a new AI interview session — choose mode, profile and start practicing",
+    "badge": "AI Interview",
+    "interviewTitle": "Interview Name",
+    "interviewTitlePlaceholder": "E.g.: Frontend Developer Interview...",
+    "selectProfile": "Select Profile",
+    "selectProfilePlaceholder": "Choose an interview profile...",
+    "noProfiles": "No profiles yet. Please create one first.",
+    "goToProfiles": "Create Profile",
+    "selectMode": "Choose Interview Mode",
+    "createButton": "Create Interview",
+    "creating": "Creating...",
+    "modes": {
+      "interactive": {
+        "title": "Interactive Interview",
+        "description": "Answer questions and discuss in depth with AI. Receive detailed feedback after each answer, AI will ask follow-up questions if needed.",
+        "features": ["Two-way Q&A", "Real-time evaluation", "Instant improvement tips"]
+      },
+      "stress": {
+        "title": "Stress Interview",
+        "description": "Simulate a real interview environment. Answer questions one by one with time limits. View comprehensive results upon completion.",
+        "features": ["Time limited", "Realistic pressure", "Comprehensive final review"]
+      }
+    }
+  },
+  "prepPage": {
+    "title": "Ready for Interview",
+    "subtitle": "Review your setup before starting",
+    "interviewName": "Interview Name",
+    "mode": "Mode",
+    "profile": "Profile",
+    "startButton": "Start Interview",
+    "starting": "Initializing...",
+    "tips": {
+      "title": "Before You Begin",
+      "items": [
+        "Ensure stable internet connection",
+        "Prepare your microphone for voice answers",
+        "Read questions carefully before answering",
+        "Do not leave the page during the interview"
+      ]
+    },
+    "interactiveMode": "Interactive Interview",
+    "stressMode": "Stress Interview"
+  },
+  "sessionPage": {
+    "question": "Question",
+    "of": "of",
+    "category": {
+      "TECHNICAL": "Technical",
+      "BEHAVIORAL": "Behavioral",
+      "SITUATIONAL": "Situational"
+    },
+    "categoryLabel": {
+      "Câu hỏi kỹ thuật": "Technical",
+      "Câu hỏi hành vi": "Behavioral",
+      "Câu hỏi tình huống": "Situational"
+    },
+    "answerPlaceholder": "Type your answer...",
+    "sendAnswer": "Send",
+    "sending": "Sending...",
+    "nextQuestion": "Next Question",
+    "previousQuestion": "Previous",
+    "viewResult": "View Results",
+    "showHint": "Show Hint",
+    "hideHint": "Hide Hint",
+    "hintTitle": "Hint",
+    "loadingHint": "Loading hint...",
+    "listenQuestion": "Listen to question",
+    "stopListening": "Stop listening",
+    "startMic": "Start microphone",
+    "stopMic": "Stop microphone",
+    "micNotSupported": "Speech recognition not supported",
+    "ttsNotSupported": "Text-to-speech not supported",
+    "timeRemaining": "Time remaining",
+    "timeElapsed": "Time",
+    "interactiveNotComplete": "Please answer fully to proceed",
+    "viewingPrevious": "Viewing previous question (read-only)",
+    "backToCurrent": "Back to current question",
+    "chatPlaceholder": "Discuss more about this question...",
+    "completedBadge": "Completed",
+    "listenAI": "Listen to AI response",
+    "exitInterview": "Exit Interview",
+    "exitConfirm": "Are you sure? Progress will be lost.",
+    "exitYes": "Exit",
+    "exitNo": "Continue Interview",
+    "timeUp": "Time's up!"
+  },
+  "resultPage": {
+    "title": "Interview Results",
+    "subtitle": "View detailed AI evaluation of your interview",
+    "processing": "AI is analyzing your results...",
+    "processingDesc": "Please wait a moment while we process your evaluation.",
+    "overallScore": "Overall Score",
+    "overallFeedback": "Overall Feedback",
+    "questionResults": "Question-by-Question Results",
+    "questionLabel": "Question",
+    "yourAnswer": "Your Answer",
+    "aiFeedback": "AI Feedback",
+    "score": "Score",
+    "outOf": "/ 10",
+    "retryInterview": "Try Again",
+    "backToDashboard": "Back to Dashboard",
+    "questionType": {
+      "TECHNICAL": "Technical",
+      "BEHAVIORAL": "Behavioral",
+      "SITUATIONAL": "Situational"
+    },
+    "scoreLevel": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "average": "Average",
+      "needsWork": "Needs Work"
+    }
+  },
+  "errors": {
+    "createFailed": "Failed to create interview",
+    "startFailed": "Failed to start interview",
+    "answerFailed": "Failed to submit answer",
+    "nextFailed": "Failed to proceed to next question",
+    "hintFailed": "Failed to load hint",
+    "feedbackFailed": "Failed to load results",
+    "sessionNotFound": "Interview session not found",
+    "generic": "An error occurred. Please try again."
+  }
+}

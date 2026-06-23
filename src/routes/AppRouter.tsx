@@ -13,6 +13,10 @@ import ProfilesPage from "../pages/user/ProfilesPage/ProfilesPage";
 import PasswordAndSecurityPage from "../pages/user/PasswordAndSecurityPage/PasswordAndSecurityPage";
 import ActivitiesPage from "../pages/user/ActivitiesPage/ActivitiesPage";
 import GeneralSettingsPage from "../pages/user/GeneralSettingsPage/GeneralSettingsPage";
+import InterviewsPage from "../pages/user/InterviewsPage/InterviewsPage";
+import InterviewPrepPage from "../pages/user/InterviewPrepPage/InterviewPrepPage";
+import InterviewSessionPage from "../pages/user/InterviewSessionPage/InterviewSessionPage";
+import InterviewResultPage from "../pages/user/InterviewResultPage/InterviewResultPage";
 import UserLayout from "../layouts/user/UserLayout";
 import SettingsLayout from "../layouts/user/SettingsLayout";
 import GuestRoute from "./guards/GuestRoute";
@@ -44,11 +48,14 @@ const AppRouter = () => {
         </Route>
 
         <Route element={<ProtectedRoute />}>
+          {/* Interview Session — full-screen, no UserLayout */}
+          <Route path="/interviews/:interviewId/session" element={<InterviewSessionPage />} />
+
           <Route element={<UserLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
-            {/* These routes are placeholders until they are implemented */}
-            <Route path="/interview" element={<div className="p-8">Bắt đầu phỏng vấn</div>} />
-            <Route path="/interview/review_result" element={<div className="p-8">Kết quả phỏng vấn</div>} />
+            <Route path="/interviews" element={<InterviewsPage />} />
+            <Route path="/interviews/:interviewId" element={<InterviewPrepPage />} />
+            <Route path="/interviews/:interviewId/result" element={<InterviewResultPage />} />
             <Route path="/chatbot" element={<div className="p-8">Chatbot</div>} />
             <Route path="/notifications" element={<div className="p-8">Thông báo</div>} />
             
