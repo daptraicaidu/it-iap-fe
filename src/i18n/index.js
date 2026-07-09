@@ -20,6 +20,8 @@ import enAdminPrompts from "../locales/en/AdminPrompts/translation.json";
 import viAdminPrompts from "../locales/vi/AdminPrompts/translation.json";
 import enInterview from "../locales/en/Interview/translation.json";
 import viInterview from "../locales/vi/Interview/translation.json";
+import enChatbot from "../locales/en/Chatbot/translation.json";
+import viChatbot from "../locales/vi/Chatbot/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -36,6 +38,7 @@ i18n
         AdminQuestions: enAdminQuestions,
         AdminPrompts: enAdminPrompts,
         Interview: enInterview,
+        Chatbot: enChatbot,
       },
       vi: {
         HomePage: viHomePage,
@@ -47,11 +50,12 @@ i18n
         AdminQuestions: viAdminQuestions,
         AdminPrompts: viAdminPrompts,
         Interview: viInterview,
+        Chatbot: viChatbot,
       },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers", "AdminQuestions", "AdminPrompts", "Interview"],
+    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers", "AdminQuestions", "AdminPrompts", "Interview", "Chatbot"],
     interpolation: {
       escapeValue: false,
     },
