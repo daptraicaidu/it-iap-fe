@@ -16,6 +16,7 @@ import GeneralSettingsPage from "../pages/user/GeneralSettingsPage/GeneralSettin
 import InterviewsPage from "../pages/user/InterviewsPage/InterviewsPage";
 import InterviewPrepPage from "../pages/user/InterviewPrepPage/InterviewPrepPage";
 import InterviewSessionPage from "../pages/user/InterviewSessionPage/InterviewSessionPage";
+import ChatBotPage from "../pages/user/ChatBotPage/ChatBotPage";
 import InterviewResultPage from "../pages/user/InterviewResultPage/InterviewResultPage";
 import UserLayout from "../layouts/user/UserLayout";
 import SettingsLayout from "../layouts/user/SettingsLayout";
@@ -56,7 +57,7 @@ const AppRouter = () => {
             <Route path="/interviews" element={<InterviewsPage />} />
             <Route path="/interviews/:interviewId" element={<InterviewPrepPage />} />
             <Route path="/interviews/:interviewId/result" element={<InterviewResultPage />} />
-            <Route path="/chatbot" element={<div className="p-8">Chatbot</div>} />
+            <Route path="/chatbot" element={<ChatBotPage />} />
             <Route path="/notifications" element={<div className="p-8">Thông báo</div>} />
             
             <Route element={<SettingsLayout />}>
