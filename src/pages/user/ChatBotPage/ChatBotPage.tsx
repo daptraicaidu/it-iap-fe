@@ -13,6 +13,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import chatBotService, {
   type ChatSession,
@@ -43,6 +44,7 @@ const ChatBotPage = () => {
   const [deletingSessionId, setDeletingSessionId] = useState<number | null>(
     null
   );
+  const [sessionToDelete, setSessionToDelete] = useState<number | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -103,12 +105,17 @@ const ChatBotPage = () => {
     setInputValue("");
   };
 
-  // ── Delete session ──
-  const handleDeleteSession = async (
-    e: React.MouseEvent,
-    sessionId: number
-  ) => {
+  // ── Open delete confirmation modal ──
+  const handleRequestDelete = (e: React.MouseEvent, sessionId: number) => {
     e.stopPropagation();
+    setSessionToDelete(sessionId);
+  };
+
+  // ── Confirm delete session ──
+  const handleConfirmDelete = async () => {
+    if (sessionToDelete === null) return;
+    const sessionId = sessionToDelete;
+    setSessionToDelete(null);
     setDeletingSessionId(sessionId);
     try {
       await chatBotService.deleteSession(sessionId);
@@ -318,7 +325,7 @@ const ChatBotPage = () => {
                       <span className="truncate">{session.title}</span>
                     </div>
                     <button
-                      onClick={(e) => handleDeleteSession(e, session.id)}
+                      onClick={(e) => handleRequestDelete(e, session.id)}
                       disabled={deletingSessionId === session.id}
                       className={`
                         flex-shrink-0 rounded-lg p-1 transition-all
@@ -570,6 +577,39 @@ const ChatBotPage = () => {
           </p>
         </div>
       </main>
+
+      {/* ── Delete Confirmation Modal ── */}
+      {sessionToDelete !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/40 backdrop-blur-sm">
+          <div className="mx-4 w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-6 shadow-xl">
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-50">
+                <AlertTriangle className="h-5 w-5 text-rose-600" />
+              </div>
+              <h3 className="mt-4 text-base font-semibold text-zinc-900">
+                {t("deleteConfirmTitle")}
+              </h3>
+              <p className="mt-2 text-sm text-zinc-600">
+                {t("deleteConfirmDescription")}
+              </p>
+            </div>
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => setSessionToDelete(null)}
+                className="flex-1 rounded-full border border-zinc-200 bg-white py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98]"
+              >
+                {t("deleteConfirmCancel")}
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="flex-1 rounded-full bg-rose-600 py-2.5 text-sm font-medium text-white transition hover:bg-rose-500 active:scale-[0.98]"
+              >
+                {t("deleteConfirmSubmit")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

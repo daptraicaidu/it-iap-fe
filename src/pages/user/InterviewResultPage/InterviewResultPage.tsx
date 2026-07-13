@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -15,15 +15,22 @@ import {
   CheckCircle2,
   Volume2,
   VolumeX,
+  Flag,
+  History,
+  User,
+  Bot,
+  X,
 } from "lucide-react";
 import interviewService from "../../../services/user/interviewService";
 import type {
   InterviewFeedbackData,
   FeedbackQuestion,
   ApiErrorResponse,
+  ChatMessage,
 } from "../../../services/user/interviewService";
 import { useSpeechSynthesis } from "../../../hooks/useSpeechSynthesis";
 import useInterviewStore from "../../../store/interviewStore";
+import ReportModal from "../../../components/ReportModal";
 import type { AxiosError } from "axios";
 
 // Animated counter component
@@ -93,6 +100,9 @@ const InterviewResultPage = () => {
   const { t } = useTranslation("Interview");
   const navigate = useNavigate();
   const { interviewId } = useParams<{ interviewId: string }>();
+  const [searchParams] = useSearchParams();
+  const highlightQuestionId = searchParams.get("highlightQuestionId");
+  const viewMode = searchParams.get("viewMode");
   const resetStore = useInterviewStore((s) => s.reset);
   const { speak, stop, isSpeaking, isSupported: ttsSupported } = useSpeechSynthesis();
 
@@ -103,6 +113,15 @@ const InterviewResultPage = () => {
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(
     new Set()
   );
+
+  // Chat messages per question
+  const [questionMessages, setQuestionMessages] = useState<
+    Record<number, ChatMessage[]>
+  >({});
+  const [loadingMessages, setLoadingMessages] = useState<Set<number>>(new Set());
+
+  // Report modal
+  const [reportQuestionId, setReportQuestionId] = useState<number | null>(null);
 
   const fetchFeedback = useCallback(async () => {
     if (!interviewId) return;
@@ -124,6 +143,13 @@ const InterviewResultPage = () => {
           data.feedbackForQuestions.map((_: FeedbackQuestion, i: number) => i)
         );
         setExpandedQuestions(allIndexes);
+
+        // Load messages for interactive interview questions
+        if (data.interviewMode === "INTERACTIVE_INTERVIEW") {
+          data.feedbackForQuestions.forEach((q: FeedbackQuestion) => {
+            fetchMessages(q.interviewQuestionId);
+          });
+        }
       }
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
@@ -135,12 +161,42 @@ const InterviewResultPage = () => {
     }
   }, [interviewId, t]);
 
+  const fetchMessages = async (questionId: number) => {
+    setLoadingMessages((prev) => new Set(prev).add(questionId));
+    try {
+      const res = await interviewService.getInteractiveMessages(questionId);
+      setQuestionMessages((prev) => ({
+        ...prev,
+        [questionId]: res.data.data,
+      }));
+    } catch {
+      // Silently fail - messages are supplementary
+    } finally {
+      setLoadingMessages((prev) => {
+        const next = new Set(prev);
+        next.delete(questionId);
+        return next;
+      });
+    }
+  };
+
   useEffect(() => {
     fetchFeedback();
     return () => {
       // Cleanup store when leaving result page
     };
   }, [fetchFeedback]);
+
+  useEffect(() => {
+    if (feedbackData && highlightQuestionId) {
+      setTimeout(() => {
+        const el = document.getElementById(`question-${highlightQuestionId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 500);
+    }
+  }, [feedbackData, highlightQuestionId]);
 
   const toggleQuestion = (index: number) => {
     setExpandedQuestions((prev) => {
@@ -248,6 +304,8 @@ const InterviewResultPage = () => {
   }
 
   if (!feedbackData) return null;
+
+  const isInteractive = feedbackData.interviewMode === "INTERACTIVE_INTERVIEW";
 
   return (
     <div className="w-full">
@@ -373,14 +431,21 @@ const InterviewResultPage = () => {
             {feedbackData.feedbackForQuestions.map(
               (q: FeedbackQuestion, index: number) => {
                 const isExpanded = expandedQuestions.has(index);
+                const messages = questionMessages[q.interviewQuestionId];
+                const isLoadingMsgs = loadingMessages.has(q.interviewQuestionId);
 
                 return (
                   <motion.div
                     key={index}
+                    id={`question-${q.interviewQuestionId}`}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.25 + index * 0.08 }}
-                    className="rounded-xl border border-zinc-200 bg-white overflow-hidden"
+                    className={`rounded-xl border bg-white overflow-hidden transition-all ${
+                      highlightQuestionId === String(q.interviewQuestionId)
+                        ? "border-amber-300 ring-4 ring-amber-50 shadow-md"
+                        : "border-zinc-200"
+                    }`}
                   >
                     {/* Question Header (Clickable) */}
                     <button
@@ -450,28 +515,154 @@ const InterviewResultPage = () => {
                               )}
                             </span>
 
-                            {/* User Answer */}
-                            <div>
+                            {/* Question Text with Report Flag */}
+                            <div className="relative group/question">
                               <div className="mb-2 flex items-center gap-1.5">
                                 <MessageSquare className="h-4 w-4 text-zinc-400" />
                                 <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
-                                  {t("resultPage.yourAnswer")}
+                                  {t("resultPage.questionLabel")}
                                 </span>
+                                {/* Report flag for question */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setReportQuestionId(q.interviewQuestionId);
+                                  }}
+                                  className="ml-auto rounded-full p-1 text-zinc-300 transition hover:bg-amber-50 hover:text-amber-500"
+                                  title={t("resultPage.reportTooltip")}
+                                >
+                                  <Flag className="h-3.5 w-3.5" />
+                                </button>
                               </div>
                               <div className="rounded-lg bg-zinc-50 p-3">
                                 <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
-                                  {q.userAnswer}
+                                  {q.questionContent}
                                 </p>
                               </div>
                             </div>
 
+                            {/* Interactive: Conversation History */}
+                            {isInteractive && (
+                              <div>
+                                <div className="mb-2 flex items-center gap-1.5">
+                                  <History className="h-4 w-4 text-indigo-400" />
+                                  <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+                                    {t("resultPage.conversationHistory")}
+                                  </span>
+                                </div>
+
+                                {isLoadingMsgs ? (
+                                  <div className="flex items-center gap-2 rounded-lg bg-zinc-50 p-3">
+                                    <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
+                                    <span className="text-xs text-zinc-500">
+                                      {t("resultPage.loadingMessages")}
+                                    </span>
+                                  </div>
+                                ) : messages && messages.length > 0 ? (
+                                  <div className="space-y-2">
+                                    {messages.map((msg, msgIdx) => (
+                                      <div
+                                        key={msgIdx}
+                                        className={`flex gap-2 ${msg.role === "USER" ? "" : ""}`}
+                                      >
+                                        {/* Avatar */}
+                                        <div
+                                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
+                                            msg.role === "USER"
+                                              ? "bg-zinc-200"
+                                              : "bg-indigo-100"
+                                          }`}
+                                        >
+                                          {msg.role === "USER" ? (
+                                            <User className="h-3.5 w-3.5 text-zinc-600" />
+                                          ) : (
+                                            <Bot className="h-3.5 w-3.5 text-indigo-600" />
+                                          )}
+                                        </div>
+
+                                        {/* Message */}
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex items-center gap-2 mb-0.5">
+                                            <span className="text-xs font-semibold text-zinc-600">
+                                              {msg.role === "USER"
+                                                ? t("resultPage.you")
+                                                : t("resultPage.ai")}
+                                            </span>
+                                            {/* Report flag for AI messages */}
+                                            {msg.role === "ASSISTANT" && (
+                                              <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setReportQuestionId(q.interviewQuestionId);
+                                                }}
+                                                className="rounded-full p-0.5 text-zinc-300 transition hover:bg-amber-50 hover:text-amber-500"
+                                                title={t("resultPage.reportTooltip")}
+                                              >
+                                                <Flag className="h-3 w-3" />
+                                              </button>
+                                            )}
+                                          </div>
+                                          <div
+                                            className={`rounded-lg px-3 py-2 text-sm leading-relaxed ${
+                                              msg.role === "USER"
+                                                ? "bg-zinc-100 text-zinc-700"
+                                                : "border border-indigo-100 bg-indigo-50/50 text-zinc-700"
+                                            }`}
+                                          >
+                                            <p className="whitespace-pre-wrap">{msg.content}</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : !isInteractive ? null : (
+                                  <div className="rounded-lg bg-zinc-50 p-3">
+                                    <p className="text-xs text-zinc-400 italic">
+                                      {t("resultPage.loadingMessages")}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Non-interactive: User Answer */}
+                            {!isInteractive && q.userAnswer && (
+                              <div>
+                                <div className="mb-2 flex items-center gap-1.5">
+                                  <MessageSquare className="h-4 w-4 text-zinc-400" />
+                                  <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+                                    {t("resultPage.yourAnswer")}
+                                  </span>
+                                </div>
+                                <div className="rounded-lg bg-zinc-50 p-3">
+                                  <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
+                                    {q.userAnswer}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
                             {/* AI Feedback */}
-                            <div>
+                            <div className="relative">
                               <div className="mb-2 flex items-center gap-1.5">
                                 <CheckCircle2 className="h-4 w-4 text-indigo-500" />
                                 <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                                   {t("resultPage.aiFeedback")}
                                 </span>
+                                {/* Report flag for AI feedback */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setReportQuestionId(q.interviewQuestionId);
+                                  }}
+                                  className="ml-auto rounded-full p-1 text-zinc-300 transition hover:bg-amber-50 hover:text-amber-500"
+                                  title={t("resultPage.reportTooltip")}
+                                >
+                                  <Flag className="h-3.5 w-3.5" />
+                                </button>
                               </div>
                               <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3">
                                 <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
@@ -491,31 +682,55 @@ const InterviewResultPage = () => {
         </motion.div>
 
         {/* Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-wrap items-center gap-3"
-        >
-          <button
-            onClick={handleRetry}
-            className="group inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98]"
+        {viewMode === "admin" ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex flex-wrap items-center justify-center gap-3"
           >
-            <RotateCcw className="h-4 w-4 transition-transform group-hover:-rotate-45" />
-            {t("resultPage.retryInterview")}
-          </button>
-          <button
-            onClick={() => {
-              resetStore();
-              navigate("/dashboard");
-            }}
-            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98]"
+            <button
+              onClick={() => window.close()}
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98]"
+            >
+              <X className="h-4 w-4" />
+              {t("resultPage.closeTab", { defaultValue: "Đóng tab này" })}
+            </button>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex flex-wrap items-center gap-3"
           >
-            <ArrowLeft className="h-4 w-4" />
-            {t("resultPage.backToDashboard")}
-          </button>
-        </motion.div>
+            <button
+              onClick={handleRetry}
+              className="group inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98]"
+            >
+              <RotateCcw className="h-4 w-4 transition-transform group-hover:-rotate-45" />
+              {t("resultPage.retryInterview")}
+            </button>
+            <button
+              onClick={() => {
+                resetStore();
+                navigate("/history");
+              }}
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t("resultPage.backToHistory")}
+            </button>
+          </motion.div>
+        )}
       </section>
+
+      {/* Report Modal */}
+      <ReportModal
+        isOpen={reportQuestionId !== null}
+        onClose={() => setReportQuestionId(null)}
+        interviewQuestionId={reportQuestionId ?? 0}
+      />
     </div>
   );
 };

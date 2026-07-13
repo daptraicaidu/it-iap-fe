@@ -21,5 +21,9 @@
   "inputPlaceholder": "Type a message... (Shift+Enter for new line)",
   "send": "Send",
   "errorMessage": "Something went wrong. Please try again.",
-  "disclaimer": "AI Assistant may make mistakes. Please verify important information."
+  "disclaimer": "AI Assistant may make mistakes. Please verify important information.",
+  "deleteConfirmTitle": "Delete conversation?",
+  "deleteConfirmDescription": "This conversation will be permanently deleted. This action cannot be undone.",
+  "deleteConfirmCancel": "Cancel",
+  "deleteConfirmSubmit": "Delete"
 }

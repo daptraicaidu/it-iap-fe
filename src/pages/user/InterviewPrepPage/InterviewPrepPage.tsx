@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
@@ -17,14 +17,14 @@ import {
   Monitor,
 } from "lucide-react";
 import interviewService from "../../../services/user/interviewService";
-import useInterviewStore from "../../../store/interviewStore";
 import type { AxiosError } from "axios";
-import type { ApiErrorResponse } from "../../../services/user/interviewService";
+import type { ApiErrorResponse, InterviewQuestion } from "../../../services/user/interviewService";
 
 interface LocationState {
   interviewTitle?: string;
   interviewMode?: string;
   profileName?: string;
+  firstQuestion?: InterviewQuestion; // Passed from /start API response to skip current-question call
 }
 
 const InterviewPrepPage = () => {
@@ -34,14 +34,17 @@ const InterviewPrepPage = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
 
-  const setCurrentQuestion = useInterviewStore((s) => s.setCurrentQuestion);
-
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState("");
 
   // If no state (direct access / reload), redirect to create page
+  useEffect(() => {
+    if (!state?.interviewTitle) {
+      navigate("/interviews", { replace: true });
+    }
+  }, [state, navigate]);
+
   if (!state?.interviewTitle) {
-    navigate("/interviews", { replace: true });
     return null;
   }
 
@@ -57,9 +60,7 @@ const InterviewPrepPage = () => {
       const response = await interviewService.startInterview(
         Number(interviewId)
       );
-      const question = response.data.data;
-
-      setCurrentQuestion(question);
+      const firstQuestion = response.data.data;
 
       try {
         await document.documentElement.requestFullscreen();
@@ -67,7 +68,12 @@ const InterviewPrepPage = () => {
         // Ignore if blocked
       }
 
-      navigate(`/interviews/${interviewId}/session`, { replace: true });
+      // Pass the first question via navigation state so InterviewSessionPage
+      // can use it directly without calling current-question API again
+      navigate(`/interviews/${interviewId}/session`, {
+        replace: true,
+        state: { firstQuestion },
+      });
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
       const message = axiosErr.response?.data?.message;

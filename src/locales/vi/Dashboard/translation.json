@@ -8,10 +8,11 @@
   "navigation": {
     "label": "Điều hướng Dashboard",
     "dashboard": "Dashboard",
-    "history": "Lịch sử phỏng vấn",
+    "history": "Lịch sử",
     "chatbot": "Chatbot",
-    "interview": "Bắt đầu phỏng vấn",
-    "reviewResult": "Kết quả phỏng vấn"
+    "interview": "Phỏng vấn",
+    "reviewResult": "Kết quả phỏng vấn",
+    "reports": "Báo cáo"
   },
   "user": {
     "name": "Nguyễn Minh Anh",

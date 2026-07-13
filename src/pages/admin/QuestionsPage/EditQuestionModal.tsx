@@ -142,7 +142,7 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
   if (!isOpen || !question) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-[5vh]">
       <div
         className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm"
         onClick={handleClose}
@@ -179,7 +179,8 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
         )}
 
         {/* Body — 2-column layout */}
-        <div className="grid grid-cols-1 gap-6 px-6 py-5 lg:grid-cols-2">
+        <div className="max-h-[70vh] overflow-y-auto px-6 py-5">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* ── Left Column: Text fields ── */}
           <div className="flex flex-col gap-3.5">
             {/* Content */}
@@ -443,6 +444,7 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
                 />
               </button>
             </div>
+          </div>
           </div>
         </div>
 

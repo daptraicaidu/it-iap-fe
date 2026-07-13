@@ -18,6 +18,8 @@ import InterviewPrepPage from "../pages/user/InterviewPrepPage/InterviewPrepPage
 import InterviewSessionPage from "../pages/user/InterviewSessionPage/InterviewSessionPage";
 import ChatBotPage from "../pages/user/ChatBotPage/ChatBotPage";
 import InterviewResultPage from "../pages/user/InterviewResultPage/InterviewResultPage";
+import InterviewHistoryPage from "../pages/user/InterviewHistoryPage/InterviewHistoryPage";
+import UserReportsPage from "../pages/user/UserReportsPage/UserReportsPage";
 import UserLayout from "../layouts/user/UserLayout";
 import SettingsLayout from "../layouts/user/SettingsLayout";
 import GuestRoute from "./guards/GuestRoute";
@@ -57,6 +59,8 @@ const AppRouter = () => {
             <Route path="/interviews" element={<InterviewsPage />} />
             <Route path="/interviews/:interviewId" element={<InterviewPrepPage />} />
             <Route path="/interviews/:interviewId/result" element={<InterviewResultPage />} />
+            <Route path="/history" element={<InterviewHistoryPage />} />
+            <Route path="/reports" element={<UserReportsPage />} />
             <Route path="/chatbot" element={<ChatBotPage />} />
             <Route path="/notifications" element={<div className="p-8">Thông báo</div>} />
             

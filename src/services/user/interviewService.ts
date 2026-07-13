@@ -37,6 +37,7 @@ export interface InterviewQuestion {
   timeEnd: string | null;
   hasNext: boolean;
   interviewMode: InterviewMode;
+  isComplete?: boolean; // Returned by current-question API to indicate if interview is already finished
 }
 
 export interface InteractiveAnswerResult {
@@ -61,6 +62,7 @@ export interface QuestionFeedback {
 
 export interface FeedbackQuestion {
   feedback: QuestionFeedback;
+  interviewQuestionId: number;
   orderIndex: number;
   questionContent: string;
   questionType: string;
@@ -73,9 +75,44 @@ export interface OverallResult {
 }
 
 export interface InterviewFeedbackData {
+  interviewMode: InterviewMode;
   feedbackForQuestions: FeedbackQuestion[];
   overallResult: OverallResult;
   processing: boolean;
+}
+
+// ── Interview History ──
+
+export type InterviewStatus = "COMPLETED" | "IN_PROGRESS" | "PENDING";
+
+export interface InterviewHistoryItem {
+  title: string;
+  mode: InterviewMode;
+  status: InterviewStatus;
+  startAt: string;
+  completedAt: string | null;
+  profileId: number;
+  profileTitle: string;
+  interviewId: number;
+}
+
+export interface InterviewHistoryParams {
+  profileId?: number;
+  mode?: string;
+  status?: string;
+  pages?: number;
+}
+
+export interface PaginatedResponse<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  size: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+  numberOfElements: number;
 }
 
 // ── Service ──
@@ -139,6 +176,13 @@ const interviewService = {
   getInterviewFeedback: (interviewId: number) =>
     apiClient.get<ApiResponse<InterviewFeedbackData>>(
       `/interviews/${interviewId}/feedback`
+    ),
+
+  // Get interview history
+  getInterviewHistory: (params: InterviewHistoryParams) =>
+    apiClient.get<ApiResponse<PaginatedResponse<InterviewHistoryItem>>>(
+      "/interviews/history",
+      { params }
     ),
 };
 

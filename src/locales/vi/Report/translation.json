@@ -1,0 +1,27 @@
+{
+  "title": "Báo cáo của tôi",
+  "subtitle": "Xem lại các báo cáo bạn đã gửi và phản hồi từ quản trị viên",
+  "filterAll": "Tất cả",
+  "filterByType": "Loại báo cáo",
+  "filterByStatus": "Trạng thái",
+  "interviewId": "Phỏng vấn #{{id}}",
+  "createdAt": "Ngày tạo",
+  "adminReply": "Phản hồi Admin",
+  "noReply": "Chưa có phản hồi",
+  "emptyTitle": "Chưa có báo cáo nào",
+  "emptyDescription": "Bạn chưa gửi báo cáo nào. Sử dụng nút báo cáo trên trang kết quả phỏng vấn để báo cáo vấn đề.",
+  "reportType": {
+    "INACCURATE_CONTENT": "Nội dung sai",
+    "OUTDATED": "Lỗi thời",
+    "DUPLICATE": "Trùng lặp",
+    "POOR_FORMATTING": "Lỗi định dạng",
+    "SPAM_OR_IRRELEVANT": "Spam/Không liên quan",
+    "INAPPROPRIATE": "Không phù hợp",
+    "OTHER": "Khác"
+  },
+  "status": {
+    "PENDING": "Đang chờ",
+    "APPROVED": "Đã duyệt",
+    "REJECTED": "Đã từ chối"
+  }
+}

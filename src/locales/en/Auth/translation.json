@@ -12,7 +12,16 @@
     "register": "Sign up",
     "orContinueWith": "or continue with",
     "google": "Continue with Google",
-    "forgotPassword": "Forgot password?"
+    "forgotPassword": "Forgot password?",
+    "twoFa": {
+      "title": "Two-factor authentication",
+      "subtitle": "Enter the 6-digit code from your authenticator app",
+      "placeholder": "Enter TOTP code",
+      "submit": "Verify",
+      "submitting": "Verifying...",
+      "error": "Invalid authentication code. Please try again.",
+      "backToLogin": "Back to login"
+    }
   },
   "register": {
     "title": "Create an account",
