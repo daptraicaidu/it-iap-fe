@@ -12,7 +12,16 @@
     "register": "Đăng ký",
     "orContinueWith": "hoặc tiếp tục với",
     "google": "Tiếp tục với Google",
-    "forgotPassword": "Quên mật khẩu?"
+    "forgotPassword": "Quên mật khẩu?",
+    "twoFa": {
+      "title": "Xác thực 2 bước",
+      "subtitle": "Nhập mã 6 chữ số từ ứng dụng xác thực của bạn",
+      "placeholder": "Nhập mã TOTP",
+      "submit": "Xác nhận",
+      "submitting": "Đang xác nhận...",
+      "error": "Mã xác thực không hợp lệ. Vui lòng thử lại.",
+      "backToLogin": "Quay lại đăng nhập"
+    }
   },
   "register": {
     "title": "Tạo tài khoản",

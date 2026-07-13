@@ -95,6 +95,40 @@
       "error": "Could not update password. Please try again."
     }
   },
+  "twoFa": {
+    "title": "Two-Factor Authentication (2FA)",
+    "description": "Add an extra layer of security to your account using an authenticator app like Google Authenticator or Authy.",
+    "statusEnabled": "Enabled",
+    "statusDisabled": "Not enabled",
+    "enableButton": "Enable two-factor authentication",
+    "disableButton": "Disable two-factor authentication",
+    "setup": {
+      "title": "Set up two-factor authentication",
+      "step1": "Scan the QR code below with your authenticator app",
+      "step2": "Or manually enter this secret key:",
+      "step3": "Enter the 6-digit code from the app to confirm",
+      "totpPlaceholder": "Enter TOTP code",
+      "confirm": "Confirm & enable 2FA",
+      "confirming": "Confirming...",
+      "cancel": "Cancel",
+      "copySecret": "Copy",
+      "copied": "Copied!"
+    },
+    "disable": {
+      "title": "Disable two-factor authentication",
+      "description": "Enter the 6-digit TOTP code from your authenticator app to confirm.",
+      "totpPlaceholder": "Enter TOTP code",
+      "confirm": "Confirm & disable 2FA",
+      "confirming": "Processing...",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "enableSuccess": "Two-factor authentication enabled!",
+      "disableSuccess": "Two-factor authentication disabled.",
+      "error": "Something went wrong. Please try again.",
+      "loadError": "Could not load 2FA status."
+    }
+  },
   "manage": {
     "title": "Manage profile",
     "description": "Create and update job profiles so the AI can use the right skills, experience, and projects during interview practice."
@@ -159,7 +193,7 @@
       "userInfo": "Personal Information",
       "profiles": "Manage Profiles",
       "general": "General Settings",
-      "password": "Change Password",
+      "password": "Security",
       "activities": "Activities"
     },
     "activities": {

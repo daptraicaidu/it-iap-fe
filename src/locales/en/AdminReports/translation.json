@@ -1,0 +1,49 @@
+{
+  "title": "Report Management",
+  "subtitle": "Review and respond to user reports",
+  "filterAll": "All",
+  "filterByType": "Report Type",
+  "filterByStatus": "Status",
+  "searchByEmail": "Search by email...",
+  "table": {
+    "email": "Email",
+    "type": "Type",
+    "description": "Description",
+    "status": "Status",
+    "createdAt": "Created",
+    "actions": "Actions"
+  },
+  "viewDetail": "Detail",
+  "detailModal": {
+    "title": "Report Detail",
+    "interviewId": "Interview #{{id}}",
+    "questionId": "Question #{{id}}",
+    "reporterEmail": "Reporter Email",
+    "reportType": "Report Type",
+    "description": "Description",
+    "currentStatus": "Current Status",
+    "changeStatus": "Change Status",
+    "adminReply": "Admin Reply",
+    "adminReplyPlaceholder": "Enter your reply to the user...",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "close": "Close",
+    "success": "Updated successfully"
+  },
+  "emptyTitle": "No reports yet",
+  "emptyDescription": "No reports have been submitted by users.",
+  "reportType": {
+    "INACCURATE_CONTENT": "Inaccurate Content",
+    "OUTDATED": "Outdated",
+    "DUPLICATE": "Duplicate",
+    "POOR_FORMATTING": "Poor Formatting",
+    "SPAM_OR_IRRELEVANT": "Spam/Irrelevant",
+    "INAPPROPRIATE": "Inappropriate",
+    "OTHER": "Other"
+  },
+  "status": {
+    "PENDING": "Pending",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected"
+  }
+}

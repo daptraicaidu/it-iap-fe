@@ -103,6 +103,12 @@
     "outOf": "/ 10",
     "retryInterview": "Try Again",
     "backToDashboard": "Back to Dashboard",
+    "backToHistory": "Interview History",
+    "conversationHistory": "Conversation History",
+    "loadingMessages": "Loading history...",
+    "reportTooltip": "Report issue",
+    "you": "You",
+    "ai": "AI",
     "questionType": {
       "TECHNICAL": "Technical",
       "BEHAVIORAL": "Behavioral",
@@ -115,6 +121,56 @@
       "needsWork": "Needs Work"
     }
   },
+  "historyPage": {
+    "title": "Interview History",
+    "subtitle": "Review your past interview sessions",
+    "filterAll": "All",
+    "filterByMode": "Mode",
+    "status": {
+      "COMPLETED": "Completed",
+      "IN_PROGRESS": "In Progress",
+      "PENDING": "Pending"
+    },
+    "mode": {
+      "INTERACTIVE_INTERVIEW": "Interactive",
+      "STRESS_INTERVIEW": "Stress"
+    },
+    "startedAt": "Started",
+    "completedAt": "Completed",
+    "profile": "Profile",
+    "viewResult": "View Result",
+    "continueInterview": "Continue",
+    "startInterview": "Start",
+    "emptyTitle": "No interviews yet",
+    "emptyDescription": "Start a new interview to begin practicing.",
+    "startNew": "Create New Interview",
+    "confirmContinue": {
+      "title": "Continue Interview?",
+      "message": "Would you like to continue this interview? You'll return to the session.",
+      "confirm": "Continue",
+      "cancel": "Cancel"
+    }
+  },
+  "reportModal": {
+    "title": "Report an Issue",
+    "description": "Let us know about any issues you found with this content.",
+    "typeLabel": "Report Type",
+    "detailLabel": "Description",
+    "detailPlaceholder": "Describe the issue you encountered...",
+    "submit": "Submit Report",
+    "cancel": "Cancel",
+    "success": "Report submitted successfully!",
+    "descriptionRequired": "Please enter a description",
+    "types": {
+      "INACCURATE_CONTENT": "Inaccurate Content",
+      "OUTDATED": "Outdated Knowledge",
+      "DUPLICATE": "Duplicate Question",
+      "POOR_FORMATTING": "Poor Formatting / Typos",
+      "SPAM_OR_IRRELEVANT": "Spam / Irrelevant",
+      "INAPPROPRIATE": "Inappropriate Content",
+      "OTHER": "Other"
+    }
+  },
   "errors": {
     "createFailed": "Failed to create interview",
     "startFailed": "Failed to start interview",
@@ -123,6 +179,7 @@
     "hintFailed": "Failed to load hint",
     "feedbackFailed": "Failed to load results",
     "sessionNotFound": "Interview session not found",
+    "historyFailed": "Failed to load interview history",
     "generic": "An error occurred. Please try again."
   }
 }

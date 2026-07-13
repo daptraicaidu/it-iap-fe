@@ -21,5 +21,9 @@
   "inputPlaceholder": "Nhập tin nhắn... (Shift+Enter để xuống dòng)",
   "send": "Gửi",
   "errorMessage": "Đã có lỗi xảy ra. Vui lòng thử lại.",
-  "disclaimer": "Trợ lý AI có thể mắc lỗi. Hãy kiểm tra lại các thông tin quan trọng."
+  "disclaimer": "Trợ lý AI có thể mắc lỗi. Hãy kiểm tra lại các thông tin quan trọng.",
+  "deleteConfirmTitle": "Xóa cuộc hội thoại?",
+  "deleteConfirmDescription": "Cuộc hội thoại này sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.",
+  "deleteConfirmCancel": "Hủy",
+  "deleteConfirmSubmit": "Xóa"
 }

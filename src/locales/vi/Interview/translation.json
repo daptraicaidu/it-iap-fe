@@ -103,6 +103,12 @@
     "outOf": "/ 10",
     "retryInterview": "Phỏng vấn lại",
     "backToDashboard": "Về Dashboard",
+    "backToHistory": "Lịch sử phỏng vấn",
+    "conversationHistory": "Lịch sử trao đổi",
+    "loadingMessages": "Đang tải lịch sử...",
+    "reportTooltip": "Báo cáo vấn đề",
+    "you": "Bạn",
+    "ai": "AI",
     "questionType": {
       "TECHNICAL": "Kỹ thuật",
       "BEHAVIORAL": "Hành vi",
@@ -115,6 +121,56 @@
       "needsWork": "Cần cải thiện"
     }
   },
+  "historyPage": {
+    "title": "Lịch sử phỏng vấn",
+    "subtitle": "Xem lại các buổi phỏng vấn bạn đã tham gia",
+    "filterAll": "Tất cả",
+    "filterByMode": "Chế độ",
+    "status": {
+      "COMPLETED": "Hoàn thành",
+      "IN_PROGRESS": "Đang thực hiện",
+      "PENDING": "Đang chờ"
+    },
+    "mode": {
+      "INTERACTIVE_INTERVIEW": "Tương tác",
+      "STRESS_INTERVIEW": "Áp lực"
+    },
+    "startedAt": "Bắt đầu",
+    "completedAt": "Hoàn thành",
+    "profile": "Hồ sơ",
+    "viewResult": "Xem kết quả",
+    "continueInterview": "Tiếp tục",
+    "startInterview": "Bắt đầu",
+    "emptyTitle": "Chưa có buổi phỏng vấn nào",
+    "emptyDescription": "Hãy bắt đầu một buổi phỏng vấn mới để luyện tập.",
+    "startNew": "Tạo phỏng vấn mới",
+    "confirmContinue": {
+      "title": "Tiếp tục phỏng vấn?",
+      "message": "Bạn có muốn tiếp tục buổi phỏng vấn đang dở? Bạn sẽ quay lại phiên làm bài.",
+      "confirm": "Tiếp tục",
+      "cancel": "Hủy"
+    }
+  },
+  "reportModal": {
+    "title": "Báo cáo vấn đề",
+    "description": "Hãy cho chúng tôi biết vấn đề bạn gặp phải với nội dung này.",
+    "typeLabel": "Loại báo cáo",
+    "detailLabel": "Mô tả chi tiết",
+    "detailPlaceholder": "Mô tả vấn đề bạn gặp phải...",
+    "submit": "Gửi báo cáo",
+    "cancel": "Hủy",
+    "success": "Báo cáo đã được gửi thành công!",
+    "descriptionRequired": "Vui lòng nhập mô tả vấn đề",
+    "types": {
+      "INACCURATE_CONTENT": "Nội dung không chính xác",
+      "OUTDATED": "Kiến thức lỗi thời",
+      "DUPLICATE": "Câu hỏi trùng lặp",
+      "POOR_FORMATTING": "Lỗi định dạng / chính tả",
+      "SPAM_OR_IRRELEVANT": "Spam / Không liên quan",
+      "INAPPROPRIATE": "Nội dung không phù hợp",
+      "OTHER": "Khác"
+    }
+  },
   "errors": {
     "createFailed": "Không thể tạo buổi phỏng vấn",
     "startFailed": "Không thể bắt đầu phỏng vấn",
@@ -123,6 +179,7 @@
     "hintFailed": "Không thể tải gợi ý",
     "feedbackFailed": "Không thể tải kết quả",
     "sessionNotFound": "Phiên phỏng vấn không tồn tại",
+    "historyFailed": "Không thể tải lịch sử phỏng vấn",
     "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
   }
 }

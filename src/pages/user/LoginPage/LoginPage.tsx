@@ -1,18 +1,39 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  Loader2,
+  ShieldCheck,
+} from "lucide-react";
 import useAuthStore from "../../../store/authStore";
 
 const LoginPage = () => {
   const { t } = useTranslation("Auth");
 
-  const { login, isLoading, error, clearError } = useAuthStore();
+  const { login, verify2faLogin, isLoading, error, clearError } =
+    useAuthStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // 2FA state
+  const [show2faStep, setShow2faStep] = useState(false);
+  const [totpCode, setTotpCode] = useState(["", "", "", "", "", ""]);
+  const totpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Auto-focus first TOTP input when 2FA step appears
+  useEffect(() => {
+    if (show2faStep) {
+      totpRefs.current[0]?.focus();
+    }
+  }, [show2faStep]);
 
   const validate = (): boolean => {
     const errors: Record<string, string> = {};
@@ -38,11 +59,77 @@ const LoginPage = () => {
     if (!validate()) return;
 
     try {
-      await login({ email, password });
-      // GuestRoute will automatically redirect based on roles
+      const result = await login({ email, password });
+      if (result.enable2fa) {
+        setShow2faStep(true);
+      }
+      // If enable2fa is false, GuestRoute will automatically redirect
     } catch {
       // Error is handled by the store
     }
+  };
+
+  // ── TOTP input handlers ──
+  const handleTotpChange = (index: number, value: string) => {
+    // Only allow digits
+    if (value && !/^\d$/.test(value)) return;
+
+    const newCode = [...totpCode];
+    newCode[index] = value;
+    setTotpCode(newCode);
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      totpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleTotpKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && !totpCode[index] && index > 0) {
+      totpRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleTotpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (!pastedData) return;
+
+    const newCode = [...totpCode];
+    for (let i = 0; i < pastedData.length; i++) {
+      newCode[i] = pastedData[i];
+    }
+    setTotpCode(newCode);
+
+    // Focus the next empty or last input
+    const focusIndex = Math.min(pastedData.length, 5);
+    totpRefs.current[focusIndex]?.focus();
+  };
+
+  const handleVerify2fa = async (e: React.FormEvent) => {
+    e.preventDefault();
+    clearError();
+
+    const code = totpCode.join("");
+    if (code.length !== 6) return;
+
+    try {
+      await verify2faLogin(code);
+      // GuestRoute will redirect after isAuthenticated becomes true
+    } catch {
+      // Error is handled by the store
+      setTotpCode(["", "", "", "", "", ""]);
+      totpRefs.current[0]?.focus();
+    }
+  };
+
+  const handleBackToLogin = () => {
+    setShow2faStep(false);
+    setTotpCode(["", "", "", "", "", ""]);
+    clearError();
   };
 
   const handleGoogleLogin = () => {
@@ -50,6 +137,89 @@ const LoginPage = () => {
     window.location.href = "/oauth2/authorization/google";
   };
 
+  const totpFilled = totpCode.every((d) => d !== "");
+
+  // ── 2FA Verification Step ──
+  if (show2faStep) {
+    return (
+      <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12 relative">
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50">
+              <ShieldCheck className="h-7 w-7 text-indigo-600" />
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+              {t("login.twoFa.title")}
+            </h1>
+            <p className="mt-2 text-sm text-zinc-600">
+              {t("login.twoFa.subtitle")}
+            </p>
+          </div>
+
+          {/* Card */}
+          <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8">
+            {/* Error */}
+            {error && (
+              <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleVerify2fa} className="space-y-6">
+              {/* TOTP 6-digit inputs */}
+              <div>
+                <div
+                  className="flex justify-center gap-3"
+                  onPaste={handleTotpPaste}
+                >
+                  {totpCode.map((digit, index) => (
+                    <input
+                      key={index}
+                      ref={(el) => { totpRefs.current[index] = el; }}
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleTotpChange(index, e.target.value)}
+                      onKeyDown={(e) => handleTotpKeyDown(index, e)}
+                      className="h-12 w-11 rounded-lg border border-zinc-200 bg-white text-center text-lg font-semibold text-zinc-900 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                      autoComplete="one-time-code"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={!totpFilled || isLoading}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                {isLoading
+                  ? t("login.twoFa.submitting")
+                  : t("login.twoFa.submit")}
+              </button>
+            </form>
+
+            {/* Back to login */}
+            <div className="mt-5 text-center">
+              <button
+                type="button"
+                onClick={handleBackToLogin}
+                className="text-sm font-medium text-zinc-600 transition hover:text-zinc-900 underline underline-offset-2"
+              >
+                {t("login.twoFa.backToLogin")}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Standard Login Form ──
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12 relative">
       <Link 

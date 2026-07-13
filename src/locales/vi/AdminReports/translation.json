@@ -1,0 +1,49 @@
+{
+  "title": "Quản lý báo cáo",
+  "subtitle": "Xem xét và phản hồi báo cáo từ người dùng",
+  "filterAll": "Tất cả",
+  "filterByType": "Loại báo cáo",
+  "filterByStatus": "Trạng thái",
+  "searchByEmail": "Tìm theo email...",
+  "table": {
+    "email": "Email",
+    "type": "Loại",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
+    "actions": "Hành động"
+  },
+  "viewDetail": "Chi tiết",
+  "detailModal": {
+    "title": "Chi tiết báo cáo",
+    "interviewId": "Phỏng vấn #{{id}}",
+    "questionId": "Câu hỏi #{{id}}",
+    "reporterEmail": "Email người báo cáo",
+    "reportType": "Loại báo cáo",
+    "description": "Mô tả",
+    "currentStatus": "Trạng thái hiện tại",
+    "changeStatus": "Thay đổi trạng thái",
+    "adminReply": "Phản hồi Admin",
+    "adminReplyPlaceholder": "Nhập phản hồi cho người dùng...",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu...",
+    "close": "Đóng",
+    "success": "Cập nhật thành công"
+  },
+  "emptyTitle": "Chưa có báo cáo nào",
+  "emptyDescription": "Chưa có báo cáo nào được gửi từ người dùng.",
+  "reportType": {
+    "INACCURATE_CONTENT": "Nội dung sai",
+    "OUTDATED": "Lỗi thời",
+    "DUPLICATE": "Trùng lặp",
+    "POOR_FORMATTING": "Lỗi định dạng",
+    "SPAM_OR_IRRELEVANT": "Spam/Không liên quan",
+    "INAPPROPRIATE": "Không phù hợp",
+    "OTHER": "Khác"
+  },
+  "status": {
+    "PENDING": "Đang chờ",
+    "APPROVED": "Đã duyệt",
+    "REJECTED": "Đã từ chối"
+  }
+}

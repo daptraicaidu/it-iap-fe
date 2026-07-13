@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -107,6 +107,11 @@ const InterviewSessionPage = () => {
   const { t } = useTranslation("Interview");
   const navigate = useNavigate();
   const { interviewId } = useParams<{ interviewId: string }>();
+  const location = useLocation();
+  // firstQuestion is set in navigation state by InterviewPrepPage after calling /start.
+  // When present, we skip the current-question API call (fresh start flow).
+  // When absent (resume from history), we call current-question as usual.
+  const navFirstQuestion = (location.state as { firstQuestion?: InterviewQuestion } | null)?.firstQuestion;
 
   // Store
   const {
@@ -133,9 +138,12 @@ const InterviewSessionPage = () => {
   const [isHintVisible, setIsHintVisible] = useState(false);
   const [isLoadingHint, setIsLoadingHint] = useState(false);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(!currentQuestion);
+  const [isLoading, setIsLoading] = useState(true);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(true);
+  // Track whether the scoring call (/next on last question) has already been triggered
+  // to avoid double-calling when the user clicks the "View Result" button
+  const hasScoringTriggered = useRef(false);
 
   // Hooks
   const { speak, stop: stopSpeaking, isSpeaking, isSupported: ttsSupported } = useSpeechSynthesis();
@@ -169,20 +177,60 @@ const InterviewSessionPage = () => {
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  // Load current question on mount if not in store
+  // Reset store and load current question when interviewId changes
   useEffect(() => {
-    if (currentQuestion || !interviewId) return;
+    if (!interviewId) return;
 
+    // Always reset store when entering a session to avoid stale data from a previous interview
+    useInterviewStore.getState().reset();
+    hasScoringTriggered.current = false;
+    setIsLoading(true);
+
+    // ── Fresh start flow (from InterviewPrepPage via /start API) ──
+    // The first question was already returned by /start and passed via navigation state.
+    // Use it directly — no need to call current-question API.
+    if (navFirstQuestion) {
+      setCurrentQuestion(navFirstQuestion);
+      setIsLoading(false);
+      return;
+    }
+
+    // ── Resume flow (from history page or page reload) ──
+    // Call current-question to get where the user left off.
     const loadQuestion = async () => {
       try {
         const res = await interviewService.getCurrentQuestion(Number(interviewId));
-        setCurrentQuestion(res.data.data);
+        const questionData = res.data.data;
+
+        // If the API signals this is the last question and it's already complete
+        // (resume scenario): must call /next to trigger scoring before going to result
+        if (questionData.isComplete) {
+          if (
+            questionData.interviewMode === "INTERACTIVE_INTERVIEW" &&
+            !questionData.hasNext
+          ) {
+            // The last interactive question was answered but scoring wasn't triggered yet
+            hasScoringTriggered.current = true;
+            try {
+              await interviewService.nextInteractive(questionData.interviewQuestionId);
+            } catch {
+              // Proceed to result even if the call fails
+            }
+          }
+          if (document.fullscreenElement) {
+            await document.exitFullscreen().catch(() => {});
+          }
+          navigate(`/interviews/${interviewId}/result`, { replace: true });
+          return;
+        }
+
+        setCurrentQuestion(questionData);
 
         // If interactive, load chat history
-        if (res.data.data.interviewMode === "INTERACTIVE_INTERVIEW") {
+        if (questionData.interviewMode === "INTERACTIVE_INTERVIEW") {
           try {
             const msgRes = await interviewService.getInteractiveMessages(
-              res.data.data.interviewQuestionId
+              questionData.interviewQuestionId
             );
             setMessages(msgRes.data.data);
           } catch {
@@ -196,7 +244,8 @@ const InterviewSessionPage = () => {
       }
     };
     loadQuestion();
-  }, [currentQuestion, interviewId, setCurrentQuestion, setMessages, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [interviewId]);
 
   // Scroll chat to bottom
   useEffect(() => {
@@ -244,6 +293,19 @@ const InterviewSessionPage = () => {
       // Add AI response
       addMessage({ role: "ASSISTANT", content: result.content });
       setIsComplete(result.isComplete);
+
+      // Auto-trigger scoring when the LAST question's conversation is complete.
+      // Trigger is based on actual API response (isComplete from answers API),
+      // not from UI state — so the user cannot bypass this by manipulating the DOM.
+      if (result.isComplete && !currentQuestion.hasNext && !hasScoringTriggered.current) {
+        hasScoringTriggered.current = true;
+        try {
+          await interviewService.nextInteractive(currentQuestion.interviewQuestionId);
+        } catch {
+          // Scoring trigger failed silently; the button will still appear
+          // and navigating to result will attempt feedback retrieval
+        }
+      }
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
       setError(axiosErr.response?.data?.message || t("errors.answerFailed"));
@@ -351,22 +413,25 @@ const InterviewSessionPage = () => {
     setError("");
 
     try {
-      if (isInteractive) {
-        await interviewService.nextInteractive(
-          currentQuestion.interviewQuestionId
-        );
-      } else {
+      if (!isInteractive) {
+        // Stress mode: still needs to submit the final answer
         await interviewService.answerStress(
           currentQuestion.interviewQuestionId,
           userAnswer.trim() || "Không có câu trả lời"
         );
       }
+      // Interactive mode: scoring was already triggered automatically in handleInteractiveAnswer
+      // when isComplete=true + hasNext=false came back from the answers API.
+      // No need to call /next again here.
+
+      // Exit fullscreen before navigating to result page
+      if (document.fullscreenElement) {
+        await document.exitFullscreen().catch(() => {});
+      }
       navigate(`/interviews/${interviewId}/result`);
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
       setError(axiosErr.response?.data?.message || t("errors.answerFailed"));
-      // Also proceed to result page even if completing fails 
-      // navigate(`/interviews/${interviewId}/result`);
     } finally {
       setIsAnswering(false);
     }

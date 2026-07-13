@@ -8,10 +8,11 @@
   "navigation": {
     "label": "Dashboard navigation",
     "dashboard": "Dashboard",
-    "history": "Interview history",
+    "history": "History",
     "chatbot": "Chatbot",
-    "interview": "Start Interview",
-    "reviewResult": "Review Result"
+    "interview": "Interview",
+    "reviewResult": "Review Result",
+    "reports": "Reports"
   },
   "user": {
     "name": "Nguyen Minh Anh",
