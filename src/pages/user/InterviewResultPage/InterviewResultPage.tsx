@@ -529,10 +529,11 @@ const InterviewResultPage = () => {
                                     e.stopPropagation();
                                     setReportQuestionId(q.interviewQuestionId);
                                   }}
-                                  className="ml-auto rounded-full p-1 text-zinc-300 transition hover:bg-amber-50 hover:text-amber-500"
+                                  className="ml-auto inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-zinc-500 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600"
                                   title={t("resultPage.reportTooltip")}
                                 >
-                                  <Flag className="h-3.5 w-3.5" />
+                                  <Flag className="h-3 w-3" />
+                                  <span className="text-[11px] font-medium">Báo cáo</span>
                                 </button>
                               </div>
                               <div className="rounded-lg bg-zinc-50 p-3">

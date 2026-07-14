@@ -60,8 +60,10 @@ apiClient.interceptors.response.use(
       return apiClient(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
-      // Refresh failed → user session is invalid, redirect to login
-      window.location.href = "/login";
+      // Refresh failed → session is invalid.
+      // Dispatch a custom event so the React app can handle logout
+      // via React Router (without a full page reload that loses SPA state).
+      window.dispatchEvent(new CustomEvent("auth:session-expired"));
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
