@@ -202,40 +202,74 @@ const InterviewSessionPage = () => {
         const res = await interviewService.getCurrentQuestion(Number(interviewId));
         const questionData = res.data.data;
 
-        // If the API signals this is the last question and it's already complete
-        // (resume scenario): must call /next to trigger scoring before going to result
         if (questionData.isComplete) {
-          if (
-            questionData.interviewMode === "INTERACTIVE_INTERVIEW" &&
-            !questionData.hasNext
-          ) {
-            // The last interactive question was answered but scoring wasn't triggered yet
-            hasScoringTriggered.current = true;
+          if (questionData.interviewMode === "INTERACTIVE_INTERVIEW") {
+            if (questionData.hasNext) {
+              // Current question is done but there are more — unlock the
+              // "Next Question" button so the user can proceed.
+              // handleNextInteractive will call /next and update all state properly.
+              setCurrentQuestion(questionData);
+              setIsComplete(true);
+              // Load existing chat history so user can review the conversation
+              try {
+                const msgRes = await interviewService.getInteractiveMessages(
+                  questionData.interviewQuestionId
+                );
+                setMessages(msgRes.data.data);
+              } catch {
+                // No chat history yet
+              }
+            } else {
+              // Last question is complete and no more questions remain.
+              // Show the question on screen, trigger scoring silently,
+              // and let user click "Xem kết quả" themselves.
+              setCurrentQuestion(questionData);
+              setIsComplete(true);
+              // Load existing chat history so user can review the conversation
+              try {
+                const msgRes = await interviewService.getInteractiveMessages(
+                  questionData.interviewQuestionId
+                );
+                setMessages(msgRes.data.data);
+              } catch {
+                // No chat history yet
+              }
+              if (!hasScoringTriggered.current) {
+                hasScoringTriggered.current = true;
+                try {
+                  await interviewService.nextInteractive(questionData.interviewQuestionId);
+                } catch {
+                  // Scoring trigger failed silently
+                }
+              }
+            }
+          } else {
+            // Stress mode: interview already fully complete → go to result
+            if (document.fullscreenElement) {
+              await document.exitFullscreen().catch(() => {});
+            }
+            navigate(`/interviews/${interviewId}/result`, { replace: true });
+            return;
+          }
+        } else {
+          setCurrentQuestion(questionData);
+
+          // If interactive, load chat history
+          if (questionData.interviewMode === "INTERACTIVE_INTERVIEW") {
             try {
-              await interviewService.nextInteractive(questionData.interviewQuestionId);
+              const msgRes = await interviewService.getInteractiveMessages(
+                questionData.interviewQuestionId
+              );
+              setMessages(msgRes.data.data);
             } catch {
-              // Proceed to result even if the call fails
+              // No history yet
             }
           }
-          if (document.fullscreenElement) {
-            await document.exitFullscreen().catch(() => {});
-          }
-          navigate(`/interviews/${interviewId}/result`, { replace: true });
-          return;
         }
 
-        setCurrentQuestion(questionData);
-
-        // If interactive, load chat history
-        if (questionData.interviewMode === "INTERACTIVE_INTERVIEW") {
-          try {
-            const msgRes = await interviewService.getInteractiveMessages(
-              questionData.interviewQuestionId
-            );
-            setMessages(msgRes.data.data);
-          } catch {
-            // No history yet
-          }
+        // Auto-enter fullscreen when resuming from history
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
         }
       } catch {
         setError(t("errors.sessionNotFound"));

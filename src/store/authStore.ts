@@ -28,6 +28,7 @@ interface AuthState {
   resendOtp: (userId: string) => Promise<void>;
   refreshToken: () => Promise<void>;
   logout: () => Promise<void>;
+  clearAuth: () => void; // Clears client-side auth state only (no API call) — used for 401 session expiry
   clearError: () => void;
 }
 
@@ -156,6 +157,8 @@ const useAuthStore = create<AuthState>((set) => ({
       set({ isLoading: false });
     }
   },
+
+  clearAuth: () => set({ roles: [], isAuthenticated: false, error: null }),
 
   clearError: () => set({ error: null }),
 }));
