@@ -1,14 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
   BriefcaseBusiness,
+  Download,
   FileText,
   Loader2,
   Plus,
   Save,
   Trash2,
+  Upload,
   X,
 } from "lucide-react";
 import profileService, {
@@ -20,9 +22,9 @@ import profileService, {
 } from "../../../services/user/profileService";
 
 const emptyResumeData = (): ResumeData => ({
-  skills: [{ name: "", level: "", years: 0 }],
-  experiences: [{ position: "", descriptions: [""] }],
-  projects: [{ name: "", role: "", technologies: [""], descriptions: [""] }],
+  skills: [],
+  experiences: [],
+  projects: [],
 });
 
 const targetPositionOptions = [
@@ -71,18 +73,9 @@ const normalizeProfile = (profile: ProfileDetail): ProfilePayload => ({
   ),
   targetLevel: normalizeOptionValue(profile.targetLevel, targetLevelOptions),
   resumeData: {
-    skills:
-      profile.resumeData?.skills?.length > 0
-        ? profile.resumeData.skills
-        : emptyResumeData().skills,
-    experiences:
-      profile.resumeData?.experiences?.length > 0
-        ? profile.resumeData.experiences
-        : emptyResumeData().experiences,
-    projects:
-      profile.resumeData?.projects?.length > 0
-        ? profile.resumeData.projects
-        : emptyResumeData().projects,
+    skills: profile.resumeData?.skills ?? [],
+    experiences: profile.resumeData?.experiences ?? [],
+    projects: profile.resumeData?.projects ?? [],
   },
 });
 
@@ -109,6 +102,7 @@ const ProfilesPage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedTitle = useMemo(() => {
     const selected = profiles.find((profile) => profile.id === selectedProfileId);
@@ -174,6 +168,78 @@ const ProfilesPage = () => {
     setForm(createEmptyPayload());
     setMessage(null);
     setError(null);
+  };
+
+  const handleExport = () => {
+    const payload: ProfilePayload = {
+      title: form.title,
+      targetPosition: form.targetPosition,
+      targetLevel: form.targetLevel,
+      resumeData: form.resumeData,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `profile-${form.title.trim() || "untitled"}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+
+        // Validate basic structure
+        if (!data || typeof data !== "object") {
+          setError(t("messages.importError"));
+          return;
+        }
+
+        const imported: ProfilePayload = {
+          title: data.title ?? "",
+          targetPosition: normalizeOptionValue(
+            data.targetPosition,
+            targetPositionOptions
+          ),
+          targetLevel: normalizeOptionValue(
+            data.targetLevel,
+            targetLevelOptions
+          ),
+          resumeData: {
+            skills: Array.isArray(data.resumeData?.skills)
+              ? data.resumeData.skills
+              : [],
+            experiences: Array.isArray(data.resumeData?.experiences)
+              ? data.resumeData.experiences
+              : [],
+            projects: Array.isArray(data.resumeData?.projects)
+              ? data.resumeData.projects
+              : [],
+          },
+        };
+
+        // Switch to create mode with imported data
+        setSelectedProfileId(null);
+        setIsCreating(true);
+        setForm(imported);
+        setError(null);
+        setMessage(t("messages.importSuccess"));
+      } catch {
+        setError(t("messages.importError"));
+      }
+    };
+    reader.readAsText(file);
+
+    // Reset input so the same file can be re-selected
+    event.target.value = "";
   };
 
   const handleSelectProfile = (profileId: number) => {
@@ -252,6 +318,15 @@ const ProfilesPage = () => {
 
   return (
     <div className="w-full">
+      {/* Hidden file input for import */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        onChange={handleImportFile}
+        className="hidden"
+      />
+
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <h1 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-900">
@@ -262,14 +337,33 @@ const ProfilesPage = () => {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCreateNew}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Plus className="h-4 w-4" />
-            {t("actions.create")}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50"
+            >
+              <Upload className="h-4 w-4 text-zinc-500" />
+              {t("actions.import")}
+            </button>
+            <button
+              type="button"
+              onClick={handleExport}
+              disabled={isCreating && !form.title.trim()}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Download className="h-4 w-4 text-zinc-500" />
+              {t("actions.export")}
+            </button>
+            <button
+              type="button"
+              onClick={handleCreateNew}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Plus className="h-4 w-4" />
+              {t("actions.create")}
+            </button>
+          </div>
         </div>
 
         {(message || error) && (

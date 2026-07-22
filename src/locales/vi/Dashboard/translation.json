@@ -1,12 +1,73 @@
 {
   "brand": "Interview with AI",
-  "logout": "Đăng xuất",
-  "badge": "Không gian luyện tập cá nhân",
-  "title": "Chọn cách bạn muốn luyện phỏng vấn hôm nay",
-  "subtitle": "Dashboard tập trung vào ba luồng chính: bắt đầu buổi phỏng vấn mô phỏng, hỏi chatbot khi cần chuẩn bị nhanh, hoặc xem lại feedback để cải thiện câu trả lời.",
-  "openAction": "Mở",
+  "greeting": {
+    "morning": "Chào buổi sáng",
+    "afternoon": "Chào buổi chiều",
+    "evening": "Chào buổi tối"
+  },
+  "noRank": "Chưa xếp hạng",
+  "exportPdf": "Xuất báo cáo PDF",
+  "exportImage": "Xuất ảnh báo cáo",
+  "selectProfile": "Chọn hồ sơ",
+  "noProfiles": "Chưa có hồ sơ nào",
+  "streak": "Đang duy trì chuỗi {{count}} ngày luyện tập",
+  "stats": {
+    "interviewsThisWeek": "Buổi phỏng vấn tuần này",
+    "vsLastWeek": "So với tuần trước",
+    "avgScore": "Điểm trung bình",
+    "last10Sessions": "10 buổi phỏng vấn gần nhất",
+    "improvementRate": "Tỷ lệ cải thiện",
+    "improvementDesc": "Dựa trên xu hướng điểm số",
+    "notEnoughData": "Cần ít nhất 10 buổi phỏng vấn"
+  },
+  "readiness": {
+    "title": "Độ sẵn sàng phỏng vấn",
+    "levels": {
+      "novice": "Khởi đầu",
+      "beginner": "Cơ bản",
+      "developing": "Đang phát triển",
+      "maturing": "Trưởng thành",
+      "expert": "Chuyên gia"
+    }
+  },
+  "radar": {
+    "title": "Tổng quan năng lực",
+    "benchmark": "Chuẩn mục tiêu",
+    "yourScore": "Điểm của bạn"
+  },
+  "review": {
+    "title": "Xem đánh giá từ AI",
+    "description": "Nhận xét chuyên sâu về kết quả học tập, điểm mạnh và lộ trình cải thiện từ AI.",
+    "cta": "Xem kết quả"
+  },
+  "heatmap": {
+    "title": "Tần suất học tập",
+    "error": "Không thể tải dữ liệu",
+    "legend": {
+      "noActivity": "Không hoạt động",
+      "few": "1-2 câu",
+      "moderate": "3-7 câu",
+      "many": "≥8 câu"
+    },
+    "days": {
+      "mon": "T2",
+      "tue": "T3",
+      "wed": "T4",
+      "thu": "T5",
+      "fri": "T6",
+      "sat": "T7",
+      "sun": "CN"
+    }
+  },
+  "skills": {
+    "coreKnowledge": "Kiến thức nền",
+    "problemSolving": "Giải quyết vấn đề",
+    "appliedExperience": "Kinh nghiệm",
+    "logicalArticulation": "Diễn đạt logic",
+    "focusAndCompleteness": "Tập trung & hoàn thiện"
+  },
   "navigation": {
-    "label": "Điều hướng Dashboard",
+    "label": "Điều hướng",
     "dashboard": "Dashboard",
     "history": "Lịch sử",
     "chatbot": "Chatbot",
@@ -15,28 +76,7 @@
     "reports": "Báo cáo"
   },
   "user": {
-    "name": "Nguyễn Minh Anh",
-    "avatarAlt": "Ảnh đại diện người dùng"
-  },
-  "userMenu": {
-    "personalInfo": "Thông tin cá nhân",
-    "manageProfile": "Quản lý hồ sơ"
-  },
-  "actions": {
-    "interview": {
-      "label": "Interview",
-      "title": "Phỏng vấn",
-      "description": "Bắt đầu một buổi phỏng vấn mô phỏng với AI theo vai trò IT và cấp độ kinh nghiệm của bạn."
-    },
-    "chatbot": {
-      "label": "Chatbot",
-      "title": "Chatbot",
-      "description": "Trao đổi nhanh với trợ lý AI để ôn câu hỏi kỹ thuật, behavioral questions và cách trình bày câu trả lời."
-    },
-    "feedback": {
-      "label": "Feedback",
-      "title": "Feedback",
-      "description": "Xem lại nhận xét, điểm mạnh và các phần cần cải thiện sau những phiên luyện tập trước đó."
-    }
+    "name": "Nguyễn Văn A",
+    "avatarAlt": "Ảnh đại diện"
   }
 }

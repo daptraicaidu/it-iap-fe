@@ -16,7 +16,8 @@
       "interactive": {
         "title": "Phỏng vấn tương tác",
         "description": "Trả lời câu hỏi và thảo luận sâu với AI. Nhận phản hồi chi tiết sau mỗi câu trả lời, AI sẽ hỏi thêm nếu cần.",
-        "features": ["Hỏi đáp 2 chiều", "Đánh giá theo thời gian thực", "Gợi ý cải thiện ngay"]
+        "features": ["Hỏi đáp 2 chiều", "Đánh giá theo thời gian thực", "Gợi ý cải thiện ngay"],
+        "recommended": "Đề xuất"
       },
       "stress": {
         "title": "Phỏng vấn áp lực",

@@ -211,17 +211,22 @@ const InterviewsPage = () => {
                   }}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative overflow-hidden rounded-xl border-2 p-6 text-left transition-all duration-300 ${
-                    isSelected
+                  className={`group relative overflow-hidden rounded-xl border-2 p-6 text-left transition-all duration-300 ${isSelected
                       ? `${mode.borderColor} ${mode.bgSelected} shadow-sm`
                       : "border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-sm"
-                  }`}
+                    }`}
                 >
                   {/* Gradient Background */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${mode.gradient} opacity-0 transition-opacity duration-300 ${isSelected ? "opacity-100" : "group-hover:opacity-50"}`}
                   />
 
+                  {/* Recommended ribbon for interactive mode */}
+                  {mode.value === "INTERACTIVE_INTERVIEW" && (
+                    <div className="absolute -left-8 top-5 z-10 -rotate-45 bg-indigo-600 px-8 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+                      {t("createPage.modes.interactive.recommended")}
+                    </div>
+                  )}
                   <div className="relative">
                     {/* Selected Check */}
                     <AnimatePresence>
@@ -230,11 +235,10 @@ const InterviewsPage = () => {
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           exit={{ scale: 0 }}
-                          className={`absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full ${
-                            mode.value === "INTERACTIVE_INTERVIEW"
+                          className={`absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full ${mode.value === "INTERACTIVE_INTERVIEW"
                               ? "bg-indigo-600"
                               : "bg-amber-600"
-                          }`}
+                            }`}
                         >
                           <Check className="h-3.5 w-3.5 text-white" />
                         </motion.div>
@@ -243,13 +247,12 @@ const InterviewsPage = () => {
 
                     {/* Icon */}
                     <div
-                      className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${
-                        isSelected
+                      className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${isSelected
                           ? mode.value === "INTERACTIVE_INTERVIEW"
                             ? "bg-indigo-100"
                             : "bg-amber-100"
                           : "bg-zinc-100"
-                      } transition-colors duration-300`}
+                        } transition-colors duration-300`}
                     >
                       <Icon
                         className={`h-6 w-6 ${isSelected ? mode.iconColor : "text-zinc-500"} transition-colors duration-300`}
@@ -269,13 +272,12 @@ const InterviewsPage = () => {
                       {mode.features.map((feature, i) => (
                         <span
                           key={i}
-                          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                            isSelected
+                          className={`rounded-full px-2.5 py-1 text-xs font-medium ${isSelected
                               ? mode.value === "INTERACTIVE_INTERVIEW"
                                 ? "bg-indigo-100 text-indigo-700"
                                 : "bg-amber-100 text-amber-700"
                               : "bg-zinc-100 text-zinc-600"
-                          } transition-colors duration-300`}
+                            } transition-colors duration-300`}
                         >
                           {feature}
                         </span>
@@ -314,11 +316,10 @@ const InterviewsPage = () => {
               });
             }}
             placeholder={t("createPage.interviewTitlePlaceholder")}
-            className={`w-full rounded-xl border bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-all focus:ring-2 ${
-              errors.title
+            className={`w-full rounded-xl border bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-all focus:ring-2 ${errors.title
                 ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
                 : "border-zinc-200 focus:border-zinc-400 focus:ring-zinc-100"
-            }`}
+              }`}
           />
           {errors.title && (
             <p className="mt-1.5 text-sm text-rose-600">{errors.title}</p>
@@ -363,13 +364,12 @@ const InterviewsPage = () => {
               <button
                 type="button"
                 onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                className={`flex w-full items-center justify-between rounded-xl border bg-white px-4 py-3 text-left text-sm transition-all ${
-                  errors.profile
+                className={`flex w-full items-center justify-between rounded-xl border bg-white px-4 py-3 text-left text-sm transition-all ${errors.profile
                     ? "border-rose-300"
                     : isProfileDropdownOpen
                       ? "border-zinc-400 ring-2 ring-zinc-100"
                       : "border-zinc-200 hover:border-zinc-300"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 text-zinc-400" />
@@ -413,11 +413,10 @@ const InterviewsPage = () => {
                               return next;
                             });
                           }}
-                          className={`flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition ${
-                            isActive
+                          className={`flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition ${isActive
                               ? "bg-zinc-900 text-white"
                               : "text-zinc-700 hover:bg-zinc-50"
-                          }`}
+                            }`}
                         >
                           <User
                             className={`h-4 w-4 ${isActive ? "text-white" : "text-zinc-400"}`}

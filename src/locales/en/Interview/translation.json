@@ -16,7 +16,8 @@
       "interactive": {
         "title": "Interactive Interview",
         "description": "Answer questions and discuss in depth with AI. Receive detailed feedback after each answer, AI will ask follow-up questions if needed.",
-        "features": ["Two-way Q&A", "Real-time evaluation", "Instant improvement tips"]
+        "features": ["Two-way Q&A", "Real-time evaluation", "Instant improvement tips"],
+        "recommended": "Recommended"
       },
       "stress": {
         "title": "Stress Interview",

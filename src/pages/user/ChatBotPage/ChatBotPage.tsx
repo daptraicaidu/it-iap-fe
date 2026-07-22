@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import {
@@ -31,6 +32,7 @@ interface ChatMessage {
 
 const ChatBotPage = () => {
   const { t } = useTranslation("Chatbot");
+  const location = useLocation();
 
   // State
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -73,6 +75,20 @@ const ChatBotPage = () => {
   useEffect(() => {
     fetchSessions();
   }, [fetchSessions]);
+
+  // ── Pre-fill input from navigation state (e.g. from Dashboard "View Result") ──
+  useEffect(() => {
+    const state = location.state as { initialPrompt?: string } | null;
+    if (state?.initialPrompt) {
+      setInputValue(state.initialPrompt);
+      // Focus textarea after render
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
+      // Clear state so navigating back/forward doesn't re-fill
+      window.history.replaceState({}, "");
+    }
+  }, [location.state]);
 
   // ── Auto-scroll to bottom ──
   useEffect(() => {
