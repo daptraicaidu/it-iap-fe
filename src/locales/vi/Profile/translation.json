@@ -171,7 +171,9 @@
     "remove": "Xóa mục",
     "addSkill": "Thêm kỹ năng",
     "addExperience": "Thêm kinh nghiệm",
-    "addProject": "Thêm dự án"
+    "addProject": "Thêm dự án",
+    "import": "Nhập hồ sơ",
+    "export": "Xuất hồ sơ"
   },
   "messages": {
     "loadListError": "Không thể tải danh sách hồ sơ.",
@@ -181,7 +183,9 @@
     "deleteSuccess": "Đã xóa hồ sơ.",
     "deleteError": "Không thể xóa hồ sơ.",
     "deleteConfirm": "Bạn có chắc muốn xóa hồ sơ này?",
-    "titleRequired": "Vui lòng nhập tên hồ sơ."
+    "titleRequired": "Vui lòng nhập tên hồ sơ.",
+    "importError": "Không thể đọc file. Vui lòng kiểm tra định dạng JSON.",
+    "importSuccess": "Đã nhập hồ sơ. Kiểm tra và bấm Lưu để hoàn tất."
   },
   "deleteDialog": {
     "title": "Xóa hồ sơ?",

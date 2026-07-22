@@ -10,6 +10,24 @@ import {
 } from "lucide-react";
 import useAuthStore from "../../store/authStore";
 import { useState, useRef, useEffect } from "react";
+import logoImg from "../../assets/logo/logo.png";
+import avatar1 from "../../assets/avatardefault/avatar1.png";
+import avatar2 from "../../assets/avatardefault/avatar2.png";
+import avatar3 from "../../assets/avatardefault/avatar3.png";
+import avatar4 from "../../assets/avatardefault/avatar4.png";
+import avatar5 from "../../assets/avatardefault/avatar5.png";
+import userInfoService from "../../services/user/userInfoService";
+
+const DEFAULT_AVATARS = [avatar1, avatar2, avatar3, avatar4, avatar5];
+
+const getDefaultAvatar = (identifier: string) => {
+  let hash = 0;
+  for (let i = 0; i < identifier.length; i++) {
+    hash = identifier.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % DEFAULT_AVATARS.length;
+  return DEFAULT_AVATARS[index];
+};
 
 const UserLayout = () => {
   const { t } = useTranslation("Dashboard");
@@ -18,11 +36,27 @@ const UserLayout = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
 
-  const user = {
-    name: t("user.name", "User"),
-    avatarUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=96&q=80",
-  };
+  const [userInfo, setUserInfo] = useState<{ fullName: string; avatarUrl: string | null } | null>(null);
+
+  useEffect(() => {
+    userInfoService
+      .getUserInfo()
+      .then((res) => {
+        if (res.data.data) {
+          setUserInfo({
+            fullName: res.data.data.fullName,
+            avatarUrl: res.data.data.avatarUrl || null,
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback silently if API fails or unauthorized
+      });
+  }, []);
+
+  const displayName = userInfo?.fullName || t("user.name", "User");
+  const displayAvatar =
+    userInfo?.avatarUrl || getDefaultAvatar(displayName);
 
   const navigationItems = [
     { label: t("navigation.dashboard", "Dashboard"), to: "/dashboard", end: false },
@@ -69,9 +103,9 @@ const UserLayout = () => {
           <div className="flex items-center">
             <Link
               to="/"
-              className="shrink-0 text-lg font-bold tracking-tight text-zinc-900"
+              className="shrink-0 flex items-center gap-2 text-lg font-bold tracking-tight text-zinc-900"
             >
-              AntiGravity
+              <img src={logoImg} alt="Logo" className="h-8 w-auto object-contain" />
             </Link>
           </div>
 
@@ -118,12 +152,12 @@ const UserLayout = () => {
                 className="flex items-center gap-2 rounded-full border border-zinc-200 p-1 pr-2 transition hover:bg-zinc-50"
               >
                 <img
-                  src={user.avatarUrl}
-                  alt={user.name}
+                  src={displayAvatar}
+                  alt={displayName}
                   className="h-8 w-8 rounded-full object-cover"
                 />
                 <span className="hidden text-sm font-medium text-zinc-700 md:block max-w-[100px] truncate">
-                  {user.name}
+                  {displayName}
                 </span>
                 <ChevronDown
                   className={`h-4 w-4 text-zinc-500 transition ${

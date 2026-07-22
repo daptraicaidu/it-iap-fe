@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
 import {
-  Flag,
   Loader2,
   AlertCircle,
   MessageSquare,
@@ -78,7 +77,7 @@ const UserReportsPage = () => {
   const [items, setItems] = useState<ReportItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("");
@@ -110,7 +109,7 @@ const UserReportsPage = () => {
   }, [fetchReports]);
 
   useEffect(() => {
-    setCurrentPage(0);
+    setCurrentPage(1);
   }, [statusFilter, typeFilter]);
 
   return (
@@ -266,9 +265,9 @@ const UserReportsPage = () => {
 
             <div className="mt-6">
               <Pagination
-                currentPage={currentPage}
+                currentPage={currentPage - 1}
                 totalPages={totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={(zeroBasedPage) => setCurrentPage(zeroBasedPage + 1)}
               />
             </div>
           </>

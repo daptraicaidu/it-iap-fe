@@ -79,7 +79,8 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
       
       setInterimTranscript(currentInterimChunk);
       if (currentFinalChunk) {
-        setTranscript(currentFinalChunk);
+        // Accumulate final transcript instead of replacing
+        setTranscript((prev) => prev + currentFinalChunk);
       }
     };
 

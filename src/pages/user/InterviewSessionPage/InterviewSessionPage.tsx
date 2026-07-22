@@ -286,13 +286,33 @@ const InterviewSessionPage = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Apply speech recognition transcript to textarea
+  // Track the user answer text that existed before the current listening session started
+  const preListeningAnswerRef = useRef("");
+
+  // When listening starts, save the current userAnswer as baseline
   useEffect(() => {
-    if (transcript) {
-      setUserAnswer((prev) => prev + transcript);
-      resetTranscript();
+    if (isListening) {
+      preListeningAnswerRef.current = userAnswer;
     }
-  }, [transcript, resetTranscript]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isListening]);
+
+  // Sync speech recognition output directly into the textarea in real-time
+  useEffect(() => {
+    if (!isListening && transcript) {
+      // Listening just stopped — finalize: set answer to baseline + accumulated transcript
+      setUserAnswer(preListeningAnswerRef.current + transcript);
+      resetTranscript();
+      return;
+    }
+
+    if (isListening) {
+      // While listening, show baseline + final transcript so far + interim
+      setUserAnswer(
+        preListeningAnswerRef.current + transcript + interimTranscript
+      );
+    }
+  }, [isListening, transcript, interimTranscript, resetTranscript]);
 
   // Time up handler
   useEffect(() => {
@@ -881,11 +901,6 @@ const InterviewSessionPage = () => {
               {/* Chat Input */}
               {!isViewingPrevious && (
                 <div className="relative border-t border-zinc-200 p-3 sm:p-4">
-                  {isListening && interimTranscript && (
-                    <div className="absolute -top-10 left-4 right-4 text-xs font-medium text-indigo-600 bg-white/90 px-3 py-2 rounded-lg border border-indigo-100 shadow-sm animate-pulse z-10 truncate">
-                      🎤 {interimTranscript}
-                    </div>
-                  )}
                   <div className="flex items-end gap-2">
                     {/* Mic button */}
                     {sttSupported && (
@@ -1000,13 +1015,6 @@ const InterviewSessionPage = () => {
                           </>
                         )}
                       </button>
-                      
-                      {/* Real-time STT preview */}
-                      {isListening && interimTranscript && (
-                        <p className="text-xs font-medium text-indigo-600 animate-pulse mt-1 ml-1">
-                          🎤 {interimTranscript}
-                        </p>
-                      )}
                     </div>
                   )}
                 </div>

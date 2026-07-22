@@ -70,7 +70,12 @@ export interface FeedbackQuestion {
 }
 
 export interface OverallResult {
+  appliedExperience?: number;
+  coreKnowledge?: number;
   feedback: string;
+  focusAndCompleteness?: number;
+  logicalArticulation?: number;
+  problemSolving?: number;
   totalPoint: number;
 }
 

@@ -3,7 +3,6 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Trophy,
   ArrowLeft,
   RotateCcw,
   Loader2,
@@ -13,8 +12,6 @@ import {
   Star,
   Target,
   CheckCircle2,
-  Volume2,
-  VolumeX,
   Flag,
   History,
   User,
@@ -28,10 +25,10 @@ import type {
   ApiErrorResponse,
   ChatMessage,
 } from "../../../services/user/interviewService";
-import { useSpeechSynthesis } from "../../../hooks/useSpeechSynthesis";
 import useInterviewStore from "../../../store/interviewStore";
 import ReportModal from "../../../components/ReportModal";
 import type { AxiosError } from "axios";
+import { RadarChart } from "../DashboardPage/DashboardPage";
 
 // Animated counter component
 function AnimatedScore({
@@ -104,7 +101,6 @@ const InterviewResultPage = () => {
   const highlightQuestionId = searchParams.get("highlightQuestionId");
   const viewMode = searchParams.get("viewMode");
   const resetStore = useInterviewStore((s) => s.reset);
-  const { speak, stop, isSpeaking, isSupported: ttsSupported } = useSpeechSynthesis();
 
   const [feedbackData, setFeedbackData] =
     useState<InterviewFeedbackData | null>(null);
@@ -307,9 +303,27 @@ const InterviewResultPage = () => {
 
   const isInteractive = feedbackData.interviewMode === "INTERACTIVE_INTERVIEW";
 
+  const userRadarValues = [
+    feedbackData.overallResult.coreKnowledge ?? 0,
+    feedbackData.overallResult.problemSolving ?? 0,
+    feedbackData.overallResult.appliedExperience ?? 0,
+    feedbackData.overallResult.logicalArticulation ?? 0,
+    feedbackData.overallResult.focusAndCompleteness ?? 0,
+  ];
+
+  const benchmarkValues = [7, 7, 7, 7, 7];
+
+  const radarLabels = [
+    t("skills.coreKnowledge", { defaultValue: "Kiến thức nền" }),
+    t("skills.problemSolving", { defaultValue: "Giải quyết vấn đề" }),
+    t("skills.appliedExperience", { defaultValue: "Kinh nghiệm thực tiễn" }),
+    t("skills.logicalArticulation", { defaultValue: "Diễn đạt logic" }),
+    t("skills.focusAndCompleteness", { defaultValue: "Tập trung & hoàn thiện" }),
+  ];
+
   return (
     <div className="w-full">
-      <section className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -325,107 +339,98 @@ const InterviewResultPage = () => {
           </p>
         </motion.div>
 
-        {/* Overall Score Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-6 rounded-xl border border-zinc-200 bg-white p-6 sm:p-8"
-        >
-          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-            {/* Score Circle */}
-            <div className="relative flex h-32 w-32 shrink-0 items-center justify-center">
-              {/* Background ring */}
-              <svg className="absolute h-full w-full -rotate-90" viewBox="0 0 120 120">
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="52"
-                  fill="none"
-                  stroke="#f4f4f5"
-                  strokeWidth="8"
-                />
-                <motion.circle
-                  cx="60"
-                  cy="60"
-                  r="52"
-                  fill="none"
-                  stroke={
-                    feedbackData.overallResult.totalPoint >= 8
-                      ? "#059669"
-                      : feedbackData.overallResult.totalPoint >= 6
-                        ? "#4f46e5"
-                        : feedbackData.overallResult.totalPoint >= 4
-                          ? "#d97706"
-                          : "#dc2626"
-                  }
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 52}`}
-                  initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
-                  animate={{
-                    strokeDashoffset:
-                      2 * Math.PI * 52 * (1 - feedbackData.overallResult.totalPoint / 10),
-                  }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                />
-              </svg>
-              <div className="text-center">
-                <div
-                  className={`text-3xl font-bold ${getScoreColor(feedbackData.overallResult.totalPoint)}`}
-                >
-                  <AnimatedScore
-                    value={feedbackData.overallResult.totalPoint}
-                  />
+        {/* 2-Column Grid Layout */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+          {/* Left Main Content */}
+          <div className="lg:col-span-7 xl:col-span-8 space-y-6">
+            {/* Overall Score Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8"
+            >
+              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+                {/* Score Circle */}
+                <div className="relative flex h-32 w-32 shrink-0 items-center justify-center">
+                  {/* Background ring */}
+                  <svg className="absolute h-full w-full -rotate-90" viewBox="0 0 120 120">
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="52"
+                      fill="none"
+                      stroke="#f4f4f5"
+                      strokeWidth="8"
+                    />
+                    <motion.circle
+                      cx="60"
+                      cy="60"
+                      r="52"
+                      fill="none"
+                      stroke={
+                        feedbackData.overallResult.totalPoint >= 8
+                          ? "#059669"
+                          : feedbackData.overallResult.totalPoint >= 6
+                            ? "#4f46e5"
+                            : feedbackData.overallResult.totalPoint >= 4
+                              ? "#d97706"
+                              : "#dc2626"
+                      }
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 52}`}
+                      initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
+                      animate={{
+                        strokeDashoffset:
+                          2 * Math.PI * 52 * (1 - feedbackData.overallResult.totalPoint / 10),
+                      }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                    />
+                  </svg>
+                  <div className="text-center">
+                    <div
+                      className={`text-3xl font-bold ${getScoreColor(feedbackData.overallResult.totalPoint)}`}
+                    >
+                      <AnimatedScore
+                        value={feedbackData.overallResult.totalPoint}
+                      />
+                    </div>
+                    <div className="text-xs text-zinc-400">
+                      {t("resultPage.outOf")}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs text-zinc-400">
-                  {t("resultPage.outOf")}
+
+                {/* Overall Feedback */}
+                <div className="flex-1">
+                  <div className="mb-3 flex items-center gap-2">
+                    <h2 className="text-lg font-semibold text-zinc-900">
+                      {t("resultPage.overallFeedback")}
+                    </h2>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${getScoreBg(feedbackData.overallResult.totalPoint)}`}
+                    >
+                      {getScoreLabel(feedbackData.overallResult.totalPoint, t)}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-zinc-600">
+                    {feedbackData.overallResult.feedback}
+                  </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Overall Feedback */}
-            <div className="flex-1">
-              <div className="mb-3 flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-zinc-900">
-                  {t("resultPage.overallFeedback")}
-                </h2>
-                <span
-                  className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${getScoreBg(feedbackData.overallResult.totalPoint)}`}
-                >
-                  {getScoreLabel(feedbackData.overallResult.totalPoint, t)}
-                </span>
-              </div>
-              <p className="text-sm leading-relaxed text-zinc-600">
-                {feedbackData.overallResult.feedback}
-              </p>
-
-              {/* TTS */}
-              {ttsSupported && (
-                <button
-                  onClick={() =>
-                    isSpeaking ? stop() : speak(feedbackData.overallResult.feedback)
-                  }
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-zinc-200"
-                >
-                  {isSpeaking ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
-                  {isSpeaking ? t("sessionPage.stopListening") : t("sessionPage.listenAI")}
-                </button>
-              )}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Question Results */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-8"
-        >
-          <h2 className="mb-4 text-lg font-semibold text-zinc-900">
-            {t("resultPage.questionResults")}
-          </h2>
+            {/* Question Results */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-8"
+            >
+              <h2 className="mb-4 text-lg font-semibold text-zinc-900">
+                {t("resultPage.questionResults")}
+              </h2>
 
           <div className="space-y-3">
             {feedbackData.feedbackForQuestions.map(
@@ -724,6 +729,100 @@ const InterviewResultPage = () => {
             </button>
           </motion.div>
         )}
+      </div>
+
+          {/* Right Sticky Sidebar: Skill Radar Chart */}
+          <div className="lg:col-span-5 xl:col-span-4 sticky top-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm"
+            >
+              <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3">
+                <h3 className="text-base font-semibold text-zinc-900">
+                  {t("resultPage.skillRadarTitle", { defaultValue: "Đánh giá 5 nhóm kỹ năng" })}
+                </h3>
+                <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
+                  AI Assessment
+                </span>
+              </div>
+
+              {/* Shared Skill Radar SVG */}
+              <RadarChart
+                userValues={userRadarValues}
+                benchmarkValues={benchmarkValues}
+                labels={radarLabels}
+              />
+
+              {/* Legend */}
+              <div className="mt-1 mb-2 flex items-center justify-center gap-5 text-xs text-zinc-500">
+                <div className="flex items-center gap-1.5">
+                  <svg width="20" height="8">
+                    <line
+                      x1="0"
+                      y1="4"
+                      x2="20"
+                      y2="4"
+                      stroke="#eab308"
+                      strokeWidth="2"
+                      strokeDasharray="4,3"
+                    />
+                  </svg>
+                  <span>{t("radar.benchmark", { defaultValue: "Chuẩn mục tiêu" })}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <svg width="20" height="8">
+                    <line
+                      x1="0"
+                      y1="4"
+                      x2="20"
+                      y2="4"
+                      stroke="#7c3aed"
+                      strokeWidth="2.5"
+                    />
+                    <circle cx="10" cy="4" r="3" fill="#7c3aed" />
+                  </svg>
+                  <span>{t("radar.userScore", { defaultValue: "Điểm của bạn" })}</span>
+                </div>
+              </div>
+
+              {/* Breakdown List */}
+              <div className="mt-4 space-y-2 border-t border-zinc-100 pt-4 text-xs">
+                <div className="flex items-center justify-between text-zinc-600">
+                  <span>Kiến thức nền:</span>
+                  <span className="font-semibold text-zinc-900">
+                    {(feedbackData.overallResult.coreKnowledge ?? 0).toFixed(1)} / 10
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-zinc-600">
+                  <span>Giải quyết vấn đề:</span>
+                  <span className="font-semibold text-zinc-900">
+                    {(feedbackData.overallResult.problemSolving ?? 0).toFixed(1)} / 10
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-zinc-600">
+                  <span>Kinh nghiệm thực tiễn:</span>
+                  <span className="font-semibold text-zinc-900">
+                    {(feedbackData.overallResult.appliedExperience ?? 0).toFixed(1)} / 10
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-zinc-600">
+                  <span>Diễn đạt logic:</span>
+                  <span className="font-semibold text-zinc-900">
+                    {(feedbackData.overallResult.logicalArticulation ?? 0).toFixed(1)} / 10
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-zinc-600">
+                  <span>Tập trung & hoàn thiện:</span>
+                  <span className="font-semibold text-zinc-900">
+                    {(feedbackData.overallResult.focusAndCompleteness ?? 0).toFixed(1)} / 10
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Report Modal */}
