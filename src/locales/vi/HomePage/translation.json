@@ -7,46 +7,35 @@
   },
   "hero": {
     "badge": "Nền tảng luyện phỏng vấn IT #1",
-    "title": "Luyện phỏng vấn\nngành IT cùng AI",
-    "subtitle": "Nền tảng hỗ trợ luyện phỏng vấn việc làm ngành Công nghệ thông tin bằng trí tuệ nhân tạo. Thực hành với các câu hỏi thực tế, nhận phản hồi chi tiết tức thì.",
+    "title": "Chinh phục mọi cuộc\nphỏng vấn CNTT cùng AI",
+    "subtitle": "Nền tảng thông minh giúp bạn luyện tập phỏng vấn các vị trí Frontend, Backend, Tester, Data Analyst cấp độ Intern/Fresher với sự hỗ trợ chấm điểm và nhận xét từ trí tuệ nhân tạo.",
     "cta": "Bắt đầu luyện tập",
     "ctaSecondary": "Tìm hiểu thêm"
   },
-  "features": {
-    "label": "Tính năng nổi bật",
-    "title": "Mọi thứ bạn cần để sẵn sàng cho buổi phỏng vấn",
-    "aiInterview": {
-      "title": "Mentor AI Đa Chiều",
-      "description": "Đối diện với Mentor AI có khả năng thích ứng linh hoạt, liên tục đặt câu hỏi xoáy sâu vào kỹ năng chuyên môn và kinh nghiệm thực tế của bạn."
-    },
-    "feedback": {
-      "title": "Báo Cáo Chi Tiết Tức Thì",
-      "description": "Nhận phân tích chuyên sâu ngay sau khi phỏng vấn, chỉ ra điểm mạnh, điểm yếu và đề xuất hướng cải thiện tối ưu nhất."
-    },
-    "criteria": {
-      "title": "Bộ Tiêu Chí Đánh Giá Chuẩn",
-      "description": "Hệ thống tự động chấm điểm dựa trên năng lực chuyên môn, tư duy giải quyết vấn đề, cấu trúc câu trả lời và mức độ tự tin qua giọng nói."
-    }
-  },
-  "howItWorks": {
-    "label": "Cách hoạt động",
-    "title": "3 bước đơn giản để bắt đầu",
+  "roadmap": {
+    "title": "Lộ trình 3 bước làm chủ kỹ năng phỏng vấn",
     "step1": {
-      "title": "Chọn vị trí",
-      "description": "Chọn vị trí công việc IT bạn muốn luyện phỏng vấn và cấp độ kinh nghiệm."
+      "number": "01",
+      "title": "Khởi tạo câu hỏi phỏng vấn",
+      "description": "AI tự động sinh bộ câu hỏi theo vị trí, cấp độ Intern/Fresher và chủ đề bạn chọn."
     },
     "step2": {
-      "title": "Phỏng vấn với AI",
-      "description": "Bắt đầu buổi phỏng vấn mô phỏng. AI sẽ đặt câu hỏi phù hợp với vị trí bạn chọn."
+      "number": "02",
+      "title": "Thực hiện bài phỏng vấn",
+      "description": "Trả lời các câu hỏi kỹ thuật, tình huống và hành vi bằng cách nhập văn bản trực tiếp."
     },
     "step3": {
-      "title": "Nhận phản hồi",
-      "description": "Xem đánh giá chi tiết, điểm mạnh, điểm cần cải thiện và lời khuyên cụ thể từ AI."
+      "number": "03",
+      "title": "Nhận điểm số & Lời khuyên",
+      "description": "AI chấm điểm chi tiết theo từng tiêu chí, đưa ra dàn ý và gợi ý câu trả lời tốt hơn cho lần sau."
     }
+  },
+  "carousel": {
+    "title": "Hàng nghìn ứng viên đã thế chỗ Intern/Fresher thành công"
   },
   "cta": {
     "title": "Sẵn sàng cho buổi phỏng vấn tiếp theo?",
-    "subtitle": "Bắt đầu luyện tập ngay hôm nay — hoàn toàn miễn phí.",
+    "subtitle": "Bắt đầu luyện tập ngay hôm nay.",
     "button": "Bắt đầu ngay"
   },
   "footer": {

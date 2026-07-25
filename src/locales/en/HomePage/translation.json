@@ -7,46 +7,35 @@
   },
   "hero": {
     "badge": "#1 IT Interview Practice Platform",
-    "title": "Practice IT\nInterviews with AI",
-    "subtitle": "An AI-powered platform to help you practice job interviews in Information Technology. Practice with real-world questions and receive detailed, instant feedback.",
+    "title": "Conquer every IT\ninterview with AI",
+    "subtitle": "A smart platform to practice interviews for Frontend, Backend, Tester, and Data Analyst positions at Intern/Fresher level with AI-powered scoring and feedback.",
     "cta": "Start Practicing",
     "ctaSecondary": "Learn More"
   },
-  "features": {
-    "label": "Features",
-    "title": "Everything you need to ace your interview",
-    "aiInterview": {
-      "title": "Multi-dimensional AI Mentors",
-      "description": "Face off against highly adaptable AI mentors that continuously drill down into your technical skills and practical experience."
-    },
-    "feedback": {
-      "title": "Instant Detailed Reports",
-      "description": "Receive an in-depth analysis immediately after your interview, highlighting your strengths, weaknesses, and actionable improvement steps."
-    },
-    "criteria": {
-      "title": "Professional Evaluation Criteria",
-      "description": "Our system automatically scores your performance based on technical proficiency, problem-solving mindset, answer structure, and vocal confidence."
-    }
-  },
-  "howItWorks": {
-    "label": "How It Works",
-    "title": "3 simple steps to get started",
+  "roadmap": {
+    "title": "3-step roadmap to master interview skills",
     "step1": {
-      "title": "Choose a Role",
-      "description": "Select the IT position you want to practice interviewing for and your experience level."
+      "number": "01",
+      "title": "Generate interview questions",
+      "description": "AI auto-generates question sets based on the position, Intern/Fresher level, and topic you choose."
     },
     "step2": {
-      "title": "Interview with AI",
-      "description": "Start a simulated interview session. AI will ask questions tailored to your chosen position."
+      "number": "02",
+      "title": "Complete the interview",
+      "description": "Answer technical, situational, and behavioral questions by typing your responses directly."
     },
     "step3": {
-      "title": "Get Feedback",
-      "description": "View detailed evaluations, strengths, areas for improvement, and specific advice from AI."
+      "number": "03",
+      "title": "Get scores & advice",
+      "description": "AI scores each criterion in detail, provides outlines and suggests better answers for next time."
     }
+  },
+  "carousel": {
+    "title": "Thousands of candidates have landed Intern/Fresher roles successfully"
   },
   "cta": {
     "title": "Ready for your next interview?",
-    "subtitle": "Start practicing today — completely free.",
+    "subtitle": "Start practicing today.",
     "button": "Get Started Now"
   },
   "footer": {
