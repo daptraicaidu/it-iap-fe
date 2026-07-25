@@ -95,6 +95,40 @@
       "error": "Không thể cập nhật mật khẩu. Vui lòng thử lại."
     }
   },
+  "twoFa": {
+    "title": "Xác thực 2 bước (2FA)",
+    "description": "Thêm lớp bảo vệ tài khoản bằng ứng dụng xác thực như Google Authenticator hoặc Authy.",
+    "statusEnabled": "Đã kích hoạt",
+    "statusDisabled": "Chưa kích hoạt",
+    "enableButton": "Bật xác thực 2 bước",
+    "disableButton": "Tắt xác thực 2 bước",
+    "setup": {
+      "title": "Thiết lập xác thực 2 bước",
+      "step1": "Quét mã QR bên dưới bằng ứng dụng xác thực của bạn",
+      "step2": "Hoặc nhập thủ công mã khóa bí mật sau:",
+      "step3": "Nhập mã 6 chữ số từ ứng dụng để xác nhận",
+      "totpPlaceholder": "Nhập mã TOTP",
+      "confirm": "Xác nhận bật 2FA",
+      "confirming": "Đang xác nhận...",
+      "cancel": "Hủy",
+      "copySecret": "Sao chép",
+      "copied": "Đã sao chép!"
+    },
+    "disable": {
+      "title": "Tắt xác thực 2 bước",
+      "description": "Nhập mã TOTP 6 chữ số từ ứng dụng xác thực để xác nhận tắt.",
+      "totpPlaceholder": "Nhập mã TOTP",
+      "confirm": "Xác nhận tắt 2FA",
+      "confirming": "Đang xử lý...",
+      "cancel": "Hủy"
+    },
+    "messages": {
+      "enableSuccess": "Bật xác thực 2 bước thành công!",
+      "disableSuccess": "Đã tắt xác thực 2 bước.",
+      "error": "Có lỗi xảy ra. Vui lòng thử lại.",
+      "loadError": "Không thể tải trạng thái 2FA."
+    }
+  },
   "manage": {
     "title": "Quản lý hồ sơ",
     "description": "Tạo và cập nhật các hồ sơ ứng tuyển để AI sử dụng đúng kỹ năng, kinh nghiệm và dự án khi luyện phỏng vấn."
@@ -137,7 +171,9 @@
     "remove": "Xóa mục",
     "addSkill": "Thêm kỹ năng",
     "addExperience": "Thêm kinh nghiệm",
-    "addProject": "Thêm dự án"
+    "addProject": "Thêm dự án",
+    "import": "Nhập hồ sơ",
+    "export": "Xuất hồ sơ"
   },
   "messages": {
     "loadListError": "Không thể tải danh sách hồ sơ.",
@@ -147,7 +183,9 @@
     "deleteSuccess": "Đã xóa hồ sơ.",
     "deleteError": "Không thể xóa hồ sơ.",
     "deleteConfirm": "Bạn có chắc muốn xóa hồ sơ này?",
-    "titleRequired": "Vui lòng nhập tên hồ sơ."
+    "titleRequired": "Vui lòng nhập tên hồ sơ.",
+    "importError": "Không thể đọc file. Vui lòng kiểm tra định dạng JSON.",
+    "importSuccess": "Đã nhập hồ sơ. Kiểm tra và bấm Lưu để hoàn tất."
   },
   "deleteDialog": {
     "title": "Xóa hồ sơ?",
@@ -159,7 +197,7 @@
       "userInfo": "Thông tin cá nhân",
       "profiles": "Quản lý hồ sơ",
       "general": "Cài đặt chung",
-      "password": "Đổi mật khẩu",
+      "password": "Bảo mật tài khoản",
       "activities": "Hoạt động"
     },
     "activities": {

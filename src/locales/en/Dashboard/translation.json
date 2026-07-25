@@ -1,41 +1,82 @@
 {
   "brand": "Interview with AI",
-  "logout": "Log out",
-  "badge": "Personal practice workspace",
-  "title": "Choose how you want to practice today",
-  "subtitle": "The dashboard focuses on three core flows: start a simulated interview, ask the chatbot when you need quick preparation, or review feedback to improve your answers.",
-  "openAction": "Open",
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "noRank": "Unranked",
+  "exportPdf": "Export PDF Report",
+  "exportImage": "Export Report Image",
+  "selectProfile": "Select profile",
+  "noProfiles": "No profiles yet",
+  "streak": "Maintaining a {{count}}-day practice streak",
+  "stats": {
+    "interviewsThisWeek": "Interviews this week",
+    "vsLastWeek": "Compared to last week",
+    "avgScore": "Average score",
+    "last10Sessions": "Last 10 interview sessions",
+    "improvementRate": "Improvement rate",
+    "improvementDesc": "Based on score trends",
+    "notEnoughData": "Need at least 10 interview sessions"
+  },
+  "readiness": {
+    "title": "Interview readiness",
+    "levels": {
+      "novice": "Novice",
+      "beginner": "Beginner",
+      "developing": "Developing",
+      "maturing": "Maturing",
+      "expert": "Expert"
+    }
+  },
+  "radar": {
+    "title": "Skill overview",
+    "benchmark": "Target benchmark",
+    "yourScore": "Your score"
+  },
+  "review": {
+    "title": "View AI Evaluation",
+    "description": "Get an in-depth review of your learning results, strengths, and improvement roadmap from AI.",
+    "cta": "View result"
+  },
+  "heatmap": {
+    "title": "Learning frequency",
+    "error": "Unable to load data",
+    "legend": {
+      "noActivity": "No activity",
+      "few": "1-2 questions",
+      "moderate": "3-7 questions",
+      "many": "≥8 questions"
+    },
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  },
+  "skills": {
+    "coreKnowledge": "Core Knowledge",
+    "problemSolving": "Problem Solving",
+    "appliedExperience": "Applied Experience",
+    "logicalArticulation": "Logical Articulation",
+    "focusAndCompleteness": "Focus & Completeness"
+  },
   "navigation": {
     "label": "Dashboard navigation",
     "dashboard": "Dashboard",
-    "history": "Interview history",
+    "history": "History",
     "chatbot": "Chatbot",
-    "interview": "Start Interview",
-    "reviewResult": "Review Result"
+    "interview": "Interview",
+    "reviewResult": "Review Result",
+    "reports": "Reports"
   },
   "user": {
-    "name": "Nguyen Minh Anh",
+    "name": "Nguyen Van A",
     "avatarAlt": "User avatar"
-  },
-  "userMenu": {
-    "personalInfo": "Personal information",
-    "manageProfile": "Manage profile"
-  },
-  "actions": {
-    "interview": {
-      "label": "Interview",
-      "title": "Interview",
-      "description": "Start a simulated AI interview based on your IT role and experience level."
-    },
-    "chatbot": {
-      "label": "Chatbot",
-      "title": "Chatbot",
-      "description": "Talk with the AI assistant to review technical questions, behavioral questions, and answer structure."
-    },
-    "feedback": {
-      "label": "Feedback",
-      "title": "Feedback",
-      "description": "Review comments, strengths, and improvement areas from your previous practice sessions."
-    }
   }
 }

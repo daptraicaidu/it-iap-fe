@@ -505,7 +505,7 @@ const HomePage = () => {
               onClick={handleCTA}
               className="bg-zinc-950 text-white text-[15px] font-medium rounded-full px-6 py-2.5 hover:bg-zinc-800 transition-colors cursor-pointer border-none shadow-sm"
             >
-              {t("nav.getStarted")}
+              {isAuthenticated ? "Dashboard" : t("nav.getStarted")}
             </button>
           </div>
 
@@ -547,7 +547,7 @@ const HomePage = () => {
                   handleCTA();
                 }}
               >
-                {t("nav.getStarted")}
+                {isAuthenticated ? "Dashboard" : t("nav.getStarted")}
               </button>
             </div>
           </div>
