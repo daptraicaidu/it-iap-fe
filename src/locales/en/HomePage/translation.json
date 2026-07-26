@@ -7,10 +7,36 @@
   },
   "hero": {
     "badge": "#1 IT Interview Practice Platform",
-    "title": "Practice IT\nInterviews with AI",
-    "subtitle": "An AI-powered platform to help you practice job interviews in Information Technology. Practice with real-world questions and receive detailed, instant feedback.",
+    "line1": "The Smart IT",
+    "line2": "Interview",
+    "line3": "Platform",
+    "aiVoice": "AI Voice",
     "cta": "Start Practicing",
-    "ctaSecondary": "Learn More"
+    "ctaPrimary": "Start for Free",
+    "ctaSecondary": "Explore Now",
+    "socialProof": "candidates already practicing",
+    "scrollHint": "Scroll",
+    "mascotLabel": "AI Interview Assistant",
+    "mascotStatus": "Ready to practice"
+  },
+  "techBadges": {
+    "codeReview": {
+      "label": "AI Code Review",
+      "detail": "Instant analysis"
+    },
+    "speechWave": {
+      "label": "Speech Recognition",
+      "detail": "98% accuracy"
+    },
+    "interviewScore": {
+      "label": "Interview Score",
+      "score": "92/100",
+      "badge": "Excellent"
+    },
+    "feedback": {
+      "label": "AI Feedback",
+      "detail": "Real-time"
+    }
   },
   "features": {
     "label": "Features",
