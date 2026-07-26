@@ -367,9 +367,6 @@ const QuestionsPage = () => {
   const showingFrom = totalElements === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const showingTo = Math.min(currentPage * pageSize, totalElements);
 
-  // Truncate long text
-  const truncate = (text: string, maxLen: number) =>
-    text.length > maxLen ? text.slice(0, maxLen) + "…" : text;
 
   return (
     <div className="space-y-6">

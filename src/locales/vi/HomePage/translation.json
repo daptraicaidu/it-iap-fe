@@ -7,10 +7,36 @@
   },
   "hero": {
     "badge": "Nền tảng luyện phỏng vấn IT #1",
-    "title": "Luyện phỏng vấn\nngành IT cùng AI",
-    "subtitle": "Nền tảng hỗ trợ luyện phỏng vấn việc làm ngành Công nghệ thông tin bằng trí tuệ nhân tạo. Thực hành với các câu hỏi thực tế, nhận phản hồi chi tiết tức thì.",
+    "line1": "Nền tảng Luyện",
+    "line2": "Phỏng vấn IT",
+    "line3": "thông minh",
+    "aiVoice": "AI Voice",
     "cta": "Bắt đầu luyện tập",
-    "ctaSecondary": "Tìm hiểu thêm"
+    "ctaPrimary": "Bắt đầu miễn phí",
+    "ctaSecondary": "Khám phá ngay",
+    "socialProof": "ứng viên đã luyện tập",
+    "scrollHint": "Cuộn xuống",
+    "mascotLabel": "Trợ lý phỏng vấn AI",
+    "mascotStatus": "Sẵn sàng luyện tập"
+  },
+  "techBadges": {
+    "codeReview": {
+      "label": "AI Code Review",
+      "detail": "Phân tích tức thì"
+    },
+    "speechWave": {
+      "label": "Nhận diện giọng nói",
+      "detail": "Độ chính xác 98%"
+    },
+    "interviewScore": {
+      "label": "Điểm phỏng vấn",
+      "score": "92/100",
+      "badge": "Xuất sắc"
+    },
+    "feedback": {
+      "label": "Phản hồi AI",
+      "detail": "Thời gian thực"
+    }
   },
   "features": {
     "label": "Tính năng nổi bật",

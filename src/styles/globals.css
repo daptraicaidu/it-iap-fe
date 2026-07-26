@@ -38,6 +38,47 @@
   --color-semantic-error: #dc2626;
   --color-semantic-success: #16a34a;
 
+  /* ─ Homepage Palette (--hp- prefix) ─ */
+  --hp-color-1: #23242D;
+  --hp-color-2: #0071F9;
+  --hp-color-3: #FFB800;
+  --hp-color-4: #A4CAFE;
+  --hp-color-5: #DDDDDD;
+  --hp-color-6: #E5E7EB;
+  --hp-color-7: #F3F4F6;
+  --hp-color-8: #FFFFFF;
+
+  /* ─ Deep Blue Hero Palette (semantic aliases) ─ */
+  --hp-color-primary-blue: #0051F9;
+  --hp-color-accent: #FFB800;
+  --hp-color-white: #FFFFFF;
+
+  /* ─ Homepage Spacing (--hp- prefix) ─ */
+  --hp-space-1: 3px;
+  --hp-space-2: 4px;
+  --hp-space-3: 8px;
+  --hp-space-4: 12px;
+  --hp-space-5: 16px;
+  --hp-space-6: 20px;
+  --hp-space-7: 24px;
+  --hp-space-8: 28px;
+  --hp-space-9: 32px;
+  --hp-space-10: 48px;
+  --hp-space-11: 80px;
+  --hp-space-12: 87px;
+  --hp-space-13: 120px;
+  --hp-space-14: 136px;
+
+  /* ─ Homepage Border Radius (--hp- prefix) ─ */
+  --hp-radius-sm: 24px;
+  --hp-radius-md: 32px;
+  --hp-radius-lg: 48px;
+  --hp-radius-xl: 112px;
+  --hp-radius-full: 9999px;
+
+  /* ─ Homepage Shadows (--hp- prefix) ─ */
+  --hp-shadow-glow-blue: 0px 10px 30px -5px rgba(0, 113, 249, 0.3), 0px 4px 12px 0px rgba(0, 0, 0, 0.05);
+
   /* ─ Font Families ─ */
   --font-display: "EB Garamond", "Times New Roman", serif;
   --font-body: "Inter", system-ui, sans-serif;
