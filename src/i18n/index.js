@@ -32,6 +32,10 @@ import enAdminFeedbacks from "../locales/en/AdminFeedbacks/translation.json";
 import viAdminFeedbacks from "../locales/vi/AdminFeedbacks/translation.json";
 import enNotification from "../locales/en/Notification/translation.json";
 import viNotification from "../locales/vi/Notification/translation.json";
+import enAdminNotifications from "../locales/en/AdminNotifications/translation.json";
+import viAdminNotifications from "../locales/vi/AdminNotifications/translation.json";
+import enAdminLayout from "../locales/en/AdminLayout/translation.json";
+import viAdminLayout from "../locales/vi/AdminLayout/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -54,6 +58,8 @@ i18n
         Feedback: enFeedback,
         AdminFeedbacks: enAdminFeedbacks,
         Notification: enNotification,
+        AdminNotifications: enAdminNotifications,
+        AdminLayout: enAdminLayout,
       },
       vi: {
         HomePage: viHomePage,
@@ -71,11 +77,13 @@ i18n
         Feedback: viFeedback,
         AdminFeedbacks: viAdminFeedbacks,
         Notification: viNotification,
+        AdminNotifications: viAdminNotifications,
+        AdminLayout: viAdminLayout,
       },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers", "AdminQuestions", "AdminPrompts", "Interview", "Chatbot", "Report", "AdminReports", "Feedback", "AdminFeedbacks", "Notification"],
+    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers", "AdminQuestions", "AdminPrompts", "Interview", "Chatbot", "Report", "AdminReports", "Feedback", "AdminFeedbacks", "Notification", "AdminNotifications", "AdminLayout"],
     interpolation: {
       escapeValue: false,
     },

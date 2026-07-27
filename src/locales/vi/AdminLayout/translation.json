@@ -1,0 +1,37 @@
+{
+  "menu": {
+    "dashboard": "Dashboard",
+    "users": "Quản lý Người dùng",
+    "questions": "Ngân hàng Câu hỏi",
+    "prompts": "Quản lý Prompt AI",
+    "reports": "Báo cáo & Khiếu nại",
+    "feedbacks": "Góp ý & Đánh giá",
+    "notifications": "Thông báo Hệ thống",
+    "settings": "Cài đặt Admin"
+  },
+  "subtitles": {
+    "dashboard": "Tổng quan chỉ số & hoạt động hệ thống",
+    "users": "Danh sách & phân quyền tài khoản người dùng",
+    "questions": "Quản lý và bộ lọc câu hỏi phỏng vấn AI",
+    "prompts": "Cấu hình kịch bản và câu lệnh cho AI",
+    "reports": "Xử lý báo cáo và phản hồi từ người dùng",
+    "feedbacks": "Tổng hợp đánh giá trải nghiệm người dùng",
+    "notifications": "Gửi và quản lý thông báo toàn hệ thống",
+    "settings": "Cấu hình chung cho trang quản trị"
+  },
+  "header": {
+    "adminRole": "Quản trị viên",
+    "userWorkspace": "Trang người dùng",
+    "logout": "Đăng xuất"
+  },
+  "userMenu": {
+    "title": "Tài khoản Admin",
+    "switchToUser": "Về trang User",
+    "switchToUserDesc": "Chuyển sang giao diện luyện phỏng vấn",
+    "logout": "Đăng xuất"
+  },
+  "sidebar": {
+    "userPlatform": "Trang người dùng",
+    "logout": "Đăng xuất"
+  }
+}

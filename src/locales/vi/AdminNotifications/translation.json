@@ -1,0 +1,40 @@
+{
+  "title": "Quản lý Thông báo Admin",
+  "subtitle": "Tạo thông báo mới cho người dùng và quản lý danh sách thông báo đã tạo",
+  "createCard": {
+    "title": "Tạo thông báo mới",
+    "subtitle": "Thông báo này sẽ được gửi đến toàn bộ người dùng",
+    "fieldTitle": "Tiêu đề thông báo",
+    "titlePlaceholder": "Nhập tiêu đề...",
+    "fieldContent": "Nội dung thông báo",
+    "contentPlaceholder": "Nhập nội dung thông báo...",
+    "fieldLink": "Đường dẫn (Link liên kết tùy chọn)",
+    "linkPlaceholder": "Ví dụ: https://example.com/update (để trống nếu không có)",
+    "submitBtn": "Gửi thông báo",
+    "submittingBtn": "Đang gửi...",
+    "successMessage": "Tạo thông báo thành công!",
+    "errorMessage": "Tạo thông báo thất bại. Vui lòng kiểm tra lại thông tin."
+  },
+  "listCard": {
+    "title": "Thông báo do Admin tạo",
+    "count": "Tổng số: {{total}} thông báo",
+    "code": "Mã ID",
+    "link": "Đường dẫn",
+    "noLink": "Không có link",
+    "createdAt": "Ngày tạo",
+    "delete": "Xoá",
+    "emptyTitle": "Chưa có thông báo nào",
+    "emptyDescription": "Bạn chưa tạo thông báo nào.",
+    "loadMore": "Tải thêm thông báo",
+    "loadingMore": "Đang tải thêm..."
+  },
+  "deleteModal": {
+    "title": "Xác nhận xoá thông báo",
+    "message": "Bạn có chắc chắn muốn xoá thông báo này? Hành động này không thể hoàn tác.",
+    "confirm": "Xoá thông báo",
+    "cancel": "Hủy",
+    "deleting": "Đang xoá...",
+    "successMessage": "Xoá thông báo thành công!",
+    "errorMessage": "Xoá thông báo thất bại."
+  }
+}
