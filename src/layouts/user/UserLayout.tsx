@@ -5,9 +5,9 @@ import {
   LogOut,
   User,
   UserCog,
-  Mail,
   Settings
 } from "lucide-react";
+import NotificationDropdown from "../../components/NotificationDropdown";
 import useAuthStore from "../../store/authStore";
 import useUserStore from "../../store/userStore";
 import { useState, useRef, useEffect } from "react";
@@ -18,6 +18,8 @@ import avatar3 from "../../assets/avatardefault/avatar3.png";
 import avatar4 from "../../assets/avatardefault/avatar4.png";
 import avatar5 from "../../assets/avatardefault/avatar5.png";
 import userInfoService from "../../services/user/userInfoService";
+
+import useNotificationStore from "../../store/notificationStore";
 
 const DEFAULT_AVATARS = [avatar1, avatar2, avatar3, avatar4, avatar5];
 
@@ -36,10 +38,12 @@ const UserLayout = () => {
   const logout = useAuthStore((s) => s.logout);
   const userInfo = useUserStore((s) => s.userInfo);
   const setUserInfo = useUserStore((s) => s.setUserInfo);
+  const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    fetchNotifications(1);
     userInfoService
       .getUserInfo()
       .then((res) => {
@@ -54,7 +58,7 @@ const UserLayout = () => {
       .catch(() => {
         // Fallback silently if API fails or unauthorized
       });
-  }, [setUserInfo]);
+  }, [setUserInfo, fetchNotifications]);
 
   const displayName = userInfo?.fullName || t("user.name", "User");
   const displayAvatar =
@@ -136,14 +140,8 @@ const UserLayout = () => {
           </nav>
 
           <div className="order-2 flex items-center gap-4 md:order-3">
-            {/* Notification Mailbox */}
-            <Link
-              to="/notifications"
-              className="relative rounded-full p-2 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
-            >
-              <Mail className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
-            </Link>
+            {/* Notification Dropdown */}
+            <NotificationDropdown />
 
             {/* User Dropdown */}
             <div ref={userMenuRef} className="relative">
