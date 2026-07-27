@@ -10,6 +10,7 @@
     "line1": "Nền tảng Luyện",
     "line2": "Phỏng vấn IT",
     "line3": "thông minh",
+    "ctaButton": "KHÁM PHÁ NGAY",
     "aiVoice": "AI Voice",
     "cta": "Bắt đầu luyện tập",
     "ctaPrimary": "Bắt đầu miễn phí",
@@ -38,6 +39,25 @@
       "detail": "Thời gian thực"
     }
   },
+  "features3D": {
+    "title": "Trải nghiệm Phỏng vấn IT Toàn diện",
+    "card1": {
+      "title": "Hệ thống Câu hỏi Đa chiều",
+      "backContent": "AI tự động sinh câu hỏi bám sát CV theo 3 trục: Kỹ năng chuyên môn (Technical), Xử lý tình huống (Situational) và Hành vi thực tế (Behavioral). Kèm giới hạn thời gian và Gợi ý thông minh."
+    },
+    "card2": {
+      "title": "2 Chế độ Thực chiến",
+      "backContent": "Lựa chọn đối mặt với Technical Lead \"khó tính\" (Áp lực cao) hoặc trải nghiệm \"Hỏi xoáy đáp xoay\" liên tục từ 2-4 lượt để khai phá tận cùng tư duy logic của bạn (Tương tác)."
+    },
+    "card3": {
+      "title": "Chấm điểm Chống Gian lận",
+      "backContent": "Tích hợp cơ chế Anti-Cheat. Chấm điểm khắt khe dựa trên 3 tiêu chí: Độ chính xác chuyên môn, Tư duy trình bày mạch lạc, và Độ sâu trọng tâm cốt lõi."
+    },
+    "card4": {
+      "title": "Báo cáo & Trợ lý Ảo",
+      "backContent": "Nhận báo cáo năng lực 5 trục chuyên sâu chỉ rõ Điểm mạnh/Yếu. Kèm theo Trợ lý Ảo 24/7 luôn sẵn sàng hỗ trợ bạn thiết lập phòng thi và giải quyết sự cố kỹ thuật."
+    }
+  },
   "features": {
     "label": "Tính năng nổi bật",
     "title": "Mọi thứ bạn cần để sẵn sàng cho buổi phỏng vấn",
@@ -53,6 +73,57 @@
       "title": "Bộ Tiêu Chí Đánh Giá Chuẩn",
       "description": "Hệ thống tự động chấm điểm dựa trên năng lực chuyên môn, tư duy giải quyết vấn đề, cấu trúc câu trả lời và mức độ tự tin qua giọng nói."
     }
+  },
+  "walkthrough": {
+    "title": "Tối ưu hành trình luyện tập phỏng vấn với 3 bước dễ dàng",
+    "subtitle": "IAP sẽ luôn đồng hành cùng bạn xuyên suốt hành trình khổ luyện cho đến ngày 'có job đầu tiên'",
+    "stepLabel": "Bước",
+    "step1": {
+      "title": "Thiết kế lộ trình phỏng vấn cá nhân hóa",
+      "description": "Hệ thống quét CV, cho phép bạn tự do lựa chọn vị trí (Frontend, Backend...) và độ khó. Lộ trình được 'may đo' theo đúng thông số riêng của bạn."
+    },
+    "step2": {
+      "title": "Đối mặt với 'Trưởng phòng Kỹ thuật' AI",
+      "description": "Trải nghiệm áp lực phỏng vấn thật. AI liên tục đặt câu hỏi đào sâu, phản biện qua cả Text và Voice theo sát tiến trình câu trả lời của bạn."
+    },
+    "step3": {
+      "title": "Học và theo dõi tiến bộ toàn diện",
+      "description": "Nhận báo cáo 360 độ ngay khi kết thúc. Hệ thống chấm chữa toàn diện, phân tích điểm yếu và theo dõi sự tiến bộ của bạn qua từng ngày."
+    }
+  },
+  "modes": {
+    "title": "Linh hoạt lựa chọn chế độ luyện tập",
+    "subtitle": "Từ làm quen cơ bản đến thực chiến áp lực cao, IT-IAP cung cấp môi trường hoàn hảo để bạn rèn luyện bản lĩnh.",
+    "interactiveTab": "Phỏng vấn Tương tác",
+    "pressureTab": "Phỏng vấn Áp lực",
+    "featureHeadline": "Tính năng nổi bật của chế độ",
+    "interactive": {
+      "title": "Phỏng vấn Tương tác Cơ bản",
+      "description": "Chế độ hoàn hảo để làm quen với nhịp độ phỏng vấn. AI sẽ đưa ra câu hỏi và kiên nhẫn chờ đợi, cho phép bạn thoải mái suy nghĩ và trau chuốt câu trả lời. Đặc biệt phù hợp cho giai đoạn đầu ôn luyện, giúp bạn củng cố kiến thức mà không bị áp lực thời gian."
+    },
+    "pressure": {
+      "title": "Phỏng vấn Áp lực Thực chiến",
+      "description": "Mô phỏng 100% sức ép từ các vòng phỏng vấn kỹ thuật cam go nhất. Giới hạn thời gian đếm ngược, AI liên tục ngắt lời, phản biện gắt gao và đào sâu vào các lỗ hổng trong câu trả lời của bạn. Vượt qua chế độ này, bạn sẽ sở hữu tâm lý thép trước bất kỳ nhà tuyển dụng nào."
+    }
+  },
+  "stats": {
+    "count": "3.600+ học viên",
+    "label": "đậu phỏng vấn sau khi luyện tập tại IAP"
+  },
+  "testimonials": {
+    "title": "Được đánh giá cao bởi hàng nghìn học viên đã và đang luyện tập",
+    "subtitle": "Đây chính là sự ghi nhận tuyệt vời để IAP có động lực cải tiến không ngừng và đem đến trải nghiệm luyện tập để có được công việc đầu tiên",
+    "review1": "Luyện tập với AI của hệ thống giúp mình bớt run hẳn. Các câu hỏi bám sát thực tế, AI phản hồi cực kỳ chi tiết. Mình đã pass phỏng vấn ngay sau 2 tuần ôn luyện!",
+    "review2": "Chế độ phỏng vấn áp lực thực sự hardcore! AI liên tục ngắt lời và vặn vẹo kiến thức system design. Nhờ vậy mà mình tự tin hơn hẳn khi đối mặt với Technical Lead.",
+    "review3": "Hệ thống đánh giá rất sát sao, chỉ ra chính xác lỗ hổng kiến thức của mình về Automation Test. Trải nghiệm rất đáng giá.",
+    "review4": "Mình là người hướng nội nên rất ngại phỏng vấn (mock interview) với người thật. IAP tạo ra môi trường an toàn để mình thoải mái vấp ngáp và sửa sai.",
+    "review5": "Giao diện thân thiện, AI hỏi mượt như người thật. Phần report sau phỏng vấn giúp mình biết cần cải thiện thuật toán React nào. Quá tuyệt vời!",
+    "review6": "Cảm ơn IAP, nhờ những câu hỏi xoáy vào database optimization của AI mà mình đã không bị bí ý tưởng khi phỏng vấn công ty hiện tại.",
+    "review7": "Mình đánh giá cao việc AI có thể hiểu và nhận xét chính xác các luồng suy nghĩ khi giải quyết bài toán data. Chấm 10/10.",
+    "review8": "Rất tiện lợi, có thể luyện tập bất cứ lúc nào. Từ làm quen cơ bản đến thực chiến đều có đủ."
+  },
+  "partners": {
+    "title": "Được đồng hành bởi Giảng viên hướng dẫn CMC UNIVERSITY và Mentor CODEGYM"
   },
   "howItWorks": {
     "label": "Cách hoạt động",

@@ -1,0 +1,37 @@
+{
+  "menu": {
+    "dashboard": "Dashboard",
+    "users": "User Management",
+    "questions": "Question Bank",
+    "prompts": "AI Prompts",
+    "reports": "Reports & Complaints",
+    "feedbacks": "Feedback & Reviews",
+    "notifications": "System Notifications",
+    "settings": "Admin Settings"
+  },
+  "subtitles": {
+    "dashboard": "Overview of metrics & system activity",
+    "users": "User list & account permissions",
+    "questions": "Manage AI interview question bank",
+    "prompts": "Configure AI templates and prompts",
+    "reports": "Process user reports and complaints",
+    "feedbacks": "Aggregate user feedback and reviews",
+    "notifications": "Send & manage system-wide notifications",
+    "settings": "General configuration for admin workspace"
+  },
+  "header": {
+    "adminRole": "Administrator",
+    "userWorkspace": "User Platform",
+    "logout": "Log Out"
+  },
+  "userMenu": {
+    "title": "Admin Account",
+    "switchToUser": "Switch to User Workspace",
+    "switchToUserDesc": "Switch to student/interview interface",
+    "logout": "Log Out"
+  },
+  "sidebar": {
+    "userPlatform": "User Workspace",
+    "logout": "Log Out"
+  }
+}

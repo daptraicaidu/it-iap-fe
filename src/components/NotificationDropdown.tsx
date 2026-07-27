@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Bell, CheckCheck, ExternalLink, Loader2 } from "lucide-react";
-import notificationService, {
-  type NotificationResponse,
+import type {
+  NotificationResponse,
 } from "../services/user/notificationService";
 import useNotificationStore from "../store/notificationStore";
 
@@ -91,7 +91,6 @@ const NotificationDropdown = () => {
   const notifications = useNotificationStore((s) => s.notifications);
   const unreadCount = useNotificationStore((s) => s.unreadCount);
   const isLoading = useNotificationStore((s) => s.isLoading);
-  const hasFetched = useNotificationStore((s) => s.hasFetched);
   const page = useNotificationStore((s) => s.page);
   const hasNext = useNotificationStore((s) => s.hasNext);
   const isLoadingMore = useNotificationStore((s) => s.isLoadingMore);
@@ -204,7 +203,7 @@ const NotificationDropdown = () => {
       {isOpen && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-[380px] max-h-[480px] flex flex-col rounded-xl border border-zinc-200 bg-white shadow-lg ring-1 ring-black/5 z-50 overflow-hidden"
+          className="fixed inset-x-3 top-16 z-50 flex max-h-[80vh] flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl ring-1 ring-black/5 sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[480px] sm:w-[380px]"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-3">

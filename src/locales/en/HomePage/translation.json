@@ -10,12 +10,13 @@
     "line1": "The Smart IT",
     "line2": "Interview",
     "line3": "Platform",
+    "ctaButton": "EXPLORE NOW",
     "aiVoice": "AI Voice",
     "cta": "Start Practicing",
     "ctaPrimary": "Start for Free",
     "ctaSecondary": "Explore Now",
     "socialProof": "candidates already practicing",
-    "scrollHint": "Scroll",
+    "scrollHint": "Scroll down",
     "mascotLabel": "AI Interview Assistant",
     "mascotStatus": "Ready to practice"
   },
@@ -38,6 +39,25 @@
       "detail": "Real-time"
     }
   },
+  "features3D": {
+    "title": "Comprehensive IT Interview Experience",
+    "card1": {
+      "title": "Multi-dimensional Question System",
+      "backContent": "AI automatically generates questions tailored to your CV across 3 axes: Technical Skills, Situational Handling, and Behavioral Insights, complete with time limits and smart hints."
+    },
+    "card2": {
+      "title": "2 Battle-tested Modes",
+      "backContent": "Choose to face a tough Technical Lead (High Pressure) or experience 2-4 rounds of continuous drill-down probing to unpack your logical thinking (Interactive)."
+    },
+    "card3": {
+      "title": "Anti-Cheat Scoring",
+      "backContent": "Integrated Anti-Cheat mechanism. Strict evaluation based on 3 criteria: Technical Accuracy, Logical Presentation, and Depth of Core Focus."
+    },
+    "card4": {
+      "title": "Reports & Virtual Assistant",
+      "backContent": "Receive an in-depth 5-axis competency report highlighting Strengths/Weaknesses, alongside a 24/7 Virtual Assistant ready to help configure your session and resolve issues."
+    }
+  },
   "features": {
     "label": "Features",
     "title": "Everything you need to ace your interview",
@@ -53,6 +73,57 @@
       "title": "Professional Evaluation Criteria",
       "description": "Our system automatically scores your performance based on technical proficiency, problem-solving mindset, answer structure, and vocal confidence."
     }
+  },
+  "walkthrough": {
+    "title": "Optimize your interview practice in 3 easy steps",
+    "subtitle": "IAP will accompany you throughout your practice journey until you land your first job offer",
+    "stepLabel": "Step",
+    "step1": {
+      "title": "Tailored Personal Interview Roadmap",
+      "description": "System scans your CV, allowing you to freely choose your target role (Frontend, Backend...) and difficulty level. A roadmap tailored to your specific profile."
+    },
+    "step2": {
+      "title": "Face off against the AI Technical Lead",
+      "description": "Experience real interview pressure. AI continuously drills down and counter-argues via both Text and Voice based on your responses."
+    },
+    "step3": {
+      "title": "Learn and track comprehensive progress",
+      "description": "Get 360-degree feedback immediately upon completion. Comprehensive scoring, weakness analysis, and daily progress tracking."
+    }
+  },
+  "modes": {
+    "title": "Flexible Choice of Practice Modes",
+    "subtitle": "From basic practice to high-pressure battle mode, IT-IAP provides the ideal environment to hone your skills.",
+    "interactiveTab": "Interactive Interview",
+    "pressureTab": "Pressure Interview",
+    "featureHeadline": "Key Features of the Mode",
+    "interactive": {
+      "title": "Basic Interactive Interview",
+      "description": "Perfect mode to get comfortable with interview pacing. AI poses questions and waits patiently, allowing you to think thoroughly and refine your answers. Ideal for early-stage practice without time stress."
+    },
+    "pressure": {
+      "title": "Real-World Pressure Interview",
+      "description": "Simulates 100% of the tension in grueling technical rounds. Countdown timers, AI interruptions, sharp counter-arguments, and deep-probing into gaps in your answers. Master this mode to gain ironclad confidence."
+    }
+  },
+  "stats": {
+    "count": "3,600+ candidates",
+    "label": "passed job interviews after practicing with IAP"
+  },
+  "testimonials": {
+    "title": "Highly rated by thousands of practicing candidates",
+    "subtitle": "This outstanding recognition drives IAP to continuously innovate and deliver the best interview preparation experience.",
+    "review1": "Practicing with AI reduced my anxiety significantly. Real-world questions and detailed AI feedback helped me pass my interview in just 2 weeks!",
+    "review2": "The pressure mode is truly hardcore! AI kept interrupting and probing my system design knowledge, giving me confidence when facing real Technical Leads.",
+    "review3": "The scoring system pinpointed my exact knowledge gaps in Automation Testing. An extremely valuable experience.",
+    "review4": "As an introvert, mock interviews with humans felt intimidating. IAP gave me a safe space to make mistakes and learn freely.",
+    "review5": "User-friendly interface and natural AI conversation. The post-interview report showed exactly which React algorithms I needed to work on.",
+    "review6": "Thanks to IAP's deep questions on database optimization, I didn't get stuck during my actual job interview.",
+    "review7": "I highly appreciate how AI understood and accurately evaluated my data problem-solving thought process. 10/10!",
+    "review8": "Super convenient to practice anytime. Covers everything from basic practice to intense real-world simulations."
+  },
+  "partners": {
+    "title": "Supported by CMC UNIVERSITY Lecturers & CODEGYM Mentors"
   },
   "howItWorks": {
     "label": "How It Works",

@@ -6,6 +6,8 @@ import QuestionsPage from "../pages/admin/QuestionsPage/QuestionsPage";
 import PromptsPage from "../pages/admin/PromptsPage/PromptsPage";
 import ReportsPage from "../pages/admin/ReportsPage/ReportsPage";
 import FeedbacksPage from "../pages/admin/FeedbacksPage/FeedbacksPage";
+import AdminNotificationsPage from "../pages/admin/AdminNotificationsPage/AdminNotificationsPage";
+import AdminSettingsPage from "../pages/admin/AdminSettingsPage/AdminSettingsPage";
 
 const AdminRoutes = () => {
   return (
@@ -17,6 +19,8 @@ const AdminRoutes = () => {
         <Route path="prompts" element={<PromptsPage />} />
         <Route path="reports" element={<ReportsPage />} />
         <Route path="feedbacks" element={<FeedbacksPage />} />
+        <Route path="notifications" element={<AdminNotificationsPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
       </Route>
     </Routes>
   );

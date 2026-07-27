@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Bell, CheckCheck, ArrowLeft, ExternalLink, Loader2, X } from "lucide-react";
-import notificationService, {
-  type NotificationResponse,
+import type {
+  NotificationResponse,
 } from "../../../services/user/notificationService";
 import useNotificationStore from "../../../store/notificationStore";
 
