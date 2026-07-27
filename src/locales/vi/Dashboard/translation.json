@@ -68,12 +68,13 @@
   },
   "navigation": {
     "label": "Điều hướng",
+    "home": "Trang chủ",
     "dashboard": "Dashboard",
     "history": "Lịch sử",
     "chatbot": "Chatbot",
     "interview": "Phỏng vấn",
     "reviewResult": "Kết quả phỏng vấn",
-    "reports": "Báo cáo"
+    "reports": "Báo cáo và Đánh giá"
   },
   "user": {
     "name": "Nguyễn Văn A",

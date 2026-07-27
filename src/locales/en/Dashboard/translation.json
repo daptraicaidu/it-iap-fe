@@ -68,12 +68,13 @@
   },
   "navigation": {
     "label": "Dashboard navigation",
+    "home": "Home",
     "dashboard": "Dashboard",
     "history": "History",
     "chatbot": "Chatbot",
     "interview": "Interview",
     "reviewResult": "Review Result",
-    "reports": "Reports"
+    "reports": "Reports and Feedbacks"
   },
   "user": {
     "name": "Nguyen Van A",

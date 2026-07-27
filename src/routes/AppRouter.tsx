@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "../pages/user/HomePage/HomePage";
 import IntroductionPage from "../pages/user/IntroductionPage/IntroductionPage";
 import PrivacyPolicyPage from "../pages/user/PrivacyPolicyPage/PrivacyPolicyPage";
@@ -60,7 +60,8 @@ const AppRouter = () => {
             <Route path="/interviews/:interviewId" element={<InterviewPrepPage />} />
             <Route path="/interviews/:interviewId/result" element={<InterviewResultPage />} />
             <Route path="/history" element={<InterviewHistoryPage />} />
-            <Route path="/reports" element={<UserReportsPage />} />
+            <Route path="/reports_and_feedbacks" element={<UserReportsPage />} />
+            <Route path="/reports" element={<Navigate to="/reports_and_feedbacks" replace />} />
             <Route path="/chatbot" element={<ChatBotPage />} />
             <Route path="/notifications" element={<div className="p-8">Thông báo</div>} />
             

@@ -208,7 +208,14 @@
     },
     "general": {
       "title": "General Settings",
-      "description": "Manage general settings for your interface and account."
+      "description": "Manage general settings for your interface and account.",
+      "languageSection": "Display Language",
+      "languageDescription": "Choose the language you prefer for the interface across the platform.",
+      "vietnamese": "Vietnamese",
+      "vietnameseDesc": "Tiếng Việt",
+      "english": "English",
+      "englishDesc": "English interface",
+      "activeLanguage": "Active"
     }
   }
 }

@@ -21,6 +21,7 @@ import dashboardService, {
   type ProgressData,
   type ProfileDashboardData,
 } from "../../../services/user/dashboardService";
+import useUserStore from "../../../store/userStore";
 
 // ── Helpers ──
 const getGreeting = (): "morning" | "afternoon" | "evening" => {
@@ -484,6 +485,7 @@ const DashboardPage = () => {
   const { t, i18n } = useTranslation("Dashboard");
   const navigate = useNavigate();
   const dashboardRef = useRef<HTMLDivElement>(null);
+  const userInfo = useUserStore((s) => s.userInfo);
 
   // Progress (streak, rank, daily stats)
   const [progressData, setProgressData] = useState<ProgressData | null>(null);
@@ -705,7 +707,9 @@ const DashboardPage = () => {
           <div>
             <h1 className="text-2xl font-semibold text-zinc-900 sm:text-3xl">
               {t(`greeting.${greetingKey}`)},{" "}
-              <span className="text-indigo-600">Nguyễn Văn A</span>
+              <span className="text-indigo-600">
+                {userInfo?.fullName || t("user.name", "User")}
+              </span>
             </h1>
           </div>
           <div className="flex items-center gap-3">

@@ -59,6 +59,37 @@ function formatDateTime(dateStr: string): string {
   });
 }
 
+function getAutoCloseNotice(
+  startAt: string,
+  t: (key: string, options?: Record<string, any>) => string
+): string | null {
+  if (!startAt) return null;
+  const startTime = new Date(startAt).getTime();
+  if (isNaN(startTime)) return null;
+
+  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const remainingMs = startTime + SEVEN_DAYS_MS - now;
+
+  if (remainingMs <= 0) {
+    return t("historyPage.autoCloseExpired");
+  }
+
+  const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+  if (remainingMs > THREE_DAYS_MS) {
+    return null;
+  }
+
+  const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+  if (remainingMs > ONE_DAY_MS) {
+    const days = Math.ceil(remainingMs / ONE_DAY_MS);
+    return t("historyPage.autoCloseInDays", { count: days });
+  } else {
+    const hours = Math.max(1, Math.ceil(remainingMs / (60 * 60 * 1000)));
+    return t("historyPage.autoCloseInHours", { count: hours });
+  }
+}
+
 const InterviewHistoryPage = () => {
   const { t } = useTranslation("Interview");
   const navigate = useNavigate();
@@ -254,6 +285,10 @@ const InterviewHistoryPage = () => {
               {items.map((item, index) => {
                 const statusCfg = getStatusConfig(item.status);
                 const StatusIcon = statusCfg.icon;
+                const autoCloseNotice =
+                  item.status === "IN_PROGRESS"
+                    ? getAutoCloseNotice(item.startAt, t)
+                    : null;
 
                 return (
                   <motion.button
@@ -295,6 +330,14 @@ const InterviewHistoryPage = () => {
                           {formatDateTime(item.startAt)}
                         </span>
                       </div>
+
+                      {/* Auto Close Notice */}
+                      {autoCloseNotice && (
+                        <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50/80 px-2.5 py-1 text-xs font-medium text-amber-700">
+                          <Clock className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+                          <span>{autoCloseNotice}</span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Action hint */}

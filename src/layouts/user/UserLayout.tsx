@@ -9,6 +9,7 @@ import {
   Settings
 } from "lucide-react";
 import useAuthStore from "../../store/authStore";
+import useUserStore from "../../store/userStore";
 import { useState, useRef, useEffect } from "react";
 import logoImg from "../../assets/logo/logo.png";
 import avatar1 from "../../assets/avatardefault/avatar1.png";
@@ -33,10 +34,10 @@ const UserLayout = () => {
   const { t } = useTranslation("Dashboard");
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
+  const userInfo = useUserStore((s) => s.userInfo);
+  const setUserInfo = useUserStore((s) => s.setUserInfo);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
-
-  const [userInfo, setUserInfo] = useState<{ fullName: string; avatarUrl: string | null } | null>(null);
 
   useEffect(() => {
     userInfoService
@@ -46,24 +47,26 @@ const UserLayout = () => {
           setUserInfo({
             fullName: res.data.data.fullName,
             avatarUrl: res.data.data.avatarUrl || null,
+            email: res.data.data.email,
           });
         }
       })
       .catch(() => {
         // Fallback silently if API fails or unauthorized
       });
-  }, []);
+  }, [setUserInfo]);
 
   const displayName = userInfo?.fullName || t("user.name", "User");
   const displayAvatar =
     userInfo?.avatarUrl || getDefaultAvatar(displayName);
 
   const navigationItems = [
+    { label: t("navigation.home", "Trang chủ"), to: "/", end: true },
     { label: t("navigation.dashboard", "Dashboard"), to: "/dashboard", end: false },
     { label: t("navigation.interview", "Phỏng vấn"), to: "/interviews", end: false },
     { label: t("navigation.history", "Lịch sử"), to: "/history", end: false },
     { label: t("navigation.chatbot", "Chatbot"), to: "/chatbot", end: false },
-    { label: t("navigation.reports", "Báo cáo"), to: "/reports", end: false },
+    { label: t("navigation.reports", "Báo cáo & Đánh giá"), to: "/reports_and_feedbacks", end: false },
   ];
 
   const handleLogout = () => {
@@ -97,8 +100,8 @@ const UserLayout = () => {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-zinc-50 text-zinc-900 flex flex-col">
-      <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
+    <div className="h-[100dvh] bg-zinc-50 text-zinc-900 flex flex-col overflow-hidden">
+      <header className="shrink-0 border-b border-zinc-200 bg-white/80 backdrop-blur-md z-50">
         <div className="mx-auto flex flex-wrap items-center justify-between gap-y-3 px-4 py-3 sm:px-6 md:h-16 md:flex-nowrap md:py-0 lg:px-8">
           <div className="flex items-center">
             <Link
@@ -213,7 +216,7 @@ const UserLayout = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full relative">
+      <main className="flex-1 w-full relative overflow-y-auto">
         <Outlet />
       </main>
     </div>
