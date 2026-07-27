@@ -208,7 +208,14 @@
     },
     "general": {
       "title": "Cài đặt chung",
-      "description": "Quản lý các cài đặt chung cho giao diện và tài khoản của bạn."
+      "description": "Quản lý các cài đặt chung cho giao diện và tài khoản của bạn.",
+      "languageSection": "Ngôn ngữ hiển thị",
+      "languageDescription": "Chọn ngôn ngữ bạn muốn sử dụng trên toàn bộ giao diện nền tảng.",
+      "vietnamese": "Tiếng Việt",
+      "vietnameseDesc": "Giao diện bằng Tiếng Việt",
+      "english": "English",
+      "englishDesc": "English interface",
+      "activeLanguage": "Đang sử dụng"
     }
   }
 }

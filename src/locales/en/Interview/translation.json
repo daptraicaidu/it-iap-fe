@@ -145,6 +145,9 @@
     "emptyTitle": "No interviews yet",
     "emptyDescription": "Start a new interview to begin practicing.",
     "startNew": "Create New Interview",
+    "autoCloseExpired": "This interview will auto-close soon, please complete it as soon as possible.",
+    "autoCloseInDays": "The interview will automatically close in {{count}} days.",
+    "autoCloseInHours": "The interview will automatically close in {{count}} hours.",
     "confirmContinue": {
       "title": "Continue Interview?",
       "message": "Would you like to continue this interview? You'll return to the session.",

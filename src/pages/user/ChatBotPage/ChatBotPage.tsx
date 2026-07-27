@@ -42,7 +42,12 @@ const ChatBotPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 768;
+    }
+    return true;
+  });
   const [deletingSessionId, setDeletingSessionId] = useState<number | null>(
     null
   );
@@ -119,6 +124,9 @@ const ChatBotPage = () => {
   const handleNewChat = () => {
     setActiveSessionId(null);
     setInputValue("");
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
   };
 
   // ── Open delete confirmation modal ──
@@ -154,6 +162,9 @@ const ChatBotPage = () => {
 
   // ── Select session ──
   const handleSelectSession = async (session: ChatSession) => {
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
     if (session.id === activeSessionId) return;
     setActiveSessionId(session.id);
 
@@ -257,13 +268,22 @@ const ChatBotPage = () => {
 
   // ── Render ──
   return (
-    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-zinc-50">
+    <div className="flex h-full w-full overflow-hidden bg-zinc-50 relative">
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="absolute inset-0 z-30 bg-zinc-900/40 backdrop-blur-xs transition-opacity md:hidden"
+          aria-hidden="true"
+        />
+      )}
+
       {/* ── Sidebar ── */}
       <aside
         className={`
-          ${sidebarOpen ? "w-72" : "w-0"} 
-          flex-shrink-0 border-r border-zinc-200 bg-white
-          transition-all duration-300 ease-in-out overflow-hidden
+          absolute inset-y-0 left-0 z-40 w-72 border-r border-zinc-200 bg-white transition-all duration-300 ease-in-out overflow-hidden
+          ${sidebarOpen ? "translate-x-0 md:w-72" : "-translate-x-full md:w-0 md:translate-x-0"}
+          md:static md:z-auto md:flex-shrink-0
         `}
       >
         <div className="flex h-full w-72 flex-col">
@@ -555,9 +575,9 @@ const ChatBotPage = () => {
         </div>
 
         {/* Input Area — always visible */}
-        <div className="border-t border-zinc-200 bg-white px-4 py-5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-          <div className="mx-auto flex max-w-3xl items-end gap-3">
-            <div className="flex flex-1 items-end rounded-2xl border-2 border-zinc-300 bg-white px-4 py-3 shadow-sm transition-all focus-within:border-indigo-400 focus-within:shadow-md focus-within:shadow-indigo-100/50">
+        <div className="border-t border-zinc-200 bg-white px-3 py-2.5 md:px-4 md:py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+          <div className="mx-auto flex max-w-3xl items-end gap-2.5">
+            <div className="flex flex-1 items-end rounded-2xl border border-zinc-300 bg-white px-3.5 py-2 md:px-4 md:py-2.5 shadow-xs transition-all focus-within:border-indigo-400 focus-within:shadow-md focus-within:shadow-indigo-100/50">
               <textarea
                 ref={textareaRef}
                 value={inputValue}
@@ -572,10 +592,10 @@ const ChatBotPage = () => {
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isSendingMessage}
               className={`
-                flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full transition-all active:scale-[0.93]
+                flex h-10 w-10 md:h-10 md:w-10 flex-shrink-0 items-center justify-center rounded-full transition-all active:scale-[0.93]
                 ${
                   inputValue.trim() && !isSendingMessage
-                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200 hover:bg-indigo-500"
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 hover:bg-indigo-500"
                     : "bg-zinc-200 text-zinc-400 cursor-not-allowed"
                 }
               `}
@@ -588,7 +608,7 @@ const ChatBotPage = () => {
               )}
             </button>
           </div>
-          <p className="mx-auto mt-2.5 max-w-3xl text-center text-[11px] text-zinc-400">
+          <p className="mx-auto mt-1 md:mt-1.5 max-w-3xl text-center text-[11px] text-zinc-400 leading-tight">
             {t("disclaimer")}
           </p>
         </div>

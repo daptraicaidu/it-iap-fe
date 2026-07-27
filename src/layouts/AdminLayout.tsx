@@ -1,4 +1,4 @@
-import { BarChart3, Briefcase, FileText, Flag, HelpCircle, Home, LogOut, Menu, Settings, Users } from "lucide-react";
+import { BarChart3, Briefcase, FileText, Flag, HelpCircle, Home, LogOut, Menu, MessageSquare, Settings, Users } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 
@@ -33,6 +33,11 @@ const sidebarItems: SidebarItem[] = [
     label: "Reports",
     to: "/admin/reports",
     icon: Flag,
+  },
+  {
+    label: "Feedbacks",
+    to: "/admin/feedbacks",
+    icon: MessageSquare,
   },
   {
     label: "Interviews",

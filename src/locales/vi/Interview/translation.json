@@ -145,6 +145,9 @@
     "emptyTitle": "Chưa có buổi phỏng vấn nào",
     "emptyDescription": "Hãy bắt đầu một buổi phỏng vấn mới để luyện tập.",
     "startNew": "Tạo phỏng vấn mới",
+    "autoCloseExpired": "Buổi phỏng vấn sẽ sớm tự động đóng, bạn hãy hoàn thành sớm nhé.",
+    "autoCloseInDays": "Buổi phỏng vấn sẽ tự động đóng sau {{count}} ngày.",
+    "autoCloseInHours": "Buổi phỏng vấn sẽ tự động đóng sau {{count}} giờ.",
     "confirmContinue": {
       "title": "Tiếp tục phỏng vấn?",
       "message": "Bạn có muốn tiếp tục buổi phỏng vấn đang dở? Bạn sẽ quay lại phiên làm bài.",
