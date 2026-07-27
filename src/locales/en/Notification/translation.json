@@ -1,0 +1,31 @@
+{
+  "title": "Notifications",
+  "empty": "You have no notifications",
+  "emptyDescription": "New notifications will appear here",
+  "showAll": "Show all",
+  "readAll": "Read all",
+  "markAsRead": "Mark as read",
+  "unread": "unread",
+  "justNow": "Just now",
+  "minuteAgo": "{{count}}m ago",
+  "hourAgo": "{{count}}h ago",
+  "dayAgo": "{{count}}d ago",
+  "weekAgo": "{{count}}w ago",
+  "loadMore": "Load more",
+  "noMore": "All notifications displayed",
+  "viewLink": "View link",
+  "type": {
+    "system": "System",
+    "admin": "Admin",
+    "warning": "Warning",
+    "promo": "Promotion",
+    "report": "Report",
+    "feedback": "Feedback",
+    "streak": "Streak",
+    "other": "Other"
+  },
+  "page": {
+    "title": "All notifications",
+    "description": "Manage all your notifications"
+  }
+}

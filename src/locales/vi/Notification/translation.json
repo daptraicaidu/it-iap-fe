@@ -1,0 +1,31 @@
+{
+  "title": "Thông báo",
+  "empty": "Bạn chưa có thông báo nào",
+  "emptyDescription": "Các thông báo mới sẽ xuất hiện ở đây",
+  "showAll": "Hiển thị tất cả",
+  "readAll": "Đọc tất cả",
+  "markAsRead": "Đánh dấu đã đọc",
+  "unread": "chưa đọc",
+  "justNow": "Vừa xong",
+  "minuteAgo": "{{count}} phút trước",
+  "hourAgo": "{{count}} giờ trước",
+  "dayAgo": "{{count}} ngày trước",
+  "weekAgo": "{{count}} tuần trước",
+  "loadMore": "Xem thêm",
+  "noMore": "Đã hiển thị tất cả thông báo",
+  "viewLink": "Xem liên kết",
+  "type": {
+    "system": "Hệ thống",
+    "admin": "Quản trị",
+    "warning": "Cảnh báo",
+    "promo": "Khuyến mãi",
+    "report": "Báo cáo",
+    "feedback": "Phản hồi",
+    "streak": "Chuỗi học",
+    "other": "Khác"
+  },
+  "page": {
+    "title": "Tất cả thông báo",
+    "description": "Quản lý tất cả thông báo của bạn"
+  }
+}
