@@ -93,6 +93,32 @@
       "mismatch": "Mật khẩu xác nhận chưa khớp với mật khẩu mới.",
       "success": "Đã cập nhật mật khẩu thành công.",
       "error": "Không thể cập nhật mật khẩu. Vui lòng thử lại."
+    },
+    "forgotPasswordLink": "Quên mật khẩu?",
+    "forgotModal": {
+      "title": "Quên mật khẩu",
+      "subtitleConfirm": "Xác nhận gửi mã OTP đến email để đặt lại mật khẩu.",
+      "subtitleOtp": "Nhập mã OTP 6 chữ số đã gửi đến email của bạn.",
+      "subtitlePassword": "Tạo mật khẩu mới cho tài khoản của bạn.",
+      "confirmEmailText": "Mã xác thực (OTP) sẽ được gửi đến email:",
+      "sendOtp": "Xác nhận gửi OTP",
+      "sendingOtp": "Đang gửi OTP...",
+      "emailRequired": "Vui lòng nhập địa chỉ email.",
+      "emailInvalid": "Email không hợp lệ.",
+      "enterEmail": "Nhập địa chỉ email của bạn",
+      "otpLabel": "Mã xác minh (OTP)",
+      "continue": "Tiếp tục",
+      "resendOtp": "Gửi lại mã",
+      "resendingOtp": "Đang gửi...",
+      "resendIn": "Gửi lại sau {{seconds}}s",
+      "wrongEmail": "Đổi email khác",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu mới",
+      "resetPassword": "Đặt lại mật khẩu",
+      "resettingPassword": "Đang đặt lại...",
+      "successTitle": "Đặt lại mật khẩu thành công!",
+      "successDesc": "Mật khẩu mới của bạn đã được cập nhật thành công.",
+      "close": "Đóng"
     }
   },
   "twoFa": {
@@ -198,7 +224,8 @@
       "profiles": "Quản lý hồ sơ",
       "general": "Cài đặt chung",
       "password": "Bảo mật tài khoản",
-      "activities": "Hoạt động"
+      "activities": "Hoạt động",
+      "sessions": "Phiên đăng nhập"
     },
     "activities": {
       "title": "Hoạt động",
@@ -216,6 +243,32 @@
       "english": "English",
       "englishDesc": "English interface",
       "activeLanguage": "Đang sử dụng"
+    }
+  },
+  "sessions": {
+    "title": "Quản lý phiên đăng nhập",
+    "description": "Danh sách các thiết bị và trình duyệt hiện đang đăng nhập vào tài khoản của bạn. Bạn có thể đăng xuất khỏi các phiên không mong muốn.",
+    "revokeAllOthers": "Đăng xuất tất cả thiết bị khác",
+    "revokingAll": "Đang xử lý...",
+    "currentDevice": "Thiết bị này",
+    "lastActive": "Hoạt động gần nhất",
+    "ip": "Địa chỉ IP",
+    "location": "Vị trí",
+    "revoke": "Đăng xuất",
+    "revoking": "Đang đăng xuất...",
+    "emptyTitle": "Không có phiên đăng nhập nào",
+    "emptyDescription": "Hiện tại không tìm thấy thông tin phiên đăng nhập.",
+    "confirmRevokeOneTitle": "Đăng xuất phiên đăng nhập?",
+    "confirmRevokeOneDesc": "Phiên đăng nhập trên thiết bị này sẽ bị chấm dứt.",
+    "confirmRevokeCurrentDesc": "Bạn đang thực hiện đăng xuất khỏi thiết bị hiện tại. Bạn sẽ cần đăng nhập lại.",
+    "confirmRevokeOthersTitle": "Đăng xuất tất cả thiết bị khác?",
+    "confirmRevokeOthersDesc": "Tất cả các phiên đăng nhập trên những thiết bị khác ngoại trừ thiết bị này sẽ bị chấm dứt ngay lập tức.",
+    "messages": {
+      "loadError": "Không thể tải danh sách phiên đăng nhập.",
+      "revokeSuccess": "Đã đăng xuất phiên thành công.",
+      "revokeError": "Không thể đăng xuất phiên.",
+      "revokeOthersSuccess": "Đã đăng xuất tất cả các phiên khác.",
+      "revokeOthersError": "Không thể đăng xuất các phiên khác."
     }
   }
 }

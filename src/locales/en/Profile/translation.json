@@ -93,6 +93,32 @@
       "mismatch": "The confirmation password does not match the new password.",
       "success": "Password updated successfully.",
       "error": "Could not update password. Please try again."
+    },
+    "forgotPasswordLink": "Forgot password?",
+    "forgotModal": {
+      "title": "Forgot Password",
+      "subtitleConfirm": "Confirm sending OTP code to your email to reset password.",
+      "subtitleOtp": "Enter the 6-digit OTP code sent to your email.",
+      "subtitlePassword": "Create a new password for your account.",
+      "confirmEmailText": "An OTP verification code will be sent to email:",
+      "sendOtp": "Confirm & Send OTP",
+      "sendingOtp": "Sending OTP...",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "Invalid email address.",
+      "enterEmail": "Enter your email address",
+      "otpLabel": "Verification Code (OTP)",
+      "continue": "Continue",
+      "resendOtp": "Resend Code",
+      "resendingOtp": "Sending...",
+      "resendIn": "Resend in {{seconds}}s",
+      "wrongEmail": "Change email",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "resetPassword": "Reset Password",
+      "resettingPassword": "Resetting...",
+      "successTitle": "Password Reset Successfully!",
+      "successDesc": "Your new password has been updated successfully.",
+      "close": "Close"
     }
   },
   "twoFa": {
@@ -198,7 +224,8 @@
       "profiles": "Manage Profiles",
       "general": "General Settings",
       "password": "Security",
-      "activities": "Activities"
+      "activities": "Activities",
+      "sessions": "Active Sessions"
     },
     "activities": {
       "title": "Activities",
@@ -216,6 +243,32 @@
       "english": "English",
       "englishDesc": "English interface",
       "activeLanguage": "Active"
+    }
+  },
+  "sessions": {
+    "title": "Active Sessions",
+    "description": "Devices and browsers currently logged into your account. You can log out from any unrecognized sessions.",
+    "revokeAllOthers": "Log out all other devices",
+    "revokingAll": "Processing...",
+    "currentDevice": "This device",
+    "lastActive": "Last active",
+    "ip": "IP Address",
+    "location": "Location",
+    "revoke": "Log out",
+    "revoking": "Logging out...",
+    "emptyTitle": "No active sessions",
+    "emptyDescription": "No session information could be found at this time.",
+    "confirmRevokeOneTitle": "Log out session?",
+    "confirmRevokeOneDesc": "The session on this device will be terminated.",
+    "confirmRevokeCurrentDesc": "You are logging out from your current device. You will need to log in again.",
+    "confirmRevokeOthersTitle": "Log out all other devices?",
+    "confirmRevokeOthersDesc": "All active sessions on other devices except this current device will be terminated immediately.",
+    "messages": {
+      "loadError": "Could not load active sessions.",
+      "revokeSuccess": "Session logged out successfully.",
+      "revokeError": "Could not log out session.",
+      "revokeOthersSuccess": "Logged out of all other sessions.",
+      "revokeOthersError": "Could not log out other sessions."
     }
   }
 }

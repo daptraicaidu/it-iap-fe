@@ -1,0 +1,49 @@
+{
+  "title": "Quản lý Banner & Chữ chạy",
+  "subtitle": "Tạo mới, bật/tắt và chỉnh sửa các banner khuyến mãi, chào mừng và chữ chạy thông báo.",
+  "createButton": "Thêm Banner mới",
+  "table": {
+    "id": "ID",
+    "image": "Hình ảnh",
+    "title": "Tiêu đề",
+    "content": "Nội dung",
+    "marquee": "Chữ chạy Marquee",
+    "status": "Trạng thái",
+    "actions": "Thao tác"
+  },
+  "status": {
+    "active": "Đang bật",
+    "inactive": "Đã tắt"
+  },
+  "modal": {
+    "createTitle": "Tạo Banner Mới",
+    "editTitle": "Chỉnh sửa Banner",
+    "fields": {
+      "title": "Tiêu đề Banner",
+      "titlePlaceholder": "Nhập tiêu đề banner...",
+      "content": "Nội dung Banner",
+      "contentPlaceholder": "Nhập chi tiết nội dung thông báo/khuyến mãi...",
+      "image": "Hình ảnh Banner",
+      "marquee": "Chữ chạy Marquee (Không bắt buộc)",
+      "marqueePlaceholder": "Chữ chạy ngang ở thanh thông báo header...",
+      "active": "Kích hoạt ngay khi lưu"
+    },
+    "uploadPrompt": "Tải ảnh lên (PNG, JPG, WEBP)",
+    "changeImagePrompt": "Thay đổi ảnh",
+    "buttons": {
+      "cancel": "Hủy",
+      "save": "Lưu Banner",
+      "saving": "Đang lưu..."
+    }
+  },
+  "toast": {
+    "fetchError": "Không thể tải danh sách banner",
+    "createSuccess": "Tạo banner thành công",
+    "createError": "Tạo banner thất bại",
+    "updateSuccess": "Cập nhật banner thành công",
+    "updateError": "Cập nhật banner thất bại",
+    "toggleSuccess": "Cập nhật trạng thái banner thành công",
+    "toggleError": "Không thể đổi trạng thái banner"
+  },
+  "emptyState": "Chưa có banner nào được tạo. Hãy bấm 'Thêm Banner mới' để bắt đầu."
+}

@@ -1,19 +1,25 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Check,
+  ChevronLeft,
   Copy,
   Eye,
   EyeOff,
   KeyRound,
   Loader2,
+  Lock,
   LockKeyhole,
+  Mail,
+  RotateCcw,
   ShieldCheck,
   ShieldOff,
   Smartphone,
+  X,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import authService from "../../../services/user/authService";
+import useUserStore from "../../../store/userStore";
 
 // ── Password Change Section ──
 
@@ -33,6 +39,7 @@ const initialForm: PasswordForm = {
 
 const PasswordAndSecurityPage = () => {
   const { t } = useTranslation("Profile");
+  const userInfo = useUserStore((s) => s.userInfo);
 
   // ── Password State ──
   const [form, setForm] = useState<PasswordForm>(initialForm);
@@ -42,6 +49,213 @@ const PasswordAndSecurityPage = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ── Forgot Password Modal State ──
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
+  const [forgotStep, setForgotStep] = useState<
+    "confirm" | "otp" | "password" | "success"
+  >("confirm");
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotOtp, setForgotOtp] = useState<string[]>(Array(6).fill(""));
+  const [forgotNewPassword, setForgotNewPassword] = useState("");
+  const [forgotConfirmPassword, setForgotConfirmPassword] = useState("");
+  const [showForgotNewPassword, setShowForgotNewPassword] = useState(false);
+  const [showForgotConfirmPassword, setShowForgotConfirmPassword] =
+    useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState<string | null>(null);
+  const [forgotFieldErrors, setForgotFieldErrors] = useState<
+    Record<string, string>
+  >({});
+  const [forgotResendCooldown, setForgotResendCooldown] = useState(0);
+  const [forgotResendSuccess, setForgotResendSuccess] = useState(false);
+
+  const forgotOtpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Countdown timer for forgot password OTP resend
+  useEffect(() => {
+    if (forgotResendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setForgotResendCooldown((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [forgotResendCooldown]);
+
+  const handleOpenForgotModal = () => {
+    setIsForgotModalOpen(true);
+    setForgotStep("confirm");
+    setForgotEmail(userInfo?.email || "");
+    setForgotOtp(Array(6).fill(""));
+    setForgotNewPassword("");
+    setForgotConfirmPassword("");
+    setForgotError(null);
+    setForgotFieldErrors({});
+    setForgotResendCooldown(0);
+    setForgotResendSuccess(false);
+  };
+
+  const handleCloseForgotModal = () => {
+    setIsForgotModalOpen(false);
+    setForgotError(null);
+    setForgotFieldErrors({});
+  };
+
+  const handleSendForgotOtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setForgotError(null);
+    setForgotFieldErrors({});
+
+    const targetEmail = forgotEmail.trim();
+    if (!targetEmail) {
+      setForgotFieldErrors({
+        email: t("changePassword.forgotModal.emailRequired"),
+      });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(targetEmail)) {
+      setForgotFieldErrors({
+        email: t("changePassword.forgotModal.emailInvalid"),
+      });
+      return;
+    }
+
+    setForgotLoading(true);
+    try {
+      await authService.forgotPassword({ email: targetEmail });
+      setForgotResendCooldown(60);
+      setForgotStep("otp");
+    } catch (err: unknown) {
+      const apiMessage = (
+        err as { response?: { data?: { message?: string } } }
+      )?.response?.data?.message;
+      setForgotError(apiMessage || t("changePassword.messages.error"));
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+  const focusForgotOtpInput = useCallback((index: number) => {
+    forgotOtpRefs.current[index]?.focus();
+  }, []);
+
+  const handleForgotOtpChange = (index: number, value: string) => {
+    if (value && !/^\d$/.test(value)) return;
+    setForgotError(null);
+    setForgotFieldErrors({});
+
+    const newOtp = [...forgotOtp];
+    newOtp[index] = value;
+    setForgotOtp(newOtp);
+
+    if (value && index < 5) {
+      focusForgotOtpInput(index + 1);
+    }
+  };
+
+  const handleForgotOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !forgotOtp[index] && index > 0) {
+      focusForgotOtpInput(index - 1);
+    }
+    if (e.key === "ArrowLeft" && index > 0) {
+      e.preventDefault();
+      focusForgotOtpInput(index - 1);
+    }
+    if (e.key === "ArrowRight" && index < 5) {
+      e.preventDefault();
+      focusForgotOtpInput(index + 1);
+    }
+  };
+
+  const handleForgotOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
+    if (!pastedData) return;
+
+    const newOtp = [...forgotOtp];
+    for (let i = 0; i < pastedData.length; i++) {
+      newOtp[i] = pastedData[i];
+    }
+    setForgotOtp(newOtp);
+    focusForgotOtpInput(Math.min(pastedData.length, 5));
+  };
+
+  const handleResendForgotOtp = async () => {
+    if (forgotResendCooldown > 0) return;
+    setForgotError(null);
+    setForgotResendSuccess(false);
+    setForgotLoading(true);
+
+    try {
+      await authService.forgotPassword({ email: forgotEmail });
+      setForgotResendCooldown(60);
+      setForgotResendSuccess(true);
+      setTimeout(() => setForgotResendSuccess(false), 5000);
+    } catch (err: unknown) {
+      const apiMessage = (
+        err as { response?: { data?: { message?: string } } }
+      )?.response?.data?.message;
+      setForgotError(apiMessage || t("changePassword.messages.error"));
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+  const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotError(null);
+    setForgotFieldErrors({});
+
+    const otpString = forgotOtp.join("");
+    const errors: Record<string, string> = {};
+
+    if (otpString.length !== 6) {
+      errors.otp = t("changePassword.forgotModal.otpLabel");
+    }
+
+    if (!forgotNewPassword) {
+      errors.newPassword = t("changePassword.messages.invalid");
+    } else {
+      if (forgotNewPassword.length < 8)
+        errors.newPassword = t("changePassword.rules.minLength");
+      else if (!/[A-Z]/.test(forgotNewPassword))
+        errors.newPassword = t("changePassword.rules.uppercase");
+      else if (!/\d/.test(forgotNewPassword))
+        errors.newPassword = t("changePassword.rules.number");
+      else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(forgotNewPassword))
+        errors.newPassword = t("changePassword.rules.specialChar");
+    }
+
+    if (!forgotConfirmPassword) {
+      errors.confirmPassword = t("changePassword.messages.mismatch");
+    } else if (forgotNewPassword !== forgotConfirmPassword) {
+      errors.confirmPassword = t("changePassword.messages.mismatch");
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setForgotFieldErrors(errors);
+      return;
+    }
+
+    setForgotLoading(true);
+    try {
+      await authService.resetPassword({
+        email: forgotEmail,
+        otp: otpString,
+        newPassword: forgotNewPassword,
+      });
+      setForgotStep("success");
+    } catch (err: unknown) {
+      const apiMessage = (
+        err as { response?: { data?: { message?: string } } }
+      )?.response?.data?.message;
+      setForgotError(apiMessage || t("changePassword.messages.error"));
+    } finally {
+      setForgotLoading(false);
+    }
+  };
 
   // ── 2FA State ──
   const [is2faEnabled, setIs2faEnabled] = useState<boolean | null>(null);
@@ -283,6 +497,15 @@ const PasswordAndSecurityPage = () => {
               isVisible={Boolean(visibleFields.currentPassword)}
               onChange={(value) => updateField("currentPassword", value)}
               onToggleVisibility={() => toggleFieldVisibility("currentPassword")}
+              rightAction={
+                <button
+                  type="button"
+                  onClick={handleOpenForgotModal}
+                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline transition"
+                >
+                  {t("changePassword.forgotPasswordLink")}
+                </button>
+              }
             />
 
             <div className="grid gap-5 md:grid-cols-2">
@@ -608,6 +831,353 @@ const PasswordAndSecurityPage = () => {
           )}
         </div>
       </section>
+
+      {/* ── Forgot Password Modal ── */}
+      {isForgotModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/50 backdrop-blur-sm p-4">
+          <div
+            className="relative w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Dấu X góc phải to 1 xíu để tắt modal */}
+            <button
+              type="button"
+              onClick={handleCloseForgotModal}
+              className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 transition"
+              aria-label="Close modal"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            {/* Modal Header */}
+            <div className="mb-6 text-center">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                <KeyRound className="h-6 w-6" />
+              </div>
+              <h2 className="text-xl font-semibold tracking-tight text-zinc-900">
+                {t("changePassword.forgotModal.title")}
+              </h2>
+              <p className="mt-1.5 text-xs text-zinc-600">
+                {forgotStep === "confirm" &&
+                  t("changePassword.forgotModal.subtitleConfirm")}
+                {forgotStep === "otp" &&
+                  t("changePassword.forgotModal.subtitleOtp")}
+                {forgotStep === "password" &&
+                  t("changePassword.forgotModal.subtitlePassword")}
+              </p>
+            </div>
+
+            {/* Global Error Alert */}
+            {forgotError && (
+              <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-700">
+                {forgotError}
+              </div>
+            )}
+
+            {/* Resend Success Alert */}
+            {forgotResendSuccess && (
+              <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-700">
+                {t("changePassword.forgotModal.resendOtp")}
+              </div>
+            )}
+
+            {/* STEP 1: Confirm Send OTP / Email */}
+            {forgotStep === "confirm" && (
+              <form onSubmit={handleSendForgotOtp} className="space-y-4">
+                {userInfo?.email ? (
+                  <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
+                    <p className="text-xs text-zinc-600">
+                      {t("changePassword.forgotModal.confirmEmailText")}
+                    </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-indigo-600" />
+                      <span className="text-sm font-semibold text-zinc-900">
+                        {userInfo.email}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="mb-1.5 block text-xs font-medium text-zinc-700">
+                      {t("changePassword.forgotModal.enterEmail")}
+                    </label>
+                    <div className="relative">
+                      <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                      <input
+                        type="email"
+                        value={forgotEmail}
+                        onChange={(e) => {
+                          setForgotEmail(e.target.value);
+                          if (forgotFieldErrors.email) setForgotFieldErrors({});
+                        }}
+                        placeholder="you@example.com"
+                        className={`w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-900/10 ${
+                          forgotFieldErrors.email
+                            ? "border-rose-300 focus:border-rose-400"
+                            : "border-zinc-200 focus:border-zinc-400"
+                        }`}
+                      />
+                    </div>
+                    {forgotFieldErrors.email && (
+                      <p className="mt-1 text-xs text-rose-600">
+                        {forgotFieldErrors.email}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {forgotLoading && (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  )}
+                  {forgotLoading
+                    ? t("changePassword.forgotModal.sendingOtp")
+                    : t("changePassword.forgotModal.sendOtp")}
+                </button>
+              </form>
+            )}
+
+            {/* STEP 2: OTP Input */}
+            {forgotStep === "otp" && (
+              <div className="space-y-5">
+                <div className="flex items-center justify-center gap-2 rounded-lg bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
+                  <Mail className="h-3.5 w-3.5 text-zinc-500" />
+                  <span className="font-medium text-zinc-900">
+                    {forgotEmail}
+                  </span>
+                </div>
+
+                <div className="flex justify-center gap-2">
+                  {forgotOtp.map((digit, index) => (
+                    <input
+                      key={index}
+                      ref={(el) => {
+                        forgotOtpRefs.current[index] = el;
+                      }}
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) =>
+                        handleForgotOtpChange(index, e.target.value)
+                      }
+                      onKeyDown={(e) => handleForgotOtpKeyDown(index, e)}
+                      onPaste={index === 0 ? handleForgotOtpPaste : undefined}
+                      className={`h-12 w-10 rounded-lg border text-center text-lg font-semibold text-zinc-900 outline-none transition focus:ring-2 focus:ring-zinc-900/10 ${
+                        forgotFieldErrors.otp
+                          ? "border-rose-300 focus:border-rose-400"
+                          : digit
+                            ? "border-zinc-400"
+                            : "border-zinc-200 focus:border-zinc-400"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {forgotFieldErrors.otp && (
+                  <p className="text-center text-xs text-rose-600">
+                    {forgotFieldErrors.otp}
+                  </p>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const otpString = forgotOtp.join("");
+                    if (otpString.length !== 6) {
+                      setForgotFieldErrors({
+                        otp: t("changePassword.forgotModal.otpLabel"),
+                      });
+                      return;
+                    }
+                    setForgotStep("password");
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  {t("changePassword.forgotModal.continue")}
+                </button>
+
+                <div className="flex flex-col items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleResendForgotOtp}
+                    disabled={forgotResendCooldown > 0 || forgotLoading}
+                    className="flex items-center gap-1.5 text-xs font-medium text-zinc-600 transition hover:text-zinc-900 disabled:cursor-not-allowed disabled:text-zinc-400"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    {forgotLoading
+                      ? t("changePassword.forgotModal.resendingOtp")
+                      : forgotResendCooldown > 0
+                        ? t("changePassword.forgotModal.resendIn", {
+                            seconds: forgotResendCooldown,
+                          })
+                        : t("changePassword.forgotModal.resendOtp")}
+                  </button>
+
+                  {!userInfo?.email && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setForgotOtp(Array(6).fill(""));
+                        setForgotStep("confirm");
+                      }}
+                      className="flex items-center gap-1 text-xs text-zinc-500 hover:text-indigo-600"
+                    >
+                      <ChevronLeft className="h-3 w-3" />
+                      {t("changePassword.forgotModal.wrongEmail")}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* STEP 3: Reset Password */}
+            {forgotStep === "password" && (
+              <form onSubmit={handleResetPasswordSubmit} className="space-y-4">
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-zinc-700">
+                    {t("changePassword.forgotModal.newPassword")}
+                  </label>
+                  <div className="relative">
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                    <input
+                      type={showForgotNewPassword ? "text" : "password"}
+                      value={forgotNewPassword}
+                      onChange={(e) => {
+                        setForgotNewPassword(e.target.value);
+                        if (forgotFieldErrors.newPassword)
+                          setForgotFieldErrors({});
+                      }}
+                      placeholder={t("changePassword.forgotModal.newPassword")}
+                      className={`w-full rounded-lg border py-2.5 pl-10 pr-10 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-900/10 ${
+                        forgotFieldErrors.newPassword
+                          ? "border-rose-300 focus:border-rose-400"
+                          : "border-zinc-200 focus:border-zinc-400"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowForgotNewPassword(!showForgotNewPassword)
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                      tabIndex={-1}
+                    >
+                      {showForgotNewPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                  {forgotFieldErrors.newPassword && (
+                    <p className="mt-1 text-xs text-rose-600">
+                      {forgotFieldErrors.newPassword}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-zinc-700">
+                    {t("changePassword.forgotModal.confirmPassword")}
+                  </label>
+                  <div className="relative">
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                    <input
+                      type={showForgotConfirmPassword ? "text" : "password"}
+                      value={forgotConfirmPassword}
+                      onChange={(e) => {
+                        setForgotConfirmPassword(e.target.value);
+                        if (forgotFieldErrors.confirmPassword)
+                          setForgotFieldErrors({});
+                      }}
+                      placeholder={t(
+                        "changePassword.forgotModal.confirmPassword"
+                      )}
+                      className={`w-full rounded-lg border py-2.5 pl-10 pr-10 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-900/10 ${
+                        forgotFieldErrors.confirmPassword
+                          ? "border-rose-300 focus:border-rose-400"
+                          : "border-zinc-200 focus:border-zinc-400"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowForgotConfirmPassword(!showForgotConfirmPassword)
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                      tabIndex={-1}
+                    >
+                      {showForgotConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                  {forgotFieldErrors.confirmPassword && (
+                    <p className="mt-1 text-xs text-rose-600">
+                      {forgotFieldErrors.confirmPassword}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex gap-2.5 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setForgotStep("otp")}
+                    className="flex items-center justify-center gap-1 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-xs font-medium text-zinc-900 hover:bg-zinc-50"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    {t("changePassword.forgotModal.otpLabel")}
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={forgotLoading}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {forgotLoading && (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    )}
+                    {forgotLoading
+                      ? t("changePassword.forgotModal.resettingPassword")
+                      : t("changePassword.forgotModal.resetPassword")}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* STEP 4: Success */}
+            {forgotStep === "success" && (
+              <div className="py-4 text-center space-y-4">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                  <Check className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-zinc-900">
+                    {t("changePassword.forgotModal.successTitle")}
+                  </h3>
+                  <p className="mt-1.5 text-xs text-zinc-600">
+                    {t("changePassword.forgotModal.successDesc")}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCloseForgotModal}
+                  className="w-full rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  {t("changePassword.forgotModal.close")}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -620,6 +1190,7 @@ interface PasswordFieldProps {
   isVisible: boolean;
   onChange: (value: string) => void;
   onToggleVisibility: () => void;
+  rightAction?: React.ReactNode;
 }
 
 const PasswordField = ({
@@ -628,10 +1199,14 @@ const PasswordField = ({
   isVisible,
   onChange,
   onToggleVisibility,
+  rightAction,
 }: PasswordFieldProps) => (
   <label className="block">
-    <span className="text-xs font-medium text-zinc-700">{label}</span>
-    <span className="mt-1 flex h-11 items-center rounded-lg border border-zinc-200 bg-white px-3 transition focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100">
+    <div className="flex items-center justify-between mb-1">
+      <span className="text-xs font-medium text-zinc-700">{label}</span>
+      {rightAction}
+    </div>
+    <span className="flex h-11 items-center rounded-lg border border-zinc-200 bg-white px-3 transition focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100">
       <input
         type={isVisible ? "text" : "password"}
         value={value}

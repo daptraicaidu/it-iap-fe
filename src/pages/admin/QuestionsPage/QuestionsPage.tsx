@@ -12,6 +12,11 @@ import {
   Clock,
   Trash2,
   Sparkles,
+  CheckCircle2,
+  XCircle,
+  Clock3,
+  Loader2,
+  CheckSquare,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import adminQuestionService, {
@@ -209,6 +214,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
 // ── Skeleton Row ──
 const SkeletonRow = () => (
   <tr className="animate-pulse">
+    <td className="px-4 py-3.5 text-center">
+      <div className="mx-auto h-4 w-4 rounded bg-zinc-200" />
+    </td>
     <td className="px-4 py-3.5">
       <div className="h-4 w-8 rounded bg-zinc-200" />
     </td>
@@ -248,6 +256,79 @@ const SkeletonRow = () => (
   </tr>
 );
 
+// ── Confirm Bulk Action Modal ──
+const ConfirmBulkModal = ({
+  isOpen,
+  status,
+  count,
+  onClose,
+  onConfirm,
+  isLoading,
+  t,
+}: {
+  isOpen: boolean;
+  status: "APPROVED" | "REJECTED" | "PENDING";
+  count: number;
+  onClose: () => void;
+  onConfirm: () => void;
+  isLoading: boolean;
+  t: (key: string, options?: Record<string, unknown>) => string;
+}) => {
+  if (!isOpen) return null;
+
+  let message = "";
+  if (status === "APPROVED") {
+    message = t("bulkActions.confirmApproveMsg", { count });
+  } else if (status === "REJECTED") {
+    message = t("bulkActions.confirmRejectMsg", { count });
+  } else {
+    message = t("bulkActions.confirmPendingMsg", { count });
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative z-10 w-full max-w-md rounded-xl border border-zinc-200 bg-white p-6 shadow-xl">
+        <h3 className="text-lg font-semibold text-zinc-900">
+          {t("bulkActions.confirmTitle")}
+        </h3>
+        <p className="mt-2 text-sm text-zinc-600 leading-relaxed">
+          {message}
+        </p>
+
+        <div className="mt-6 flex items-center justify-end gap-3">
+          <button
+            onClick={onClose}
+            disabled={isLoading}
+            className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+          >
+            {t("bulkActions.cancelBtn")}
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={isLoading}
+            className={`inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium text-white transition disabled:opacity-50 ${
+              status === "APPROVED"
+                ? "bg-emerald-600 hover:bg-emerald-700"
+                : status === "REJECTED"
+                ? "bg-rose-600 hover:bg-rose-700"
+                : "bg-amber-600 hover:bg-amber-700"
+            }`}
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : null}
+            {t("bulkActions.confirmBtn")}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ── Main Component ──
 const QuestionsPage = () => {
   const { t } = useTranslation("AdminQuestions");
@@ -277,6 +358,16 @@ const QuestionsPage = () => {
   const [editingQuestion, setEditingQuestion] = useState<QuestionEntity | null>(null);
   const [showAIGenerateModal, setShowAIGenerateModal] = useState(false);
 
+  // Selection & Bulk state
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [bulkUpdating, setBulkUpdating] = useState(false);
+  const [toastMessage, setToastMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [confirmBulk, setConfirmBulk] = useState<{
+    isOpen: boolean;
+    status: "APPROVED" | "REJECTED" | "PENDING";
+    targetIds: number[];
+  } | null>(null);
+
   // Fetch questions
   const fetchQuestions = useCallback(async (page: number, filters: GetQuestionsParams) => {
     setLoading(true);
@@ -304,6 +395,75 @@ const QuestionsPage = () => {
   useEffect(() => {
     fetchQuestions(1, appliedFilters);
   }, [fetchQuestions, appliedFilters]);
+
+  // Bulk handlers
+  const handleSelectAllOnPage = () => {
+    const pageIds = questions.map((q) => q.id);
+    const allSelected = pageIds.length > 0 && pageIds.every((id) => selectedIds.includes(id));
+    if (allSelected) {
+      setSelectedIds((prev) => prev.filter((id) => !pageIds.includes(id)));
+    } else {
+      setSelectedIds((prev) => Array.from(new Set([...prev, ...pageIds])));
+    }
+  };
+
+  const handleToggleSelectOne = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const requestBulkConfirm = (status: "APPROVED" | "REJECTED" | "PENDING", targetIds?: number[]) => {
+    const ids = targetIds || selectedIds;
+    if (ids.length === 0) return;
+    setConfirmBulk({ isOpen: true, status, targetIds: ids });
+  };
+
+  const handleBulkStatusChange = async () => {
+    if (!confirmBulk || confirmBulk.targetIds.length === 0) return;
+
+    const { status: newStatus, targetIds: idsToUpdate } = confirmBulk;
+    setBulkUpdating(true);
+    setToastMessage(null);
+
+    try {
+      const updatePromises = idsToUpdate.map((id) => {
+        const q = questions.find((item) => item.id === id);
+        if (!q) return Promise.resolve();
+
+        const payload = {
+          content: q.content,
+          suggestedAnswer: q.suggestedAnswer,
+          hintContent: q.hintContent,
+          position: q.position,
+          level: q.level,
+          category: q.category,
+          skillTag: q.skillTag || [],
+          timeLimitSeconds: q.timeLimitSeconds,
+          status: newStatus,
+          delete: !!q.deleteAt,
+        };
+
+        return adminQuestionService.updateQuestion(id, payload);
+      });
+
+      await Promise.all(updatePromises);
+      setToastMessage({
+        type: "success",
+        text: t("bulkActions.success", { count: idsToUpdate.length }),
+      });
+      setSelectedIds([]);
+      setConfirmBulk(null);
+      fetchQuestions(currentPage, appliedFilters);
+    } catch {
+      setToastMessage({
+        type: "error",
+        text: t("bulkActions.error"),
+      });
+    } finally {
+      setBulkUpdating(false);
+    }
+  };
 
   // Handlers
   const handleSearch = () => {
@@ -517,25 +677,106 @@ const QuestionsPage = () => {
         </div>
 
         {/* Filter Actions */}
-        <div className="mt-4 flex items-center gap-2">
-          <button
-            onClick={handleSearch}
-            className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
-          >
-            <Search className="h-3.5 w-3.5" strokeWidth={2} />
-            {t("filter.search")}
-          </button>
-          {hasActiveFilters && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
             <button
-              onClick={handleClearFilters}
-              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 active:scale-[0.98]"
+              onClick={handleSearch}
+              className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
             >
-              <X className="h-3.5 w-3.5" strokeWidth={2} />
-              {t("filter.clear")}
+              <Search className="h-3.5 w-3.5" strokeWidth={2} />
+              {t("filter.search")}
             </button>
-          )}
+            {hasActiveFilters && (
+              <button
+                onClick={handleClearFilters}
+                className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 active:scale-[0.98]"
+              >
+                <X className="h-3.5 w-3.5" strokeWidth={2} />
+                {t("filter.clear")}
+              </button>
+            )}
+          </div>
+
+          {/* Quick Approve All on Page Button */}
+          <button
+            onClick={() => {
+              const pageIds = questions.map((q) => q.id);
+              requestBulkConfirm("APPROVED", pageIds);
+            }}
+            disabled={loading || bulkUpdating || questions.length === 0}
+            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:opacity-50 active:scale-[0.98]"
+          >
+            {bulkUpdating ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <CheckCircle2 className="h-4 w-4" />
+            )}
+            {t("bulkActions.approveAllPage", { count: questions.length })}
+          </button>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div
+          className={`flex items-center justify-between rounded-xl border p-4 text-sm font-medium ${
+            toastMessage.type === "success"
+              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+              : "border-rose-200 bg-rose-50 text-rose-800"
+          }`}
+        >
+          <span>{toastMessage.text}</span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="rounded p-0.5 hover:bg-black/5"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Bulk Actions Banner */}
+      {selectedIds.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50/90 p-4 shadow-sm">
+          <div className="flex items-center gap-2 font-medium text-indigo-900">
+            <CheckSquare className="h-5 w-5 text-indigo-600" />
+            <span>{t("bulkActions.selectedCount", { count: selectedIds.length })}</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => requestBulkConfirm("APPROVED")}
+              disabled={bulkUpdating}
+              className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50 active:scale-95"
+            >
+              {bulkUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+              {t("bulkActions.approveSelected")}
+            </button>
+            <button
+              onClick={() => requestBulkConfirm("REJECTED")}
+              disabled={bulkUpdating}
+              className="inline-flex items-center gap-1.5 rounded-full bg-rose-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-rose-700 disabled:opacity-50 active:scale-95"
+            >
+              {bulkUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <XCircle className="h-3.5 w-3.5" />}
+              {t("bulkActions.rejectSelected")}
+            </button>
+            <button
+              onClick={() => requestBulkConfirm("PENDING")}
+              disabled={bulkUpdating}
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-amber-700 disabled:opacity-50 active:scale-95"
+            >
+              {bulkUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Clock3 className="h-3.5 w-3.5" />}
+              {t("bulkActions.pendingSelected")}
+            </button>
+            <button
+              onClick={() => setSelectedIds([])}
+              disabled={bulkUpdating}
+              className="rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-xs font-medium text-zinc-600 transition hover:bg-zinc-100 active:scale-95"
+            >
+              {t("bulkActions.deselectAll")}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Data Table Card */}
       <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white">
@@ -543,6 +784,18 @@ const QuestionsPage = () => {
           <table className="w-full min-w-[1200px]">
             <thead>
               <tr className="border-b border-zinc-200 bg-zinc-50/60">
+                <th className="w-10 px-3 py-3 text-center">
+                  <input
+                    type="checkbox"
+                    checked={
+                      questions.length > 0 &&
+                      questions.every((q) => selectedIds.includes(q.id))
+                    }
+                    onChange={handleSelectAllOnPage}
+                    className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-500 cursor-pointer"
+                    title={t("bulkActions.selectAllPage")}
+                  />
+                </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
                   {t("table.id")}
                 </th>
@@ -592,7 +845,7 @@ const QuestionsPage = () => {
                 </>
               ) : questions.length === 0 ? (
                 <tr>
-                  <td colSpan={12} className="px-4 py-16 text-center">
+                  <td colSpan={13} className="px-4 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100">
                         <FileQuestion className="h-6 w-6 text-zinc-400" strokeWidth={1.5} />
@@ -612,8 +865,20 @@ const QuestionsPage = () => {
                 questions.map((q) => (
                   <tr
                     key={q.id}
-                    className="transition-colors hover:bg-zinc-50/60"
+                    className={`transition-colors hover:bg-zinc-50/60 ${
+                      selectedIds.includes(q.id) ? "bg-indigo-50/30" : ""
+                    }`}
                   >
+                    {/* Checkbox */}
+                    <td className="px-3 py-3 text-center">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(q.id)}
+                        onChange={() => handleToggleSelectOne(q.id)}
+                        className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-500 cursor-pointer"
+                      />
+                    </td>
+
                     {/* ID */}
                     <td className="px-4 py-3">
                       <span className="text-sm font-medium tabular-nums text-zinc-500">
@@ -781,6 +1046,15 @@ const QuestionsPage = () => {
         isOpen={showAIGenerateModal}
         onClose={() => setShowAIGenerateModal(false)}
         onSuccess={handleAIGenerateSuccess}
+      />
+      <ConfirmBulkModal
+        isOpen={!!confirmBulk?.isOpen}
+        status={confirmBulk?.status || "APPROVED"}
+        count={confirmBulk?.targetIds.length || 0}
+        onClose={() => setConfirmBulk(null)}
+        onConfirm={handleBulkStatusChange}
+        isLoading={bulkUpdating}
+        t={t}
       />
     </div>
   );

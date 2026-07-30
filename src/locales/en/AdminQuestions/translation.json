@@ -142,5 +142,23 @@
       "levelRequired": "Please select a level",
       "positionRequired": "Please select a position"
     }
+  },
+  "bulkActions": {
+    "selectedCount": "{{count}} questions selected",
+    "selectAllPage": "Select all on page",
+    "deselectAll": "Deselect all",
+    "approveSelected": "Approve selected",
+    "rejectSelected": "Reject selected",
+    "pendingSelected": "Set to Pending",
+    "approveAllPage": "Approve all {{count}} on this page",
+    "updating": "Updating...",
+    "success": "Successfully updated status for {{count}} questions!",
+    "error": "Failed to update status for some questions",
+    "confirmTitle": "Confirm Bulk Action",
+    "confirmApproveMsg": "Are you sure you want to approve {{count}} selected question(s)? This will change their status to 'Approved'.",
+    "confirmRejectMsg": "Are you sure you want to reject {{count}} selected question(s)? This will change their status to 'Rejected'.",
+    "confirmPendingMsg": "Are you sure you want to set {{count}} selected question(s) to 'Pending'?",
+    "confirmBtn": "Confirm Action",
+    "cancelBtn": "Cancel"
   }
 }

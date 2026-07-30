@@ -1,0 +1,52 @@
+import apiClient from "../../utils/axios";
+
+export interface AdminBannerItem {
+  id: number;
+  title: string;
+  content: string;
+  imageUrl?: string;
+  isActive: boolean;
+  marquee?: string;
+}
+
+export interface AdminBannerPageData {
+  content: AdminBannerItem[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface ApiResponse<T> {
+  code: number;
+  data: T;
+  timestamp: string;
+}
+
+const adminBannerService = {
+  getBanners: (page: number = 1) =>
+    apiClient.get<ApiResponse<AdminBannerPageData>>(`/banners`, {
+      params: { page },
+    }),
+
+  createBanner: (formData: FormData) =>
+    apiClient.post<ApiResponse<AdminBannerItem>>("/banners", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+
+  updateBanner: (id: number, formData: FormData) =>
+    apiClient.put<ApiResponse<AdminBannerItem>>(`/banners/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+
+  toggleBannerStatus: (id: number, isActive: boolean) =>
+    apiClient.patch<ApiResponse<string>>(`/banners/${id}/status`, null, {
+      params: { isActive },
+    }),
+};
+
+export default adminBannerService;

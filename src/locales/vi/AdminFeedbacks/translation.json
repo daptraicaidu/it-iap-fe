@@ -43,5 +43,12 @@
   "noFeedbacks": "Chưa có đánh giá nào",
   "noFeedbacksDesc": "Chưa có đánh giá nào từ người dùng.",
   "star": "sao",
-  "stars": "sao"
+  "stars": "sao",
+  "quickTemplatesTitle": "Mẫu phản hồi nhanh (Click để chọn):",
+  "template1Tag": "Lời cảm ơn chung",
+  "template1": "Cảm ơn bạn đã trải nghiệm và đánh giá tích cực! Chúng tôi sẽ luôn nỗ lực để mang lại trải nghiệm tốt nhất.",
+  "template2Tag": "Ghi nhận đóng góp",
+  "template2": "Cảm ơn đóng góp quý báu của bạn! Ý kiến của bạn giúp hệ thống ngày càng hoàn thiện hơn.",
+  "template3Tag": "Chúc thành công",
+  "template3": "Rất vui vì nền tảng hỗ trợ tốt cho bạn! Chúc bạn ôn luyện phỏng vấn đạt kết quả cao nhất."
 }

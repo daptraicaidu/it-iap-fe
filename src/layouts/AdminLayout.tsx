@@ -9,6 +9,7 @@ import {
   LogOut,
   Menu,
   MessageSquare,
+  Megaphone,
   Settings,
   Users,
   X,
@@ -48,6 +49,7 @@ const sidebarItems: SidebarItem[] = [
   { key: "reports", to: "/admin/reports", icon: Flag },
   { key: "feedbacks", to: "/admin/feedbacks", icon: MessageSquare },
   { key: "notifications", to: "/admin/notifications", icon: Bell },
+  { key: "banners", to: "/admin/banners", icon: Megaphone },
   { key: "settings", to: "/admin/settings", icon: Settings },
 ];
 
@@ -58,6 +60,7 @@ const getRouteKey = (pathname: string) => {
   if (pathname.includes("/admin/reports")) return "reports";
   if (pathname.includes("/admin/feedbacks")) return "feedbacks";
   if (pathname.includes("/admin/notifications")) return "notifications";
+  if (pathname.includes("/admin/banners")) return "banners";
   if (pathname.includes("/admin/settings")) return "settings";
   return "dashboard";
 };

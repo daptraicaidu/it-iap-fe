@@ -4,9 +4,10 @@
     "users": "User Management",
     "questions": "Question Bank",
     "prompts": "AI Prompts",
-    "reports": "Reports & Complaints",
+    "reports": "Interview Reports",
     "feedbacks": "Feedback & Reviews",
     "notifications": "System Notifications",
+    "banners": "Banner Management",
     "settings": "Admin Settings"
   },
   "subtitles": {
@@ -17,6 +18,7 @@
     "reports": "Process user reports and complaints",
     "feedbacks": "Aggregate user feedback and reviews",
     "notifications": "Send & manage system-wide notifications",
+    "banners": "Manage promotional banners and header marquee text",
     "settings": "General configuration for admin workspace"
   },
   "header": {
