@@ -32,7 +32,7 @@ const GeneralSettingsPage = () => {
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8">
       {/* Header Section */}
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-600">
         <Settings className="h-5 w-5" />
       </div>
       <h1 className="mt-5 text-2xl font-semibold tracking-tight text-zinc-900">

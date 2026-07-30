@@ -12,6 +12,7 @@ import UserInfoPage from "../pages/user/UserInfoPage/UserInfoPage";
 import ProfilesPage from "../pages/user/ProfilesPage/ProfilesPage";
 import PasswordAndSecurityPage from "../pages/user/PasswordAndSecurityPage/PasswordAndSecurityPage";
 import ActivitiesPage from "../pages/user/ActivitiesPage/ActivitiesPage";
+import ActiveSessionsPage from "../pages/user/ActiveSessionsPage/ActiveSessionsPage";
 import GeneralSettingsPage from "../pages/user/GeneralSettingsPage/GeneralSettingsPage";
 import InterviewsPage from "../pages/user/InterviewsPage/InterviewsPage";
 import InterviewPrepPage from "../pages/user/InterviewPrepPage/InterviewPrepPage";
@@ -71,6 +72,7 @@ const AppRouter = () => {
               <Route path="/profiles" element={<ProfilesPage />} />
               <Route path="/settings" element={<GeneralSettingsPage />} />
               <Route path="/password_and_security" element={<PasswordAndSecurityPage />} />
+              <Route path="/active_sessions" element={<ActiveSessionsPage />} />
               <Route path="/activities" element={<ActivitiesPage />} />
             </Route>
           </Route>

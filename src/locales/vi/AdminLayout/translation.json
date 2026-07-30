@@ -4,9 +4,10 @@
     "users": "Quản lý Người dùng",
     "questions": "Ngân hàng Câu hỏi",
     "prompts": "Quản lý Prompt AI",
-    "reports": "Báo cáo & Khiếu nại",
+    "reports": "Báo cáo về phỏng vấn",
     "feedbacks": "Góp ý & Đánh giá",
     "notifications": "Thông báo Hệ thống",
+    "banners": "Quản lý Banner",
     "settings": "Cài đặt Admin"
   },
   "subtitles": {
@@ -17,6 +18,7 @@
     "reports": "Xử lý báo cáo và phản hồi từ người dùng",
     "feedbacks": "Tổng hợp đánh giá trải nghiệm người dùng",
     "notifications": "Gửi và quản lý thông báo toàn hệ thống",
+    "banners": "Quản lý banner chào mừng & chữ chạy marquee",
     "settings": "Cấu hình chung cho trang quản trị"
   },
   "header": {

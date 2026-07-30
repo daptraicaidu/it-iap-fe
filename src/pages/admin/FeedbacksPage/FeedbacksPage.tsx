@@ -94,6 +94,32 @@ const ReplyModal = ({
           </button>
         </div>
 
+        {/* Quick templates */}
+        <div className="mb-3">
+          <label className="mb-1.5 block text-xs font-medium text-zinc-500">
+            {t("quickTemplatesTitle")}
+          </label>
+          <div className="flex flex-wrap gap-1.5">
+            {[
+              { tagKey: "template1Tag", textKey: "template1" },
+              { tagKey: "template2Tag", textKey: "template2" },
+              { tagKey: "template3Tag", textKey: "template3" },
+            ].map((tmpl, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setValue(t(tmpl.textKey));
+                  if (error) setError("");
+                }}
+                className="rounded-full border border-indigo-100 bg-indigo-50/60 px-2.5 py-1 text-xs font-medium text-indigo-700 transition hover:bg-indigo-100 hover:text-indigo-800 active:scale-95"
+              >
+                + {t(tmpl.tagKey)}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <textarea
           value={value}
           onChange={(e) => {

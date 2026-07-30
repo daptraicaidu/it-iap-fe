@@ -36,6 +36,8 @@ import enAdminNotifications from "../locales/en/AdminNotifications/translation.j
 import viAdminNotifications from "../locales/vi/AdminNotifications/translation.json";
 import enAdminLayout from "../locales/en/AdminLayout/translation.json";
 import viAdminLayout from "../locales/vi/AdminLayout/translation.json";
+import enAdminBanners from "../locales/en/AdminBanners/translation.json";
+import viAdminBanners from "../locales/vi/AdminBanners/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -60,6 +62,7 @@ i18n
         Notification: enNotification,
         AdminNotifications: enAdminNotifications,
         AdminLayout: enAdminLayout,
+        AdminBanners: enAdminBanners,
       },
       vi: {
         HomePage: viHomePage,
@@ -79,11 +82,31 @@ i18n
         Notification: viNotification,
         AdminNotifications: viAdminNotifications,
         AdminLayout: viAdminLayout,
+        AdminBanners: viAdminBanners,
       },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers", "AdminQuestions", "AdminPrompts", "Interview", "Chatbot", "Report", "AdminReports", "Feedback", "AdminFeedbacks", "Notification", "AdminNotifications", "AdminLayout"],
+    ns: [
+      "HomePage",
+      "Auth",
+      "Dashboard",
+      "Profile",
+      "FooterPages",
+      "AdminUsers",
+      "AdminQuestions",
+      "AdminPrompts",
+      "Interview",
+      "Chatbot",
+      "Report",
+      "AdminReports",
+      "Feedback",
+      "AdminFeedbacks",
+      "Notification",
+      "AdminNotifications",
+      "AdminLayout",
+      "AdminBanners",
+    ],
     interpolation: {
       escapeValue: false,
     },

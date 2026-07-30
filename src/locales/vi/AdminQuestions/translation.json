@@ -142,5 +142,23 @@
       "levelRequired": "Vui lòng chọn cấp độ",
       "positionRequired": "Vui lòng chọn vị trí"
     }
+  },
+  "bulkActions": {
+    "selectedCount": "Đã chọn {{count}} câu hỏi",
+    "selectAllPage": "Chọn tất cả trên trang",
+    "deselectAll": "Bỏ chọn",
+    "approveSelected": "Duyệt các câu đã chọn",
+    "rejectSelected": "Từ chối các câu đã chọn",
+    "pendingSelected": "Đặt về Chờ duyệt",
+    "approveAllPage": "Duyệt tất cả {{count}} câu trên trang này",
+    "updating": "Đang cập nhật...",
+    "success": "Đã cập nhật trạng thái {{count}} câu hỏi thành công!",
+    "error": "Cập nhật một số câu hỏi thất bại",
+    "confirmTitle": "Xác nhận thao tác hàng loạt",
+    "confirmApproveMsg": "Bạn có chắc chắn muốn duyệt {{count}} câu hỏi đã chọn? Hành động này sẽ thay đổi trạng thái các câu hỏi này thành 'Đã duyệt'.",
+    "confirmRejectMsg": "Bạn có chắc chắn muốn từ chối {{count}} câu hỏi đã chọn? Hành động này sẽ thay đổi trạng thái các câu hỏi này thành 'Từ chối'.",
+    "confirmPendingMsg": "Bạn có chắc chắn muốn chuyển {{count}} câu hỏi đã chọn về trạng thái 'Chờ duyệt'?",
+    "confirmBtn": "Xác nhận thực hiện",
+    "cancelBtn": "Hủy bỏ"
   }
 }

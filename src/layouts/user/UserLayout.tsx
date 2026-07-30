@@ -18,8 +18,9 @@ import avatar3 from "../../assets/avatardefault/avatar3.png";
 import avatar4 from "../../assets/avatardefault/avatar4.png";
 import avatar5 from "../../assets/avatardefault/avatar5.png";
 import userInfoService from "../../services/user/userInfoService";
-
-import useNotificationStore from "../../store/notificationStore";
+import bannerService, { type ActiveBanner } from "../../services/user/bannerService";
+import MarqueeBar from "../../components/user/MarqueeBar";
+import BannerModal from "../../components/user/BannerModal";
 
 const DEFAULT_AVATARS = [avatar1, avatar2, avatar3, avatar4, avatar5];
 
@@ -38,12 +39,11 @@ const UserLayout = () => {
   const logout = useAuthStore((s) => s.logout);
   const userInfo = useUserStore((s) => s.userInfo);
   const setUserInfo = useUserStore((s) => s.setUserInfo);
-  const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const [activeBanner, setActiveBanner] = useState<ActiveBanner | null>(null);
 
   useEffect(() => {
-    fetchNotifications(1);
     userInfoService
       .getUserInfo()
       .then((res) => {
@@ -58,7 +58,18 @@ const UserLayout = () => {
       .catch(() => {
         // Fallback silently if API fails or unauthorized
       });
-  }, [setUserInfo, fetchNotifications]);
+
+    bannerService
+      .getActiveBanner()
+      .then((res) => {
+        if (res.data?.data) {
+          setActiveBanner(res.data.data);
+        }
+      })
+      .catch(() => {
+        // Fallback silently if active banner API fails or no active banner
+      });
+  }, [setUserInfo]);
 
   const displayName = userInfo?.fullName || t("user.name", "User");
   const displayAvatar =
@@ -118,7 +129,7 @@ const UserLayout = () => {
 
           <nav
             aria-label="Main Navigation"
-            className="order-3 flex w-full gap-1 overflow-x-auto md:order-2 md:mx-8 md:w-auto md:flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="order-3 flex w-full gap-1 overflow-x-auto pb-2 pt-0.5 md:pb-0 md:order-2 md:mx-8 md:w-auto md:flex-1 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-zinc-100 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-zinc-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-zinc-400 md:[&::-webkit-scrollbar]:hidden [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_theme(colors.zinc.100)] md:[scrollbar-width:none]"
           >
             {navigationItems.map((item) => (
               <NavLink
@@ -212,6 +223,12 @@ const UserLayout = () => {
           </div>
         </div>
       </header>
+
+      {/* Marquee Announcement Bar */}
+      {activeBanner?.marquee && <MarqueeBar text={activeBanner.marquee} />}
+
+      {/* Active Banner Modal */}
+      <BannerModal banner={activeBanner} />
 
       {/* Main Content Area */}
       <main className="flex-1 w-full relative overflow-y-auto">

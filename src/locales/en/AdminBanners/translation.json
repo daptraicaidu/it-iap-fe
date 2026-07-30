@@ -1,0 +1,49 @@
+{
+  "title": "Banner & Marquee Management",
+  "subtitle": "Create, toggle, and edit welcome/promotional banners and running marquee announcements.",
+  "createButton": "Create New Banner",
+  "table": {
+    "id": "ID",
+    "image": "Image",
+    "title": "Title",
+    "content": "Content",
+    "marquee": "Marquee Text",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "modal": {
+    "createTitle": "Create New Banner",
+    "editTitle": "Edit Banner",
+    "fields": {
+      "title": "Banner Title",
+      "titlePlaceholder": "Enter banner title...",
+      "content": "Banner Content",
+      "contentPlaceholder": "Enter detailed message or promo offer...",
+      "image": "Banner Image",
+      "marquee": "Marquee Running Text (Optional)",
+      "marqueePlaceholder": "Running text on header announcement bar...",
+      "active": "Activate immediately upon saving"
+    },
+    "uploadPrompt": "Upload image (PNG, JPG, WEBP)",
+    "changeImagePrompt": "Change image",
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save Banner",
+      "saving": "Saving..."
+    }
+  },
+  "toast": {
+    "fetchError": "Failed to load banner list",
+    "createSuccess": "Banner created successfully",
+    "createError": "Failed to create banner",
+    "updateSuccess": "Banner updated successfully",
+    "updateError": "Failed to update banner",
+    "toggleSuccess": "Banner status updated successfully",
+    "toggleError": "Failed to toggle banner status"
+  },
+  "emptyState": "No banners found. Click 'Create New Banner' to add one."
+}
