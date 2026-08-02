@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   ChevronDown,
@@ -36,11 +36,13 @@ const getDefaultAvatar = (identifier: string) => {
 const UserLayout = () => {
   const { t } = useTranslation("Dashboard");
   const navigate = useNavigate();
+  const location = useLocation();
   const logout = useAuthStore((s) => s.logout);
   const userInfo = useUserStore((s) => s.userInfo);
   const setUserInfo = useUserStore((s) => s.setUserInfo);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
   const [activeBanner, setActiveBanner] = useState<ActiveBanner | null>(null);
 
   useEffect(() => {
@@ -114,6 +116,35 @@ const UserLayout = () => {
     };
   }, []);
 
+  // Auto-scroll active nav link into view on route change / reload (especially for mobile horizontal scrollbar)
+  useEffect(() => {
+    const scrollToActive = () => {
+      if (!navRef.current) return;
+      const activeEl = navRef.current.querySelector<HTMLElement>("a.active");
+      if (activeEl) {
+        const navContainer = navRef.current;
+        const scrollLeft =
+          activeEl.offsetLeft -
+          navContainer.clientWidth / 2 +
+          activeEl.clientWidth / 2;
+
+        navContainer.scrollTo({
+          left: Math.max(0, scrollLeft),
+          behavior: "smooth",
+        });
+      }
+    };
+
+    scrollToActive();
+    const timer1 = setTimeout(scrollToActive, 50);
+    const timer2 = setTimeout(scrollToActive, 150);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [location.pathname]);
+
   return (
     <div className="h-[100dvh] bg-zinc-50 text-zinc-900 flex flex-col overflow-hidden">
       <header className="shrink-0 border-b border-zinc-200 bg-white/80 backdrop-blur-md z-50">
@@ -128,6 +159,7 @@ const UserLayout = () => {
           </div>
 
           <nav
+            ref={navRef}
             aria-label="Main Navigation"
             className="order-3 flex w-full gap-1 overflow-x-auto pb-2 pt-0.5 md:pb-0 md:order-2 md:mx-8 md:w-auto md:flex-1 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-zinc-100 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-zinc-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-zinc-400 md:[&::-webkit-scrollbar]:hidden [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_theme(colors.zinc.100)] md:[scrollbar-width:none]"
           >
@@ -140,7 +172,7 @@ const UserLayout = () => {
                   [
                     "whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition",
                     isActive
-                      ? "bg-zinc-900 text-white"
+                      ? "bg-zinc-900 text-white active"
                       : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
                   ].join(" ")
                 }

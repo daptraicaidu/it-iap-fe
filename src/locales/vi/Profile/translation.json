@@ -128,6 +128,7 @@
     "statusDisabled": "Chưa kích hoạt",
     "enableButton": "Bật xác thực 2 bước",
     "disableButton": "Tắt xác thực 2 bước",
+    "requestResetButton": "Yêu cầu gỡ 2FA qua Email",
     "setup": {
       "title": "Thiết lập xác thực 2 bước",
       "step1": "Quét mã QR bên dưới bằng ứng dụng xác thực của bạn",

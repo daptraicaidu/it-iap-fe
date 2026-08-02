@@ -50,5 +50,7 @@
   "template2Tag": "Appreciate Feedback",
   "template2": "Thank you for your valuable feedback! Your suggestions help us improve the platform every day.",
   "template3Tag": "Wish Success",
-  "template3": "We are glad the platform is helpful to you! Wishing you the best of success in your interview preparation."
+  "template3": "We are glad the platform is helpful to you! Wishing you the best of success in your interview preparation.",
+  "statsTotal": "Total Reviews",
+  "statsAvgRating": "Average Rating"
 }

@@ -265,6 +265,8 @@ const FeedbacksPage = () => {
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalFeedbacks, setTotalFeedbacks] = useState<number | null>(null);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
 
   // Filters
   const [ratingFilter, setRatingFilter] = useState<number | undefined>(undefined);
@@ -312,8 +314,12 @@ const FeedbacksPage = () => {
 
       const res = await adminFeedbackService.getFeedbacks(params as never);
       const data = res.data.data;
-      setItems(data.content);
-      setTotalPages(data.totalPages);
+      const pageData = data.feedbacks;
+
+      setItems(pageData?.content || []);
+      setTotalPages(pageData?.totalPages || 0);
+      setTotalFeedbacks(data.totalFeedbacks ?? null);
+      setAverageRating(data.averageRating ?? null);
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
       setError(axiosErr.response?.data?.message || "Đã xảy ra lỗi");
@@ -420,6 +426,28 @@ const FeedbacksPage = () => {
           </h1>
           <p className="mt-2 text-base text-zinc-600">{t("subtitle")}</p>
         </motion.div>
+
+        {/* Stats Overview */}
+        {(totalFeedbacks !== null || averageRating !== null) && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            <div className="rounded-xl border border-zinc-200 bg-white p-4">
+              <p className="text-xs font-medium text-zinc-500">{t("statsTotal") || "Tổng số đánh giá"}</p>
+              <p className="mt-1 text-2xl font-bold text-zinc-900">{totalFeedbacks ?? 0}</p>
+            </div>
+            <div className="rounded-xl border border-zinc-200 bg-white p-4">
+              <p className="text-xs font-medium text-zinc-500">{t("statsAvgRating") || "Điểm trung bình"}</p>
+              <div className="mt-1 flex items-center gap-2">
+                <span className="text-2xl font-bold text-zinc-900">{averageRating?.toFixed(1) ?? "0.0"}</span>
+                <StarRatingDisplay rating={Math.round(averageRating ?? 0)} />
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Filters */}
         <motion.div

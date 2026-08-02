@@ -142,7 +142,7 @@ const AdminLayout = () => {
         <aside className="hidden w-64 shrink-0 border-r border-zinc-200 bg-white px-4 py-5 md:flex md:flex-col">
           {/* Logo Brand Header */}
           <div className="mb-6 flex items-center justify-between px-2">
-            <NavLink to="/admin/dashboard" className="flex items-center gap-2">
+            <NavLink to="/" className="flex items-center gap-2">
               <img src={logoImg} alt="Interview AI Logo" className="h-9 w-auto object-contain" />
             </NavLink>
           </div>

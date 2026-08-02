@@ -15,6 +15,12 @@ export interface FeedbackItem {
   createdAt: string;
 }
 
+export interface FeedbackListResponse {
+  feedbacks: PaginatedResponse<FeedbackItem>;
+  totalFeedbacks: number;
+  averageRating: number;
+}
+
 export interface GetFeedbacksParams {
   page?: number;
   rating?: number;
@@ -28,7 +34,7 @@ export interface GetFeedbacksParams {
 const userFeedbackService = {
   // Get feedbacks with optional filters
   getFeedbacks: (params: GetFeedbacksParams) =>
-    apiClient.get<ApiResponse<PaginatedResponse<FeedbackItem>>>("/feedbacks", {
+    apiClient.get<ApiResponse<FeedbackListResponse>>("/feedbacks", {
       params,
     }),
 

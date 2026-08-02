@@ -1,14 +1,13 @@
 import apiClient from "../../utils/axios";
 import type { ApiResponse } from "../user/interviewService";
-import type { PaginatedResponse } from "../user/interviewService";
-import type { FeedbackItem, GetFeedbacksParams } from "../user/feedbackService";
+import type { FeedbackItem, FeedbackListResponse, GetFeedbacksParams } from "../user/feedbackService";
 
 // ── Service ──
 
 const adminFeedbackService = {
   // Get all feedbacks with optional filters
   getFeedbacks: (params: GetFeedbacksParams) =>
-    apiClient.get<ApiResponse<PaginatedResponse<FeedbackItem>>>("/feedbacks", {
+    apiClient.get<ApiResponse<FeedbackListResponse>>("/feedbacks", {
       params,
     }),
 

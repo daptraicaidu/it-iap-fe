@@ -34,5 +34,7 @@
   "deleteError": "Failed to delete review",
   "star": "star",
   "stars": "stars",
-  "anonymous": "Anonymous"
+  "anonymous": "Anonymous",
+  "totalFeedbacksCount": "Total Reviews",
+  "avgRating": "Avg Rating"
 }

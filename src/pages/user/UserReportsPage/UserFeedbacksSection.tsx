@@ -215,6 +215,10 @@ const UserFeedbacksSection = () => {
   // Infinite scroll sentinel ref
   const sentinelRef = useRef<HTMLDivElement>(null);
 
+  // Stats state
+  const [totalFeedbacks, setTotalFeedbacks] = useState<number | null>(null);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+
   // Fetch feedbacks
   const fetchFeedbacks = useCallback(
     async (page: number, append: boolean = false) => {
@@ -232,13 +236,16 @@ const UserFeedbacksSection = () => {
 
         const res = await userFeedbackService.getFeedbacks(params as never);
         const data = res.data.data;
+        const pageData = data.feedbacks;
 
         if (append) {
-          setItems((prev) => [...prev, ...data.content]);
+          setItems((prev) => [...prev, ...(pageData?.content || [])]);
         } else {
-          setItems(data.content);
+          setItems(pageData?.content || []);
         }
-        setHasMore(!data.last);
+        setHasMore(!pageData?.last);
+        setTotalFeedbacks(data.totalFeedbacks ?? null);
+        setAverageRating(data.averageRating ?? null);
       } catch (err) {
         const axiosErr = err as AxiosError<ApiErrorResponse>;
         setError(axiosErr.response?.data?.message || "Đã xảy ra lỗi");
@@ -447,6 +454,23 @@ const UserFeedbacksSection = () => {
           </button>
         </div>
       </motion.div>
+
+      {/* Stats Summary Badges */}
+      {(totalFeedbacks !== null || averageRating !== null) && (
+        <div className="mb-3 flex flex-wrap items-center gap-3 text-xs">
+          {totalFeedbacks !== null && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1 font-medium text-zinc-700">
+              {t("totalFeedbacksCount")}: <strong className="text-zinc-900">{totalFeedbacks}</strong>
+            </span>
+          )}
+          {averageRating !== null && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 font-medium text-amber-800 border border-amber-200">
+              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+              {t("avgRating")}: <strong className="text-amber-900">{averageRating.toFixed(1)}</strong>
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Filters */}
       <motion.div
