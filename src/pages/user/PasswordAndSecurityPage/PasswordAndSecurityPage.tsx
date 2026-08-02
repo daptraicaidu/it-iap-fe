@@ -277,6 +277,29 @@ const PasswordAndSecurityPage = () => {
   const [disableTotp, setDisableTotp] = useState("");
   const [isDisabling, setIsDisabling] = useState(false);
 
+  // Reset 2FA via Email
+  const [isRequestingReset2fa, setIsRequestingReset2fa] = useState(false);
+
+  const handleRequestReset2fa = async () => {
+    setIsRequestingReset2fa(true);
+    setTwoFaError(null);
+    setTwoFaSuccess(null);
+    try {
+      const res = await authService.requestReset2fa();
+      setTwoFaSuccess(
+        res.data?.message ||
+          "Một email xác nhận khôi phục 2FA đã được gửi tới địa chỉ email của bạn"
+      );
+    } catch (err: unknown) {
+      const apiMessage = (
+        err as { response?: { data?: { message?: string } } }
+      )?.response?.data?.message;
+      setTwoFaError(apiMessage || "Gửi yêu cầu gỡ 2FA thất bại");
+    } finally {
+      setIsRequestingReset2fa(false);
+    }
+  };
+
   // ── Fetch 2FA Status ──
   useEffect(() => {
     const fetch2faStatus = async () => {
@@ -764,19 +787,35 @@ const PasswordAndSecurityPage = () => {
             </div>
           )}
 
-          {/* ── 2FA Enabled: Show disable button or disable flow ── */}
+          {/* ── 2FA Enabled: Show action buttons ── */}
           {!is2faLoading && is2faEnabled === true && !showDisableFlow && (
-            <button
-              onClick={() => {
-                setShowDisableFlow(true);
-                setTwoFaError(null);
-                setTwoFaSuccess(null);
-              }}
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98]"
-            >
-              <ShieldOff className="h-4 w-4" />
-              {t("twoFa.disableButton")}
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => {
+                  setShowDisableFlow(true);
+                  setTwoFaError(null);
+                  setTwoFaSuccess(null);
+                }}
+                className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98]"
+              >
+                <ShieldOff className="h-4 w-4" />
+                {t("twoFa.disableButton")}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleRequestReset2fa}
+                disabled={isRequestingReset2fa}
+                className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-60"
+              >
+                {isRequestingReset2fa ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Mail className="h-4 w-4" />
+                )}
+                {t("twoFa.requestResetButton") || "Yêu cầu gỡ 2FA qua Email"}
+              </button>
+            </div>
           )}
 
           {/* ── Disable Flow ── */}

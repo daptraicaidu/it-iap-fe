@@ -50,5 +50,7 @@
   "template2Tag": "Ghi nhận đóng góp",
   "template2": "Cảm ơn đóng góp quý báu của bạn! Ý kiến của bạn giúp hệ thống ngày càng hoàn thiện hơn.",
   "template3Tag": "Chúc thành công",
-  "template3": "Rất vui vì nền tảng hỗ trợ tốt cho bạn! Chúc bạn ôn luyện phỏng vấn đạt kết quả cao nhất."
+  "template3": "Rất vui vì nền tảng hỗ trợ tốt cho bạn! Chúc bạn ôn luyện phỏng vấn đạt kết quả cao nhất.",
+  "statsTotal": "Tổng số đánh giá",
+  "statsAvgRating": "Điểm trung bình"
 }

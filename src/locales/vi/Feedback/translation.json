@@ -34,5 +34,7 @@
   "deleteError": "Xóa đánh giá thất bại",
   "star": "sao",
   "stars": "sao",
-  "anonymous": "Ẩn danh"
+  "anonymous": "Ẩn danh",
+  "totalFeedbacksCount": "Tổng đánh giá",
+  "avgRating": "Đánh giá TB"
 }

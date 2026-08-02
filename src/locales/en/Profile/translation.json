@@ -128,6 +128,7 @@
     "statusDisabled": "Not enabled",
     "enableButton": "Enable two-factor authentication",
     "disableButton": "Disable two-factor authentication",
+    "requestResetButton": "Request 2FA Reset via Email",
     "setup": {
       "title": "Set up two-factor authentication",
       "step1": "Scan the QR code below with your authenticator app",

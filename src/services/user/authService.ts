@@ -106,6 +106,16 @@ const authService = {
 
   disable2fa: (payload: Verify2faRequest) =>
     apiClient.post<ApiResponse>("/2fa/disable", payload),
+
+  // ── 2FA Reset / Recovery ──
+  requestReset2fa: () =>
+    apiClient.post<ApiResponse<null>>("/2fa/request-reset"),
+
+  cancelReset2fa: (payload: { token: string }) =>
+    apiClient.post<ApiResponse<null>>("/2fa/cancel-reset", payload),
+
+  confirmReset2fa: (payload: { token: string }) =>
+    apiClient.post<ApiResponse<null>>("/2fa/confirm-reset", payload),
 };
 
 export default authService;

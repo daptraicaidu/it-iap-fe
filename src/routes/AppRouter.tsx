@@ -24,6 +24,7 @@ import UserReportsPage from "../pages/user/UserReportsPage/UserReportsPage";
 import NotificationPage from "../pages/user/NotificationPage/NotificationPage";
 import UserLayout from "../layouts/user/UserLayout";
 import SettingsLayout from "../layouts/user/SettingsLayout";
+import Reset2faPage from "../pages/user/Reset2faPage/Reset2faPage";
 import GuestRoute from "./guards/GuestRoute";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import AdminRoutes from "./AdminRoutes";
@@ -40,6 +41,8 @@ const AppRouter = () => {
         <Route path="/introduction" element={<IntroductionPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        <Route path="/reset-2fa/cancel" element={<Reset2faPage />} />
+        <Route path="/reset-2fa/confirm" element={<Reset2faPage />} />
 
         <Route element={<GuestRoute />}>
           <Route path="/login" element={<LoginPage />} />
