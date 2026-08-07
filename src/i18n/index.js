@@ -38,6 +38,8 @@ import enAdminLayout from "../locales/en/AdminLayout/translation.json";
 import viAdminLayout from "../locales/vi/AdminLayout/translation.json";
 import enAdminBanners from "../locales/en/AdminBanners/translation.json";
 import viAdminBanners from "../locales/vi/AdminBanners/translation.json";
+import enForum from "../locales/en/Forum/translation.json";
+import viForum from "../locales/vi/Forum/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -63,6 +65,7 @@ i18n
         AdminNotifications: enAdminNotifications,
         AdminLayout: enAdminLayout,
         AdminBanners: enAdminBanners,
+        Forum: enForum,
       },
       vi: {
         HomePage: viHomePage,
@@ -83,6 +86,7 @@ i18n
         AdminNotifications: viAdminNotifications,
         AdminLayout: viAdminLayout,
         AdminBanners: viAdminBanners,
+        Forum: viForum,
       },
     },
     fallbackLng: "vi",
@@ -106,6 +110,7 @@ i18n
       "AdminNotifications",
       "AdminLayout",
       "AdminBanners",
+      "Forum",
     ],
     interpolation: {
       escapeValue: false,

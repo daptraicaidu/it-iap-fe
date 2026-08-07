@@ -22,6 +22,7 @@ import InterviewResultPage from "../pages/user/InterviewResultPage/InterviewResu
 import InterviewHistoryPage from "../pages/user/InterviewHistoryPage/InterviewHistoryPage";
 import UserReportsPage from "../pages/user/UserReportsPage/UserReportsPage";
 import NotificationPage from "../pages/user/NotificationPage/NotificationPage";
+import ForumPage from "../pages/user/ForumPage/ForumPage";
 import UserLayout from "../layouts/user/UserLayout";
 import SettingsLayout from "../layouts/user/SettingsLayout";
 import Reset2faPage from "../pages/user/Reset2faPage/Reset2faPage";
@@ -69,6 +70,7 @@ const AppRouter = () => {
             <Route path="/reports" element={<Navigate to="/reports_and_feedbacks" replace />} />
             <Route path="/chatbot" element={<ChatBotPage />} />
             <Route path="/notifications" element={<NotificationPage />} />
+            <Route path="/forum" element={<ForumPage />} />
             
             <Route element={<SettingsLayout />}>
               <Route path="/userinfo" element={<UserInfoPage />} />
