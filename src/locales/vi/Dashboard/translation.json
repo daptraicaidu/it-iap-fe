@@ -11,6 +11,37 @@
   "selectProfile": "Chọn hồ sơ",
   "noProfiles": "Chưa có hồ sơ nào",
   "streak": "Đang duy trì chuỗi {{count}} ngày luyện tập",
+  "streakModal": {
+    "title": "Thông tin Chuỗi luyện tập",
+    "days": "ngày liên tiếp",
+    "longestStreak": "Chuỗi dài nhất",
+    "slogan": "Giữ chuỗi thật lâu, hiểu biết thêm sâu",
+    "subtitle": "Duy trì thói quen luyện tập phỏng vấn AI mỗi ngày để nâng cao phản xạ và bứt phá sự nghiệp.",
+    "steps": {
+      "step1": "Hoàn thành ít nhất 1 buổi phỏng vấn",
+      "step2": "Duy trì chuỗi hàng ngày bằng việc luyện tập",
+      "step3": "Mở khoá các cột mốc mới theo tiến độ"
+    },
+    "gotIt": "Đã hiểu & Tiếp tục"
+  },
+  "share": {
+    "shareGrade": "Chia sẻ điểm GPA",
+    "shareStreak": "Chia sẻ chuỗi",
+    "sharing": "Đang chia sẻ...",
+    "confirmTitleGrade": "Chia sẻ điểm GPA lên Diễn đàn",
+    "confirmTitleStreak": "Chia sẻ chuỗi ngày lên Diễn đàn",
+    "confirmDescGrade": "Bạn có chắc chắn muốn chia sẻ thành tích của hồ sơ \"{{title}}\" với điểm GPA {{score}}/10 lên Diễn đàn cộng đồng?",
+    "confirmDescStreak": "Bạn có chắc chắn muốn chia sẻ chuỗi {{count}} ngày luyện tập liên tục lên Diễn đàn cộng đồng?",
+    "confirmBtn": "Xác nhận chia sẻ",
+    "cancelBtn": "Hủy bỏ",
+    "closeBtn": "Đóng",
+    "shareSuccessTitle": "Chia sẻ lên Diễn đàn thành công!",
+    "shareSuccessDesc": "Bài viết của bạn đã được đăng công khai lên Diễn đàn cộng đồng.",
+    "successMessage": "Chia sẻ lên Diễn đàn thành công!",
+    "viewForum": "Xem trên Diễn đàn",
+    "errorMessage": "Chia sẻ thất bại. Vui lòng thử lại sau.",
+    "selectProfileFirst": "Vui lòng chọn một hồ sơ trước khi chia sẻ điểm GPA."
+  },
   "stats": {
     "interviewsThisWeek": "Buổi phỏng vấn tuần này",
     "vsLastWeek": "So với tuần trước",
@@ -74,11 +105,48 @@
     "chatbot": "Chatbot",
     "interview": "Phỏng vấn",
     "forum": "Diễn đàn",
+    "orders": "Lịch sử đơn hàng",
+    "checkout": "Thanh toán & Nâng cấp",
     "reviewResult": "Kết quả phỏng vấn",
     "reports": "Báo cáo và Đánh giá"
   },
   "user": {
     "name": "Người dùng",
     "avatarAlt": "Ảnh đại diện"
+  },
+  "subscription": {
+    "currentTier": "Gói dịch vụ hiện tại",
+    "freeTierDesc": "Gói cơ bản miễn phí (5 lượt phỏng vấn AI mỗi ngày)",
+    "expiresAt": "Thời hạn sử dụng đến: {{date}}",
+    "upgradePro": "Nâng cấp gói Pro",
+    "switchTier": "Nâng cấp / Đổi gói",
+    "viewPlans": "Xem các gói",
+    "modalTitle": "Chọn gói dịch vụ phù hợp với bạn",
+    "modalSubtitle": "Mở khóa số lượt phỏng vấn không giới hạn, chấm điểm AI chuyên sâu và ngữ cảnh chatbot mở rộng.",
+    "badgeTitle": "Nâng tầm sự nghiệp công nghệ thông tin",
+    "popularBadge": "Phổ biến nhất",
+    "saveBadge": "Tiết kiệm lớn",
+    "perMonth": "/tháng",
+    "perYear": "/năm",
+    "forever": "vĩnh viễn",
+    "free": "Miễn phí",
+    "features": {
+      "title": "Quyền lợi bao gồm:",
+      "maxProfiles": "Tối đa {{count}} hồ sơ phỏng vấn",
+      "dailyInterviews": "{{count}} lượt phỏng vấn AI mỗi ngày",
+      "chatbotContext": "Ngữ cảnh hội thoại Chatbot {{tokens}} tokens",
+      "detailedGrading": "Chấm điểm & phân tích chi tiết kỹ năng",
+      "unlimited": "Phỏng vấn AI không giới hạn số lượt mỗi ngày",
+      "priority": "Ưu tiên xử lý trên hạ tầng AI siêu tốc"
+    },
+    "buttons": {
+      "current": "Gói bạn đang sử dụng",
+      "default": "Gói mặc định",
+      "subscribe": "Đăng ký ngay"
+    },
+    "guarantee": {
+      "secure": "Thanh toán bảo mật an toàn 100%",
+      "instant": "Kích hoạt quyền lợi tài khoản ngay lập tức"
+    }
   }
 }

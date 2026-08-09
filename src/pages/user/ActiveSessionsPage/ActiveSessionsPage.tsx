@@ -204,7 +204,7 @@ const ActiveSessionsPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-zinc-900 flex items-center gap-2">
-            <ShieldCheck className="h-6 w-6 text-600" />
+            <ShieldCheck className="h-6 w-6 text-blue-600" />
             {t("sessions.title")}
           </h1>
           <p className="mt-1 text-sm text-zinc-600">

@@ -54,6 +54,8 @@ const UserLayout = () => {
             fullName: res.data.data.fullName,
             avatarUrl: res.data.data.avatarUrl || null,
             email: res.data.data.email,
+            activeTier: res.data.data.activeTier || "BASIC",
+            subscriptionEndDate: res.data.data.subscriptionEndDate || null,
           });
         }
       })
@@ -81,10 +83,11 @@ const UserLayout = () => {
     { label: t("navigation.home", "Trang chủ"), to: "/", end: true },
     { label: t("navigation.dashboard", "Dashboard"), to: "/dashboard", end: false },
     { label: t("navigation.interview", "Phỏng vấn"), to: "/interviews", end: false },
-    { label: t("navigation.forum", "Diễn đàn"), to: "/forum", end: false },
     { label: t("navigation.history", "Lịch sử"), to: "/history", end: false },
     { label: t("navigation.chatbot", "Chatbot"), to: "/chatbot", end: false },
     { label: t("navigation.reports", "Báo cáo & Đánh giá"), to: "/reports_and_feedbacks", end: false },
+    { label: t("navigation.forum", "Diễn đàn"), to: "/forum", end: false },
+    { label: t("navigation.orders", "Lịch sử đơn hàng"), to: "/orders", end: false },
   ];
 
   const handleLogout = () => {

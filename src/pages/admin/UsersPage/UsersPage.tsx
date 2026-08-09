@@ -7,6 +7,7 @@ import {
   ShieldOff,
   Users,
   X,
+  RefreshCw,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -218,6 +219,12 @@ const SkeletonRow = () => (
       <div className="h-4 w-24 rounded bg-zinc-200" />
     </td>
     <td className="px-4 py-3.5">
+      <div className="h-6 w-20 rounded-full bg-zinc-200" />
+    </td>
+    <td className="px-4 py-3.5">
+      <div className="h-4 w-24 rounded bg-zinc-200" />
+    </td>
+    <td className="px-4 py-3.5">
       <div className="h-6 w-16 rounded-full bg-zinc-200" />
     </td>
     <td className="px-4 py-3.5">
@@ -367,13 +374,26 @@ const UsersPage = () => {
           <h1 className="text-xl font-semibold text-zinc-900">{t("title")}</h1>
           <p className="mt-1 text-sm text-zinc-500">{t("subtitle")}</p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
-        >
-          <Plus className="h-4 w-4" strokeWidth={2} />
-          {t("addUser")}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => fetchUsers(currentPage, appliedFilters)}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              strokeWidth={2}
+            />
+            <span>{t("reload")}</span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
+          >
+            <Plus className="h-4 w-4" strokeWidth={2} />
+            {t("addUser")}
+          </button>
+        </div>
       </div>
 
       {/* Filter Card */}
@@ -465,6 +485,12 @@ const UsersPage = () => {
                   {t("table.phone")}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
+                  {t("table.activeTier")}
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
+                  {t("table.subscriptionEndDate")}
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
                   {t("table.status")}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
@@ -486,7 +512,7 @@ const UsersPage = () => {
                 </>
               ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-16 text-center">
+                  <td colSpan={9} className="px-4 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100">
                         <Users className="h-6 w-6 text-zinc-400" strokeWidth={1.5} />
@@ -538,7 +564,46 @@ const UsersPage = () => {
                     {/* Phone */}
                     <td className="px-4 py-3">
                       <span className="text-sm text-zinc-600 tabular-nums">
-                        {user.phoneNumber}
+                        {user.phoneNumber || "--"}
+                      </span>
+                    </td>
+
+                    {/* Active Tier */}
+                    <td className="px-4 py-3">
+                      {(() => {
+                        const tier = (user.activeTier || "BASIC").toUpperCase();
+                        if (tier.startsWith("PRO")) {
+                          return (
+                            <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                              {user.activeTier}
+                            </span>
+                          );
+                        }
+                        if (tier.startsWith("PLUS")) {
+                          return (
+                            <span className="inline-flex items-center rounded-full border border-rose-200 bg-rose-50 px-2.5 py-0.5 text-xs font-semibold text-rose-700">
+                              {user.activeTier}
+                            </span>
+                          );
+                        }
+                        return (
+                          <span className="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-700">
+                            {user.activeTier || "BASIC"}
+                          </span>
+                        );
+                      })()}
+                    </td>
+
+                    {/* Subscription End Date */}
+                    <td className="px-4 py-3">
+                      <span className="text-sm text-zinc-500 tabular-nums">
+                        {user.subscriptionEndDate
+                          ? new Date(user.subscriptionEndDate).toLocaleDateString("vi-VN", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                            })
+                          : "--"}
                       </span>
                     </td>
 

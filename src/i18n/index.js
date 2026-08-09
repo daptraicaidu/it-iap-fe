@@ -40,6 +40,12 @@ import enAdminBanners from "../locales/en/AdminBanners/translation.json";
 import viAdminBanners from "../locales/vi/AdminBanners/translation.json";
 import enForum from "../locales/en/Forum/translation.json";
 import viForum from "../locales/vi/Forum/translation.json";
+import enAdminDashboard from "../locales/en/AdminDashboard/translation.json";
+import viAdminDashboard from "../locales/vi/AdminDashboard/translation.json";
+import enAdminPromotions from "../locales/en/AdminPromotions/translation.json";
+import viAdminPromotions from "../locales/vi/AdminPromotions/translation.json";
+import enOrders from "../locales/en/Orders/translation.json";
+import viOrders from "../locales/vi/Orders/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -65,7 +71,10 @@ i18n
         AdminNotifications: enAdminNotifications,
         AdminLayout: enAdminLayout,
         AdminBanners: enAdminBanners,
+        AdminPromotions: enAdminPromotions,
+        Orders: enOrders,
         Forum: enForum,
+        AdminDashboard: enAdminDashboard,
       },
       vi: {
         HomePage: viHomePage,
@@ -86,7 +95,10 @@ i18n
         AdminNotifications: viAdminNotifications,
         AdminLayout: viAdminLayout,
         AdminBanners: viAdminBanners,
+        AdminPromotions: viAdminPromotions,
+        Orders: viOrders,
         Forum: viForum,
+        AdminDashboard: viAdminDashboard,
       },
     },
     fallbackLng: "vi",
@@ -110,7 +122,10 @@ i18n
       "AdminNotifications",
       "AdminLayout",
       "AdminBanners",
+      "AdminPromotions",
+      "Orders",
       "Forum",
+      "AdminDashboard",
     ],
     interpolation: {
       escapeValue: false,

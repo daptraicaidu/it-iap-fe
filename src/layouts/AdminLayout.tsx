@@ -14,6 +14,7 @@ import {
   Users,
   X,
   ChevronDown,
+  Tag,
 } from "lucide-react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -50,6 +51,7 @@ const sidebarItems: SidebarItem[] = [
   { key: "feedbacks", to: "/admin/feedbacks", icon: MessageSquare },
   { key: "notifications", to: "/admin/notifications", icon: Bell },
   { key: "banners", to: "/admin/banners", icon: Megaphone },
+  { key: "promotions", to: "/admin/promotions", icon: Tag },
   { key: "settings", to: "/admin/settings", icon: Settings },
 ];
 
@@ -61,6 +63,7 @@ const getRouteKey = (pathname: string) => {
   if (pathname.includes("/admin/feedbacks")) return "feedbacks";
   if (pathname.includes("/admin/notifications")) return "notifications";
   if (pathname.includes("/admin/banners")) return "banners";
+  if (pathname.includes("/admin/promotions")) return "promotions";
   if (pathname.includes("/admin/settings")) return "settings";
   return "dashboard";
 };
@@ -180,7 +183,7 @@ const AdminLayout = () => {
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-[0.98]"
               title={t("sidebar.userPlatform")}
             >
-              <Compass className="h-4 w-4 text-indigo-600" strokeWidth={1.8} />
+              <Compass className="h-4 w-4 text-600" strokeWidth={1.8} />
               <span className="flex-1 text-left">{t("sidebar.userPlatform")}</span>
             </button>
 
@@ -251,7 +254,7 @@ const AdminLayout = () => {
               onClick={handleSwitchToUserWorkspace}
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100"
             >
-              <Compass className="h-4 w-4 text-indigo-600" strokeWidth={1.8} />
+              <Compass className="h-4 w-4 text-600" strokeWidth={1.8} />
               <span>{t("sidebar.userPlatform")}</span>
             </button>
 
@@ -306,7 +309,7 @@ const AdminLayout = () => {
                   <span className="max-w-[120px] truncate font-semibold text-zinc-900 hidden sm:inline">
                     {adminName}
                   </span>
-                  <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-600">
+                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600">
                     ADMIN
                   </span>
                   <ChevronDown className={`h-3.5 w-3.5 text-zinc-400 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`} />
@@ -334,7 +337,7 @@ const AdminLayout = () => {
                       }}
                       className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
                     >
-                      <Compass className="h-4 w-4 text-indigo-600" />
+                      <Compass className="h-4 w-4 text-600" />
                       <div>
                         <p className="font-medium">{t("userMenu.switchToUser")}</p>
                         <p className="text-[10px] text-zinc-500">{t("userMenu.switchToUserDesc")}</p>

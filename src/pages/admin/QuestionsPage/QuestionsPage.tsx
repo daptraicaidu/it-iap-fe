@@ -17,6 +17,7 @@ import {
   Clock3,
   Loader2,
   CheckSquare,
+  RefreshCw,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import adminQuestionService, {
@@ -57,7 +58,7 @@ const SourceBadge = ({ source }: { source: string }) => {
     <span
       className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
         isAI
-          ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+          ? "border-cyan-200 bg-cyan-50 text-cyan-700"
           : "border-zinc-200 bg-zinc-50 text-zinc-600"
       }`}
     >
@@ -538,17 +539,24 @@ const QuestionsPage = () => {
         </div>
         <div className="flex items-center gap-3">
           <button
+            onClick={() => fetchQuestions(currentPage, appliedFilters)}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              strokeWidth={2}
+            />
+            <span>{t("reload")}</span>
+          </button>
+          <button
             onClick={() => setShowAIGenerateModal(true)}
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium text-white transition-all active:scale-[0.98]"
           >
             {/* Animated gradient background */}
-            <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-500 to-purple-600 bg-[length:200%_100%] transition-all duration-700 ease-out group-hover:bg-[length:300%_100%] group-hover:animate-[shimmer_2s_linear_infinite]" />
-            {/* Glow effect on hover */}
-            <span className="absolute inset-0 rounded-full opacity-0 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-opacity duration-500 group-hover:opacity-100" />
-            {/* Shine sweep overlay */}
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+            <span className="absolute inset-0 bg-gradient-to-r from-sky-600 via-blue-600 to-sky-600 bg-[length:200%_100%] transition-all duration-500 group-hover:animate-[shimmer_2s_linear_infinite]" />
             <span className="relative flex items-center gap-2">
-              <Sparkles className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+              <Sparkles className="h-4 w-4" strokeWidth={2} />
               {t("addQuestionAI")}
             </span>
           </button>
@@ -896,7 +904,7 @@ const QuestionsPage = () => {
                           {q.skillTag.slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="inline-block rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-medium text-indigo-600"
+                              className="inline-block rounded-full bg-pink-50 px-2 py-0.5 text-[10px] font-medium text-pink-600"
                             >
                               {tag}
                             </span>

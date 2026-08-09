@@ -388,13 +388,13 @@ const EditQuestionModal = ({ isOpen, question, onClose, onSuccess }: EditQuestio
                   {skillTags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700"
+                      className="inline-flex items-center gap-1 rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-medium text-pink-700"
                     >
                       {tag}
                       <button
                         type="button"
                         onClick={() => removeSkillTag(tag)}
-                        className="flex h-3.5 w-3.5 items-center justify-center rounded-full text-indigo-400 transition-colors hover:bg-indigo-100 hover:text-indigo-600"
+                        className="flex h-3.5 w-3.5 items-center justify-center rounded-full text-violet-400 transition-colors hover:bg-violet-100 hover:text-violet-600"
                       >
                         <X className="h-2.5 w-2.5" strokeWidth={2.5} />
                       </button>

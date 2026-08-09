@@ -1,5 +1,5 @@
 import apiClient from "../../utils/axios";
-import type { ApiResponse } from "../user/interviewService";
+import type { ApiResponse } from "../common/apiResponse";
 import type { FeedbackItem, FeedbackListResponse, GetFeedbacksParams } from "../user/feedbackService";
 
 // ── Service ──

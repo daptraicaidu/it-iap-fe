@@ -1,11 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
 
-export interface ApiResponse<T> {
-  code: number;
-  message?: string;
-  data: T;
-  timestamp: string;
-}
+export type { ApiResponse };
 
 export interface ProfileSkill {
   name: string;

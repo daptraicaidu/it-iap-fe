@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import axios from "axios";
 
 import { useTranslation } from "react-i18next";
 import {
-
   BriefcaseBusiness,
   Download,
   FileText,
@@ -109,6 +109,28 @@ const ProfilesPage = () => {
     return selected ? getProfileTitle(selected) : "";
   }, [profiles, selectedProfileId]);
 
+  const fetchAndSelectProfile = async (profileId: number) => {
+    setIsLoadingDetail(true);
+    setError(null);
+    setMessage(null);
+
+    try {
+      const response = await profileService.getProfile(profileId);
+      setForm(normalizeProfile(response.data.data));
+      setSelectedProfileId(profileId);
+      setIsCreating(false);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || t("messages.loadDetailError"));
+      } else {
+        setError(t("messages.loadDetailError"));
+      }
+      // Keep previous selectedProfileId and form intact on failure
+    } finally {
+      setIsLoadingDetail(false);
+    }
+  };
+
   const loadProfiles = async (nextSelectedId?: number) => {
     setIsLoadingList(true);
     setError(null);
@@ -118,15 +140,20 @@ const ProfilesPage = () => {
       const items = response.data.data ?? [];
       setProfiles(items);
 
-      const fallbackId = items[0]?.id ?? null;
-      setSelectedProfileId(nextSelectedId ?? fallbackId);
-
-      if (!nextSelectedId && fallbackId === null) {
+      const targetId = nextSelectedId ?? items[0]?.id ?? null;
+      if (targetId !== null) {
+        await fetchAndSelectProfile(targetId);
+      } else {
+        setSelectedProfileId(null);
         setIsCreating(true);
         setForm(createEmptyPayload());
       }
-    } catch {
-      setError(t("messages.loadListError"));
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || t("messages.loadListError"));
+      } else {
+        setError(t("messages.loadListError"));
+      }
     } finally {
       setIsLoadingList(false);
     }
@@ -135,28 +162,6 @@ const ProfilesPage = () => {
   useEffect(() => {
     void loadProfiles();
   }, []);
-
-  useEffect(() => {
-    if (selectedProfileId === null || isCreating) {
-      return;
-    }
-
-    const loadProfileDetail = async () => {
-      setIsLoadingDetail(true);
-      setError(null);
-
-      try {
-        const response = await profileService.getProfile(selectedProfileId);
-        setForm(normalizeProfile(response.data.data));
-      } catch {
-        setError(t("messages.loadDetailError"));
-      } finally {
-        setIsLoadingDetail(false);
-      }
-    };
-
-    void loadProfileDetail();
-  }, [isCreating, selectedProfileId, t]);
 
   const updateResumeData = (resumeData: ResumeData) => {
     setForm((current) => ({ ...current, resumeData }));
@@ -243,10 +248,8 @@ const ProfilesPage = () => {
   };
 
   const handleSelectProfile = (profileId: number) => {
-    setSelectedProfileId(profileId);
-    setIsCreating(false);
-    setMessage(null);
-    setError(null);
+    if (profileId === selectedProfileId && !isCreating) return;
+    void fetchAndSelectProfile(profileId);
   };
 
   const handleSave = async () => {
@@ -278,8 +281,12 @@ const ProfilesPage = () => {
       setForm(normalizeProfile(savedProfile));
       await loadProfiles(savedProfile.id);
       setMessage(t("messages.saveSuccess"));
-    } catch {
-      setError(t("messages.saveError"));
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || t("messages.saveError"));
+      } else {
+        setError(t("messages.saveError"));
+      }
     } finally {
       setIsSaving(false);
     }
@@ -309,8 +316,12 @@ const ProfilesPage = () => {
       setIsDeleteDialogOpen(false);
       await loadProfiles();
       setMessage(t("messages.deleteSuccess"));
-    } catch {
-      setError(t("messages.deleteError"));
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || t("messages.deleteError"));
+      } else {
+        setError(t("messages.deleteError"));
+      }
     } finally {
       setIsDeleting(false);
     }
@@ -409,13 +420,13 @@ const ProfilesPage = () => {
                       type="button"
                       onClick={() => handleSelectProfile(profile.id)}
                       className={`flex w-full items-center gap-3 px-5 py-4 text-left transition ${
-                        isActive ? "bg-indigo-50" : "hover:bg-zinc-50"
+                        isActive ? "bg-blue-50" : "hover:bg-zinc-50"
                       }`}
                     >
                       <span
                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
                           isActive
-                            ? "bg-white text-indigo-600"
+                            ? "bg-white text-blue-600"
                             : "bg-zinc-100 text-zinc-500"
                         }`}
                       >
@@ -439,7 +450,7 @@ const ProfilesPage = () => {
           <section className="rounded-xl border border-zinc-200 bg-white">
             <div className="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-xs font-medium text-indigo-600">
+                <p className="text-xs font-medium text-blue-600">
                   {isCreating ? t("form.modeCreate") : t("form.modeEdit")}
                 </p>
                 <h2 className="mt-1 text-lg font-semibold text-zinc-900">
@@ -469,6 +480,7 @@ const ProfilesPage = () => {
                     value={form.targetPosition}
                     placeholder={t("fields.targetPositionPlaceholder")}
                     options={targetPositionOptions}
+                    disabled={!isCreating}
                     onChange={(value) =>
                       setForm((current) => ({
                         ...current,
@@ -481,6 +493,7 @@ const ProfilesPage = () => {
                     value={form.targetLevel}
                     placeholder={t("fields.targetLevelPlaceholder")}
                     options={targetLevelOptions}
+                    disabled={!isCreating}
                     onChange={(value) =>
                       setForm((current) => ({ ...current, targetLevel: value }))
                     }
@@ -768,6 +781,7 @@ interface SelectFieldProps {
   placeholder: string;
   options: Array<{ value: string; label: string }>;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 const SelectField = ({
@@ -776,13 +790,19 @@ const SelectField = ({
   placeholder,
   options,
   onChange,
+  disabled,
 }: SelectFieldProps) => (
   <label className="block">
     <span className="text-xs font-medium text-zinc-700">{label}</span>
     <select
       value={value}
+      disabled={disabled}
       onChange={(event) => onChange(event.target.value)}
-      className="mt-1 h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100"
+      className={`mt-1 h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100 ${
+        disabled
+          ? "cursor-not-allowed bg-zinc-100/90 text-zinc-500 opacity-80"
+          : ""
+      }`}
     >
       <option value="">{placeholder}</option>
       {options.map((option) => (

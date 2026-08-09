@@ -1,0 +1,75 @@
+{
+  "header": {
+    "title": "System Overview",
+    "subtitle": "Platform administration dashboard",
+    "dateRange": "Showing data: {{range}}",
+    "reload": "Reload data"
+  },
+  "timeFilter": {
+    "all": "All time",
+    "day": "Last 24 hours",
+    "week": "Last 7 days",
+    "month": "Last 30 days"
+  },
+  "stats": {
+    "users": "Users",
+    "interviews": "Interviews",
+    "aiGrading": "AI Grading",
+    "revenue": "Revenue",
+    "new": "+{{count}} new",
+    "change": "{{value}}% vs previous period"
+  },
+  "trendChart": {
+    "title": "Interview Trends",
+    "yAxis": "Count",
+    "tooltipLabel": "Interviews"
+  },
+  "revenueChart": {
+    "title": "Revenue Chart",
+    "yAxis": "Revenue",
+    "tooltipLabel": "Revenue"
+  },
+  "pieChart": {
+    "title": "Interview Position Distribution",
+    "total": "Total",
+    "level": "Level",
+    "levelOptions": {
+      "all": "All",
+      "intern": "Intern",
+      "fresher": "Fresher"
+    },
+    "positions": {
+      "FRONTEND": "Frontend",
+      "BACKEND": "Backend",
+      "TESTER": "Tester",
+      "DATA_ANALYST": "Data Analyst"
+    }
+  },
+  "activity": {
+    "title": "Admin Activities",
+    "refresh": "Refresh",
+    "filterLabel": "Action type",
+    "actionTypes": {
+      "all": "All",
+      "CREATE_MANUAL_QUESTION": "Create manual question",
+      "GENERATE_AI_QUESTIONS": "Generate AI questions",
+      "CREATE_PROMPT": "Create prompt",
+      "CREATE_PROMPT_VERSION": "Create prompt version",
+      "ACTIVATE_PROMPT_VERSION": "Activate prompt version"
+    },
+    "columns": {
+      "id": "#",
+      "actionType": "Action type",
+      "description": "Description",
+      "admin": "Admin",
+      "time": "Time"
+    },
+    "empty": "No activities yet",
+    "page": "Page {{current}} / {{total}}",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "loading": "Loading...",
+  "error": "Failed to load data",
+  "noData": "No data available"
+}

@@ -1,24 +1,13 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse, ApiErrorResponse } from "../common/apiResponse";
+
+export type { ApiResponse, ApiErrorResponse };
 
 // ── Types ──
 
 export type InterviewMode = "INTERACTIVE_INTERVIEW" | "STRESS_INTERVIEW";
 export type QuestionCategory = "BEHAVIORAL" | "SITUATIONAL" | "TECHNICAL";
 export type MessageRole = "USER" | "ASSISTANT";
-
-export interface ApiResponse<T> {
-  code: number;
-  message?: string;
-  data: T;
-  timestamp: string;
-}
-
-export interface ApiErrorResponse {
-  code: number;
-  message?: string;
-  data?: Record<string, string>;
-  timestamp: string;
-}
 
 export interface CreateInterviewPayload {
   mode: InterviewMode;

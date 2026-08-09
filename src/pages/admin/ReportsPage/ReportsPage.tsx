@@ -8,6 +8,8 @@ import {
   Search,
   Eye,
   X,
+  RefreshCw,
+  RotateCcw,
   CheckCircle2,
   Clock,
   XCircle,
@@ -59,7 +61,7 @@ const AdminReportsPage = () => {
   const [items, setItems] = useState<ReportItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   // Filters
@@ -111,7 +113,7 @@ const AdminReportsPage = () => {
   }, [fetchReports]);
 
   useEffect(() => {
-    setCurrentPage(0);
+    setCurrentPage(1);
   }, [statusFilter, typeFilter, debouncedEmail]);
 
   const openDetail = (report: ReportItem) => {
@@ -163,8 +165,18 @@ const AdminReportsPage = () => {
     }
   };
 
+  const handleResetFilters = () => {
+    setStatusFilter("");
+    setTypeFilter("");
+    setEmailSearch("");
+    setDebouncedEmail("");
+    setCurrentPage(1);
+  };
+
+  const hasActiveFilters = Boolean(statusFilter || typeFilter || emailSearch);
+
   return (
-    <div className="w-full">
+    <div className="mx-auto max-w-7xl">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -172,14 +184,27 @@ const AdminReportsPage = () => {
         transition={{ duration: 0.5 }}
         className="mb-6"
       >
-        <div className="flex items-center gap-3 mb-1">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50">
-            <Flag className="h-4.5 w-4.5 text-amber-600" />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50">
+              <Flag className="h-4.5 w-4.5 text-amber-600" />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-zinc-900">{t("title")}</h1>
+              <p className="text-sm text-zinc-500">{t("subtitle")}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-semibold text-zinc-900">{t("title")}</h1>
-            <p className="text-sm text-zinc-500">{t("subtitle")}</p>
-          </div>
+          <button
+            onClick={fetchReports}
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+              strokeWidth={2}
+            />
+            <span>{t("reload")}</span>
+          </button>
         </div>
       </motion.div>
 
@@ -231,6 +256,16 @@ const AdminReportsPage = () => {
             </option>
           ))}
         </select>
+
+        {hasActiveFilters && (
+          <button
+            onClick={handleResetFilters}
+            className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 active:scale-[0.98]"
+          >
+            <RotateCcw className="h-3.5 w-3.5" strokeWidth={2} />
+            <span>{t("resetFilters")}</span>
+          </button>
+        )}
       </motion.div>
 
       {/* Content */}
@@ -373,9 +408,11 @@ const AdminReportsPage = () => {
 
           <div className="mt-6">
             <Pagination
-              currentPage={currentPage}
+              currentPage={currentPage - 1}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={(zeroBasedPage) =>
+                setCurrentPage(zeroBasedPage + 1)
+              }
             />
           </div>
         </>

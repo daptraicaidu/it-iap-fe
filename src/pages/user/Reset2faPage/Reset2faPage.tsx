@@ -10,7 +10,7 @@ import type { AxiosError } from "axios";
 type ResetAction = "confirm" | "cancel";
 
 const Reset2faPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("Auth");
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const Reset2faPage = () => {
       if (!token) {
         setIsLoading(false);
         setStatus("error");
-        setMessage("Đường dẫn không hợp lệ (Thiếu token xác thực)");
+        setMessage(t("reset2fa.invalidToken", "Đường dẫn không hợp lệ (Thiếu token xác thực)"));
         return;
       }
 
@@ -38,14 +38,17 @@ const Reset2faPage = () => {
           setStatus("success");
           setMessage(
             res.data?.message ||
-              "Đã hủy bỏ yêu cầu gỡ 2FA. Tài khoản của bạn vẫn được bảo vệ bằng xác thực 2 bước"
+              t(
+                "reset2fa.cancelSuccessMsg",
+                "Đã hủy bỏ yêu cầu gỡ 2FA. Tài khoản của bạn vẫn được bảo vệ bằng xác thực 2 bước."
+              )
           );
         } else {
           const res = await authService.confirmReset2fa({ token });
           setStatus("success");
           setMessage(
             res.data?.message ||
-              "Yêu cầu gỡ 2FA đã được xác nhận thành công."
+              t("reset2fa.confirmSuccessMsg", "Yêu cầu gỡ 2FA đã được xác nhận thành công.")
           );
         }
       } catch (err: unknown) {
@@ -53,7 +56,10 @@ const Reset2faPage = () => {
         setStatus("error");
         setMessage(
           axiosErr.response?.data?.message ||
-            "Đường dẫn yêu cầu khôi phục 2FA không hợp lệ hoặc đã hết hạn"
+            t(
+              "reset2fa.defaultErrorMsg",
+              "Đường dẫn yêu cầu khôi phục 2FA không hợp lệ hoặc đã hết hạn"
+            )
         );
       } finally {
         setIsLoading(false);
@@ -61,7 +67,7 @@ const Reset2faPage = () => {
     };
 
     handleResetAction();
-  }, [token, action]);
+  }, [token, action, t]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -75,10 +81,10 @@ const Reset2faPage = () => {
           <div className="py-8 space-y-4">
             <Loader2 className="mx-auto h-12 w-12 animate-spin text-zinc-900" />
             <h2 className="text-lg font-semibold text-zinc-900">
-              {t("reset2fa.loadingTitle") || "Đang xử lý yêu cầu khôi phục 2FA..."}
+              {t("reset2fa.loadingTitle", "Đang xử lý yêu cầu khôi phục 2FA...")}
             </h2>
             <p className="text-xs text-zinc-500">
-              {t("reset2fa.loadingDesc") || "Vui lòng chờ trong giây lát"}
+              {t("reset2fa.loadingDesc", "Vui lòng chờ trong giây lát")}
             </p>
           </div>
         ) : status === "success" ? (
@@ -93,8 +99,8 @@ const Reset2faPage = () => {
             <div>
               <h2 className="text-xl font-bold text-zinc-900">
                 {action === "cancel"
-                  ? t("reset2fa.cancelSuccessTitle") || "Đã hủy yêu cầu gỡ 2FA"
-                  : t("reset2fa.confirmSuccessTitle") || "Xác nhận gỡ 2FA thành công"}
+                  ? t("reset2fa.cancelSuccessTitle", "Đã hủy yêu cầu gỡ 2FA")
+                  : t("reset2fa.confirmSuccessTitle", "Xác nhận gỡ 2FA thành công")}
               </h2>
               <p className="mt-2 text-sm text-zinc-600 leading-relaxed">
                 {message}
@@ -106,7 +112,7 @@ const Reset2faPage = () => {
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
               >
                 <ArrowLeft className="h-4 w-4" />
-                {t("reset2fa.backToDashboard") || "Về trang tổng quan"}
+                {t("reset2fa.backToDashboard", "Về trang tổng quan")}
               </button>
             </div>
           </div>
@@ -121,7 +127,7 @@ const Reset2faPage = () => {
             </div>
             <div>
               <h2 className="text-xl font-bold text-zinc-900">
-                {t("reset2fa.errorTitle") || "Thao tác không thành công"}
+                {t("reset2fa.errorTitle", "Thao tác không thành công")}
               </h2>
               <p className="mt-2 text-sm text-zinc-600 leading-relaxed">
                 {message}
@@ -133,7 +139,7 @@ const Reset2faPage = () => {
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
               >
                 <ArrowLeft className="h-4 w-4" />
-                {t("reset2fa.backToLogin") || "Về trang đăng nhập"}
+                {t("reset2fa.backToLogin", "Về trang đăng nhập")}
               </button>
             </div>
           </div>

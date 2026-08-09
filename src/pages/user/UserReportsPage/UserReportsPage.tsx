@@ -229,10 +229,10 @@ const ReportsSection = () => {
 
                   {/* Admin reply */}
                   {item.adminReply && (
-                    <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3">
+                    <div className="rounded-lg border border-cyan-100 bg-cyan-50/50 p-3">
                       <div className="mb-1 flex items-center gap-1.5">
-                        <MessageSquare className="h-3.5 w-3.5 text-indigo-500" />
-                        <span className="text-xs font-semibold text-indigo-600">
+                        <MessageSquare className="h-3.5 w-3.5 text-cyan-500" />
+                        <span className="text-xs font-semibold text-cyan-600">
                           {t("adminReply")}
                         </span>
                       </div>
@@ -311,7 +311,7 @@ const UserReportsPage = () => {
             {/* Left: Reports */}
             <div>
               <div className="mb-4 flex items-center gap-2">
-                <Flag className="h-4 w-4 text-zinc-500" />
+                <Flag className="h-4 w-4 text-red-500" />
                 <h2 className="text-lg font-semibold text-zinc-900">
                   {tFeedback("tabReports")}
                 </h2>
@@ -322,7 +322,7 @@ const UserReportsPage = () => {
             {/* Right: Feedbacks */}
             <div>
               <div className="mb-4 flex items-center gap-2">
-                <Star className="h-4 w-4 text-zinc-500" />
+                <Star className="h-4 w-4 text-amber-500" />
                 <h2 className="text-lg font-semibold text-zinc-900">
                   {tFeedback("tabFeedbacks")}
                 </h2>

@@ -1,47 +1,188 @@
+import { useState, useEffect, useCallback } from "react";
+import DashboardHeader from "./components/DashboardHeader";
+import StatCards from "./components/StatCards";
+import InterviewTrendChart from "./components/InterviewTrendChart";
+import PositionPieChart from "./components/PositionPieChart";
+import RevenueBarChart from "./components/RevenueBarChart";
+import ActivityLog from "./components/ActivityLog";
+import adminDashboardService from "../../../services/admin/adminDashboardService";
+import type {
+  TimeFilter,
+  LevelFilter,
+  ActionTypeFilter,
+  OverviewData,
+  PositionItem,
+  PaginatedActivities,
+} from "../../../services/admin/adminDashboardService";
+
 const DashboardPage = () => {
+  // ── Filters ──
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>("MONTH");
+  const [levelFilter, setLevelFilter] = useState<LevelFilter>("--");
+  const [actionTypeFilter, setActionTypeFilter] = useState<ActionTypeFilter>("--");
+  const [activitiesPage, setActivitiesPage] = useState(1);
+
+  // ── Data ──
+  const [overviewData, setOverviewData] = useState<OverviewData | null>(null);
+  const [positionData, setPositionData] = useState<PositionItem[]>([]);
+  const [activitiesData, setActivitiesData] = useState<PaginatedActivities | null>(null);
+
+  // ── Loading states ──
+  const [isOverviewLoading, setIsOverviewLoading] = useState(true);
+  const [isPositionsLoading, setIsPositionsLoading] = useState(true);
+  const [isActivitiesLoading, setIsActivitiesLoading] = useState(true);
+
+  // ── Fetch: Overview ──
+  const fetchOverview = useCallback(async (filter: TimeFilter) => {
+    setIsOverviewLoading(true);
+    try {
+      const res = await adminDashboardService.getOverview({ timeFilter: filter });
+      setOverviewData(res.data.data);
+    } catch (err) {
+      console.error("Failed to fetch overview:", err);
+    } finally {
+      setIsOverviewLoading(false);
+    }
+  }, []);
+
+  // ── Fetch: Positions ──
+  const fetchPositions = useCallback(
+    async (filter: TimeFilter, level: LevelFilter) => {
+      setIsPositionsLoading(true);
+      try {
+        const res = await adminDashboardService.getPositions({
+          timeFilter: filter,
+          level,
+        });
+        setPositionData(res.data.data);
+      } catch (err) {
+        console.error("Failed to fetch positions:", err);
+      } finally {
+        setIsPositionsLoading(false);
+      }
+    },
+    []
+  );
+
+  // ── Fetch: Activities ──
+  const fetchActivities = useCallback(
+    async (type: ActionTypeFilter, page: number) => {
+      setIsActivitiesLoading(true);
+      try {
+        const res = await adminDashboardService.getActivities({
+          actionType: type,
+          page,
+        });
+        setActivitiesData(res.data.data);
+      } catch (err) {
+        console.error("Failed to fetch activities:", err);
+      } finally {
+        setIsActivitiesLoading(false);
+      }
+    },
+    []
+  );
+
+  // ── Initial load ──
+  useEffect(() => {
+    fetchOverview(timeFilter);
+    fetchPositions(timeFilter, levelFilter);
+    fetchActivities(actionTypeFilter, activitiesPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Time filter change → reload overview + positions ──
+  const handleTimeFilterChange = (filter: TimeFilter) => {
+    setTimeFilter(filter);
+    fetchOverview(filter);
+    fetchPositions(filter, levelFilter);
+  };
+
+  // ── Level filter change → reload positions only ──
+  const handleLevelFilterChange = (level: LevelFilter) => {
+    setLevelFilter(level);
+    fetchPositions(timeFilter, level);
+  };
+
+  // ── Action type filter change → reload activities (reset to page 1) ──
+  const handleActionTypeChange = (type: ActionTypeFilter) => {
+    setActionTypeFilter(type);
+    setActivitiesPage(1);
+    fetchActivities(type, 1);
+  };
+
+  // ── Activities page change ──
+  const handleActivitiesPageChange = (page: number) => {
+    setActivitiesPage(page);
+    fetchActivities(actionTypeFilter, page);
+  };
+
+  // ── Refresh activities only ──
+  const handleRefreshActivities = () => {
+    fetchActivities(actionTypeFilter, activitiesPage);
+  };
+
+  // ── Reload all 3 APIs ──
+  const handleReloadAll = () => {
+    fetchOverview(timeFilter);
+    fetchPositions(timeFilter, levelFilter);
+    fetchActivities(actionTypeFilter, activitiesPage);
+  };
+
+  const isAnyLoading = isOverviewLoading || isPositionsLoading || isActivitiesLoading;
+
   return (
     <section className="space-y-6">
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 md:p-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
-          Admin dashboard
-        </p>
-        <h1 className="mt-3 text-2xl font-semibold text-zinc-900 md:text-3xl">
-          Platform overview
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-          This is the initial admin dashboard layout with a sidebar on the left and the
-          main content area on the right.
-        </p>
-      </div>
+      {/* Header with time filter + reload */}
+      <DashboardHeader
+        timeFilter={timeFilter}
+        onTimeFilterChange={handleTimeFilterChange}
+        onReloadAll={handleReloadAll}
+        isLoading={isAnyLoading}
+      />
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm font-medium text-zinc-500">Total users</p>
-          <p className="mt-3 text-3xl font-semibold text-zinc-900">1,245</p>
+      {/* 4 Stat Cards */}
+      <StatCards data={overviewData} isLoading={isOverviewLoading} />
+
+      {/* Charts Row: Interview Trends + Position Pie */}
+      <div className="grid gap-4 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+          <InterviewTrendChart
+            data={overviewData?.interviewTrends ?? []}
+            timeFilter={timeFilter}
+            isLoading={isOverviewLoading}
+          />
         </div>
-
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm font-medium text-zinc-500">Active interviews</p>
-          <p className="mt-3 text-3xl font-semibold text-zinc-900">532</p>
-        </div>
-
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm font-medium text-zinc-500">AI sessions</p>
-          <p className="mt-3 text-3xl font-semibold text-zinc-900">3,847</p>
-        </div>
-
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm font-medium text-zinc-500">Pending reviews</p>
-          <p className="mt-3 text-3xl font-semibold text-zinc-900">08</p>
+        <div className="lg:col-span-2">
+          <PositionPieChart
+            data={positionData}
+            levelFilter={levelFilter}
+            onLevelFilterChange={handleLevelFilterChange}
+            isLoading={isPositionsLoading}
+          />
         </div>
       </div>
 
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6">
-        <h2 className="text-lg font-semibold text-zinc-900">Main content area</h2>
-        <p className="mt-2 text-sm leading-6 text-zinc-600">
-          You can continue placing admin widgets, user management tables, platform
-          analytics, or AI model performance inside this content section.
-        </p>
+      {/* Bottom Row: Revenue Bar Chart + Activity Log */}
+      <div className="grid gap-4 lg:grid-cols-5">
+        <div className="lg:col-span-2">
+          <RevenueBarChart
+            data={overviewData?.revenueTrends ?? []}
+            timeFilter={timeFilter}
+            isLoading={isOverviewLoading}
+          />
+        </div>
+        <div className="lg:col-span-3">
+          <ActivityLog
+            data={activitiesData}
+            actionTypeFilter={actionTypeFilter}
+            onActionTypeChange={handleActionTypeChange}
+            onRefresh={handleRefreshActivities}
+            onPageChange={handleActivitiesPageChange}
+            currentPage={activitiesPage}
+            isLoading={isActivitiesLoading}
+          />
+        </div>
       </div>
     </section>
   );

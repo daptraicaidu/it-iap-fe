@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 export interface ActiveBanner {
   id?: number;
@@ -6,12 +9,6 @@ export interface ActiveBanner {
   content: string;
   imageUrl?: string;
   marquee?: string;
-}
-
-export interface ApiResponse<T> {
-  code: number;
-  data: T;
-  timestamp: string;
 }
 
 const bannerService = {

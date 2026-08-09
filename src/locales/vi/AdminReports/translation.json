@@ -1,6 +1,8 @@
 {
   "title": "Quản lý báo cáo",
   "subtitle": "Xem xét và phản hồi báo cáo từ người dùng",
+  "reload": "Làm mới",
+  "resetFilters": "Xóa bộ lọc",
   "filterAll": "Tất cả",
   "filterByType": "Loại báo cáo",
   "filterByStatus": "Trạng thái",

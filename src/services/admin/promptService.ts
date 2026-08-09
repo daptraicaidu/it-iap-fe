@@ -1,12 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
 
-// ── Shared API Response ──
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
-}
+export type { ApiResponse };
 
 // ── Validation Error Data (field → message) ──
 export interface ValidationErrorData {

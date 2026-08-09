@@ -1,6 +1,8 @@
 {
   "title": "Feedback Management",
   "subtitle": "View, reply and manage user feedback",
+  "reload": "Reload",
+  "resetFilters": "Reset Filters",
   "filterRating": "Stars",
   "filterAll": "All",
   "filterHasReply": "Replied",

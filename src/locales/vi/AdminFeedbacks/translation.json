@@ -1,6 +1,8 @@
 {
   "title": "Quản lý đánh giá",
   "subtitle": "Xem, phản hồi và quản lý đánh giá từ người dùng",
+  "reload": "Làm mới",
+  "resetFilters": "Xóa bộ lọc",
   "filterRating": "Số sao",
   "filterAll": "Tất cả",
   "filterHasReply": "Đã phản hồi",

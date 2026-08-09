@@ -99,6 +99,19 @@
     "passwordSpecial": "Mật khẩu phải có ít nhất 1 ký tự đặc biệt",
     "fullNameRequired": "Vui lòng nhập họ và tên",
     "otpRequired": "Vui lòng nhập đủ mã 6 chữ số"
+  },
+  "reset2fa": {
+    "loadingTitle": "Đang xử lý yêu cầu khôi phục 2FA...",
+    "loadingDesc": "Vui lòng chờ trong giây lát",
+    "cancelSuccessTitle": "Đã hủy yêu cầu gỡ 2FA",
+    "confirmSuccessTitle": "Xác nhận gỡ 2FA thành công",
+    "backToDashboard": "Về trang tổng quan",
+    "errorTitle": "Thao tác không thành công",
+    "backToLogin": "Về trang đăng nhập",
+    "invalidToken": "Đường dẫn không hợp lệ (Thiếu token xác thực)",
+    "cancelSuccessMsg": "Đã hủy bỏ yêu cầu gỡ 2FA. Tài khoản của bạn vẫn được bảo vệ bằng xác thực 2 bước.",
+    "confirmSuccessMsg": "Yêu cầu gỡ 2FA đã được xác nhận thành công.",
+    "defaultErrorMsg": "Đường dẫn yêu cầu khôi phục 2FA không hợp lệ hoặc đã hết hạn"
   }
 }
 

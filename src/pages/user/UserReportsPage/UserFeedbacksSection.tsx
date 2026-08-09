@@ -14,6 +14,7 @@ import {
   ToggleRight,
   Image as ImageIcon,
   StarIcon,
+  RotateCcw,
 } from "lucide-react";
 import userFeedbackService from "../../../services/user/feedbackService";
 import type { FeedbackItem } from "../../../services/user/feedbackService";
@@ -45,7 +46,7 @@ const StarRatingInput = ({
             className={`h-6 w-6 transition-colors ${
               star <= (hovered || value)
                 ? "fill-amber-400 text-amber-400"
-                : "text-zinc-300"
+                : "text-amber-300"
             }`}
           />
         </button>
@@ -379,7 +380,7 @@ const UserFeedbacksSection = () => {
 
         {/* Star Rating */}
         <div className="mb-3">
-          <p className="text-xs text-zinc-500 mb-1.5">{t("ratingLabel")}</p>
+          <p className="text-xs text-blue-500 mb-1.5">{t("ratingLabel")}</p>
           <StarRatingInput value={rating} onChange={setRating} />
         </div>
 
@@ -556,6 +557,25 @@ const UserFeedbacksSection = () => {
           )}
         </button>
 
+        {/* Clear filters */}
+        {(ratingFilter !== undefined ||
+          onlyMine ||
+          hasAdminReply !== undefined ||
+          hasImageUrl !== undefined) && (
+          <button
+            onClick={() => {
+              setRatingFilter(undefined);
+              setOnlyMine(false);
+              setHasAdminReply(undefined);
+              setHasImageUrl(undefined);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 transition hover:bg-rose-100"
+          >
+            <RotateCcw className="h-3 w-3" />
+            {t("clearFilters")}
+          </button>
+        )}
+
         {/* Show/hide admin replies toggle */}
         <button
           onClick={() => setShowAdminReplies(!showAdminReplies)}
@@ -679,11 +699,11 @@ const UserFeedbacksSection = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="mt-2 rounded-lg border border-indigo-100 bg-indigo-50/50 p-3"
+                    className="mt-2 rounded-lg border border-cyan-100 bg-cyan-50/50 p-3"
                   >
                     <div className="mb-1 flex items-center gap-1.5">
-                      <MessageSquare className="h-3.5 w-3.5 text-indigo-500" />
-                      <span className="text-xs font-semibold text-indigo-600">
+                      <MessageSquare className="h-3.5 w-3.5 text-cyan-500" />
+                      <span className="text-xs font-semibold text-cyan-600">
                         {t("adminReply")}
                       </span>
                     </div>

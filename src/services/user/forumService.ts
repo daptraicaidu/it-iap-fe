@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Enums ──
 export type ForumPostType = "STREAK" | "GRADE";
@@ -19,10 +22,13 @@ export interface SkillOverviewDTO {
 }
 
 export interface GradeSharedData {
+  level?: string | null;
+  position?: string | null;
+  userRank: UserRank | null;
   profileGpa: number | null;
   profileSkillsOverview: SkillOverviewDTO | null;
-  userRank: UserRank | null;
   totalCompletedInterviews: number;
+  totalCompletedInterviewsProfile?: number;
 }
 
 // ── Forum Post ──
@@ -46,7 +52,7 @@ export interface ForumPostSliceResponse {
 }
 
 export interface ReactPostRequest {
-  reactType: ReactionType;
+  reactType: ReactionType | "";
 }
 
 // ── Streak Leaderboard ──
@@ -54,13 +60,6 @@ export interface StreakLeaderBoardEntry {
   fullName: string;
   avatarUrl: string | null;
   currentStreak: number;
-}
-
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
 }
 
 // ── Forum Service ──
@@ -92,6 +91,11 @@ const forumService = {
   changeVisibility: (postId: number) =>
     apiClient.put<ApiResponse>(
       `/forum-posts/change-visible/${postId}`
+    ),
+
+  deletePost: (postId: number) =>
+    apiClient.delete<ApiResponse>(
+      `/forum-posts/${postId}`
     ),
 
   getStreakLeaderBoard: () =>

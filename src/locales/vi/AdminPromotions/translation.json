@@ -1,0 +1,118 @@
+{
+  "title": "Quản lý Khuyến mãi",
+  "subtitle": "Tạo và kiểm soát các mã giảm giá, chương trình ưu đãi cho các gói đăng ký",
+  "kpi": {
+    "total": "Tổng số khuyến mãi",
+    "active": "Đang hoạt động",
+    "inactive": "Tạm dừng / Hết hạn",
+    "percentage": "Giảm theo %",
+    "fixedAmount": "Giảm cố định"
+  },
+  "buttons": {
+    "create": "Tạo khuyến mãi mới",
+    "refresh": "Làm mới",
+    "previewUserModal": "Xem giao diện User",
+    "previewUserModalTooltip": "Mở modal nâng cấp gói cước để xem trải nghiệm của người dùng",
+    "filter": "Lọc",
+    "resetFilter": "Đặt lại bộ lọc",
+    "cancel": "Hủy bỏ",
+    "save": "Tạo khuyến mãi",
+    "saving": "Đang lưu...",
+    "copyCode": "Sao chép mã",
+    "copied": "Đã chép!",
+    "toggleActive": "Bật",
+    "toggleInactive": "Tắt"
+  },
+  "filters": {
+    "searchPlaceholder": "Tìm theo mã khuyến mãi hoặc tên chương trình...",
+    "tierPlaceholder": "Tất cả gói cước",
+    "typePlaceholder": "Tất cả loại giảm",
+    "statusPlaceholder": "Tất cả trạng thái",
+    "all": "Tất cả",
+    "active": "Đang kích hoạt",
+    "inactive": "Đang tắt",
+    "percentage": "Phần trăm (%)",
+    "fixedAmount": "Cố định (VNĐ)"
+  },
+  "tiers": {
+    "PLUS_MONTH": "Gói Plus (1 Tháng)",
+    "PLUS_YEAR": "Gói Plus (1 Năm)",
+    "PRO_MONTH": "Gói Pro (1 Tháng)",
+    "PRO_YEAR": "Gói Pro (1 Năm)",
+    "BASIC": "Gói Cơ Bản",
+    "UNKNOWN": "Gói khác"
+  },
+  "discountTypes": {
+    "PERCENTAGE": "Giảm %",
+    "FIXED_AMOUNT": "Giảm tiền mặt"
+  },
+  "table": {
+    "codeAndName": "Mã & Tên chương trình",
+    "applicableTier": "Gói áp dụng",
+    "discount": "Mức giảm giá",
+    "estimatedPrice": "Giá sau giảm",
+    "originalPrice": "Giá gốc",
+    "duration": "Thời hạn áp dụng",
+    "status": "Trạng thái",
+    "actions": "Thao tác",
+    "empty": "Chưa có mã khuyến mãi nào",
+    "emptyFiltered": "Không tìm thấy khuyến mãi phù hợp với bộ lọc",
+    "from": "Từ",
+    "to": "Đến",
+    "forever": "Không giới hạn",
+    "expired": "Hết hạn",
+    "activeNow": "Đang áp dụng",
+    "scheduled": "Chưa bắt đầu"
+  },
+  "modal": {
+    "createTitle": "Tạo mã khuyến mãi mới",
+    "createDesc": "Thiết lập chương trình giảm giá và áp dụng cho các gói dịch vụ",
+    "codeLabel": "Mã khuyến mãi (Code)",
+    "codePlaceholder": "VD: PROMO2026, SUMMER50...",
+    "codeHelp": "Mã sẽ tự động viết hoa và không chứa khoảng trắng",
+    "nameLabel": "Tên chương trình",
+    "namePlaceholder": "VD: Siêu khuyến mãi mùa hè, Khai xuân đón lộc...",
+    "descriptionLabel": "Mô tả chi tiết",
+    "descriptionPlaceholder": "VD: Giảm ngay 50% cho người dùng đăng ký gói Pro 1 năm trong tháng...",
+    "tierLabel": "Gói dịch vụ áp dụng",
+    "tierSelectPlaceholder": "-- Chọn gói cước --",
+    "discountTypeLabel": "Hình thức giảm giá",
+    "discountValueLabel": "Giá trị giảm",
+    "discountValuePercentagePlaceholder": "Nhập số % (1 - 100)",
+    "discountValueFixedPlaceholder": "Nhập số tiền VNĐ (VD: 50000)",
+    "startDateLabel": "Thời gian bắt đầu",
+    "endDateLabel": "Thời gian kết thúc",
+    "previewSection": "Ước tính giá sau khi áp dụng",
+    "originalPriceText": "Giá gốc gói cước:",
+    "discountAmountText": "Mức giảm:",
+    "finalPriceText": "Giá người dùng thanh toán:",
+    "errors": {
+      "codeRequired": "Vui lòng nhập mã khuyến mãi",
+      "nameRequired": "Vui lòng nhập tên chương trình",
+      "tierRequired": "Vui lòng chọn gói cước áp dụng",
+      "discountValueInvalid": "Giá trị giảm giá không hợp lệ",
+      "percentageRange": "Mức giảm phần trăm phải từ 1 đến 100%",
+      "fixedAmountMin": "Số tiền giảm phải lớn hơn 0",
+      "fixedAmountExceed": "Số tiền giảm không thể vượt quá giá gốc của gói cước",
+      "startDateRequired": "Vui lòng chọn ngày bắt đầu",
+      "endDateRequired": "Vui lòng chọn ngày kết thúc",
+      "endDateBeforeStart": "Thời gian kết thúc phải sau thời gian bắt đầu"
+    }
+  },
+  "toast": {
+    "fetchError": "Không thể tải danh sách khuyến mãi",
+    "createSuccess": "Tạo mã khuyến mãi thành công!",
+    "createError": "Không thể tạo mã khuyến mãi",
+    "conflictError": "Mã khuyến mãi này đã tồn tại trong hệ thống",
+    "toggleSuccess": "Đã cập nhật trạng thái khuyến mãi",
+    "toggleError": "Không thể thay đổi trạng thái khuyến mãi"
+  },
+  "pagination": {
+    "page": "Trang",
+    "of": "trên",
+    "total": "Tổng cộng",
+    "items": "khuyến mãi",
+    "goTo": "Đến trang",
+    "jump": "Đi"
+  }
+}

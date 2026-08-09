@@ -24,6 +24,19 @@
         "description": "Mô phỏng môi trường phỏng vấn thật. Trả lời lần lượt từng câu, giới hạn thời gian. Xem kết quả tổng hợp khi hoàn thành.",
         "features": ["Giới hạn thời gian", "Áp lực thực tế", "Đánh giá toàn diện cuối"]
       }
+    },
+    "quota": {
+      "basic": "Hôm nay bạn có 5 lượt phỏng vấn AI (hạn mức tự động làm mới vào 00:00 mỗi ngày).",
+      "plus": "Tài khoản của bạn đang dùng gói {{tier}} — 10 lượt phỏng vấn AI mỗi ngày.",
+      "pro": "Tài khoản của bạn đang dùng gói {{tier}} — 20 lượt phỏng vấn AI mỗi ngày.",
+      "proHintBasic": "Nâng cấp gói để có tới 20 lượt phỏng vấn AI mỗi ngày và nhận đánh giá chuyên sâu.",
+      "proHintPlus": "Nâng cấp lên gói Pro để có 20 lượt phỏng vấn AI mỗi ngày cùng tính năng cao cấp.",
+      "proHintPro": "Trải nghiệm 20 lượt phỏng vấn AI mỗi ngày cùng phân tích chuyên sâu toàn diện.",
+      "viewPlans": "Xem các gói",
+      "unlimited": "Tài khoản của bạn đang dùng gói {{tier}} — 10 lượt phỏng vấn AI mỗi ngày.",
+      "proHint": "Nâng cấp gói để mở khóa thêm lượt luyện tập mỗi ngày và nhận phân tích chuyên sâu.",
+      "upgrade": "Nâng cấp ngay",
+      "viewTiers": "Xem các gói"
     }
   },
   "prepPage": {

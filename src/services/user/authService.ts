@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Request Interfaces ──
 export interface RegisterRequest {
@@ -42,13 +45,6 @@ export interface Verify2faRequest {
 }
 
 // ── Response Interfaces ──
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
-}
-
 export interface RegisterData {
   userId: string;
 }

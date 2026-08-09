@@ -290,7 +290,7 @@ const ChatBotPage = () => {
           {/* Sidebar Header */}
           <div className="flex items-center justify-between border-b border-zinc-200 p-4">
             <div className="flex items-center gap-2">
-              <MessagesSquare size={18} className="text-indigo-600" />
+              <MessagesSquare size={18} className="text-blue-600" />
               <h2 className="text-sm font-semibold text-zinc-900">
                 {t("sessions")}
               </h2>
@@ -351,13 +351,13 @@ const ChatBotPage = () => {
                       group flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition-all
                       ${
                         activeSessionId === session.id
-                          ? "bg-indigo-50 text-indigo-700 font-medium"
-                          : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+                          ? "bg-sky-50 text-slate-700 font-medium"
+                          : "text-zinc-600 hover:bg-sky-50 hover:text-zinc-900"
                       }
                     `}
                   >
                     <div className="flex items-center gap-2 truncate">
-                      <MessageSquare size={14} className="flex-shrink-0" />
+                      <MessageSquare size={14} className="flex-shrink-0 text-blue-700" />
                       <span className="truncate">{session.title}</span>
                     </div>
                     <button
@@ -367,7 +367,7 @@ const ChatBotPage = () => {
                         flex-shrink-0 rounded-lg p-1 transition-all
                         ${
                           activeSessionId === session.id
-                            ? "text-indigo-400 hover:bg-indigo-100 hover:text-rose-500"
+                            ? "text-slate-400 hover:bg-indigo-100 hover:text-rose-500"
                             : "text-zinc-300 opacity-0 group-hover:opacity-100 hover:bg-zinc-100 hover:text-rose-500"
                         }
                       `}
@@ -401,8 +401,8 @@ const ChatBotPage = () => {
             </button>
           )}
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-50">
-              <Sparkles size={16} className="text-indigo-600" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50">
+              <Sparkles size={16} className="text-blue-600" />
             </div>
             <div>
               <h1 className="text-sm font-semibold text-zinc-900">
@@ -418,14 +418,14 @@ const ChatBotPage = () => {
           {isLoadingMessages ? (
             // ── Loading messages ──
             <div className="flex h-full flex-col items-center justify-center px-6">
-              <Loader2 size={28} className="animate-spin text-indigo-400" />
+              <Loader2 size={28} className="animate-spin text-blue-400" />
               <p className="mt-3 text-sm text-zinc-400">{t("loadingMessages")}</p>
             </div>
           ) : messages.length === 0 && !isSendingMessage ? (
             // ── Empty State: New chat / no messages ──
             <div className="flex h-full flex-col items-center justify-center px-6">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50">
-                <Sparkles size={32} className="text-indigo-600" />
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50">
+                <Sparkles size={32} className="text-blue-600" />
               </div>
               <h2 className="mb-2 text-xl font-semibold text-zinc-900">
                 {isNewChatMode ? t("welcomeTitle") : t("emptySessionTitle")}
@@ -466,7 +466,7 @@ const ChatBotPage = () => {
                 >
                   {msg.role === "assistant" && (
                     <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-50">
-                      <Bot size={16} className="text-indigo-600" />
+                      <Bot size={16} className="text-600" />
                     </div>
                   )}
                   <div
@@ -557,8 +557,8 @@ const ChatBotPage = () => {
               {/* Typing indicator */}
               {isSendingMessage && (
                 <div className="flex gap-3">
-                  <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-50">
-                    <Bot size={16} className="text-indigo-600" />
+                  <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-50">
+                    <Bot size={16} className="text-600" />
                   </div>
                   <div className="rounded-2xl border border-zinc-200 bg-white px-4 py-3">
                     <div className="flex items-center gap-1.5">
@@ -577,7 +577,7 @@ const ChatBotPage = () => {
         {/* Input Area — always visible */}
         <div className="border-t border-zinc-200 bg-white px-3 py-2.5 md:px-4 md:py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
           <div className="mx-auto flex max-w-3xl items-end gap-2.5">
-            <div className="flex flex-1 items-end rounded-2xl border border-zinc-300 bg-white px-3.5 py-2 md:px-4 md:py-2.5 shadow-xs transition-all focus-within:border-indigo-400 focus-within:shadow-md focus-within:shadow-indigo-100/50">
+            <div className="flex flex-1 items-end rounded-2xl border border-zinc-300 bg-white px-3.5 py-2 md:px-4 md:py-2.5 shadow-xs transition-all focus-within:border-blue-400 focus-within:shadow-md focus-within:shadow-blue-100/50">
               <textarea
                 ref={textareaRef}
                 value={inputValue}
@@ -595,7 +595,7 @@ const ChatBotPage = () => {
                 flex h-10 w-10 md:h-10 md:w-10 flex-shrink-0 items-center justify-center rounded-full transition-all active:scale-[0.93]
                 ${
                   inputValue.trim() && !isSendingMessage
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 hover:bg-indigo-500"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-200 hover:bg-blue-500"
                     : "bg-zinc-200 text-zinc-400 cursor-not-allowed"
                 }
               `}

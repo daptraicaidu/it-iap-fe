@@ -12,7 +12,14 @@ import {
   Eye,
   Loader2,
   AlertCircle,
+  Crown,
+  Sparkles,
+  CheckCircle2,
+  ExternalLink,
+  Share2,
+  X,
 } from "lucide-react";
+import axios from "axios";
 import profileService, {
   type ProfileSummary,
   getProfileTitle,
@@ -21,7 +28,10 @@ import dashboardService, {
   type ProgressData,
   type ProfileDashboardData,
 } from "../../../services/user/dashboardService";
+import forumService from "../../../services/user/forumService";
 import useUserStore from "../../../store/userStore";
+import UpgradeTierModal from "../../../components/user/UpgradeTierModal";
+import StreakInfoModal from "./StreakInfoModal";
 
 // ── Helpers ──
 const getGreeting = (): "morning" | "afternoon" | "evening" => {
@@ -40,7 +50,7 @@ const getRankColor = (rank: string): string => {
     case "GOLD":
       return "text-yellow-600 bg-yellow-50 border-yellow-200";
     case "PLATINUM":
-      return "text-indigo-600 bg-indigo-50 border-indigo-200";
+      return "text-neutral-600 bg-neutral-50 border-neutral-200";
     case "DIAMOND":
       return "text-sky-600 bg-sky-50 border-sky-200";
     default:
@@ -323,14 +333,14 @@ const ActivityHeatmap = ({
 
   const getBgColor = (count: number) => {
     if (count === 0) return "#f4f4f5"; // zinc-100
-    if (count < 3) return "#a5b4fc"; // indigo-300
-    if (count < 8) return "#6366f1"; // indigo-500
-    return "#3730a3"; // indigo-800
+    if (count < 3) return "#a1caffff"; 
+    if (count < 8) return "#6baafcff"; 
+    return "#4393fcff"; 
   };
 
   const getTextColor = (count: number) => {
     if (count === 0) return "#a1a1aa"; // zinc-400
-    if (count < 3) return "#3730a3"; // dark indigo
+    if (count < 3) return "#3730a3"; 
     return "#ffffff";
   };
 
@@ -439,15 +449,15 @@ const ActivityHeatmap = ({
           <span>0</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#a5b4fc" }} />
+          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#a1caffff" }} />
           <span>{labelFew}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#6366f1" }} />
+          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#6baafcff" }} />
           <span>{labelModerate}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#3730a3" }} />
+          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#4393fcff" }} />
           <span>{labelMany}</span>
         </div>
       </div>
@@ -496,6 +506,8 @@ const DashboardPage = () => {
   const [selectedProfile, setSelectedProfile] = useState<ProfileSummary | null>(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const [profileSwitchError, setProfileSwitchError] = useState<string | null>(null);
+  const profileErrorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Profile stats
   const [profileData, setProfileData] = useState<ProfileDashboardData | null>(null);
@@ -504,6 +516,60 @@ const DashboardPage = () => {
 
   // PDF export state
   const [isExportingImage, setIsExportingImage] = useState(false);
+
+  // Upgrade Tier Modal State
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+
+  // Streak Info Modal State
+  const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
+  const streakPopoverRef = useRef<HTMLDivElement>(null);
+
+  // ── Share Feature State ──
+  const [isSharing, setIsSharing] = useState(false);
+  const [shareConfirmModal, setShareConfirmModal] = useState<{
+    isOpen: boolean;
+    type: "grade" | "streak" | null;
+  }>({ isOpen: false, type: null });
+  const [shareModalError, setShareModalError] = useState<string | null>(null);
+  const [shareModalSuccess, setShareModalSuccess] = useState(false);
+
+  const handleOpenShareModal = useCallback(
+    (type: "grade" | "streak") => {
+      setShareModalError(null);
+      setShareModalSuccess(false);
+      if (type === "grade" && !selectedProfile) {
+        setShareModalError(t("share.selectProfileFirst"));
+      }
+      setShareConfirmModal({ isOpen: true, type });
+    },
+    [selectedProfile, t]
+  );
+
+  const handleExecuteShare = useCallback(async () => {
+    if (!shareConfirmModal.type) return;
+    setShareModalError(null);
+    setIsSharing(true);
+    try {
+      if (shareConfirmModal.type === "grade") {
+        if (!selectedProfile) {
+          setShareModalError(t("share.selectProfileFirst"));
+          setIsSharing(false);
+          return;
+        }
+        await forumService.shareGrade(selectedProfile.id);
+      } else if (shareConfirmModal.type === "streak") {
+        await forumService.shareStreak();
+      }
+      setShareModalSuccess(true);
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response
+          ?.data?.message ?? t("share.errorMessage");
+      setShareModalError(message);
+    } finally {
+      setIsSharing(false);
+    }
+  }, [shareConfirmModal.type, selectedProfile, t]);
 
   // ── Fetch progress on mount ──
   useEffect(() => {
@@ -519,6 +585,50 @@ const DashboardPage = () => {
     })();
   }, []);
 
+  const handleSelectProfileDashboard = useCallback(
+    async (targetProfile: ProfileSummary) => {
+      setProfileDropdownOpen(false);
+      setProfileLoading(true);
+      setProfileError(false);
+
+      try {
+        const res = await dashboardService.getProfileStats(targetProfile.id);
+        setProfileData(res.data.data);
+        setSelectedProfile(targetProfile);
+        setProfileSwitchError(null);
+        if (profileErrorTimerRef.current) {
+          clearTimeout(profileErrorTimerRef.current);
+          profileErrorTimerRef.current = null;
+        }
+      } catch (err: unknown) {
+        console.error("Failed to load profile stats:", err);
+        let errorMsg = "Không thể tải dữ liệu hồ sơ này.";
+        if (axios.isAxiosError(err)) {
+          errorMsg = err.response?.data?.message || errorMsg;
+        } else if (
+          (err as { response?: { data?: { message?: string } } })?.response
+            ?.data?.message
+        ) {
+          errorMsg = (
+            err as { response?: { data?: { message?: string } } }
+          ).response!.data!.message!;
+        }
+        setProfileSwitchError(errorMsg);
+
+        // Auto dismiss error message after 10s
+        if (profileErrorTimerRef.current) {
+          clearTimeout(profileErrorTimerRef.current);
+        }
+        profileErrorTimerRef.current = setTimeout(() => {
+          setProfileSwitchError(null);
+        }, 10000);
+      } finally {
+        setProfileLoading(false);
+      }
+    },
+    []
+  );
+
   // ── Fetch profiles on mount ──
   useEffect(() => {
     (async () => {
@@ -526,32 +636,22 @@ const DashboardPage = () => {
         const res = await profileService.getProfiles();
         const list = res.data.data ?? [];
         setProfiles(list);
-        if (list.length > 0) setSelectedProfile(list[0]);
+        if (list.length > 0) {
+          void handleSelectProfileDashboard(list[0]);
+        }
       } catch {
         // ignore
       }
     })();
-  }, []);
-
-  // ── Fetch profile stats when selected profile changes ──
-  const fetchProfileStats = useCallback(async (id: number) => {
-    setProfileLoading(true);
-    setProfileError(false);
-    try {
-      const res = await dashboardService.getProfileStats(id);
-      setProfileData(res.data.data);
-    } catch {
-      setProfileError(true);
-    } finally {
-      setProfileLoading(false);
-    }
-  }, []);
+  }, [handleSelectProfileDashboard]);
 
   useEffect(() => {
-    if (selectedProfile) {
-      fetchProfileStats(selectedProfile.id);
-    }
-  }, [selectedProfile, fetchProfileStats]);
+    return () => {
+      if (profileErrorTimerRef.current) {
+        clearTimeout(profileErrorTimerRef.current);
+      }
+    };
+  }, []);
 
   // ── Close dropdown on outside click ──
   useEffect(() => {
@@ -561,6 +661,12 @@ const DashboardPage = () => {
         !profileDropdownRef.current.contains(e.target as Node)
       ) {
         setProfileDropdownOpen(false);
+      }
+      if (
+        streakPopoverRef.current &&
+        !streakPopoverRef.current.contains(e.target as Node)
+      ) {
+        setIsStreakModalOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -707,7 +813,7 @@ const DashboardPage = () => {
           <div>
             <h1 className="text-2xl font-semibold text-zinc-900 sm:text-3xl">
               {t(`greeting.${greetingKey}`)},{" "}
-              <span className="text-indigo-600">
+              <span className="text-blue-600">
                 {userInfo?.fullName || t("user.name", "User")}
               </span>
             </h1>
@@ -728,7 +834,7 @@ const DashboardPage = () => {
             <button
               onClick={handleExportImage}
               disabled={isExportingImage}
-              className="no-print flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-60"
+              className="no-print flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-60 cursor-pointer"
             >
               {isExportingImage ? (
                 <Loader2 className="h-4 w-4 animate-spin text-zinc-500" />
@@ -740,15 +846,91 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {/* ── Row 2: Profile Dropdown + Streak ── */}
+        {/* ── Active Subscription Tier Banner ── */}
+        <div className="mb-6 rounded-2xl border border-indigo-100 bg-gradient-to-r from-blue-50/90 via-white to-purple-50/70 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-600 text-white shadow-md shadow-slate-200">
+              <Crown className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-600">
+                  {t("subscription.currentTier")}
+                </span>
+                <span className="inline-flex items-center rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-bold text-sky-700">
+                  {userInfo?.activeTier || "BASIC"}
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-600 mt-0.5">
+                {userInfo?.subscriptionEndDate ? (
+                  t("subscription.expiresAt", {
+                    date: new Date(userInfo.subscriptionEndDate).toLocaleDateString("vi-VN", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    }),
+                  })
+                ) : (
+                  t("subscription.freeTierDesc")
+                )}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsUpgradeModalOpen(true)}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-zinc-800 active:scale-95 cursor-pointer whitespace-nowrap"
+          >
+            <Sparkles className="h-4 w-4 text-amber-400" />
+            <span>
+              {(() => {
+                const tier = (userInfo?.activeTier || "BASIC").toUpperCase();
+                if (tier.startsWith("PRO")) {
+                  return t("subscription.viewPlans");
+                }
+                if (tier.startsWith("PLUS")) {
+                  return t("subscription.switchTier");
+                }
+                return t("subscription.upgradePro");
+              })()}
+            </span>
+          </button>
+        </div>
+
+        {/* ── Profile Switch Error Banner (Dismissable & Auto-dismiss in 10s) ── */}
+        {profileSwitchError && (
+          <div className="mb-6 flex items-start justify-between gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-800 shadow-xs animate-in fade-in duration-200">
+            <div className="flex items-start gap-3">
+              <div className="flex h-6 w-8 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600">
+                <AlertCircle className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm text-rose-800 mt-0.5 leading-relaxed">
+                  {profileSwitchError}
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setProfileSwitchError(null)}
+              className="text-xs font-bold text-rose-600 hover:text-rose-900 p-1 cursor-pointer shrink-0 ml-2 rounded-md hover:bg-rose-100 transition"
+              title="Đóng thông báo"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
+        {/* ── Row 2: Profile Dropdown + Share Buttons + Streak ── */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {/* Profile dropdown */}
           <div className="relative" ref={profileDropdownRef}>
             <button
               onClick={() => setProfileDropdownOpen((p) => !p)}
-              className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 active:scale-[0.98]"
+              className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 active:scale-[0.98] cursor-pointer"
             >
-              <Brain className="h-4 w-4 text-indigo-500" />
+              <Brain className="h-4 w-4 text-blue-500" />
               <span>
                 {selectedProfile
                   ? getProfileTitle(selectedProfile)
@@ -769,11 +951,8 @@ const DashboardPage = () => {
                   profiles.map((p) => (
                     <button
                       key={p.id}
-                      onClick={() => {
-                        setSelectedProfile(p);
-                        setProfileDropdownOpen(false);
-                      }}
-                      className={`flex w-full items-center px-4 py-2.5 text-left text-sm transition hover:bg-zinc-50 ${selectedProfile?.id === p.id ? "font-semibold text-indigo-600" : "text-zinc-700"}`}
+                      onClick={() => handleSelectProfileDashboard(p)}
+                      className={`flex w-full items-center px-4 py-2.5 text-left text-sm transition hover:bg-zinc-50 cursor-pointer ${selectedProfile?.id === p.id ? "font-semibold text-sky-600" : "text-zinc-700"}`}
                     >
                       {getProfileTitle(p)}
                     </button>
@@ -783,13 +962,60 @@ const DashboardPage = () => {
             )}
           </div>
 
-          {/* Streak */}
+          {/* Share Action Buttons */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => handleOpenShareModal("grade")}
+              disabled={isSharing}
+              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-800 shadow-xs transition hover:border-zinc-300 hover:bg-zinc-50 active:scale-[0.98] cursor-pointer disabled:opacity-60"
+              title={t("share.shareGrade")}
+            >
+              <Trophy className="h-3.5 w-3.5 text-amber-500" />
+              <span>{t("share.shareGrade")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleOpenShareModal("streak")}
+              disabled={isSharing}
+              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-800 shadow-xs transition hover:border-zinc-300 hover:bg-zinc-50 active:scale-[0.98] cursor-pointer disabled:opacity-60"
+              title={t("share.shareStreak")}
+            >
+              <Flame className="h-3.5 w-3.5 text-orange-500" />
+              <span>{t("share.shareStreak")}</span>
+            </button>
+          </div>
+
+          {/* Streak Popover Button & Card */}
           {!progressLoading && (
-            <div className="flex items-center gap-2 text-base font-semibold text-orange-600">
-              <Flame className="h-5 w-5 animate-pulse" />
-              {t("streak", {
-                count: progressData?.streak.currentStreak ?? 0,
-              })}
+            <div className="relative" ref={streakPopoverRef}>
+              <button
+                type="button"
+                onClick={() => setIsStreakModalOpen((prev) => !prev)}
+                title={t("streakModal.title")}
+                className={`group inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer ${
+                  isStreakModalOpen
+                    ? "border-amber-300 bg-amber-100/90 text-amber-900 shadow-sm ring-2 ring-amber-200"
+                    : "border-amber-200/80 bg-gradient-to-r from-amber-50/90 via-orange-50/90 to-rose-50/90 text-amber-900 hover:border-amber-300 hover:from-amber-100 hover:via-orange-100 hover:to-rose-100 hover:shadow-sm active:scale-[0.98]"
+                }`}
+              >
+                <div className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xs group-hover:scale-110 transition-transform">
+                  <Flame className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current animate-pulse" />
+                </div>
+                <span>
+                  {t("streak", {
+                    count: progressData?.streak.currentStreak ?? 0,
+                  })}
+                </span>
+              </button>
+
+              {/* Popover Card directly below button */}
+              <StreakInfoModal
+                isOpen={isStreakModalOpen}
+                onClose={() => setIsStreakModalOpen(false)}
+                currentStreak={progressData?.streak.currentStreak ?? 0}
+                longestStreak={progressData?.streak.longestStreak ?? 0}
+              />
             </div>
           )}
         </div>
@@ -797,72 +1023,97 @@ const DashboardPage = () => {
         {/* ── Row 3: 3 small stat cards ── */}
         <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {/* Card 1: Interviews this week */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-6">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-zinc-500">
-              <BarChart3 className="h-4 w-4" />
-              {t("stats.interviewsThisWeek")}
+          <div className="rounded-2xl border border-zinc-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-200">
+            <div className="mb-3.5 flex items-center justify-between">
+              <span className="text-xs sm:text-sm font-semibold text-zinc-600">
+                {t("stats.interviewsThisWeek")}
+              </span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100 shadow-xs">
+                <BarChart3 className="h-4 w-4" />
+              </div>
             </div>
             {profileLoading ? (
               <div className="h-12 w-20 animate-pulse rounded-lg bg-zinc-100" />
             ) : (
-              <div className="flex items-end gap-3">
-                <span className="text-5xl font-bold text-zinc-900">
+              <div className="flex items-baseline gap-2.5">
+                <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-zinc-900">
                   {interviewsThisWeek}
                 </span>
                 <span
-                  className={`mb-2 flex items-center gap-0.5 text-sm font-semibold ${weekChange >= 0 ? "text-emerald-600" : "text-rose-600"}`}
+                  className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-bold border ${
+                    weekChange >= 0
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                      : "bg-rose-50 text-rose-700 border-rose-200"
+                  }`}
                 >
                   <TrendingUp
-                    className={`h-4 w-4 ${weekChange < 0 ? "rotate-180" : ""}`}
+                    className={`h-3 w-3 ${weekChange < 0 ? "rotate-180" : ""}`}
                   />
                   {weekChange >= 0 ? "+" : ""}
                   {weekChange}%
                 </span>
               </div>
             )}
-            <p className="mt-2 text-sm text-zinc-400">{t("stats.vsLastWeek")}</p>
+            <p className="mt-2 text-xs text-zinc-400 font-medium">
+              {t("stats.vsLastWeek")}
+            </p>
           </div>
 
           {/* Card 2: Average score */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-6">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-zinc-500">
-              <Brain className="h-4 w-4" />
-              {t("stats.avgScore")}
+          <div className="rounded-2xl border border-zinc-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-amber-200 transition-all duration-200">
+            <div className="mb-3.5 flex items-center justify-between">
+              <span className="text-xs sm:text-sm font-semibold text-zinc-600">
+                {t("stats.avgScore")}
+              </span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100 shadow-xs">
+                <Brain className="h-4 w-4" />
+              </div>
             </div>
             {profileLoading ? (
               <div className="h-12 w-20 animate-pulse rounded-lg bg-zinc-100" />
             ) : (
-              <span className="text-5xl font-bold text-zinc-900">
-                {avgScore.toFixed(1)}
-              </span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-zinc-900">
+                  {avgScore.toFixed(1)}
+                </span>
+                <span className="text-sm font-bold text-zinc-400">/ 10</span>
+              </div>
             )}
-            <p className="mt-2 text-sm text-zinc-400">
+            <p className="mt-2 text-xs text-zinc-400 font-medium">
               {t("stats.last10Sessions")}
             </p>
           </div>
 
           {/* Card 3: Improvement rate */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-6">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-zinc-500">
-              <TrendingUp className="h-4 w-4" />
-              {t("stats.improvementRate")}
+          <div className="rounded-2xl border border-zinc-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-emerald-200 transition-all duration-200">
+            <div className="mb-3.5 flex items-center justify-between">
+              <span className="text-xs sm:text-sm font-semibold text-zinc-600">
+                {t("stats.improvementRate")}
+              </span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-xs">
+                <TrendingUp className="h-4 w-4" />
+              </div>
             </div>
             {profileLoading ? (
               <div className="h-12 w-24 animate-pulse rounded-lg bg-zinc-100" />
             ) : profileData?.improvementRate !== null &&
               profileData?.improvementRate !== undefined ? (
-              <span className="text-5xl font-bold text-zinc-900">
-                {profileData.improvementRate}%
-              </span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-emerald-600">
+                  {profileData.improvementRate > 0
+                    ? `+${profileData.improvementRate}`
+                    : profileData.improvementRate}%
+                </span>
+              </div>
             ) : (
-              <div className="flex items-start gap-2 rounded-lg bg-amber-50 px-3 py-2.5">
-                <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600" />
-                <p className="text-sm text-amber-700">
+              <div className="flex items-start gap-2 rounded-xl bg-amber-50/90 border border-amber-200/70 p-2.5">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-amber-600" />
+                <p className="text-xs font-medium text-amber-800 leading-snug">
                   {t("stats.notEnoughData")}
                 </p>
               </div>
             )}
-            <p className="mt-2 text-sm text-zinc-400">
+            <p className="mt-2 text-xs text-zinc-400 font-medium">
               {t("stats.improvementDesc")}
             </p>
           </div>
@@ -939,8 +1190,8 @@ const DashboardPage = () => {
 
           {/* Card C: View result */}
           <div className="flex flex-col items-center justify-center rounded-xl border border-zinc-200 bg-white p-8 text-center">
-            <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50">
-              <Eye className="h-10 w-10 text-indigo-600" />
+            <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-stone-50">
+              <Eye className="h-10 w-10 text-neutral-600" />
             </div>
             <h2 className="mb-2 text-base font-semibold text-zinc-900">
               {t("review.title")}
@@ -966,7 +1217,7 @@ const DashboardPage = () => {
           </div>
           {progressLoading ? (
             <div className="flex h-48 items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
+              <Loader2 className="h-8 w-8 animate-spin text-stone-400" />
             </div>
           ) : profileError ? (
             <div className="flex h-48 items-center justify-center gap-2 text-sm text-zinc-400">
@@ -993,6 +1244,195 @@ const DashboardPage = () => {
           )}
         </div>
       </section>
+
+      {/* Fullscreen Upgrade Tier Modal */}
+      <UpgradeTierModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        currentTier={userInfo?.activeTier ?? "BASIC"}
+      />
+
+      {/* ── Share Confirm / Success Modal ── */}
+      {shareConfirmModal.isOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-150"
+          onClick={() => {
+            if (!isSharing) {
+              setShareConfirmModal({ isOpen: false, type: null });
+              setShareModalError(null);
+              setShareModalSuccess(false);
+            }
+          }}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {shareModalSuccess ? (
+              /* ── Success State View inside Modal ── */
+              <div className="text-center py-2 animate-in fade-in zoom-in-95 duration-200">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 shadow-xs">
+                  <CheckCircle2 className="h-9 w-9" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-900">
+                  {t("share.shareSuccessTitle")}
+                </h3>
+                <p className="mt-1.5 text-xs text-zinc-600 leading-relaxed max-w-xs mx-auto">
+                  {t("share.shareSuccessDesc")}
+                </p>
+
+                <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShareConfirmModal({ isOpen: false, type: null });
+                      setShareModalSuccess(false);
+                      setShareModalError(null);
+                      navigate("/forum");
+                    }}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-6 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-zinc-800 active:scale-[0.98] cursor-pointer"
+                  >
+                    <span>{t("share.viewForum")}</span>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShareConfirmModal({ isOpen: false, type: null });
+                      setShareModalSuccess(false);
+                      setShareModalError(null);
+                    }}
+                    className="w-full sm:w-auto rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] cursor-pointer"
+                  >
+                    {t("share.closeBtn")}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* ── Confirm State View inside Modal ── */
+              <>
+                {/* Header Icon + Title */}
+                <div className="mb-4 flex items-start gap-3.5">
+                  <div
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+                      shareConfirmModal.type === "grade"
+                        ? "bg-amber-50 text-amber-600 border border-amber-200"
+                        : "bg-orange-50 text-orange-600 border border-orange-200"
+                    }`}
+                  >
+                    {shareConfirmModal.type === "grade" ? (
+                      <Trophy className="h-6 w-6" />
+                    ) : (
+                      <Flame className="h-6 w-6" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-zinc-900">
+                      {shareConfirmModal.type === "grade"
+                        ? t("share.confirmTitleGrade")
+                        : t("share.confirmTitleStreak")}
+                    </h3>
+                    <p className="mt-1 text-xs text-zinc-500">
+                      {shareConfirmModal.type === "grade"
+                        ? t("share.confirmDescGrade", {
+                            title: selectedProfile
+                              ? getProfileTitle(selectedProfile)
+                              : "",
+                            score: (profileData?.averageTotalPoint ?? 0).toFixed(1),
+                          })
+                        : t("share.confirmDescStreak", {
+                            count: progressData?.streak.currentStreak ?? 0,
+                          })}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Preview Card */}
+                <div className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50 p-4">
+                  {shareConfirmModal.type === "grade" ? (
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-medium text-zinc-500">
+                          {t("selectProfile")}
+                        </p>
+                        <p className="text-sm font-bold text-zinc-900 mt-0.5">
+                          {selectedProfile
+                            ? getProfileTitle(selectedProfile)
+                            : "N/A"}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-medium text-zinc-500">
+                          {t("stats.avgScore")}
+                        </p>
+                        <p className="text-base font-extrabold text-amber-600 mt-0.5">
+                          {(profileData?.averageTotalPoint ?? 0).toFixed(1)} / 10
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-medium text-zinc-500">
+                          {t("streak", { count: 0 }).replace(/\d+/, "").trim()}
+                        </p>
+                        <p className="text-sm font-bold text-zinc-900 mt-0.5">
+                          {progressData?.streak.currentStreak ?? 0} ngày liên tiếp
+                        </p>
+                      </div>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+                        <Flame className="h-5 w-5" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Error Message inside Modal */}
+                {shareModalError && (
+                  <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-medium text-rose-800 animate-in fade-in slide-in-from-top-1">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-rose-600 mt-0.5" />
+                    <p className="flex-1 leading-relaxed">{shareModalError}</p>
+                  </div>
+                )}
+
+                {/* Actions */}
+                <div className="flex items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    disabled={isSharing}
+                    onClick={() => {
+                      setShareConfirmModal({ isOpen: false, type: null });
+                      setShareModalError(null);
+                      setShareModalSuccess(false);
+                    }}
+                    className="rounded-full border border-zinc-200 bg-white px-5 py-2 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+                  >
+                    {t("share.cancelBtn")}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isSharing}
+                    onClick={handleExecuteShare}
+                    className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-zinc-800 active:scale-[0.98] disabled:opacity-60 cursor-pointer"
+                  >
+                    {isSharing ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <span>{t("share.sharing")}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="h-3.5 w-3.5" />
+                        <span>{t("share.confirmBtn")}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
