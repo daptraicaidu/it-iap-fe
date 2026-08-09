@@ -1,6 +1,6 @@
 import apiClient from "../../utils/axios";
-import type { ApiResponse } from "../user/interviewService";
-import type { PaginatedResponse } from "../user/interviewService";
+import type { ApiResponse } from "../common/apiResponse";
+import type { PaginatedResponse } from "./interviewService";
 
 // ── Types ──
 

@@ -490,7 +490,7 @@ const PasswordAndSecurityPage = () => {
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section className="rounded-xl border border-zinc-200 bg-white">
           <div className="border-b border-zinc-200 px-6 py-6 sm:px-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
               <LockKeyhole className="h-5 w-5" />
             </div>
             <h1 className="mt-5 text-2xl font-semibold tracking-tight text-zinc-900">
@@ -524,7 +524,7 @@ const PasswordAndSecurityPage = () => {
                 <button
                   type="button"
                   onClick={handleOpenForgotModal}
-                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline transition"
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:underline cursor-pointer transition"
                 >
                   {t("changePassword.forgotPasswordLink")}
                 </button>
@@ -610,7 +610,7 @@ const PasswordAndSecurityPage = () => {
               </div>
             ))}
           </div>
-          <div className="mt-6 rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm leading-6 text-indigo-700">
+          <div className="mt-6 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
             {t("changePassword.securityNote")}
           </div>
         </aside>
@@ -621,7 +621,7 @@ const PasswordAndSecurityPage = () => {
         <div className="border-b border-zinc-200 px-6 py-6 sm:px-8">
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                 <Smartphone className="h-5 w-5" />
               </div>
               <h2 className="mt-5 text-2xl font-semibold tracking-tight text-zinc-900">
@@ -890,7 +890,7 @@ const PasswordAndSecurityPage = () => {
 
             {/* Modal Header */}
             <div className="mb-6 text-center">
-              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                 <KeyRound className="h-6 w-6" />
               </div>
               <h2 className="text-xl font-semibold tracking-tight text-zinc-900">
@@ -929,7 +929,7 @@ const PasswordAndSecurityPage = () => {
                       {t("changePassword.forgotModal.confirmEmailText")}
                     </p>
                     <div className="mt-2 flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-indigo-600" />
+                      <Mail className="h-4 w-4 text-blue-600" />
                       <span className="text-sm font-semibold text-zinc-900">
                         {userInfo.email}
                       </span>
@@ -1064,7 +1064,7 @@ const PasswordAndSecurityPage = () => {
                         setForgotOtp(Array(6).fill(""));
                         setForgotStep("confirm");
                       }}
-                      className="flex items-center gap-1 text-xs text-zinc-500 hover:text-indigo-600"
+                      className="flex items-center gap-1 text-xs text-zinc-500 hover:text-blue-600"
                     >
                       <ChevronLeft className="h-3 w-3" />
                       {t("changePassword.forgotModal.wrongEmail")}

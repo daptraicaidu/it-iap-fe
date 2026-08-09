@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Interfaces ──
 
@@ -11,13 +14,6 @@ export interface UserSession {
   location: string;
   lastActiveAt: string;
   isCurrent: boolean;
-}
-
-export interface ApiResponse<T = unknown> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp?: string;
 }
 
 // ── Session Service ──

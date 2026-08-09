@@ -2,6 +2,7 @@
   "title": "User Management",
   "subtitle": "Manage all user accounts in the system",
   "addUser": "Add User",
+  "reload": "Reload",
   "filter": {
     "email": "Email",
     "emailPlaceholder": "Search by email...",
@@ -17,6 +18,8 @@
     "fullName": "Full Name",
     "email": "Email",
     "phone": "Phone",
+    "activeTier": "Plan / Tier",
+    "subscriptionEndDate": "Expires At",
     "status": "Status",
     "createdAt": "Created At",
     "actions": "Actions",

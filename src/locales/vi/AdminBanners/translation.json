@@ -2,6 +2,7 @@
   "title": "Quản lý Banner & Chữ chạy",
   "subtitle": "Tạo mới, bật/tắt và chỉnh sửa các banner khuyến mãi, chào mừng và chữ chạy thông báo.",
   "createButton": "Thêm Banner mới",
+  "reload": "Làm mới",
   "table": {
     "id": "ID",
     "image": "Hình ảnh",

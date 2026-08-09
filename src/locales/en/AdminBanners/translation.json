@@ -2,6 +2,7 @@
   "title": "Banner & Marquee Management",
   "subtitle": "Create, toggle, and edit welcome/promotional banners and running marquee announcements.",
   "createButton": "Create New Banner",
+  "reload": "Reload",
   "table": {
     "id": "ID",
     "image": "Image",

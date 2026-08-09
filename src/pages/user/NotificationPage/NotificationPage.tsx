@@ -64,7 +64,7 @@ const getNotificationBadge = (
     case "REPORT":
       return { label: t("type.report"), className: "bg-sky-50 text-sky-700" };
     case "FEEDBACK":
-      return { label: t("type.feedback"), className: "bg-indigo-50 text-indigo-700" };
+      return { label: t("type.feedback"), className: "bg-cyan-50 text-cyan-700" };
     case "STREAK":
       return { label: t("type.streak"), className: "bg-orange-50 text-orange-700" };
     default:
@@ -181,7 +181,7 @@ const NotificationPage = () => {
             onClick={handleReadAll}
             className="flex items-center gap-2 self-start rounded-full bg-white px-4 py-2 text-sm font-medium text-zinc-900 border border-zinc-200 transition hover:bg-zinc-50 sm:self-auto"
           >
-            <CheckCheck className="h-4 w-4 text-indigo-600" />
+            <CheckCheck className="h-4 w-4 text-emerald-600" />
             {t("readAll")}
           </button>
         )}
@@ -297,7 +297,7 @@ const NotificationPage = () => {
                   href={selectedNotification.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-700"
+                  className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-700"
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
                   {t("viewLink")}
@@ -375,7 +375,7 @@ const NotificationCard = ({
             </p>
           </div>
           {!notification.read && (
-            <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-indigo-500" />
+            <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-blue-500" />
           )}
         </div>
         <p className="mt-1 text-sm text-zinc-500 line-clamp-2 break-words">
@@ -385,7 +385,7 @@ const NotificationCard = ({
           <p
             className={`text-xs ${
               !notification.read
-                ? "font-medium text-indigo-600"
+                ? "font-medium text-blue-600"
                 : "text-zinc-400"
             }`}
           >
@@ -397,7 +397,7 @@ const NotificationCard = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 hover:underline"
             >
               <ExternalLink className="h-3 w-3" />
               {t("viewLink")}

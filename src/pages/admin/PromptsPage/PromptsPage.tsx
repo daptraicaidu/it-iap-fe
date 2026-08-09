@@ -6,6 +6,7 @@ import {
   Zap,
   FileText,
   X,
+  RefreshCw,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -214,7 +215,7 @@ const PromptsPage = () => {
       try {
         const response = await adminPromptService.getPrompts({
           ...filters,
-          pages: page - 1, // Backend is 0-indexed
+          pages: page,
         });
         const data = response.data.data;
         if (data) {
@@ -222,7 +223,7 @@ const PromptsPage = () => {
           setTotalPages(data.totalPages);
           setTotalElements(data.totalElements);
           setPageSize(data.size);
-          setCurrentPage(data.number + 1);
+          setCurrentPage(page);
         }
       } catch {
         setPrompts([]);
@@ -316,13 +317,26 @@ const PromptsPage = () => {
           <h1 className="text-xl font-semibold text-zinc-900">{t("title")}</h1>
           <p className="mt-1 text-sm text-zinc-500">{t("subtitle")}</p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
-        >
-          <Plus className="h-4 w-4" strokeWidth={2} />
-          {t("addPrompt")}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => fetchPrompts(currentPage, appliedFilters)}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              strokeWidth={2}
+            />
+            <span>{t("reload")}</span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 active:scale-[0.98]"
+          >
+            <Plus className="h-4 w-4" strokeWidth={2} />
+            {t("addPrompt")}
+          </button>
+        </div>
       </div>
 
       {/* Filter Card */}

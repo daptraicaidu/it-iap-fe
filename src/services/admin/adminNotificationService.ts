@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Types ──
 
@@ -46,12 +49,7 @@ export interface PaginatedAdminNotifications {
   totalPages: number;
 }
 
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
-}
+// ── Service ──
 
 export interface NotificationValidationErrorData {
   title?: string;

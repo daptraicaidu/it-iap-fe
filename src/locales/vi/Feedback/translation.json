@@ -18,6 +18,7 @@
   "filterOnlyMine": "Đánh giá của tôi",
   "filterHasReply": "Có phản hồi Admin",
   "filterHasImage": "Có ảnh đính kèm",
+  "clearFilters": "Xóa bộ lọc",
   "toggleShowReplies": "Hiện phản hồi Admin",
   "toggleHideReplies": "Ẩn phản hồi Admin",
   "adminReply": "Phản hồi từ Admin",

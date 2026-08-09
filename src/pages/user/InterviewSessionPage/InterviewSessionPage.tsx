@@ -578,7 +578,7 @@ const InterviewSessionPage = () => {
                 className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   getCategoryLabel(displayQuestion.category).includes("Kỹ thuật") ||
                   getCategoryLabel(displayQuestion.category).includes("Technical")
-                    ? "bg-indigo-50 text-indigo-700"
+                    ? "bg-blue-50 text-sky-700"
                     : getCategoryLabel(displayQuestion.category).includes("Hành vi") ||
                         getCategoryLabel(displayQuestion.category).includes("Behavioral")
                       ? "bg-emerald-50 text-emerald-700"
@@ -832,7 +832,7 @@ const InterviewSessionPage = () => {
                         {msg.role === "USER" ? (
                           <UserIcon className="h-4 w-4 text-white" />
                         ) : (
-                          <Bot className="h-4 w-4 text-indigo-600" />
+                          <Bot className="h-4 w-4 text-600" />
                         )}
                       </div>
 
@@ -873,7 +873,7 @@ const InterviewSessionPage = () => {
                       className="flex gap-3"
                     >
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100">
-                        <Bot className="h-4 w-4 text-indigo-600" />
+                        <Bot className="h-4 w-4 text-600" />
                       </div>
                       <div className="rounded-2xl bg-zinc-100 px-4 py-3">
                         <div className="flex gap-1">

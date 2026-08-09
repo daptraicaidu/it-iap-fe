@@ -2,6 +2,7 @@
   "title": "Quản lý người dùng",
   "subtitle": "Quản lý tất cả tài khoản người dùng trong hệ thống",
   "addUser": "Thêm người dùng",
+  "reload": "Làm mới",
   "filter": {
     "email": "Email",
     "emailPlaceholder": "Tìm theo email...",
@@ -17,6 +18,8 @@
     "fullName": "Họ tên",
     "email": "Email",
     "phone": "Số điện thoại",
+    "activeTier": "Gói cước",
+    "subscriptionEndDate": "Hạn sử dụng",
     "status": "Trạng thái",
     "createdAt": "Ngày tạo",
     "actions": "Thao tác",

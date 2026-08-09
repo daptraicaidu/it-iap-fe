@@ -2,6 +2,7 @@
   "title": "Prompt Management",
   "subtitle": "Manage AI prompts and version configurations",
   "addPrompt": "New Prompt",
+  "reload": "Reload",
   "filter": {
     "promptKey": "Prompt Key",
     "promptKeyPlaceholder": "Enter prompt key...",

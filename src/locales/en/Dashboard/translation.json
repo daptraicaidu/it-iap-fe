@@ -11,6 +11,37 @@
   "selectProfile": "Select profile",
   "noProfiles": "No profiles yet",
   "streak": "Maintaining a {{count}}-day practice streak",
+  "streakModal": {
+    "title": "Practice Streak Info",
+    "days": "day streak",
+    "longestStreak": "Longest streak",
+    "slogan": "Keep your streak alive, deepen your insight",
+    "subtitle": "Maintain your daily AI interview practice habit to boost reflexes and accelerate your IT career.",
+    "steps": {
+      "step1": "Complete at least 1 interview session",
+      "step2": "Maintain your daily streak by practicing",
+      "step3": "Unlock new milestones as you progress"
+    },
+    "gotIt": "Got it & Continue"
+  },
+  "share": {
+    "shareGrade": "Share GPA",
+    "shareStreak": "Share Streak",
+    "sharing": "Sharing...",
+    "confirmTitleGrade": "Share GPA to Forum",
+    "confirmTitleStreak": "Share Streak to Forum",
+    "confirmDescGrade": "Are you sure you want to share achievements for profile \"{{title}}\" with GPA {{score}}/10 to the Community Forum?",
+    "confirmDescStreak": "Are you sure you want to share your {{count}}-day practice streak to the Community Forum?",
+    "confirmBtn": "Confirm Share",
+    "cancelBtn": "Cancel",
+    "closeBtn": "Close",
+    "shareSuccessTitle": "Shared to Forum successfully!",
+    "shareSuccessDesc": "Your post has been published to the Community Forum.",
+    "successMessage": "Shared to Forum successfully!",
+    "viewForum": "View in Forum",
+    "errorMessage": "Failed to share. Please try again later.",
+    "selectProfileFirst": "Please select a profile before sharing GPA."
+  },
   "stats": {
     "interviewsThisWeek": "Interviews this week",
     "vsLastWeek": "Compared to last week",
@@ -74,11 +105,48 @@
     "chatbot": "Chatbot",
     "interview": "Interview",
     "forum": "Forum",
+    "orders": "Order History",
+    "checkout": "Checkout & Upgrade",
     "reviewResult": "Review Result",
     "reports": "Reports and Feedbacks"
   },
   "user": {
     "name": "User",
     "avatarAlt": "User avatar"
+  },
+  "subscription": {
+    "currentTier": "Current Plan",
+    "freeTierDesc": "Free Basic Plan (5 AI interview sessions per day)",
+    "expiresAt": "Valid until: {{date}}",
+    "upgradePro": "Upgrade to Pro",
+    "switchTier": "Upgrade/ Switch Plans",
+    "viewPlans": "View Plans",
+    "modalTitle": "Choose the Plan That Fits Your Goals",
+    "modalSubtitle": "Unlock unlimited AI interviews, in-depth scoring, and expanded chatbot context.",
+    "badgeTitle": "Elevate Your IT Career with AI",
+    "popularBadge": "Most Popular",
+    "saveBadge": "Best Value",
+    "perMonth": "/month",
+    "perYear": "/year",
+    "forever": "forever",
+    "free": "Free",
+    "features": {
+      "title": "Included benefits:",
+      "maxProfiles": "Up to {{count}} interview profiles",
+      "dailyInterviews": "{{count}} AI interviews per day",
+      "chatbotContext": "Chatbot context window up to {{tokens}} tokens",
+      "detailedGrading": "Detailed skill scoring & analysis",
+      "unlimited": "Unlimited daily AI interviews",
+      "priority": "Priority processing on high-speed AI infrastructure"
+    },
+    "buttons": {
+      "current": "Your Current Plan",
+      "default": "Default Plan",
+      "subscribe": "Get Started"
+    },
+    "guarantee": {
+      "secure": "100% Secure & encrypted checkout",
+      "instant": "Instant account upgrade activation"
+    }
   }
 }

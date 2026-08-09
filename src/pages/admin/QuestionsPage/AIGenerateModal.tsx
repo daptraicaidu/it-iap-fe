@@ -23,7 +23,7 @@ interface FormErrors {
 const AIGenerateModal = ({ isOpen, onClose, onSuccess }: AIGenerateModalProps) => {
   const { t } = useTranslation("AdminQuestions");
 
-  const [quantity, setQuantity] = useState<number>(5);
+  const [quantity, setQuantity] = useState<number | "">(5);
   const [level, setLevel] = useState("");
   const [position, setPosition] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,8 +46,9 @@ const AIGenerateModal = ({ isOpen, onClose, onSuccess }: AIGenerateModalProps) =
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+    const numQuantity = Number(quantity);
 
-    if (!quantity || quantity < 1 || quantity > 10) {
+    if (!quantity || isNaN(numQuantity) || numQuantity < 1 || numQuantity > 10) {
       newErrors.quantity = t("aiModal.validation.quantityInvalid");
     }
     if (!level) {
@@ -70,7 +71,7 @@ const AIGenerateModal = ({ isOpen, onClose, onSuccess }: AIGenerateModalProps) =
 
     try {
       await adminQuestionService.generateQuestionByAI({
-        quantity,
+        quantity: Number(quantity),
         level,
         position,
       });
@@ -118,8 +119,8 @@ const AIGenerateModal = ({ isOpen, onClose, onSuccess }: AIGenerateModalProps) =
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
-              <Sparkles className="h-4.5 w-4.5 text-indigo-600" strokeWidth={1.8} />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50">
+              <Sparkles className="h-4.5 w-4.5 text-blue-600" strokeWidth={1.8} />
             </div>
             <div>
               <h2 className="text-base font-semibold text-zinc-900">
@@ -149,7 +150,15 @@ const AIGenerateModal = ({ isOpen, onClose, onSuccess }: AIGenerateModalProps) =
               min={1}
               max={10}
               value={quantity}
-              onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 0)}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === "") {
+                  setQuantity("");
+                } else {
+                  const parsed = parseInt(val, 10);
+                  setQuantity(isNaN(parsed) ? "" : parsed);
+                }
+              }}
               className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:ring-1 ${
                 errors.quantity
                   ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400"
@@ -237,7 +246,7 @@ const AIGenerateModal = ({ isOpen, onClose, onSuccess }: AIGenerateModalProps) =
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2 text-sm font-medium text-white transition-all active:scale-[0.98] disabled:opacity-70"
           >
             {/* Animated gradient background */}
-            <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_100%] transition-all duration-500 group-hover:animate-[shimmer_2s_linear_infinite]" />
+            <span className="absolute inset-0 bg-gradient-to-r from-sky-600 via-blue-600 to-sky-600 bg-[length:200%_100%] transition-all duration-500 group-hover:animate-[shimmer_2s_linear_infinite]" />
             <span className="relative flex items-center gap-2">
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2} />

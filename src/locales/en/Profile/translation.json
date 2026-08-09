@@ -217,7 +217,8 @@
   "deleteDialog": {
     "title": "Delete profile?",
     "description": "This profile will be removed from your list. This action cannot be undone.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirm": "Delete"
   },
   "settings": {
     "menu": {
@@ -229,10 +230,31 @@
       "sessions": "Active Sessions"
     },
     "activities": {
-      "title": "Activities",
-      "description": "Your activity history, logins, and other security events will be displayed here.",
-      "emptyTitle": "No activities yet",
-      "emptyDescription": "Your recent activities will appear here."
+      "title": "Activity Logs",
+      "description": "Track your login history, security changes, and profile actions.",
+      "emptyTitle": "No activities found",
+      "emptyDescription": "Activities matching your selected filter will appear here.",
+      "refresh": "Refresh",
+      "filterAll": "All Activities",
+      "filterLabel": "Filter by action type",
+      "types": {
+        "LOGIN": "Login",
+        "CHANGE_PASSWORD": "Change Password",
+        "RESET_PASSWORD": "Reset Password",
+        "UPDATE_PROFILE": "Update User Info",
+        "DELETE_PROFILE": "Delete Profile",
+        "ENABLE_2FA": "Enable 2FA",
+        "DISABLE_2FA": "Disable 2FA"
+      },
+      "pagination": {
+        "showing": "Showing",
+        "to": "to",
+        "of": "of",
+        "results": "activities",
+        "prev": "Previous",
+        "next": "Next",
+        "page": "Page"
+      }
     },
     "general": {
       "title": "General Settings",

@@ -1,5 +1,6 @@
 import apiClient from "../../utils/axios";
-import type { ApiResponse, PaginatedData } from "./userService";
+import type { ApiResponse } from "../common/apiResponse";
+import type { PaginatedData } from "./userService";
 
 // ── Enums ──
 export const POSITION_OPTIONS = ["FRONTEND", "BACKEND", "TESTER", "DATA_ANALYST"] as const;

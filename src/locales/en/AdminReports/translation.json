@@ -1,6 +1,8 @@
 {
   "title": "Report Management",
   "subtitle": "Review and respond to user reports",
+  "reload": "Reload",
+  "resetFilters": "Reset Filters",
   "filterAll": "All",
   "filterByType": "Report Type",
   "filterByStatus": "Status",

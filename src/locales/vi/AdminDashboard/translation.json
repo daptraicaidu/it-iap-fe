@@ -1,0 +1,75 @@
+{
+  "header": {
+    "title": "Tổng quan hệ thống",
+    "subtitle": "Bảng điều khiển quản trị nền tảng",
+    "dateRange": "Hiển thị dữ liệu: {{range}}",
+    "reload": "Tải lại dữ liệu"
+  },
+  "timeFilter": {
+    "all": "Tất cả",
+    "day": "24 giờ qua",
+    "week": "7 ngày qua",
+    "month": "1 tháng qua"
+  },
+  "stats": {
+    "users": "Người dùng",
+    "interviews": "Lượt phỏng vấn",
+    "aiGrading": "AI chấm điểm",
+    "revenue": "Doanh thu",
+    "new": "+{{count}} mới",
+    "change": "{{value}}% so với kỳ trước"
+  },
+  "trendChart": {
+    "title": "Xu hướng lượt phỏng vấn",
+    "yAxis": "Số lượng",
+    "tooltipLabel": "Lượt phỏng vấn"
+  },
+  "revenueChart": {
+    "title": "Biểu đồ doanh thu",
+    "yAxis": "Doanh thu",
+    "tooltipLabel": "Doanh thu"
+  },
+  "pieChart": {
+    "title": "Phân bổ vị trí phỏng vấn",
+    "total": "Tổng",
+    "level": "Cấp độ",
+    "levelOptions": {
+      "all": "Tất cả",
+      "intern": "Intern",
+      "fresher": "Fresher"
+    },
+    "positions": {
+      "FRONTEND": "Frontend",
+      "BACKEND": "Backend",
+      "TESTER": "Tester",
+      "DATA_ANALYST": "Data Analyst"
+    }
+  },
+  "activity": {
+    "title": "Hoạt động quản trị",
+    "refresh": "Làm mới",
+    "filterLabel": "Loại hành động",
+    "actionTypes": {
+      "all": "Tất cả",
+      "CREATE_MANUAL_QUESTION": "Tạo câu hỏi thủ công",
+      "GENERATE_AI_QUESTIONS": "Tạo câu hỏi bằng AI",
+      "CREATE_PROMPT": "Tạo prompt",
+      "CREATE_PROMPT_VERSION": "Tạo phiên bản prompt",
+      "ACTIVATE_PROMPT_VERSION": "Kích hoạt phiên bản prompt"
+    },
+    "columns": {
+      "id": "#",
+      "actionType": "Loại hành động",
+      "description": "Mô tả",
+      "admin": "Admin",
+      "time": "Thời gian"
+    },
+    "empty": "Chưa có hoạt động nào",
+    "page": "Trang {{current}} / {{total}}",
+    "prev": "Trước",
+    "next": "Sau"
+  },
+  "loading": "Đang tải...",
+  "error": "Không thể tải dữ liệu",
+  "noData": "Chưa có dữ liệu"
+}

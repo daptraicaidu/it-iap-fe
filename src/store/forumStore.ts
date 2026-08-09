@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import type { AxiosError } from "axios";
+import type { ApiResponse } from "../services/common/apiResponse";
 import forumService, {
   type ForumPost,
   type ReactionType,
@@ -25,13 +27,15 @@ interface ForumState {
 
   // Actions
   fetchPosts: () => Promise<void>;
+  refreshPosts: () => Promise<void>;
   loadMore: () => Promise<void>;
   setFilter: (filter: FilterType) => void;
   setVisibleFilter: (visible?: boolean) => void;
   shareStreak: () => Promise<void>;
   shareGrade: (profileId: number) => Promise<void>;
-  reactPost: (postId: number, reactType: ReactionType) => Promise<void>;
+  reactPost: (postId: number, reactType: ReactionType | "") => Promise<void>;
   toggleVisibility: (postId: number) => Promise<void>;
+  deletePost: (postId: number) => Promise<{ success: boolean; message?: string }>;
   fetchLeaderboard: () => Promise<void>;
   reset: () => void;
 }
@@ -59,6 +63,26 @@ const useForumStore = create<ForumState>((set, get) => ({
       const res =
         filter === "all"
           ? await forumService.getPosts(1, seed)
+          : await forumService.getMyPosts(1, visibleFilter);
+      const data = res.data.data;
+      set({
+        posts: data?.posts ?? [],
+        hasNext: data?.hasNext ?? false,
+        isLoading: false,
+      });
+    } catch {
+      set({ isLoading: false });
+    }
+  },
+
+  refreshPosts: async () => {
+    const { filter, visibleFilter } = get();
+    const newSeed = generateSeed();
+    set({ seed: newSeed, currentPage: 1, posts: [], isLoading: true });
+    try {
+      const res =
+        filter === "all"
+          ? await forumService.getPosts(1, newSeed)
           : await forumService.getMyPosts(1, visibleFilter);
       const data = res.data.data;
       set({
@@ -137,7 +161,7 @@ const useForumStore = create<ForumState>((set, get) => ({
 
     const post = posts[postIndex];
     const prevReaction = post.myReaction;
-    const isSameReaction = prevReaction === reactType;
+    const isRemoving = prevReaction === reactType || reactType === "";
 
     // Optimistic update
     const updatedPosts = [...posts];
@@ -152,8 +176,8 @@ const useForumStore = create<ForumState>((set, get) => ({
       updatedPost[prevKey] = Math.max(0, updatedPost[prevKey] - 1);
     }
 
-    if (isSameReaction) {
-      // Toggle off
+    if (isRemoving) {
+      // Toggle off / Cancel
       updatedPost.myReaction = null;
     } else {
       // Add new reaction count
@@ -162,15 +186,17 @@ const useForumStore = create<ForumState>((set, get) => ({
         | "totalHaha"
         | "totalWow";
       updatedPost[newKey] = updatedPost[newKey] + 1;
-      updatedPost.myReaction = reactType;
+      updatedPost.myReaction = reactType as ReactionType;
     }
 
     updatedPosts[postIndex] = updatedPost;
     set({ posts: updatedPosts });
 
-    // Call API
+    // Call API: send "" when removing
     try {
-      await forumService.reactPost(postId, { reactType });
+      await forumService.reactPost(postId, {
+        reactType: isRemoving ? "" : (reactType as ReactionType),
+      });
     } catch {
       // Revert on failure
       updatedPosts[postIndex] = post;
@@ -196,6 +222,30 @@ const useForumStore = create<ForumState>((set, get) => ({
       // Revert on failure
       updatedPosts[postIndex] = post;
       set({ posts: [...updatedPosts] });
+    }
+  },
+
+  deletePost: async (postId) => {
+    try {
+      const res = await forumService.deletePost(postId);
+      if (res.status === 200 || res.data?.code === 200) {
+        set((state) => ({
+          posts: state.posts.filter((p) => p.postId !== postId),
+        }));
+        return { success: true };
+      }
+      return {
+        success: false,
+        message: res.data?.message,
+      };
+    } catch (err: unknown) {
+      const axiosErr = err as AxiosError<ApiResponse>;
+      const message =
+        axiosErr.response?.data?.message ||
+        (axiosErr.response?.status === 403
+          ? "Bạn không có quyền thực hiện hành động này"
+          : undefined);
+      return { success: false, message };
     }
   },
 

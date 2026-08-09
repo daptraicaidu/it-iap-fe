@@ -3,6 +3,7 @@
   "subtitle": "Quản lý ngân hàng câu hỏi phỏng vấn",
   "addQuestion": "Thêm câu hỏi",
   "addQuestionAI": "Thêm câu hỏi AI",
+  "reload": "Làm mới",
   "filter": {
     "content": "Nội dung",
     "contentPlaceholder": "Tìm kiếm theo nội dung...",

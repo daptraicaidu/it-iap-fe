@@ -8,6 +8,7 @@
     "feedbacks": "Góp ý & Đánh giá",
     "notifications": "Thông báo Hệ thống",
     "banners": "Quản lý Banner",
+    "promotions": "Quản lý Khuyến mãi",
     "settings": "Cài đặt Admin"
   },
   "subtitles": {
@@ -19,6 +20,7 @@
     "feedbacks": "Tổng hợp đánh giá trải nghiệm người dùng",
     "notifications": "Gửi và quản lý thông báo toàn hệ thống",
     "banners": "Quản lý banner chào mừng & chữ chạy marquee",
+    "promotions": "Tạo và kiểm soát các mã giảm giá, chương trình ưu đãi",
     "settings": "Cấu hình chung cho trang quản trị"
   },
   "header": {

@@ -559,7 +559,7 @@ const UserInfoPage = () => {
             <button
               onClick={handleAvatarClick}
               disabled={isUploadingAvatar}
-              className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition"
+              className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 transition"
             >
               {isUploadingAvatar ? (
                 <>

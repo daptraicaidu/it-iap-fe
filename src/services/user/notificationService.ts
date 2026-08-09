@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Types ──
 export type NotificationType =
@@ -34,13 +37,6 @@ export interface ReadNotificationRequest {
 export interface ReadNotificationResponse {
   notificationId: number[];
   read: number;
-}
-
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
 }
 
 // ── Notification Service ──

@@ -217,7 +217,8 @@
   "deleteDialog": {
     "title": "Xóa hồ sơ?",
     "description": "Hồ sơ này sẽ bị xóa khỏi danh sách của bạn. Hành động này không thể hoàn tác.",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "confirm": "Xóa hồ sơ"
   },
   "settings": {
     "menu": {
@@ -229,10 +230,31 @@
       "sessions": "Phiên đăng nhập"
     },
     "activities": {
-      "title": "Hoạt động",
-      "description": "Lịch sử các hoạt động, đăng nhập và các sự kiện bảo mật khác sẽ được hiển thị tại đây.",
+      "title": "Nhật ký hoạt động",
+      "description": "Theo dõi lịch sử đăng nhập, thay đổi bảo mật và các thao tác trên hồ sơ tài khoản.",
       "emptyTitle": "Chưa có hoạt động nào",
-      "emptyDescription": "Các hoạt động gần đây của bạn sẽ xuất hiện ở đây."
+      "emptyDescription": "Các hoạt động tương ứng với bộ lọc sẽ xuất hiện tại đây.",
+      "refresh": "Làm mới",
+      "filterAll": "Tất cả hoạt động",
+      "filterLabel": "Lọc theo loại hành động",
+      "types": {
+        "LOGIN": "Đăng nhập",
+        "CHANGE_PASSWORD": "Đổi mật khẩu",
+        "RESET_PASSWORD": "Đặt lại mật khẩu",
+        "UPDATE_PROFILE": "Cập nhật thông tin cá nhân",
+        "DELETE_PROFILE": "Xóa hồ sơ",
+        "ENABLE_2FA": "Bật xác thực 2FA",
+        "DISABLE_2FA": "Tắt xác thực 2FA"
+      },
+      "pagination": {
+        "showing": "Hiển thị",
+        "to": "đến",
+        "of": "trên tổng số",
+        "results": "hoạt động",
+        "prev": "Trước",
+        "next": "Sau",
+        "page": "Trang"
+      }
     },
     "general": {
       "title": "Cài đặt chung",

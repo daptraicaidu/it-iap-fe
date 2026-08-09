@@ -18,6 +18,7 @@
   "filterOnlyMine": "My reviews",
   "filterHasReply": "Has admin reply",
   "filterHasImage": "Has image",
+  "clearFilters": "Clear filters",
   "toggleShowReplies": "Show admin replies",
   "toggleHideReplies": "Hide admin replies",
   "adminReply": "Admin Reply",

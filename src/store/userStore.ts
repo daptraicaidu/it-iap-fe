@@ -4,6 +4,8 @@ export interface UserInfo {
   fullName: string;
   avatarUrl: string | null;
   email?: string;
+  activeTier?: string;
+  subscriptionEndDate?: string | null;
 }
 
 interface UserState {

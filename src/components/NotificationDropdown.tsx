@@ -63,7 +63,7 @@ const getNotificationBadge = (
     case "REPORT":
       return { label: t("type.report"), className: "bg-sky-50 text-sky-700" };
     case "FEEDBACK":
-      return { label: t("type.feedback"), className: "bg-indigo-50 text-indigo-700" };
+      return { label: t("type.feedback"), className: "bg-cyan-50 text-cyan-700" };
     case "STREAK":
       return { label: t("type.streak"), className: "bg-orange-50 text-orange-700" };
     default:
@@ -214,7 +214,7 @@ const NotificationDropdown = () => {
               <button
                 type="button"
                 onClick={handleReadAll}
-                className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-indigo-600 transition hover:bg-indigo-50"
+                className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-emerald-600 transition hover:bg-emerald-50"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
                 {t("readAll")}
@@ -275,7 +275,7 @@ const NotificationDropdown = () => {
             <a
               href="/notifications"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50/50"
+              className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-sky-600 transition hover:bg-sky-50/50"
             >
               {t("showAll")}
               <ExternalLink className="h-3.5 w-3.5" />
@@ -306,7 +306,7 @@ const NotificationItem = ({
   return (
     <div
       className={`flex gap-3 px-4 py-3 transition cursor-pointer hover:bg-zinc-50 ${
-        !notification.read ? "bg-indigo-50/40" : ""
+        !notification.read ? "bg-blue-50/40" : ""
       }`}
       onClick={handleClick}
     >
@@ -347,7 +347,7 @@ const NotificationItem = ({
           <p
             className={`text-[11px] ${
               !notification.read
-                ? "font-medium text-indigo-600"
+                ? "font-medium text-blue-600"
                 : "text-zinc-400"
             }`}
           >
@@ -359,7 +359,7 @@ const NotificationItem = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-0.5 text-[11px] font-medium text-indigo-600 hover:text-indigo-700 hover:underline"
+              className="inline-flex items-center gap-0.5 text-[11px] font-medium text-blue-600 hover:text-blue-700 hover:underline"
             >
               <ExternalLink className="h-3 w-3" />
               {t("viewLink")}
@@ -371,7 +371,7 @@ const NotificationItem = ({
       {/* Unread dot */}
       {!notification.read && (
         <div className="flex items-center">
-          <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />
+          <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
         </div>
       )}
     </div>

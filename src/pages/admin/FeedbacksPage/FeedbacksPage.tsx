@@ -9,6 +9,8 @@ import {
   Trash2,
   Reply,
   X,
+  RefreshCw,
+  RotateCcw,
   Image as ImageIcon,
   Search,
 } from "lucide-react";
@@ -411,6 +413,18 @@ const FeedbacksPage = () => {
     }
   };
 
+  const handleResetFilters = () => {
+    setRatingFilter(undefined);
+    setReplyStatusFilter("");
+    setHasImageFilter(undefined);
+    setCurrentPage(1);
+  };
+
+  const hasActiveFilters =
+    ratingFilter !== undefined ||
+    replyStatusFilter !== "" ||
+    hasImageFilter !== undefined;
+
   return (
     <div className="w-full">
       <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -419,12 +433,25 @@ const FeedbacksPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
-            {t("title")}
-          </h1>
-          <p className="mt-2 text-base text-zinc-600">{t("subtitle")}</p>
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
+              {t("title")}
+            </h1>
+            <p className="mt-2 text-base text-zinc-600">{t("subtitle")}</p>
+          </div>
+          <button
+            onClick={fetchFeedbacks}
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+              strokeWidth={2}
+            />
+            <span>{t("reload")}</span>
+          </button>
         </motion.div>
 
         {/* Stats Overview */}
@@ -514,6 +541,17 @@ const FeedbacksPage = () => {
               <span className="text-xs">({hasImageFilter ? "✓" : "✗"})</span>
             )}
           </button>
+
+          {/* Reset filters */}
+          {hasActiveFilters && (
+            <button
+              onClick={handleResetFilters}
+              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 active:scale-[0.98]"
+            >
+              <RotateCcw className="h-3.5 w-3.5" strokeWidth={2} />
+              <span>{t("resetFilters")}</span>
+            </button>
+          )}
         </motion.div>
 
         {/* Toast */}

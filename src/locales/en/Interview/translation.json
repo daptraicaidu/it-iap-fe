@@ -24,6 +24,19 @@
         "description": "Simulate a real interview environment. Answer questions one by one with time limits. View comprehensive results upon completion.",
         "features": ["Time limited", "Realistic pressure", "Comprehensive final review"]
       }
+    },
+    "quota": {
+      "basic": "You have 5 AI interview sessions today (resets daily at 00:00).",
+      "plus": "Your account is on the {{tier}} tier — 10 AI interview sessions per day.",
+      "pro": "Your account is on the {{tier}} tier — 20 AI interview sessions per day.",
+      "proHintBasic": "Upgrade your plan for up to 20 daily AI interviews and in-depth evaluations.",
+      "proHintPlus": "Upgrade to Pro for 20 daily AI interviews and comprehensive scoring.",
+      "proHintPro": "Enjoy 20 daily AI interview sessions and comprehensive AI feedback.",
+      "viewPlans": "View Plans",
+      "unlimited": "Your account is on the {{tier}} tier — 10 AI interview sessions per day.",
+      "proHint": "Upgrade your plan for more daily interview practice and in-depth AI evaluations.",
+      "upgrade": "Upgrade Now",
+      "viewTiers": "View Plans"
     }
   },
   "prepPage": {

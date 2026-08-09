@@ -356,7 +356,7 @@ const AdminNotificationsPage = () => {
                   {t("listCard.count", { total: totalElements })}
                 </p>
               </div>
-              <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 border border-indigo-100">
+              <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 border border-blue-100">
                 ADMIN
               </span>
             </div>
@@ -418,7 +418,7 @@ const AdminNotificationsPage = () => {
                           href={item.link.startsWith("http") ? item.link : `https://${item.link}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 hover:underline"
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-violet-600 hover:text-violet-800 hover:underline"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                           <span className="truncate max-w-xs">{item.link}</span>

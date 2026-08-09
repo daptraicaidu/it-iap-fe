@@ -112,7 +112,7 @@ const InterviewPrepPage = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100"
           >
-            <Shield className="h-10 w-10 text-indigo-600" />
+            <Shield className="h-10 w-10 text-600" />
           </motion.div>
           <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
             {t("prepPage.title")}

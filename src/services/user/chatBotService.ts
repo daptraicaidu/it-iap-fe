@@ -1,13 +1,9 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Types ──
-
-export interface ApiResponse<T> {
-  code: number;
-  message?: string;
-  data: T;
-  timestamp: string;
-}
 
 export interface ChatSession {
   id: number;

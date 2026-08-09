@@ -2,6 +2,7 @@
   "title": "Quản lý Prompt",
   "subtitle": "Quản lý các prompt AI và phiên bản cấu hình",
   "addPrompt": "Tạo Prompt mới",
+  "reload": "Làm mới",
   "filter": {
     "promptKey": "Prompt Key",
     "promptKeyPlaceholder": "Nhập prompt key...",

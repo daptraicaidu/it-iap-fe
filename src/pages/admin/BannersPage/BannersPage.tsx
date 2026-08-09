@@ -13,6 +13,7 @@ import {
   X,
   Loader2,
   Sparkles,
+  RefreshCw,
   ZoomIn,
 } from "lucide-react";
 import adminBannerService, {
@@ -197,14 +198,28 @@ const BannersPage: React.FC = () => {
           <p className="mt-1 text-sm text-zinc-600">{t("subtitle")}</p>
         </div>
 
-        <button
-          type="button"
-          onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-zinc-800 active:scale-[0.98]"
-        >
-          <Plus className="h-4 w-4" />
-          <span>{t("createButton")}</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => fetchBanners(currentPage)}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              strokeWidth={2}
+            />
+            <span>{t("reload")}</span>
+          </button>
+          <button
+            type="button"
+            onClick={openCreateModal}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-zinc-800 active:scale-[0.98]"
+          >
+            <Plus className="h-4 w-4" />
+            <span>{t("createButton")}</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Table / List Container */}
@@ -226,22 +241,25 @@ const BannersPage: React.FC = () => {
             <table className="w-full text-left text-sm text-zinc-600">
               <thead className="border-b border-zinc-200 bg-zinc-50/70 text-xs uppercase font-semibold text-zinc-700">
                 <tr>
-                  <th scope="col" className="px-6 py-3.5 w-16">
+                  <th scope="col" className="px-4 py-3.5 w-14 text-center">
                     {t("table.id")}
                   </th>
-                  <th scope="col" className="px-6 py-3.5 w-24">
+                  <th scope="col" className="px-4 py-3.5 w-20 text-center">
                     {t("table.image")}
                   </th>
-                  <th scope="col" className="px-6 py-3.5">
+                  <th scope="col" className="px-4 py-3.5 w-48 lg:w-56">
                     {t("table.title")}
                   </th>
-                  <th scope="col" className="px-6 py-3.5 max-w-xs">
+                  <th scope="col" className="px-4 py-3.5 min-w-[220px]">
+                    {t("table.content")}
+                  </th>
+                  <th scope="col" className="px-4 py-3.5 w-48">
                     {t("table.marquee")}
                   </th>
-                  <th scope="col" className="px-6 py-3.5 w-32">
+                  <th scope="col" className="px-4 py-3.5 w-32 text-center">
                     {t("table.status")}
                   </th>
-                  <th scope="col" className="px-6 py-3.5 text-right w-24">
+                  <th scope="col" className="px-4 py-3.5 text-right w-20">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -253,49 +271,53 @@ const BannersPage: React.FC = () => {
                     className="hover:bg-zinc-50/80 transition-colors"
                   >
                     {/* ID */}
-                    <td className="px-6 py-4 font-mono text-xs font-semibold text-zinc-500">
+                    <td className="px-4 py-3.5 text-center font-mono text-xs font-semibold text-zinc-500">
                       #{banner.id}
                     </td>
 
                     {/* Image */}
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-3.5 text-center">
                       {banner.imageUrl ? (
                         <button
                           type="button"
                           onClick={() => setPreviewModalUrl(banner.imageUrl || null)}
-                          className="group relative inline-block overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                          className="group relative inline-block overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-600"
                           title="Click để phóng to ảnh"
                         >
                           <img
                             src={banner.imageUrl}
                             alt={banner.title}
-                            className="h-12 w-16 object-cover transition-transform duration-200 group-hover:scale-105"
+                            className="h-10 w-14 object-cover transition-transform duration-200 group-hover:scale-105"
                           />
                           <div className="absolute inset-0 flex items-center justify-center bg-zinc-900/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <ZoomIn className="h-4 w-4 text-white" />
+                            <ZoomIn className="h-3.5 w-3.5 text-white" />
                           </div>
                         </button>
                       ) : (
-                        <div className="flex h-12 w-16 items-center justify-center rounded-lg border border-dashed border-zinc-200 bg-zinc-50 text-zinc-400">
-                          <ImageIcon className="h-5 w-5" />
+                        <div className="flex h-10 w-14 mx-auto items-center justify-center rounded-lg border border-dashed border-zinc-200 bg-zinc-50 text-zinc-400">
+                          <ImageIcon className="h-4 w-4" />
                         </div>
                       )}
                     </td>
 
-                    {/* Title & Content summary */}
-                    <td className="px-6 py-4">
-                      <div className="font-semibold text-zinc-900 line-clamp-1">
+                    {/* Title */}
+                    <td className="px-4 py-3.5">
+                      <div className="font-semibold text-zinc-900 line-clamp-2 text-sm leading-snug">
                         {banner.title}
                       </div>
-                      <div className="text-xs text-zinc-500 line-clamp-2 mt-0.5 max-w-sm">
+                    </td>
+
+                    {/* Content */}
+                    <td className="px-4 py-3.5">
+                      <div className="text-xs text-zinc-600 line-clamp-2 leading-relaxed">
                         {banner.content}
                       </div>
                     </td>
 
                     {/* Marquee */}
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-3.5">
                       {banner.marquee ? (
-                        <span className="inline-block max-w-xs truncate rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700">
+                        <span className="inline-block max-w-[180px] truncate rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700">
                           {banner.marquee}
                         </span>
                       ) : (
@@ -306,7 +328,7 @@ const BannersPage: React.FC = () => {
                     </td>
 
                     {/* Status Toggle Switch */}
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-3.5 text-center">
                       <button
                         type="button"
                         onClick={() => handleToggleStatus(banner)}
@@ -317,7 +339,7 @@ const BannersPage: React.FC = () => {
                         }`}
                       >
                         <span
-                          className={`h-2 w-2 rounded-full ${
+                          className={`h-1.5 w-1.5 rounded-full ${
                             banner.isActive ? "bg-emerald-500" : "bg-zinc-400"
                           }`}
                         />
@@ -330,14 +352,14 @@ const BannersPage: React.FC = () => {
                     </td>
 
                     {/* Actions */}
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-4 py-3.5 text-right">
                       <button
                         type="button"
                         onClick={() => openEditModal(banner)}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors shadow-xs"
                         title="Chỉnh sửa Banner"
                       >
-                        <Edit2 className="h-4 w-4" />
+                        <Edit2 className="h-3.5 w-3.5" />
                       </button>
                     </td>
                   </tr>
@@ -389,7 +411,7 @@ const BannersPage: React.FC = () => {
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 bg-zinc-50/80">
               <h3 className="text-base font-bold text-zinc-900 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-indigo-600" />
+                <Sparkles className="h-4 w-4 text-600" />
                 <span>
                   {editingBanner
                     ? t("modal.editTitle")
@@ -424,7 +446,7 @@ const BannersPage: React.FC = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={t("modal.fields.titlePlaceholder")}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-slate-600 focus:outline-none focus:ring-1 focus:ring-slate-600"
                 />
               </div>
 
@@ -439,7 +461,7 @@ const BannersPage: React.FC = () => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder={t("modal.fields.contentPlaceholder")}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-slate-600 focus:outline-none focus:ring-1 focus:ring-slate-600"
                 />
               </div>
 
@@ -453,7 +475,7 @@ const BannersPage: React.FC = () => {
                   value={marquee}
                   onChange={(e) => setMarquee(e.target.value)}
                   placeholder={t("modal.fields.marqueePlaceholder")}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-slate-600 focus:outline-none focus:ring-1 focus:ring-slate-600"
                 />
               </div>
 
@@ -492,7 +514,7 @@ const BannersPage: React.FC = () => {
                 ) : (
                   <label
                     htmlFor="banner-image-upload"
-                    className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-200 p-6 text-center cursor-pointer hover:border-indigo-600 hover:bg-indigo-50/40 transition-colors"
+                    className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-200 p-6 text-center cursor-pointer hover:border-slate-600 hover:bg-slate-50/40 transition-colors"
                   >
                     <Upload className="h-8 w-8 text-zinc-400 mb-2" />
                     <span className="text-xs font-semibold text-zinc-700">
@@ -524,7 +546,7 @@ const BannersPage: React.FC = () => {
                   type="button"
                   onClick={() => setIsActive(!isActive)}
                   className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                    isActive ? "bg-indigo-600" : "bg-zinc-300"
+                    isActive ? "bg-green-600" : "bg-zinc-300"
                   }`}
                 >
                   <span

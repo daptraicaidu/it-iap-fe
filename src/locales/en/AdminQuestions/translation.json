@@ -3,6 +3,7 @@
   "subtitle": "Manage the interview question bank",
   "addQuestion": "Add Question",
   "addQuestionAI": "AI Generate",
+  "reload": "Reload",
   "filter": {
     "content": "Content",
     "contentPlaceholder": "Search by content...",
