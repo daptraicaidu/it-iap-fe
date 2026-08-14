@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   History,
   RefreshCw,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   XCircle,
@@ -88,10 +87,26 @@ const OrdersPage: React.FC = () => {
   const [copiedCode, setCopiedCode] = useState<number | null>(null);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
 
-  // Check URL params from PayOS return
+  // Check URL params from PayOS return (0đ active & external payment)
   const searchParams = new URLSearchParams(location.search);
   const statusParam = searchParams.get("status");
-  const orderCodeParam = searchParams.get("code");
+  const cancelParam = searchParams.get("cancel");
+  const codeParam = searchParams.get("code");
+  const orderCodeParam = searchParams.get("orderCode");
+
+  const isPaymentSuccess =
+    statusParam === "success" ||
+    statusParam === "PAID" ||
+    (codeParam === "00" && cancelParam === "false");
+
+  const isPaymentCancelled =
+    statusParam === "cancelled" ||
+    statusParam === "CANCELLED" ||
+    cancelParam === "true";
+
+  const displayOrderCode =
+    orderCodeParam ||
+    (codeParam && codeParam !== "00" ? codeParam : null);
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -136,7 +151,7 @@ const OrdersPage: React.FC = () => {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-6 animate-in fade-in duration-300">
       {/* PayOS Return Alerts */}
-      {statusParam === "success" && (
+      {isPaymentSuccess && (
         <div className="flex items-start justify-between rounded-2xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5 text-emerald-900 shadow-xs">
           <div className="flex items-start gap-3.5">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
@@ -148,9 +163,9 @@ const OrdersPage: React.FC = () => {
               </h3>
               <p className="text-xs sm:text-sm text-emerald-800 mt-0.5 leading-relaxed">
                 {t("orders.alerts.paymentSuccessDesc")}
-                {orderCodeParam && (
+                {displayOrderCode && (
                   <span className="font-semibold ml-1">
-                    (Mã đơn: #{orderCodeParam})
+                    (Mã đơn: #{displayOrderCode})
                   </span>
                 )}
               </p>
@@ -166,7 +181,7 @@ const OrdersPage: React.FC = () => {
         </div>
       )}
 
-      {statusParam === "cancelled" && (
+      {isPaymentCancelled && (
         <div className="flex items-start justify-between rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-5 text-amber-900 shadow-xs">
           <div className="flex items-start gap-3.5">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
@@ -224,7 +239,6 @@ const OrdersPage: React.FC = () => {
             onClick={() => setIsUpgradeModalOpen(true)}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-zinc-800 active:scale-95 cursor-pointer whitespace-nowrap"
           >
-            <Sparkles className="h-4 w-4 text-amber-400" />
             <span>{getUpgradeButtonText()}</span>
           </button>
         </div>
@@ -259,7 +273,6 @@ const OrdersPage: React.FC = () => {
               onClick={() => setIsUpgradeModalOpen(true)}
               className="mt-5 inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 transition-all shadow-sm active:scale-95 cursor-pointer"
             >
-              <Sparkles className="h-4 w-4 text-amber-400" />
               <span>{getUpgradeButtonText()}</span>
             </button>
           </div>

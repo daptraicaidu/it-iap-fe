@@ -81,11 +81,71 @@ const normalizeProfile = (profile: ProfileDetail): ProfilePayload => ({
 
 const toLines = (values: string[]) => values.join("\n");
 
-const fromLines = (value: string) =>
-  value
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
+const fromLines = (value: string) => value.split("\n");
+
+const cleanResumeData = (data: ResumeData): ResumeData => ({
+  skills: data.skills
+    .map((s) => ({
+      ...s,
+      name: s.name.trim(),
+    }))
+    .filter((s) => s.name.length > 0),
+  experiences: data.experiences
+    .map((exp) => ({
+      ...exp,
+      position: exp.position.trim(),
+      descriptions: exp.descriptions
+        .map((d) => d.trim())
+        .filter(Boolean),
+    }))
+    .filter((exp) => exp.position.length > 0 || exp.descriptions.length > 0),
+  projects: data.projects
+    .map((proj) => ({
+      ...proj,
+      name: proj.name.trim(),
+      role: proj.role.trim(),
+      technologies: proj.technologies
+        .map((t) => t.trim())
+        .filter(Boolean),
+      descriptions: proj.descriptions
+        .map((d) => d.trim())
+        .filter(Boolean),
+    }))
+    .filter(
+      (proj) =>
+        proj.name.length > 0 ||
+        proj.role.length > 0 ||
+        proj.technologies.length > 0 ||
+        proj.descriptions.length > 0
+    ),
+});
+
+const getErrorMessage = (err: unknown, defaultMessage: string): string => {
+  if (axios.isAxiosError(err)) {
+    const resData = err.response?.data;
+    if (resData) {
+      if (resData.data && typeof resData.data === "object") {
+        const errorValues = Object.values(resData.data).filter(
+          (val) => typeof val === "string" && val.trim() !== ""
+        );
+        if (errorValues.length > 0) {
+          return errorValues.join(", ");
+        }
+      }
+      if (typeof resData.data === "string" && resData.data.trim()) {
+        return resData.data;
+      }
+      if (typeof resData.message === "string" && resData.message.trim()) {
+        return resData.message;
+      }
+    }
+    return err.message || defaultMessage;
+  }
+  if (err instanceof Error) {
+    return err.message;
+  }
+  return defaultMessage;
+};
 
 const ProfilesPage = () => {
   const { t } = useTranslation("Profile");
@@ -120,11 +180,7 @@ const ProfilesPage = () => {
       setSelectedProfileId(profileId);
       setIsCreating(false);
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || t("messages.loadDetailError"));
-      } else {
-        setError(t("messages.loadDetailError"));
-      }
+      setError(getErrorMessage(err, t("messages.loadDetailError")));
       // Keep previous selectedProfileId and form intact on failure
     } finally {
       setIsLoadingDetail(false);
@@ -149,11 +205,7 @@ const ProfilesPage = () => {
         setForm(createEmptyPayload());
       }
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || t("messages.loadListError"));
-      } else {
-        setError(t("messages.loadListError"));
-      }
+      setError(getErrorMessage(err, t("messages.loadListError")));
     } finally {
       setIsLoadingList(false);
     }
@@ -180,7 +232,7 @@ const ProfilesPage = () => {
       title: form.title,
       targetPosition: form.targetPosition,
       targetLevel: form.targetLevel,
-      resumeData: form.resumeData,
+      resumeData: cleanResumeData(form.resumeData),
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json",
@@ -268,6 +320,7 @@ const ProfilesPage = () => {
         title: form.title.trim(),
         targetPosition: form.targetPosition.trim(),
         targetLevel: form.targetLevel.trim(),
+        resumeData: cleanResumeData(form.resumeData),
       };
 
       const response =
@@ -282,11 +335,7 @@ const ProfilesPage = () => {
       await loadProfiles(savedProfile.id);
       setMessage(t("messages.saveSuccess"));
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || t("messages.saveError"));
-      } else {
-        setError(t("messages.saveError"));
-      }
+      setError(getErrorMessage(err, t("messages.saveError")));
     } finally {
       setIsSaving(false);
     }
@@ -317,11 +366,7 @@ const ProfilesPage = () => {
       await loadProfiles();
       setMessage(t("messages.deleteSuccess"));
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || t("messages.deleteError"));
-      } else {
-        setError(t("messages.deleteError"));
-      }
+      setError(getErrorMessage(err, t("messages.deleteError")));
     } finally {
       setIsDeleting(false);
     }

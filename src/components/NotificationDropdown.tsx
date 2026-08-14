@@ -214,7 +214,7 @@ const NotificationDropdown = () => {
               <button
                 type="button"
                 onClick={handleReadAll}
-                className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-emerald-600 transition hover:bg-emerald-50"
+                className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-blue-600 transition hover:bg-blue-50"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
                 {t("readAll")}

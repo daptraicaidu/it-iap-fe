@@ -13,11 +13,11 @@ import {
   Loader2,
   AlertCircle,
   Crown,
-  Sparkles,
   CheckCircle2,
   ExternalLink,
   Share2,
   X,
+  ArrowUp,
 } from "lucide-react";
 import axios from "axios";
 import profileService, {
@@ -882,7 +882,7 @@ const DashboardPage = () => {
             onClick={() => setIsUpgradeModalOpen(true)}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-zinc-800 active:scale-95 cursor-pointer whitespace-nowrap"
           >
-            <Sparkles className="h-4 w-4 text-amber-400" />
+            <ArrowUp className="h-4 w-4 text-amber-400" />
             <span>
               {(() => {
                 const tier = (userInfo?.activeTier || "BASIC").toUpperCase();
@@ -1190,8 +1190,8 @@ const DashboardPage = () => {
 
           {/* Card C: View result */}
           <div className="flex flex-col items-center justify-center rounded-xl border border-zinc-200 bg-white p-8 text-center">
-            <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-stone-50">
-              <Eye className="h-10 w-10 text-neutral-600" />
+            <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50">
+              <Eye className="h-10 w-10 text-blue-600" />
             </div>
             <h2 className="mb-2 text-base font-semibold text-zinc-900">
               {t("review.title")}

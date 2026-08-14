@@ -12,6 +12,11 @@
     "selectMode": "Choose Interview Mode",
     "createButton": "Create Interview",
     "creating": "Creating...",
+    "errors": {
+      "titleRequired": "Please enter the interview name",
+      "modeRequired": "Please select an interview mode",
+      "profileRequired": "Please select a profile"
+    },
     "modes": {
       "interactive": {
         "title": "Interactive Interview",

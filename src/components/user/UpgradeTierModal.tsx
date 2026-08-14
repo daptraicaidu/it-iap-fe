@@ -102,32 +102,104 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
     return originalPrice;
   };
 
-  const getTierBenefits = (tierCode: string) => {
+  const getTierBenefits = (tierCode: string): React.ReactNode[] => {
     const code = tierCode.toUpperCase();
     const isEn = i18n.language?.startsWith("en");
 
     if (code.includes("PRO")) {
       return [
-        isEn ? "Up to 12 interview profiles" : "Tối đa 12 hồ sơ phỏng vấn",
-        isEn ? "20 AI interviews per day" : "20 lượt phỏng vấn AI mỗi ngày",
-        isEn ? "Chatbot context window: 48,000 tokens" : "Ngữ cảnh hội thoại Chatbot: 48,000 tokens",
+        isEn ? (
+          <>
+            Up to <strong className="font-semibold text-zinc-900">12</strong> interview profiles
+          </>
+        ) : (
+          <>
+            Tối đa <strong className="font-semibold text-zinc-900">12</strong> hồ sơ phỏng vấn
+          </>
+        ),
+        isEn ? (
+          <>
+            <strong className="font-semibold text-zinc-900">20</strong> AI interviews per day
+          </>
+        ) : (
+          <>
+            <strong className="font-semibold text-zinc-900">20</strong> lượt phỏng vấn AI mỗi ngày
+          </>
+        ),
+        isEn ? (
+          <>
+            Chatbot context window: <strong className="font-semibold text-zinc-900">48,000</strong> tokens
+          </>
+        ) : (
+          <>
+            Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">48,000</strong> tokens
+          </>
+        ),
         isEn ? "Comprehensive 5-skill scoring & deep feedback" : "Chấm điểm & phân tích chuyên sâu 5 kỹ năng",
         isEn ? "Priority AI queue processing" : "Ưu tiên xử lý trên hạ tầng AI siêu tốc",
       ];
     }
     if (code.includes("PLUS")) {
       return [
-        isEn ? "Up to 6 interview profiles" : "Tối đa 6 hồ sơ phỏng vấn",
-        isEn ? "10 AI interviews per day" : "10 lượt phỏng vấn AI mỗi ngày",
-        isEn ? "Chatbot context window: 32,000 tokens" : "Ngữ cảnh hội thoại Chatbot: 32,000 tokens",
+        isEn ? (
+          <>
+            Up to <strong className="font-semibold text-zinc-900">6</strong> interview profiles
+          </>
+        ) : (
+          <>
+            Tối đa <strong className="font-semibold text-zinc-900">6</strong> hồ sơ phỏng vấn
+          </>
+        ),
+        isEn ? (
+          <>
+            <strong className="font-semibold text-zinc-900">10</strong> AI interviews per day
+          </>
+        ) : (
+          <>
+            <strong className="font-semibold text-zinc-900">10</strong> lượt phỏng vấn AI mỗi ngày
+          </>
+        ),
+        isEn ? (
+          <>
+            Chatbot context window: <strong className="font-semibold text-zinc-900">32,000</strong> tokens
+          </>
+        ) : (
+          <>
+            Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">32,000</strong> tokens
+          </>
+        ),
         isEn ? "Detailed skill score & improvement suggestions" : "Chấm điểm chi tiết & gợi ý cải thiện",
         isEn ? "Full interview transcript storage" : "Lưu trữ toàn bộ lịch sử phỏng vấn",
       ];
     }
     return [
-      isEn ? "Up to 3 interview profiles" : "Tối đa 3 hồ sơ phỏng vấn",
-      isEn ? "5 AI interviews per day" : "5 lượt phỏng vấn AI mỗi ngày",
-      isEn ? "Chatbot context window: 16,000 tokens" : "Ngữ cảnh hội thoại Chatbot: 16,000 tokens",
+      isEn ? (
+        <>
+          Up to <strong className="font-semibold text-zinc-900">3</strong> interview profiles
+        </>
+      ) : (
+        <>
+          Tối đa <strong className="font-semibold text-zinc-900">3</strong> hồ sơ phỏng vấn
+        </>
+      ),
+      isEn ? (
+        <>
+          <strong className="font-semibold text-zinc-900">5</strong> AI interviews per day
+        </>
+      ) : (
+        <>
+          <strong className="font-semibold text-zinc-900">5</strong> lượt phỏng vấn AI mỗi ngày
+        </>
+      ),
+      isEn ? (
+        <>
+          Chatbot context window: <strong className="font-semibold text-zinc-900">16,000</strong> tokens
+        </>
+      ) : (
+        <>
+          Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">16,000</strong> tokens
+        </>
+      ),
       isEn ? "Standard competency benchmark review" : "Đánh giá theo khung năng lực cơ bản",
       isEn ? "Daily quota resets at 00:00" : "Làm mới lượt phỏng vấn vào 00:00 mỗi ngày",
     ];
@@ -262,7 +334,7 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
                         <p className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                           {t("subscription.features.title")}
                         </p>
-                        <ul className="space-y-3 text-xs sm:text-sm text-zinc-700">
+                        <ul className="space-y-3 text-xs sm:text-sm text-zinc-600">
                           {benefits.map((feat, idx) => (
                             <li key={idx} className="flex items-start gap-2.5">
                               <div
@@ -278,7 +350,7 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
                               >
                                 <Check className="h-3 w-3 stroke-[3]" />
                               </div>
-                              <span className="leading-snug font-medium">
+                              <span className="leading-snug font-normal text-zinc-600">
                                 {feat}
                               </span>
                             </li>
