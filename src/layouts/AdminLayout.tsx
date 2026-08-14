@@ -142,7 +142,7 @@ const AdminLayout = () => {
     <div className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900">
       <div className="flex flex-1 min-h-0">
         {/* Desktop Sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-zinc-200 bg-white px-4 py-5 md:flex md:flex-col">
+        <aside className="hidden w-64 shrink-0 border-r border-zinc-200 bg-white px-4 py-5 md:sticky md:top-0 md:flex md:h-screen md:flex-col">
           {/* Logo Brand Header */}
           <div className="mb-6 flex items-center justify-between px-2">
             <NavLink to="/" className="flex items-center gap-2">
@@ -151,7 +151,7 @@ const AdminLayout = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-1 flex-col gap-1">
+          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto pr-1">
             {sidebarItems.map((item) => {
               const Icon = item.icon;
 
@@ -176,14 +176,14 @@ const AdminLayout = () => {
           </nav>
 
           {/* Bottom Actions: User Platform & Logout */}
-          <div className="mt-6 flex flex-col gap-2 pt-4 border-t border-zinc-200">
+          <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-zinc-200">
             <button
               type="button"
               onClick={handleSwitchToUserWorkspace}
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-[0.98]"
               title={t("sidebar.userPlatform")}
             >
-              <Compass className="h-4 w-4 text-600" strokeWidth={1.8} />
+              <Compass className="h-4 w-4 text-blue-600" strokeWidth={1.8} />
               <span className="flex-1 text-left">{t("sidebar.userPlatform")}</span>
             </button>
 
@@ -254,7 +254,7 @@ const AdminLayout = () => {
               onClick={handleSwitchToUserWorkspace}
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100"
             >
-              <Compass className="h-4 w-4 text-600" strokeWidth={1.8} />
+              <Compass className="h-4 w-4 text-blue-600" strokeWidth={1.8} />
               <span>{t("sidebar.userPlatform")}</span>
             </button>
 
@@ -337,7 +337,7 @@ const AdminLayout = () => {
                       }}
                       className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
                     >
-                      <Compass className="h-4 w-4 text-600" />
+                      <Compass className="h-4 w-4 text-blue-600" />
                       <div>
                         <p className="font-medium">{t("userMenu.switchToUser")}</p>
                         <p className="text-[10px] text-zinc-500">{t("userMenu.switchToUserDesc")}</p>

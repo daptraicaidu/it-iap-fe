@@ -24,6 +24,51 @@ const StreakInfoModal: React.FC<StreakInfoModalProps> = ({
       className="absolute right-0 top-full mt-2.5 z-40 w-[320px] sm:w-[360px] rounded-2xl border border-zinc-200 bg-[#fff9f0] p-5 sm:p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-150 text-left"
       onClick={(e) => e.stopPropagation()}
     >
+      <style>{`
+        @keyframes flameFlicker {
+          0%, 100% {
+            transform: scale(1) rotate(-1.5deg);
+            filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.5)) drop-shadow(0 0 10px rgba(234, 88, 12, 0.3));
+          }
+          20% {
+            transform: scale(1.06, 1.14) rotate(1.5deg) translateY(-1.5px);
+            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.85)) drop-shadow(0 0 14px rgba(234, 88, 12, 0.5));
+          }
+          40% {
+            transform: scale(0.96, 0.98) rotate(-1deg);
+            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.6)) drop-shadow(0 0 8px rgba(234, 88, 12, 0.3));
+          }
+          60% {
+            transform: scale(1.08, 1.18) rotate(2deg) translateY(-2px);
+            filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.75)) drop-shadow(0 0 16px rgba(249, 115, 22, 0.6));
+          }
+          80% {
+            transform: scale(0.98, 1.04) rotate(-0.5deg);
+            filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.5)) drop-shadow(0 0 11px rgba(234, 88, 12, 0.4));
+          }
+        }
+        @keyframes sparkRise1 {
+          0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+          40% { opacity: 0.9; }
+          100% { transform: translate(-8px, -24px) scale(1.1); opacity: 0; }
+        }
+        @keyframes sparkRise2 {
+          0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translate(7px, -28px) scale(1.2); opacity: 0; }
+        }
+        .animate-flame-flicker {
+          animation: flameFlicker 1.4s ease-in-out infinite;
+          transform-origin: 50% 90%;
+        }
+        .animate-spark-1 {
+          animation: sparkRise1 1.8s ease-out infinite;
+        }
+        .animate-spark-2 {
+          animation: sparkRise2 2.2s ease-out 0.6s infinite;
+        }
+      `}</style>
+
       {/* Close Button */}
       <button
         type="button"
@@ -36,10 +81,14 @@ const StreakInfoModal: React.FC<StreakInfoModalProps> = ({
 
       {/* Top Big Streak Flame Icon */}
       <div className="text-center pt-1">
-        <div className="relative mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 border border-orange-200/80 shadow-md shadow-orange-500/10">
-          <Flame className="h-8 w-8 text-orange-500 fill-orange-400/20 animate-pulse" />
+        <div className="relative mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 border border-orange-200/80 shadow-md shadow-orange-500/15 overflow-visible">
+          {/* Flame Spark Particles */}
+          <span className="animate-spark-1 pointer-events-none absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 top-3 left-3" />
+          <span className="animate-spark-2 pointer-events-none absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-orange-400 to-rose-500 top-2 right-3" />
+
+          <Flame className="animate-flame-flicker h-9 w-9 text-orange-500 fill-orange-500/40" />
           <div className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-white shadow-xs">
-            <Flame className="h-3 w-3" />
+            <Flame className="h-3 w-3 fill-current" />
           </div>
         </div>
 

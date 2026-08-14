@@ -12,6 +12,11 @@
     "selectMode": "Chọn chế độ phỏng vấn",
     "createButton": "Tạo phỏng vấn",
     "creating": "Đang tạo...",
+    "errors": {
+      "titleRequired": "Vui lòng nhập tên buổi phỏng vấn",
+      "modeRequired": "Vui lòng chọn chế độ phỏng vấn",
+      "profileRequired": "Vui lòng chọn hồ sơ"
+    },
     "modes": {
       "interactive": {
         "title": "Phỏng vấn tương tác",

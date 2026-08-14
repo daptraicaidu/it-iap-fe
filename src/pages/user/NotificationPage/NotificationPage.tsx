@@ -181,7 +181,7 @@ const NotificationPage = () => {
             onClick={handleReadAll}
             className="flex items-center gap-2 self-start rounded-full bg-white px-4 py-2 text-sm font-medium text-zinc-900 border border-zinc-200 transition hover:bg-zinc-50 sm:self-auto"
           >
-            <CheckCheck className="h-4 w-4 text-emerald-600" />
+            <CheckCheck className="h-4 w-4 text-blue-600" />
             {t("readAll")}
           </button>
         )}

@@ -308,9 +308,9 @@ const ActivitiesPage: React.FC = () => {
                         >
                           {badge.label}
                         </span>
-                        <span className="font-mono text-[11px] text-zinc-400">
+                        {/* <span className="font-mono text-[11px] text-zinc-400">
                           #{item.id}
-                        </span>
+                        </span> */}
                       </div>
 
                       <p className="text-sm font-medium text-zinc-900 leading-snug">

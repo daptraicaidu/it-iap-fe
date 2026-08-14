@@ -67,9 +67,12 @@ const InterviewsPage = () => {
   const handleCreate = async () => {
     // Validate
     const newErrors: Record<string, string> = {};
-    if (!title.trim()) newErrors.title = "Vui lòng nhập tên buổi phỏng vấn";
-    if (!selectedMode) newErrors.mode = "Vui lòng chọn chế độ phỏng vấn";
-    if (!selectedProfileId) newErrors.profile = "Vui lòng chọn hồ sơ";
+    if (!title.trim())
+      newErrors.title = t("createPage.errors.titleRequired");
+    if (!selectedMode)
+      newErrors.mode = t("createPage.errors.modeRequired");
+    if (!selectedProfileId)
+      newErrors.profile = t("createPage.errors.profileRequired");
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -269,42 +272,47 @@ const InterviewsPage = () => {
                     className={`absolute inset-0 bg-gradient-to-br ${mode.gradient} opacity-0 transition-opacity duration-300 ${isSelected ? "opacity-100" : "group-hover:opacity-50"}`}
                   />
 
-                  {/* Recommended ribbon for interactive mode */}
-                  {mode.value === "INTERACTIVE_INTERVIEW" && (
-                    <div className="absolute -left-8 top-5 z-10 -rotate-45 bg-indigo-600 px-8 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
-                      {t("createPage.modes.interactive.recommended")}
-                    </div>
-                  )}
                   <div className="relative">
-                    {/* Selected Check */}
-                    <AnimatePresence>
-                      {isSelected && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          exit={{ scale: 0 }}
-                          className={`absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full ${mode.value === "INTERACTIVE_INTERVIEW"
-                              ? "bg-indigo-600"
-                              : "bg-amber-600"
-                            }`}
-                        >
-                          <Check className="h-3.5 w-3.5 text-white" />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    {/* Header Row: Icon & Recommended Badge & Selected Check */}
+                    <div className="mb-4 flex items-center justify-between">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-xl ${isSelected
+                            ? mode.value === "INTERACTIVE_INTERVIEW"
+                              ? "bg-indigo-100"
+                              : "bg-amber-100"
+                            : "bg-zinc-100"
+                          } transition-colors duration-300`}
+                      >
+                        <Icon
+                          className={`h-6 w-6 ${isSelected ? mode.iconColor : "text-zinc-500"} transition-colors duration-300`}
+                        />
+                      </div>
 
-                    {/* Icon */}
-                    <div
-                      className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${isSelected
-                          ? mode.value === "INTERACTIVE_INTERVIEW"
-                            ? "bg-indigo-100"
-                            : "bg-amber-100"
-                          : "bg-zinc-100"
-                        } transition-colors duration-300`}
-                    >
-                      <Icon
-                        className={`h-6 w-6 ${isSelected ? mode.iconColor : "text-zinc-500"} transition-colors duration-300`}
-                      />
+                      <div className="flex items-center gap-2">
+                        {mode.value === "INTERACTIVE_INTERVIEW" && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 border border-indigo-200/90 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 shadow-xs">
+                            {/* <Sparkles className="h-3 w-3 text-indigo-600" /> */}
+                            <span>{t("createPage.modes.interactive.recommended")}</span>
+                          </span>
+                        )}
+
+                        {/* Selected Check */}
+                        <AnimatePresence>
+                          {isSelected && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              exit={{ scale: 0 }}
+                              className={`flex h-6 w-6 items-center justify-center rounded-full ${mode.value === "INTERACTIVE_INTERVIEW"
+                                  ? "bg-indigo-600"
+                                  : "bg-amber-600"
+                                }`}
+                            >
+                              <Check className="h-3.5 w-3.5 text-white" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     </div>
 
                     {/* Content */}
