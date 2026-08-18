@@ -186,9 +186,9 @@ const AdminReportsPage = () => {
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50">
+            {/* <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50">
               <Flag className="h-4.5 w-4.5 text-amber-600" />
-            </div>
+            </div> */}
             <div>
               <h1 className="text-xl font-semibold text-zinc-900">{t("title")}</h1>
               <p className="text-sm text-zinc-500">{t("subtitle")}</p>
@@ -275,7 +275,7 @@ const AdminReportsPage = () => {
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            <Loader2 className="h-10 w-10 text-indigo-500" />
+            <Loader2 className="h-10 w-10 text-blue-500" />
           </motion.div>
         </div>
       ) : error ? (
@@ -475,7 +475,7 @@ const AdminReportsPage = () => {
                     href={`/interviews/${selectedReport.interviewId}/result?highlightQuestionId=${selectedReport.interviewQuestionId}&viewMode=admin`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-700 transition hover:bg-indigo-100"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:bg-blue-100"
                   >
                     <Eye className="h-3.5 w-3.5" />
                     {t("detailModal.viewInterviewContext", { defaultValue: "Xem chi tiết ngữ cảnh" })}

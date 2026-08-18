@@ -158,7 +158,7 @@ const ReportsSection = () => {
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            <Loader2 className="h-10 w-10 text-indigo-500" />
+            <Loader2 className="h-10 w-10 text-blue-500" />
           </motion.div>
         </div>
       ) : error ? (

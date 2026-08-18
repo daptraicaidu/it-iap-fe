@@ -1,0 +1,181 @@
+{
+  "nav": {
+    "brand": "Interview AI Practice",
+    "home": "Home",
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "login": "Log In",
+    "register": "Sign Up",
+    "dashboard": "Go to Dashboard"
+  },
+  "loading": "Loading pricing plans...",
+  "hero": {
+    "badge": "Transparent & Flexible Pricing",
+    "title": "Smart Investment in Your Tech Career",
+    "subtitle": "Choose the optimal plan to sharpen your interview skills with deep AI. Upgrade, downgrade, or switch billing cycles anytime.",
+    "monthly": "Monthly Billing",
+    "yearly": "Yearly Billing",
+    "yearlyBadge": "Save 20%"
+  },
+  "tiers": {
+    "benefitLabel": "Included benefits:",
+    "vipBenefitLabel": "Exclusive VIP benefits:",
+    "basic": {
+      "name": "Basic Plan",
+      "tagline": "Free platform exploration",
+      "price": "Free",
+      "period": "forever",
+      "coreNote": "Full access to core features",
+      "cta": "Get Started Free",
+      "features": [
+        "Up to 3 interview CV profiles",
+        "5 AI interview sessions per day",
+        "Chatbot context window: 16,000 tokens",
+        "5-axis Radar competency chart review",
+        "Full interview transcript & question storage",
+        "Anti-Cheat monitoring & Interactive Follow-up mode"
+      ]
+    },
+    "plus": {
+      "name": "Plus Plan",
+      "badge": "Active Job Hunter",
+      "tagline": "For candidates actively preparing for job hunts",
+      "periodMonth": "month",
+      "periodYear": "year",
+      "discountLabel": "(Special discount applied)",
+      "yearlyNote": "Save more with annual billing",
+      "monthlyNote": "Auto-renews monthly",
+      "cta": "Choose Plus",
+      "features": [
+        "Up to 6 interview CV profiles",
+        "10 AI interview sessions per day",
+        "Chatbot context window: 32,000 tokens",
+        "Detailed 5-axis Radar scoring & improvement insights",
+        "Full interview transcript & question storage",
+        "Interactive Follow-up & High-pressure lead modes"
+      ]
+    },
+    "pro": {
+      "name": "Pro Plan",
+      "badge": "VIP Professional",
+      "popularBadge": "Most Popular Choice",
+      "tagline": "For IT engineers targeting top compensation packages",
+      "periodMonth": "month",
+      "periodYear": "year",
+      "discountLabel": "(Special discount applied)",
+      "yearlyNote": "Save up to 20% on annual billing",
+      "monthlyNote": "Unlock full ultra-fast AI infrastructure",
+      "cta": "Upgrade to Pro",
+      "features": [
+        "Up to 12 interview CV profiles",
+        "20 AI interview sessions per day",
+        "Chatbot context window: 48,000 tokens",
+        "Comprehensive 5-skill scoring & deep feedback (Radar Chart)",
+        "Priority AI queue processing with ultra-low latency",
+        "Detailed strengths/weaknesses gap report & review roadmap",
+        "Anti-Cheat monitoring & integrity analysis"
+      ]
+    }
+  },
+  "comparison": {
+    "badge": "Feature Comparison",
+    "title": "Find the Plan That Best Fits Your Goals",
+    "subtitle": "Every capability is engineered to reflect authentic, rigorous tech company interview environments.",
+    "sessionsPerDay": "sessions/day",
+    "columns": {
+      "feature": "Features & Benefits",
+      "basic": "Basic (Free)",
+      "plus": "Plus",
+      "pro": "Pro"
+    },
+    "categories": {
+      "interviews": "AI Interview Practice",
+      "analysis": "Scoring & Competency Reports",
+      "chatbot": "Virtual Assistant & Context",
+      "support": "Infrastructure & Support"
+    },
+    "items": {
+      "profiles": "Interview CV profiles limit",
+      "dailyQuota": "AI interview sessions per day",
+      "interactiveMode": "Interactive follow-up mode",
+      "pressureMode": "High-pressure lead interviewer mode",
+      "voiceAI": "Natural AI Voice speech synthesis",
+      "radarScoring": "5-axis Radar competency chart",
+      "antiCheat": "Anti-Cheat monitoring mechanism",
+      "transcriptHistory": "Question history & transcript storage",
+      "exportReport": "Export in-depth competency report (PDF)",
+      "chatbotTokens": "Chatbot conversation context depth",
+      "priorityQueue": "Priority GPU infrastructure without queues",
+      "supportLevel": "24/7 Ticket technical support"
+    },
+    "values": {
+      "unlimited": "Unlimited",
+      "standard": "Standard",
+      "advanced": "Advanced",
+      "priority": "VIP Priority",
+      "community": "Community",
+      "fiveAxes": "5 competency axes",
+      "ticketSupport": "24/7 Ticket Support",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "testimonials": {
+    "badge": "Success Stories",
+    "title": "Trusted by 10,000+ IT Engineers & Tech Students",
+    "subtitle": "Discover how candidates landed offers at top tech firms after training with AI."
+  },
+  "faq": {
+    "badge": "Got Questions?",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about plans, billing, and renewals.",
+    "items": [
+      {
+        "q": "How is the daily interview quota calculated and refreshed?",
+        "a": "Your daily interview quota is automatically refreshed at 00:00 every day. Each time you complete an AI session, 1 interview quota is deducted."
+      },
+      {
+        "q": "Can I upgrade from a lower tier to a higher tier anytime?",
+        "a": "Yes, absolutely! The platform automatically calculates your unused plan balance (Upgrade Discount) so you only pay the prorated difference when upgrading."
+      },
+      {
+        "q": "What payment methods are supported?",
+        "a": "We support instant, secure payments via PayOS with Napas247 QR code (scannable by any mobile banking app), domestic ATM cards, and international Visa/Mastercard."
+      },
+      {
+        "q": "What does Chatbot Context Window (Tokens) mean?",
+        "a": "Larger token context allows the AI to retain full details of lengthy resumes and long conversation threads, delivering pinpoint accurate algorithmic breakdowns and customized feedback."
+      },
+      {
+        "q": "How quickly is my plan activated after payment?",
+        "a": "Your account tier is activated in real time within seconds after the payment transfer is confirmed by our gateway."
+      },
+      {
+        "q": "Can I request a VAT invoice for corporate/business expenses?",
+        "a": "Yes! If you represent an organization or require an official electronic VAT invoice, please reach out to contact@tpmson.com."
+      }
+    ]
+  },
+  "ctaBanner": {
+    "badge": "For Enterprises & Universities",
+    "title": "Ready to Ace Your Next Tech Interview?",
+    "subtitle": "Start practicing today with tailored AI interviewers and receive in-depth diagnostic feedback.",
+    "primaryBtn": "Get Started Now",
+    "secondaryBtn": "Enterprise Inquiry"
+  },
+  "footer": {
+    "brandDesc": "The premier AI-powered interview preparation platform empowering IT professionals to master technical interviews and achieve career milestones.",
+    "links": {
+      "product": "Product",
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "company": "Company",
+      "about": "Team & About",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy"
+    },
+    "copyright": "© 2026 Interview AI Practice. All rights reserved."
+  }
+}

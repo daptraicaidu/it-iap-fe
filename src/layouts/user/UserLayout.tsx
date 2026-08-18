@@ -5,11 +5,13 @@ import {
   LogOut,
   User,
   UserCog,
-  Settings
+  Settings,
+  Shield,
 } from "lucide-react";
 import NotificationDropdown from "../../components/NotificationDropdown";
 import useAuthStore from "../../store/authStore";
 import useUserStore from "../../store/userStore";
+import useNotificationStore from "../../store/notificationStore";
 import { useState, useRef, useEffect } from "react";
 import logoImg from "../../assets/logo/logo.png";
 import avatar1 from "../../assets/avatardefault/avatar1.png";
@@ -38,14 +40,20 @@ const UserLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const logout = useAuthStore((s) => s.logout);
+  const roles = useAuthStore((s) => s.roles);
+  const isAdmin = roles.includes("ADMIN");
   const userInfo = useUserStore((s) => s.userInfo);
   const setUserInfo = useUserStore((s) => s.setUserInfo);
+  const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
   const [activeBanner, setActiveBanner] = useState<ActiveBanner | null>(null);
 
   useEffect(() => {
+    // Fetch user notifications to display badge immediately
+    fetchNotifications(1);
+
     userInfoService
       .getUserInfo()
       .then((res) => {
@@ -73,7 +81,7 @@ const UserLayout = () => {
       .catch(() => {
         // Fallback silently if active banner API fails or no active banner
       });
-  }, [setUserInfo]);
+  }, [setUserInfo, fetchNotifications]);
 
   const displayName = userInfo?.fullName || t("user.name", "User");
   const displayAvatar =
@@ -243,6 +251,17 @@ const UserLayout = () => {
                     <Settings className="h-4 w-4 text-zinc-500" />
                     Cài đặt chung
                   </Link>
+
+                  {isAdmin && (
+                    <Link
+                      to="/admin/dashboard"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900"
+                    >
+                      <Shield className="h-4 w-4 text-zinc-500" />
+                      Admin Console
+                    </Link>
+                  )}
                   
                   <div className="my-1 h-px bg-zinc-100" />
                   

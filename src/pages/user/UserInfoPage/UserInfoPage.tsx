@@ -462,7 +462,8 @@ const UserInfoPage = () => {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-900">
+          <h1 className="text-2xl font-semibold text-zinc-900 flex items-center gap-2">
+            <User className="h-6 w-6 text-blue-600" />
             {t("info.title")}
           </h1>
           <p className="mt-1 text-sm text-zinc-500">{t("info.description")}</p>
@@ -500,7 +501,8 @@ const UserInfoPage = () => {
 
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">
+        <h1 className="text-2xl font-semibold text-zinc-900 flex items-center gap-2">
+          <User className="h-6 w-6 text-blue-600" />
           {t("info.title")}
         </h1>
         <p className="mt-1 text-sm text-zinc-500">{t("info.description")}</p>

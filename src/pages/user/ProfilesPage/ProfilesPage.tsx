@@ -12,6 +12,7 @@ import {
   Trash2,
   Upload,
   X,
+  UserCog,
 } from "lucide-react";
 import profileService, {
   getProfileTitle,
@@ -385,7 +386,8 @@ const ProfilesPage = () => {
 
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-900 flex items-center gap-2">
+              <UserCog className="h-6 w-6 text-blue-600" />
               {t("manage.title")}
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">

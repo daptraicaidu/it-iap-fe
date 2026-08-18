@@ -271,7 +271,7 @@ const CheckoutPage: React.FC = () => {
         {/* Left Column: Select Tier Cards */}
         <div className="lg:col-span-7 space-y-4">
           <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
-            <Layers className="h-4 w-4 text-zinc-400" />
+            <Layers className="h-4 w-4 text-blue-500" />
             <span>{t("checkout.selectTier")}</span>
           </h2>
 
@@ -357,7 +357,7 @@ const CheckoutPage: React.FC = () => {
         {/* Right Column: Order Summary & Checkout Card */}
         <div className="lg:col-span-5 space-y-4">
           <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
-            <Coins className="h-4 w-4 text-zinc-400" />
+            <Coins className="h-4 w-4 text-amber-500" />
             <span>{t("checkout.orderSummary")}</span>
           </h2>
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Phone, Loader2 } from "lucide-react";
 import useAuthStore from "../../../store/authStore";
+import authBg from "../../../assets/auth_background.jpg";
 
 const RegisterPage = () => {
   const { t } = useTranslation("Auth");
@@ -81,19 +82,26 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12 relative">
+    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-zinc-50 px-4 py-12">
+      {/* Background Image & Soft Light Overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.14] mix-blend-multiply filter blur-[0.5px]"
+        style={{ backgroundImage: `url(${authBg})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-zinc-50/70 to-zinc-100/90 backdrop-blur-[1px]" />
+
       <Link 
         to="/" 
-        className="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 shadow-sm"
+        className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white/90 backdrop-blur-md px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-white hover:text-zinc-900 shadow-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         {t("common.backToHome", "Về trang chủ")}
       </Link>
 
-      <div className="w-full max-w-md">
+      <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
             {t("register.title")}
           </h1>
           <p className="mt-2 text-sm text-zinc-600">
@@ -102,7 +110,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Card */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white/95 backdrop-blur-xl p-6 sm:p-8 shadow-xl shadow-zinc-900/5">
           {/* Global Error */}
           {error && (
             <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">

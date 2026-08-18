@@ -142,7 +142,7 @@ const InterviewHistoryPage = () => {
   const handleItemClick = (item: InterviewHistoryItem) => {
     switch (item.status) {
       case "COMPLETED":
-        navigate(`/interviews/${item.interviewId}/result`);
+        navigate(`/history/${item.interviewId}/result`);
         break;
       case "IN_PROGRESS":
         setConfirmItem(item);

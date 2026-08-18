@@ -85,7 +85,15 @@ const OrdersPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<number | null>(null);
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(
+    () => typeof window !== "undefined" && window.location.hash === "#pricing"
+  );
+
+  useEffect(() => {
+    if (location.hash === "#pricing") {
+      setIsUpgradeModalOpen(true);
+    }
+  }, [location.hash]);
 
   // Check URL params from PayOS return (0đ active & external payment)
   const searchParams = new URLSearchParams(location.search);
@@ -210,7 +218,7 @@ const OrdersPage: React.FC = () => {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 pb-5">
         <div>
           <div className="flex items-center gap-2 text-zinc-900">
-            <History className="h-6 w-6 text-zinc-700" />
+            {/* <History className="h-6 w-6 text-zinc-700" /> */}
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
               {t("orders.title")}
             </h1>

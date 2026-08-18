@@ -1,8 +1,9 @@
 {
   "nav": {
-    "brand": "Interview with AI",
+    "brand": "Interview AI Practice",
     "features": "Features",
     "howItWorks": "How It Works",
+    "pricing": "Pricing",
     "getStarted": "Register"
   },
   "hero": {

@@ -56,17 +56,20 @@ const InterviewPrepPage = () => {
     setIsStarting(true);
     setError("");
 
+    // Request fullscreen immediately while user interaction gesture is active
+    if (!document.fullscreenElement) {
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch {
+        // Ignore if blocked by browser policy
+      }
+    }
+
     try {
       const response = await interviewService.startInterview(
         Number(interviewId)
       );
       const firstQuestion = response.data.data;
-
-      try {
-        await document.documentElement.requestFullscreen();
-      } catch (e) {
-        // Ignore if blocked
-      }
 
       // Pass the first question via navigation state so InterviewSessionPage
       // can use it directly without calling current-question API again
@@ -85,6 +88,11 @@ const InterviewPrepPage = () => {
       ) {
         navigate(`/interviews/${interviewId}/session`, { replace: true });
         return;
+      }
+
+      // Exit fullscreen if start failed
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
       }
 
       setError(message || t("errors.startFailed"));

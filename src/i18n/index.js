@@ -46,6 +46,8 @@ import enAdminPromotions from "../locales/en/AdminPromotions/translation.json";
 import viAdminPromotions from "../locales/vi/AdminPromotions/translation.json";
 import enOrders from "../locales/en/Orders/translation.json";
 import viOrders from "../locales/vi/Orders/translation.json";
+import enPricing from "../locales/en/Pricing/translation.json";
+import viPricing from "../locales/vi/Pricing/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -73,6 +75,7 @@ i18n
         AdminBanners: enAdminBanners,
         AdminPromotions: enAdminPromotions,
         Orders: enOrders,
+        Pricing: enPricing,
         Forum: enForum,
         AdminDashboard: enAdminDashboard,
       },
@@ -97,6 +100,7 @@ i18n
         AdminBanners: viAdminBanners,
         AdminPromotions: viAdminPromotions,
         Orders: viOrders,
+        Pricing: viPricing,
         Forum: viForum,
         AdminDashboard: viAdminDashboard,
       },
@@ -124,6 +128,7 @@ i18n
       "AdminBanners",
       "AdminPromotions",
       "Orders",
+      "Pricing",
       "Forum",
       "AdminDashboard",
     ],

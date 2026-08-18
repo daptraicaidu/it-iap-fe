@@ -501,7 +501,7 @@ const UserFeedbacksSection = () => {
           onClick={() => setOnlyMine(!onlyMine)}
           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
             onlyMine
-              ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+              ? "border-blue-200 bg-blue-50 text-blue-700"
               : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50"
           }`}
         >
@@ -522,7 +522,7 @@ const UserFeedbacksSection = () => {
           }
           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
             hasAdminReply !== undefined
-              ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+              ? "border-blue-200 bg-blue-50 text-blue-700"
               : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50"
           }`}
         >
@@ -544,7 +544,7 @@ const UserFeedbacksSection = () => {
           }
           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
             hasImageUrl !== undefined
-              ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+              ? "border-blue-200 bg-blue-50 text-blue-700"
               : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50"
           }`}
         >
@@ -601,7 +601,7 @@ const UserFeedbacksSection = () => {
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            <Loader2 className="h-8 w-8 text-indigo-500" />
+            <Loader2 className="h-8 w-8 text-blue-500" />
           </motion.div>
         </div>
       ) : error ? (
@@ -718,7 +718,7 @@ const UserFeedbacksSection = () => {
           <div ref={sentinelRef} className="h-4" />
           {isLoadingMore && (
             <div className="flex items-center justify-center py-4">
-              <Loader2 className="h-5 w-5 animate-spin text-indigo-500" />
+              <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
               <span className="ml-2 text-xs text-zinc-500">
                 {t("loadMore")}
               </span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useId } from "react";
+import React, { useEffect, useState, useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   X,
@@ -33,6 +33,77 @@ const formatVND = (amount: number): string => {
     style: "currency",
     currency: "VND",
   }).format(amount);
+};
+
+interface VietnamDateTimeInputProps {
+  id?: string;
+  value: string;
+  onChange: (val: string) => void;
+  required?: boolean;
+}
+
+const VietnamDateTimeInput: React.FC<VietnamDateTimeInputProps> = ({
+  id,
+  value,
+  onChange,
+  required,
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const formatDisplay = (isoStr: string): string => {
+    if (!isoStr) return "";
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return "";
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+
+  const handleContainerClick = () => {
+    if (inputRef.current) {
+      if ("showPicker" in HTMLInputElement.prototype) {
+        try {
+          inputRef.current.showPicker();
+        } catch {
+          inputRef.current.focus();
+        }
+      } else {
+        inputRef.current.focus();
+      }
+    }
+  };
+
+  return (
+    <div
+      onClick={handleContainerClick}
+      className="group relative flex w-full cursor-pointer items-center rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 transition-all hover:border-zinc-300 focus-within:border-zinc-900 focus-within:ring-1 focus-within:ring-zinc-900"
+    >
+      {/* Visual Input Displaying Vietnam Date Format */}
+      <input
+        type="text"
+        readOnly
+        value={formatDisplay(value)}
+        placeholder="DD/MM/YYYY HH:mm"
+        className="w-full cursor-pointer bg-transparent text-xs sm:text-sm font-medium text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
+      />
+
+      {/* Calendar Icon */}
+      <div className="pointer-events-none flex items-center pl-2 text-zinc-400 group-hover:text-zinc-600 transition-colors">
+        <Calendar className="h-4 w-4" />
+      </div>
+
+      {/* Native datetime-local input for picker popup */}
+      <input
+        ref={inputRef}
+        id={id}
+        type="datetime-local"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="absolute inset-0 h-full w-full opacity-0 pointer-events-none"
+        tabIndex={-1}
+        required={required}
+      />
+    </div>
+  );
 };
 
 const CreatePromotionModal: React.FC<CreatePromotionModalProps> = ({
@@ -144,6 +215,19 @@ const CreatePromotionModal: React.FC<CreatePromotionModalProps> = ({
 
     setLoading(true);
 
+    const formatToApiDate = (dateVal: string): string => {
+      const d = new Date(dateVal);
+      if (isNaN(d.getTime())) return dateVal;
+      const pad = (n: number) => n.toString().padStart(2, "0");
+      const day = pad(d.getDate());
+      const month = pad(d.getMonth() + 1);
+      const year = d.getFullYear();
+      const hours = pad(d.getHours());
+      const minutes = pad(d.getMinutes());
+      const seconds = pad(d.getSeconds());
+      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    };
+
     try {
       const payload: CreatePromotionPayload = {
         code: cleanCode,
@@ -152,8 +236,8 @@ const CreatePromotionModal: React.FC<CreatePromotionModalProps> = ({
         applicableTier,
         discountType,
         discountValue: Number(discountValue),
-        startDate: new Date(startDate).toISOString(),
-        endDate: new Date(endDate).toISOString(),
+        startDate: formatToApiDate(startDate),
+        endDate: formatToApiDate(endDate),
       };
 
       const res = await adminPromotionService.createPromotion(payload);
@@ -382,16 +466,12 @@ const CreatePromotionModal: React.FC<CreatePromotionModalProps> = ({
               >
                 {t("modal.startDateLabel")} <span className="text-rose-500">*</span>
               </label>
-              <div className="relative">
-                <input
-                  id={startDateId}
-                  type="datetime-local"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-zinc-900 focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900 transition-all"
-                  required
-                />
-              </div>
+              <VietnamDateTimeInput
+                id={startDateId}
+                value={startDate}
+                onChange={setStartDate}
+                required
+              />
             </div>
 
             <div>
@@ -401,16 +481,12 @@ const CreatePromotionModal: React.FC<CreatePromotionModalProps> = ({
               >
                 {t("modal.endDateLabel")} <span className="text-rose-500">*</span>
               </label>
-              <div className="relative">
-                <input
-                  id={endDateId}
-                  type="datetime-local"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-zinc-900 focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900 transition-all"
-                  required
-                />
-              </div>
+              <VietnamDateTimeInput
+                id={endDateId}
+                value={endDate}
+                onChange={setEndDate}
+                required
+              />
             </div>
           </div>
 

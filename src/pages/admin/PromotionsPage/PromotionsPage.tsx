@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Tag,
@@ -40,28 +41,64 @@ const formatVND = (amount: number): string => {
   }).format(amount);
 };
 
+export const parseDate = (dateStr: string): Date | null => {
+  if (!dateStr) return null;
+  // Match "DD/MM/YYYY HH:mm:ss", "DD/MM/YYYY HH:mm", or "DD/MM/YYYY"
+  const ddmmyyyyMatch = dateStr.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?$/);
+  if (ddmmyyyyMatch) {
+    const day = parseInt(ddmmyyyyMatch[1], 10);
+    const month = parseInt(ddmmyyyyMatch[2], 10) - 1;
+    const year = parseInt(ddmmyyyyMatch[3], 10);
+    const hours = ddmmyyyyMatch[4] ? parseInt(ddmmyyyyMatch[4], 10) : 0;
+    const minutes = ddmmyyyyMatch[5] ? parseInt(ddmmyyyyMatch[5], 10) : 0;
+    const seconds = ddmmyyyyMatch[6] ? parseInt(ddmmyyyyMatch[6], 10) : 0;
+    const d = new Date(year, month, day, hours, minutes, seconds);
+    if (!isNaN(d.getTime())) return d;
+  }
+  const isoDate = new Date(dateStr);
+  return isNaN(isoDate.getTime()) ? null : isoDate;
+};
+
+export const isPromotionExpired = (endDateStr: string): boolean => {
+  const parsed = parseDate(endDateStr);
+  if (!parsed) return false;
+  return parsed.getTime() < Date.now();
+};
+
 const formatDate = (dateStr: string): string => {
   if (!dateStr) return "--";
-  try {
-    // If it's DD/MM/YYYY format or ISO format
-    const d = new Date(dateStr);
-    if (!isNaN(d.getTime())) {
-      return d.toLocaleDateString("vi-VN", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    }
-    return dateStr;
-  } catch {
+  // If dateStr is already in "DD/MM/YYYY HH:mm:ss" format, return as is
+  const ddmmyyyyMatch = dateStr.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?$/);
+  if (ddmmyyyyMatch) {
     return dateStr;
   }
+  const d = parseDate(dateStr);
+  if (d) {
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  return dateStr;
 };
 
 // ── Status Badge ──
-const StatusBadge = ({ isActive, label }: { isActive: boolean; label: string }) => {
+const StatusBadge = ({
+  isActive,
+  isExpired,
+  label,
+}: {
+  isActive: boolean;
+  isExpired?: boolean;
+  label: string;
+}) => {
+  if (isExpired) {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
+        <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+        {label}
+      </span>
+    );
+  }
+
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${
@@ -105,8 +142,8 @@ const TierBadge = ({ tierCode, label }: { tierCode: string; label: string }) => 
 };
 
 const PromotionsPage: React.FC = () => {
-  const { t, i18n } = useTranslation("AdminPromotions");
-  const isEn = i18n.language?.startsWith("en");
+  const { t } = useTranslation("AdminPromotions");
+  const location = useLocation();
 
   // Zustand tier store
   const { fetchTiers, getOriginalPrice } = useTierStore();
@@ -126,7 +163,15 @@ const PromotionsPage: React.FC = () => {
 
   // Modals state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(
+    () => typeof window !== "undefined" && window.location.hash === "#pricing"
+  );
+
+  useEffect(() => {
+    if (location.hash === "#pricing") {
+      setIsUpgradeModalOpen(true);
+    }
+  }, [location.hash]);
 
   // Status toggle in-progress tracking
   const [togglingId, setTogglingId] = useState<number | null>(null);
@@ -196,11 +241,13 @@ const PromotionsPage: React.FC = () => {
         );
         showToast("success", t("toast.toggleSuccess"));
       } else {
-        showToast("error", t("toast.toggleError"));
+        showToast("error", res.data?.message || t("toast.toggleError"));
       }
     } catch (err: unknown) {
       console.error("Failed to toggle status", err);
-      showToast("error", t("toast.toggleError"));
+      const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
+      const detailedMessage = axiosErr.response?.data?.message || axiosErr.message || t("toast.toggleError");
+      showToast("error", detailedMessage);
     } finally {
       setTogglingId(null);
     }
@@ -520,6 +567,7 @@ const PromotionsPage: React.FC = () => {
                     promo.discountType,
                     promo.discountValue
                   );
+                  const isExpired = isPromotionExpired(promo.endDate);
                   const isToggling = togglingId === promo.id;
 
                   return (
@@ -624,36 +672,49 @@ const PromotionsPage: React.FC = () => {
                       <td className="px-4 py-3.5 text-center">
                         <StatusBadge
                           isActive={promo.isActive}
-                          label={promo.isActive ? t("filters.active") : t("filters.inactive")}
+                          isExpired={isExpired}
+                          label={
+                            isExpired
+                              ? t("table.expired")
+                              : promo.isActive
+                              ? t("filters.active")
+                              : t("filters.inactive")
+                          }
                         />
                       </td>
 
                       {/* Actions */}
                       <td className="px-4 py-3.5 text-right">
-                        <button
-                          type="button"
-                          disabled={isToggling}
-                          onClick={() => handleToggleStatus(promo)}
-                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all active:scale-[0.98] ${
-                            promo.isActive
-                              ? "bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200"
-                              : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200"
-                          }`}
-                        >
-                          {isToggling ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          ) : promo.isActive ? (
-                            <>
-                              <XCircle className="h-3.5 w-3.5" />
-                              <span>{t("buttons.toggleInactive")}</span>
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                              <span>{t("buttons.toggleActive")}</span>
-                            </>
-                          )}
-                        </button>
+                        {isExpired ? (
+                          <span className="inline-block px-3 py-1 text-xs text-zinc-400 italic">
+                            --
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled={isToggling}
+                            onClick={() => handleToggleStatus(promo)}
+                            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all active:scale-[0.98] ${
+                              promo.isActive
+                                ? "bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200"
+                                : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200"
+                            }`}
+                          >
+                            {isToggling ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : promo.isActive ? (
+                              <>
+                                <XCircle className="h-3.5 w-3.5" />
+                                <span>{t("buttons.toggleInactive")}</span>
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                <span>{t("buttons.toggleActive")}</span>
+                              </>
+                            )}
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );

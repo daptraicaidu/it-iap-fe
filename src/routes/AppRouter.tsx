@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "../pages/user/HomePage/HomePage";
 import IntroductionPage from "../pages/user/IntroductionPage/IntroductionPage";
+import PricingPage from "../pages/user/PricingPage/PricingPage";
 import PrivacyPolicyPage from "../pages/user/PrivacyPolicyPage/PrivacyPolicyPage";
 import TermsOfServicePage from "../pages/user/TermsOfServicePage/TermsOfServicePage";
 import LoginPage from "../pages/user/LoginPage/LoginPage";
@@ -41,6 +42,7 @@ const AppRouter = () => {
       <OAuthRedirectHandler />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/introduction" element={<IntroductionPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
@@ -66,7 +68,7 @@ const AppRouter = () => {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/interviews" element={<InterviewsPage />} />
             <Route path="/interviews/:interviewId" element={<InterviewPrepPage />} />
-            <Route path="/interviews/:interviewId/result" element={<InterviewResultPage />} />
+            <Route path="/history/:interviewId/result" element={<InterviewResultPage />} />
             <Route path="/history" element={<InterviewHistoryPage />} />
             <Route path="/reports_and_feedbacks" element={<UserReportsPage />} />
             <Route path="/reports" element={<Navigate to="/reports_and_feedbacks" replace />} />

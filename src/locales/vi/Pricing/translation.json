@@ -1,0 +1,181 @@
+{
+  "nav": {
+    "brand": "Interview AI Practice",
+    "home": "Trang chủ",
+    "features": "Tính năng",
+    "howItWorks": "Cách hoạt động",
+    "pricing": "Bảng giá",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "dashboard": "Vào Dashboard"
+  },
+  "loading": "Đang tải thông tin bảng giá...",
+  "hero": {
+    "badge": "Bảng giá minh bạch & linh hoạt",
+    "title": "Đầu tư thông minh cho sự nghiệp IT của bạn",
+    "subtitle": "Lựa chọn gói dịch vụ tối ưu để rèn luyện kỹ năng phỏng vấn cùng Trí tuệ nhân tạo chuyên sâu. Nâng cấp hoặc chuyển đổi linh hoạt bất kỳ lúc nào.",
+    "monthly": "Thanh toán theo Tháng",
+    "yearly": "Thanh toán theo Năm",
+    "yearlyBadge": "Tiết kiệm 20%"
+  },
+  "tiers": {
+    "benefitLabel": "Quyền lợi bao gồm:",
+    "vipBenefitLabel": "Quyền lợi VIP độc quyền:",
+    "basic": {
+      "name": "Gói Cơ Bản",
+      "tagline": "Trải nghiệm miễn phí nền tảng",
+      "price": "Miễn phí",
+      "period": "vĩnh viễn",
+      "coreNote": "Trải nghiệm đầy đủ tính năng cốt lõi",
+      "cta": "Bắt đầu miễn phí",
+      "features": [
+        "Tối đa 3 hồ sơ phỏng vấn CV",
+        "5 lượt phỏng vấn AI mỗi ngày",
+        "Ngữ cảnh Chatbot: 16,000 tokens",
+        "Chấm điểm & phân tích biểu đồ 5 trục Radar",
+        "Lưu trữ toàn bộ lịch sử & transcript phỏng vấn",
+        "Cơ chế Chống Gian lận & Phỏng vấn Tương tác sâu"
+      ]
+    },
+    "plus": {
+      "name": "Gói Plus",
+      "badge": "Ứng tuyển tích cực",
+      "tagline": "Dành cho ứng viên đang tích cực tìm việc",
+      "periodMonth": "tháng",
+      "periodYear": "năm",
+      "discountLabel": "(Đang áp dụng ưu đãi)",
+      "yearlyNote": "Thanh toán theo năm tiết kiệm hơn",
+      "monthlyNote": "Gia hạn tự động hàng tháng",
+      "cta": "Chọn gói Plus",
+      "features": [
+        "Tối đa 6 hồ sơ phỏng vấn CV",
+        "10 lượt phỏng vấn AI mỗi ngày",
+        "Ngữ cảnh Chatbot: 32,000 tokens",
+        "Chấm điểm chi tiết & phân tích biểu đồ 5 trục Radar",
+        "Lưu trữ toàn bộ lịch sử & transcript phỏng vấn",
+        "Chế độ phỏng vấn Tương tác sâu & Áp lực cao"
+      ]
+    },
+    "pro": {
+      "name": "Gói Pro",
+      "badge": "VIP Chuyên nghiệp",
+      "popularBadge": "Khuyên dùng nhiều nhất",
+      "tagline": "Dành cho kỹ sư IT muốn bứt phá thu nhập & đãi ngộ",
+      "periodMonth": "tháng",
+      "periodYear": "năm",
+      "discountLabel": "(Đang áp dụng ưu đãi)",
+      "yearlyNote": "Tiết kiệm tối đa 20% khi thanh toán năm",
+      "monthlyNote": "Mở khóa toàn bộ hạ tầng AI siêu tốc",
+      "cta": "Nâng cấp gói Pro",
+      "features": [
+        "Tối đa 12 hồ sơ phỏng vấn CV",
+        "20 lượt phỏng vấn AI mỗi ngày",
+        "Ngữ cảnh Chatbot: 48,000 tokens siêu việt",
+        "Chấm điểm & phân tích chuyên sâu 5 kỹ năng (Radar Chart)",
+        "Ưu tiên xử lý trên hạ tầng AI siêu tốc (Priority Queue)",
+        "Báo cáo chi tiết điểm mạnh/yếu kèm lộ trình ôn tập",
+        "Cơ chế Chống Gian lận & Phân tích tính trung thực"
+      ]
+    }
+  },
+  "comparison": {
+    "badge": "So sánh chi tiết",
+    "title": "Tìm gói phù hợp nhất với nhu cầu của bạn",
+    "subtitle": "Mọi tính năng đều được thiết kế nhằm mang lại trải nghiệm phỏng vấn sát với thực tế doanh nghiệp nhất.",
+    "sessionsPerDay": "lượt/ngày",
+    "columns": {
+      "feature": "Tính năng & Quyền lợi",
+      "basic": "Basic (Miễn phí)",
+      "plus": "Plus",
+      "pro": "Pro"
+    },
+    "categories": {
+      "interviews": "Phỏng vấn & Luyện tập AI",
+      "analysis": "Chấm điểm & Báo cáo năng lực",
+      "chatbot": "Trợ lý Ảo & Ngữ cảnh",
+      "support": "Hạ tầng & Hỗ trợ"
+    },
+    "items": {
+      "profiles": "Số lượng hồ sơ CV ứng tuyển",
+      "dailyQuota": "Lượt phỏng vấn AI mỗi ngày",
+      "interactiveMode": "Chế độ phỏng vấn Tương tác sâu (Follow-up)",
+      "pressureMode": "Chế độ phỏng vấn Áp lực cao (Hardcore Lead)",
+      "voiceAI": "Giọng đọc AI Voice đa ngữ điệu tự nhiên",
+      "radarScoring": "Biểu đồ Radar chấm điểm 5 trục năng lực",
+      "antiCheat": "Cơ chế giám sát Chống Gian lận (Anti-Cheat)",
+      "transcriptHistory": "Lưu trữ lịch sử & Transcript câu hỏi",
+      "exportReport": "Xuất báo cáo năng lực chi tiết (PDF)",
+      "chatbotTokens": "Độ sâu ngữ cảnh hội thoại Chatbot",
+      "priorityQueue": "Hạ tầng GPU AI ưu tiên không hàng đợi",
+      "supportLevel": "Hỗ trợ kỹ thuật 24/7 qua Ticket"
+    },
+    "values": {
+      "unlimited": "Không giới hạn",
+      "standard": "Cơ bản",
+      "advanced": "Nâng cao",
+      "priority": "Ưu tiên VIP",
+      "community": "Cộng đồng",
+      "fiveAxes": "5 trục năng lực",
+      "ticketSupport": "24/7 qua Ticket",
+      "yes": "Có",
+      "no": "Không"
+    }
+  },
+  "testimonials": {
+    "badge": "Câu chuyện thành công",
+    "title": "Được tin dùng bởi hơn 10.000+ Kỹ sư IT & Sinh viên công nghệ",
+    "subtitle": "Xem cảm nhận của các bạn ứng viên đã đỗ thành công vào các công ty công nghệ lớn sau khi luyện tập cùng AI."
+  },
+  "faq": {
+    "badge": "Giải đáp thắc mắc",
+    "title": "Câu hỏi thường gặp",
+    "subtitle": "Tất cả những gì bạn cần biết về gói dịch vụ, thanh toán và gia hạn.",
+    "items": [
+      {
+        "q": "Lượt phỏng vấn mỗi ngày được tính và làm mới như thế nào?",
+        "a": "Hạn ngạch phỏng vấn của bạn sẽ được tự động làm mới vào 00:00 mỗi ngày. Mỗi khi bạn hoàn thành một phiên phỏng vấn với AI, 1 lượt sẽ được trừ vào tài khoản trong ngày hôm đó."
+      },
+      {
+        "q": "Tôi có thể nâng cấp từ gói thấp lên gói cao hơn không?",
+        "a": "Hoàn toàn được! Hệ thống có cơ chế tự động khấu trừ giá trị sử dụng còn lại của gói cũ (Upgrade Discount) để bạn chỉ cần trả phần chênh lệch khi nâng cấp lên gói cao hơn."
+      },
+      {
+        "q": "Hệ thống hỗ trợ những phương thức thanh toán nào?",
+        "a": "Chúng tôi hỗ trợ thanh toán an toàn, tức thì qua cổng PayOS với mã QR Napas247 (quét bằng mọi app Ngân hàng/MoMo/ZaloPay), thẻ ATM nội địa và thẻ thanh toán quốc tế Visa/Mastercard."
+      },
+      {
+        "q": "Ngữ cảnh Chatbot (Tokens) có ý nghĩa gì?",
+        "a": "Tokens ngữ cảnh càng lớn giúp AI ghi nhớ toàn bộ nội dung CV dài và lịch sử cuộc trò chuyện sâu hơn, từ đó đưa ra những gợi ý, giải thích thuật toán và phản hồi chính xác đến từng chi tiết nhỏ."
+      },
+      {
+        "q": "Sau khi thanh toán thì tài khoản được kích hoạt trong bao lâu?",
+        "a": "Gói tài khoản của bạn sẽ được kích hoạt ngay lập tức (Real-time) trong vòng vài giây sau khi hệ thống nhận được giao dịch chuyển khoản thành công."
+      },
+      {
+        "q": "Tôi có được xuất hoá đơn VAT cho công ty/doanh nghiệp không?",
+        "a": "Có, nếu bạn là doanh nghiệp hoặc cần xuất hoá đơn VAT, vui lòng liên hệ trực tiếp với bộ phận chăm sóc khách hàng qua email contact@tpmson.com để được hỗ trợ."
+      }
+    ]
+  },
+  "ctaBanner": {
+    "badge": "Dành cho Doanh nghiệp & Trường Đại học",
+    "title": "Sẵn sàng chinh phục nhà tuyển dụng IT?",
+    "subtitle": "Bắt đầu luyện tập ngay hôm nay với AI chuyên sâu và nhận phản hồi chi tiết cho buổi phỏng vấn tiếp theo của bạn.",
+    "primaryBtn": "Bắt đầu ngay bây giờ",
+    "secondaryBtn": "Tư vấn cho Doanh nghiệp"
+  },
+  "footer": {
+    "brandDesc": "Nền tảng ứng dụng Trí tuệ nhân tạo hàng đầu giúp kỹ sư IT ôn luyện và bứt phá kỹ năng phỏng vấn chuyên môn, tự tin chinh phục mọi đãi ngộ mơ ước.",
+    "links": {
+      "product": "Sản phẩm",
+      "features": "Tính năng",
+      "howItWorks": "Cách hoạt động",
+      "pricing": "Bảng giá",
+      "company": "Về chúng tôi",
+      "about": "Giới thiệu đội ngũ",
+      "terms": "Điều khoản dịch vụ",
+      "privacy": "Chính sách bảo mật"
+    },
+    "copyright": "© 2026 Interview AI Practice. Tất cả quyền được bảo lưu."
+  }
+}
