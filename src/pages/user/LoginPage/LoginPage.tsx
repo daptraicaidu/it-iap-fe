@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import useAuthStore from "../../../store/authStore";
+import authBg from "../../../assets/auth_background.jpg";
 
 const LoginPage = () => {
   const { t } = useTranslation("Auth");
@@ -142,14 +143,21 @@ const LoginPage = () => {
   // ── 2FA Verification Step ──
   if (show2faStep) {
     return (
-      <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12 relative">
-        <div className="w-full max-w-md">
+      <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-zinc-50 px-4 py-12">
+        {/* Background Image & Soft Light Overlay */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.14] mix-blend-multiply filter blur-[0.5px]"
+          style={{ backgroundImage: `url(${authBg})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-zinc-50/70 to-zinc-100/90 backdrop-blur-[1px]" />
+
+        <div className="relative z-10 w-full max-w-md">
           {/* Header */}
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50">
-              <ShieldCheck className="h-7 w-7 text-indigo-600" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 border border-blue-100 shadow-sm">
+              <ShieldCheck className="h-7 w-7 text-blue-600" />
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
               {t("login.twoFa.title")}
             </h1>
             <p className="mt-2 text-sm text-zinc-600">
@@ -158,7 +166,7 @@ const LoginPage = () => {
           </div>
 
           {/* Card */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8">
+          <div className="rounded-2xl border border-zinc-200/80 bg-white/95 backdrop-blur-xl p-6 sm:p-8 shadow-xl shadow-zinc-900/5">
             {/* Error */}
             {error && (
               <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
@@ -183,7 +191,7 @@ const LoginPage = () => {
                       value={digit}
                       onChange={(e) => handleTotpChange(index, e.target.value)}
                       onKeyDown={(e) => handleTotpKeyDown(index, e)}
-                      className="h-12 w-11 rounded-lg border border-zinc-200 bg-white text-center text-lg font-semibold text-zinc-900 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                      className="h-12 w-11 rounded-lg border border-zinc-200 bg-white text-center text-lg font-semibold text-zinc-900 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                       autoComplete="one-time-code"
                     />
                   ))}
@@ -221,26 +229,33 @@ const LoginPage = () => {
 
   // ── Standard Login Form ──
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-zinc-50 px-4 py-12 relative">
+    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-zinc-50 px-4 py-12">
+      {/* Background Image & Soft Light Overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.14] mix-blend-multiply filter blur-[0.5px]"
+        style={{ backgroundImage: `url(${authBg})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-zinc-50/70 to-zinc-100/90 backdrop-blur-[1px]" />
+
       <Link 
         to="/" 
-        className="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 shadow-sm"
+        className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white/90 backdrop-blur-md px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-white hover:text-zinc-900 shadow-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         {t("common.backToHome", "Về trang chủ")}
       </Link>
 
-      <div className="w-full max-w-md">
+      <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
             {t("login.title")}
           </h1>
           <p className="mt-2 text-sm text-zinc-600">{t("login.subtitle")}</p>
         </div>
 
         {/* Card */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white/95 backdrop-blur-xl p-6 sm:p-8 shadow-xl shadow-zinc-900/5">
           {/* Global Error */}
           {error && (
             <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">

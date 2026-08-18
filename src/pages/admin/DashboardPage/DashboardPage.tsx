@@ -144,11 +144,20 @@ const DashboardPage = () => {
       {/* 4 Stat Cards */}
       <StatCards data={overviewData} isLoading={isOverviewLoading} />
 
-      {/* Charts Row: Interview Trends + Position Pie */}
+      {/* Interview Trends Chart (Full width) */}
+      <div>
+        <InterviewTrendChart
+          data={overviewData?.interviewTrends ?? []}
+          timeFilter={timeFilter}
+          isLoading={isOverviewLoading}
+        />
+      </div>
+
+      {/* Middle Row: Revenue Bar Chart (Left) + Position Pie Chart (Right) */}
       <div className="grid gap-4 lg:grid-cols-5">
         <div className="lg:col-span-3">
-          <InterviewTrendChart
-            data={overviewData?.interviewTrends ?? []}
+          <RevenueBarChart
+            data={overviewData?.revenueTrends ?? []}
             timeFilter={timeFilter}
             isLoading={isOverviewLoading}
           />
@@ -163,26 +172,17 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Bottom Row: Revenue Bar Chart + Activity Log */}
-      <div className="grid gap-4 lg:grid-cols-5">
-        <div className="lg:col-span-2">
-          <RevenueBarChart
-            data={overviewData?.revenueTrends ?? []}
-            timeFilter={timeFilter}
-            isLoading={isOverviewLoading}
-          />
-        </div>
-        <div className="lg:col-span-3">
-          <ActivityLog
-            data={activitiesData}
-            actionTypeFilter={actionTypeFilter}
-            onActionTypeChange={handleActionTypeChange}
-            onRefresh={handleRefreshActivities}
-            onPageChange={handleActivitiesPageChange}
-            currentPage={activitiesPage}
-            isLoading={isActivitiesLoading}
-          />
-        </div>
+      {/* Bottom Row: Activity Log (Single separate full-width row) */}
+      <div>
+        <ActivityLog
+          data={activitiesData}
+          actionTypeFilter={actionTypeFilter}
+          onActionTypeChange={handleActionTypeChange}
+          onRefresh={handleRefreshActivities}
+          onPageChange={handleActivitiesPageChange}
+          currentPage={activitiesPage}
+          isLoading={isActivitiesLoading}
+        />
       </div>
     </section>
   );

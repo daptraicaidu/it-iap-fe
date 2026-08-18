@@ -114,7 +114,7 @@ const ReplyModal = ({
                   setValue(t(tmpl.textKey));
                   if (error) setError("");
                 }}
-                className="rounded-full border border-indigo-100 bg-indigo-50/60 px-2.5 py-1 text-xs font-medium text-indigo-700 transition hover:bg-indigo-100 hover:text-indigo-800 active:scale-95"
+                className="rounded-full border border-blue-100 bg-blue-50/60 px-2.5 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-100 hover:text-blue-800 active:scale-95"
               >
                 + {t(tmpl.tagKey)}
               </button>
@@ -531,7 +531,7 @@ const FeedbacksPage = () => {
             }
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm font-medium transition ${
               hasImageFilter !== undefined
-                ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+                ? "border-blue-200 bg-blue-50 text-blue-700"
                 : "border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50"
             }`}
           >
@@ -579,7 +579,7 @@ const FeedbacksPage = () => {
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             >
-              <Loader2 className="h-10 w-10 text-indigo-500" />
+              <Loader2 className="h-10 w-10 text-blue-500" />
             </motion.div>
           </div>
         ) : error ? (
@@ -710,7 +710,7 @@ const FeedbacksPage = () => {
                     <div className="col-span-2 flex items-center justify-end gap-1">
                       <button
                         onClick={() => setReplyTarget(item)}
-                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-indigo-50 hover:text-indigo-700"
+                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-blue-50 hover:text-blue-700"
                         title={item.adminReply ? t("editReply") : t("replyAction")}
                       >
                         <Reply className="h-3.5 w-3.5" />
@@ -778,10 +778,10 @@ const FeedbacksPage = () => {
                     )}
 
                     {item.adminReply && (
-                      <div className="mb-3 rounded-lg border border-indigo-100 bg-indigo-50/50 p-2.5">
+                      <div className="mb-3 rounded-lg border border-blue-100 bg-blue-50/50 p-2.5">
                         <div className="mb-1 flex items-center gap-1.5">
-                          <MessageSquare className="h-3 w-3 text-indigo-500" />
-                          <span className="text-[11px] font-semibold text-indigo-600">
+                          <MessageSquare className="h-3 w-3 text-blue-500" />
+                          <span className="text-[11px] font-semibold text-blue-600">
                             {t("tableReply")}
                           </span>
                         </div>
@@ -794,7 +794,7 @@ const FeedbacksPage = () => {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => setReplyTarget(item)}
-                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-indigo-50 hover:text-indigo-700"
+                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-blue-50 hover:text-blue-700"
                       >
                         <Reply className="h-3.5 w-3.5" />
                         {item.adminReply ? t("editReply") : t("replyAction")}

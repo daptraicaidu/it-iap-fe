@@ -1,5 +1,5 @@
 {
-  "brand": "Interview with AI",
+  "brand": "Interview AI Practice",
   "greeting": {
     "morning": "Chào buổi sáng",
     "afternoon": "Chào buổi chiều",
@@ -54,10 +54,10 @@
   "readiness": {
     "title": "Độ sẵn sàng phỏng vấn",
     "levels": {
-      "novice": "Khởi đầu",
+      "novice": "Mới bắt đầu",
       "beginner": "Cơ bản",
-      "developing": "Đang phát triển",
-      "maturing": "Trưởng thành",
+      "developing": "Đang tiến bộ",
+      "maturing": "Thành thạo",
       "expert": "Chuyên gia"
     }
   },

@@ -145,20 +145,94 @@ const InterviewSessionPage = () => {
   // to avoid double-calling when the user clicks the "View Result" button
   const hasScoringTriggered = useRef(false);
 
+  // Track cursor position & latest user answer for speech chunk insertion
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const baseTextRef = useRef(userAnswer);
+  const speechInsertionStartRef = useRef(0);
+
+  const handleSpeechChunk = useCallback(
+    (data: { text: string; isFinal: boolean }) => {
+      const rawSpeech = data.text.trim();
+      if (!rawSpeech) return;
+
+      const base = baseTextRef.current;
+      const start = Math.max(0, Math.min(speechInsertionStartRef.current, base.length));
+
+      // Check preceding context to decide smart capitalization and spacing
+      const prefixSlice = base.slice(0, start);
+      const isStartOfSentence = start === 0 || /[.!?\n]\s*$/.test(prefixSlice);
+      const needsSpaceBefore = start > 0 && !/\s$/.test(prefixSlice);
+
+      // Normalize first character: lowercase if not start of a sentence
+      let speechText = rawSpeech;
+      if (!isStartOfSentence && speechText.length > 0) {
+        speechText = speechText.charAt(0).toLowerCase() + speechText.slice(1);
+      }
+
+      // Suffix context
+      const suffixSlice = base.slice(start);
+      const needsSpaceAfter =
+        data.isFinal && suffixSlice.length > 0 && !/^[\s.,?!;:]/.test(suffixSlice);
+
+      const textToInsert =
+        (needsSpaceBefore ? " " : "") +
+        speechText +
+        (data.isFinal ? (needsSpaceAfter ? " " : " ") : "");
+      const nextVal = prefixSlice + textToInsert + suffixSlice;
+      const nextCursor = prefixSlice.length + textToInsert.length;
+
+      setUserAnswer(nextVal);
+
+      if (data.isFinal) {
+        // Commit this speech segment into base text
+        baseTextRef.current = nextVal;
+        speechInsertionStartRef.current = nextCursor;
+      }
+
+      // Keep textarea cursor positioned directly after inserted words
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.setSelectionRange(nextCursor, nextCursor);
+        }
+      }, 0);
+    },
+    []
+  );
+
   // Hooks
   const { speak, stop: stopSpeaking, isSpeaking, isSupported: ttsSupported } = useSpeechSynthesis();
   const {
     startListening,
     stopListening,
-    transcript,
-    interimTranscript,
+    restartListening,
     isListening,
     isSupported: sttSupported,
-    resetTranscript,
-  } = useSpeechRecognition();
+  } = useSpeechRecognition({ onSpeechChunk: handleSpeechChunk });
+
+  // Sync speech base whenever user changes text or moves cursor
+  const handleUserCursorChange = useCallback(
+    (newText: string, cursorIndex: number) => {
+      baseTextRef.current = newText;
+      speechInsertionStartRef.current = Math.max(0, Math.min(cursorIndex, newText.length));
+      if (isListening) {
+        restartListening();
+      }
+    },
+    [isListening, restartListening]
+  );
+
+  const handleToggleMic = useCallback(() => {
+    if (isListening) {
+      stopListening();
+    } else {
+      const pos = textareaRef.current?.selectionStart ?? userAnswer.length;
+      baseTextRef.current = userAnswer;
+      speechInsertionStartRef.current = Math.max(0, Math.min(pos, userAnswer.length));
+      startListening();
+    }
+  }, [isListening, startListening, stopListening, userAnswer]);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isInteractive = interviewMode === "INTERACTIVE_INTERVIEW" || currentQuestion?.interviewMode === "INTERACTIVE_INTERVIEW";
   const isViewingPrevious = viewingPreviousIndex !== null;
@@ -168,14 +242,53 @@ const InterviewSessionPage = () => {
   );
   const elapsedTime = useElapsedTime();
 
-  // Fullscreen monitor
+  // Exit handler: smoothly exit fullscreen then navigate
+  const handleConfirmExit = useCallback(async () => {
+    setShowExitConfirm(false);
+    if (document.fullscreenElement) {
+      try {
+        await document.exitFullscreen();
+      } catch {
+        // Ignore
+      }
+    }
+    navigate("/history");
+  }, [navigate]);
+
+  // Fullscreen helper: checks both Document Fullscreen API and Browser F11 mode
+  const checkIsFullscreen = useCallback(() => {
+    if (typeof window === "undefined") return true;
+    const isDocFullscreen = !!document.fullscreenElement;
+    const isDisplayModeFullscreen = window.matchMedia?.("(display-mode: fullscreen)").matches;
+    const isWindowFullscreen =
+      window.innerHeight >= screen.height - 2 && window.innerWidth >= screen.width - 2;
+    return Boolean(isDocFullscreen || isDisplayModeFullscreen || isWindowFullscreen);
+  }, []);
+
+  const handleRequestFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch {
+        // Ignore
+      }
+    }
+    setIsFullscreen(checkIsFullscreen());
+  };
+
+  // Fullscreen monitor (no exitFullscreen in cleanup!)
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      setIsFullscreen(checkIsFullscreen());
     };
+    handleFullscreenChange();
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
-  }, []);
+    window.addEventListener("resize", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      window.removeEventListener("resize", handleFullscreenChange);
+    };
+  }, [checkIsFullscreen]);
 
   // Reset store and load current question when interviewId changes
   useEffect(() => {
@@ -248,7 +361,7 @@ const InterviewSessionPage = () => {
             if (document.fullscreenElement) {
               await document.exitFullscreen().catch(() => {});
             }
-            navigate(`/interviews/${interviewId}/result`, { replace: true });
+            navigate(`/history/${interviewId}/result`, { replace: true });
             return;
           }
         } else {
@@ -285,34 +398,6 @@ const InterviewSessionPage = () => {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  // Track the user answer text that existed before the current listening session started
-  const preListeningAnswerRef = useRef("");
-
-  // When listening starts, save the current userAnswer as baseline
-  useEffect(() => {
-    if (isListening) {
-      preListeningAnswerRef.current = userAnswer;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isListening]);
-
-  // Sync speech recognition output directly into the textarea in real-time
-  useEffect(() => {
-    if (!isListening && transcript) {
-      // Listening just stopped — finalize: set answer to baseline + accumulated transcript
-      setUserAnswer(preListeningAnswerRef.current + transcript);
-      resetTranscript();
-      return;
-    }
-
-    if (isListening) {
-      // While listening, show baseline + final transcript so far + interim
-      setUserAnswer(
-        preListeningAnswerRef.current + transcript + interimTranscript
-      );
-    }
-  }, [isListening, transcript, interimTranscript, resetTranscript]);
 
   // Time up handler
   useEffect(() => {
@@ -482,7 +567,7 @@ const InterviewSessionPage = () => {
       if (document.fullscreenElement) {
         await document.exitFullscreen().catch(() => {});
       }
-      navigate(`/interviews/${interviewId}/result`);
+      navigate(`/history/${interviewId}/result`);
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
       setError(axiosErr.response?.data?.message || t("errors.answerFailed"));
@@ -543,7 +628,7 @@ const InterviewSessionPage = () => {
           <AlertCircle className="mx-auto mb-3 h-8 w-8 text-rose-500" />
           <p className="text-sm text-rose-700">{error}</p>
           <button
-            onClick={() => navigate("/interviews")}
+            onClick={handleConfirmExit}
             className="mt-4 rounded-full bg-zinc-900 px-6 py-2 text-sm font-medium text-white hover:bg-zinc-800"
           >
             {t("resultPage.retryInterview")}
@@ -644,7 +729,7 @@ const InterviewSessionPage = () => {
           >
             <span>⚠️ Bạn đã thoát chế độ toàn màn hình. Hãy bật lại để có trải nghiệm phỏng vấn tốt nhất.</span>
             <button
-              onClick={() => document.documentElement.requestFullscreen().catch(() => {})}
+              onClick={handleRequestFullscreen}
               className="rounded-full bg-white px-3 py-1 text-xs font-bold text-amber-600 transition hover:bg-amber-50"
             >
               Bật toàn màn hình
@@ -826,13 +911,13 @@ const InterviewSessionPage = () => {
                         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
                           msg.role === "USER"
                             ? "bg-zinc-900"
-                            : "bg-indigo-100"
+                            : "bg-blue-100"
                         }`}
                       >
                         {msg.role === "USER" ? (
                           <UserIcon className="h-4 w-4 text-white" />
                         ) : (
-                          <Bot className="h-4 w-4 text-600" />
+                          <Bot className="h-4 w-4 text-blue-600" />
                         )}
                       </div>
 
@@ -872,8 +957,8 @@ const InterviewSessionPage = () => {
                       exit={{ opacity: 0 }}
                       className="flex gap-3"
                     >
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100">
-                        <Bot className="h-4 w-4 text-600" />
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100">
+                        <Bot className="h-4 w-4 text-blue-600" />
                       </div>
                       <div className="rounded-2xl bg-zinc-100 px-4 py-3">
                         <div className="flex gap-1">
@@ -905,7 +990,7 @@ const InterviewSessionPage = () => {
                     {/* Mic button */}
                     {sttSupported && (
                       <button
-                        onClick={isListening ? stopListening : startListening}
+                        onClick={handleToggleMic}
                         className={`shrink-0 rounded-full p-2.5 transition ${
                           isListening
                             ? "bg-rose-100 text-rose-600 animate-pulse"
@@ -928,7 +1013,34 @@ const InterviewSessionPage = () => {
                     <textarea
                       ref={textareaRef}
                       value={userAnswer}
-                      onChange={(e) => setUserAnswer(e.target.value)}
+                      onChange={(e) => {
+                        setUserAnswer(e.target.value);
+                        handleUserCursorChange(
+                          e.target.value,
+                          e.target.selectionStart ?? e.target.value.length
+                        );
+                      }}
+                      onSelect={(e) =>
+                        handleUserCursorChange(
+                          e.currentTarget.value,
+                          e.currentTarget.selectionStart ??
+                            e.currentTarget.value.length
+                        )
+                      }
+                      onClick={(e) =>
+                        handleUserCursorChange(
+                          e.currentTarget.value,
+                          e.currentTarget.selectionStart ??
+                            e.currentTarget.value.length
+                        )
+                      }
+                      onKeyUp={(e) =>
+                        handleUserCursorChange(
+                          e.currentTarget.value,
+                          e.currentTarget.selectionStart ??
+                            e.currentTarget.value.length
+                        )
+                      }
                       onKeyDown={handleKeyDown}
                       placeholder={t("sessionPage.chatPlaceholder")}
                       disabled={isAnswering}
@@ -985,18 +1097,45 @@ const InterviewSessionPage = () => {
                   <textarea
                     ref={textareaRef}
                     value={userAnswer}
-                    onChange={(e) => setUserAnswer(e.target.value)}
+                    onChange={(e) => {
+                      setUserAnswer(e.target.value);
+                      handleUserCursorChange(
+                        e.target.value,
+                        e.target.selectionStart ?? e.target.value.length
+                      );
+                    }}
+                    onSelect={(e) =>
+                      handleUserCursorChange(
+                        e.currentTarget.value,
+                        e.currentTarget.selectionStart ??
+                          e.currentTarget.value.length
+                      )
+                    }
+                    onClick={(e) =>
+                      handleUserCursorChange(
+                        e.currentTarget.value,
+                        e.currentTarget.selectionStart ??
+                          e.currentTarget.value.length
+                      )
+                    }
+                    onKeyUp={(e) =>
+                      handleUserCursorChange(
+                        e.currentTarget.value,
+                        e.currentTarget.selectionStart ??
+                          e.currentTarget.value.length
+                      )
+                    }
                     placeholder={t("sessionPage.answerPlaceholder")}
                     disabled={isAnswering}
-                    className="flex-1 w-full resize-none rounded-lg border-0 bg-transparent text-sm text-zinc-900 placeholder-zinc-400 outline-none disabled:opacity-50"
+                    className="flex-1 w-full resize-none rounded-sm border-0 bg-transparent text-sm text-zinc-900 placeholder-zinc-400 outline-none disabled:opacity-50"
                     style={{ minHeight: "180px" }}
                   />
 
                   {/* Mic */}
                   {sttSupported && (
-                    <div className="mt-3 flex flex-col items-start gap-2 border-t border-zinc-100 pt-3">
+                    <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-zinc-100 pt-3">
                       <button
-                        onClick={isListening ? stopListening : startListening}
+                        onClick={handleToggleMic}
                         className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
                           isListening
                             ? "bg-rose-100 text-rose-600 animate-pulse"
@@ -1064,7 +1203,7 @@ const InterviewSessionPage = () => {
                   <button
                     onClick={handleFinishInterview}
                     disabled={isAnswering}
-                    className="group inline-flex items-center gap-2 rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+                    className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     {isAnswering ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trophy className="h-4 w-4" />}
                     {t("sessionPage.viewResult")}
@@ -1134,7 +1273,7 @@ const InterviewSessionPage = () => {
                   {t("sessionPage.exitNo")}
                 </button>
                 <button
-                  onClick={() => navigate("/interviews")}
+                  onClick={handleConfirmExit}
                   className="flex-1 rounded-full bg-rose-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-rose-700"
                 >
                   {t("sessionPage.exitYes")}

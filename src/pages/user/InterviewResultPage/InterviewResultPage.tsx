@@ -83,7 +83,7 @@ function getScoreLabel(score: number, t: (key: string) => string): string {
 function getQuestionTypeBadge(type: string) {
   switch (type) {
     case "TECHNICAL":
-      return "bg-indigo-50 text-indigo-700";
+      return "bg-blue-50 text-sky-700";
     case "BEHAVIORAL":
       return "bg-emerald-50 text-emerald-700";
     case "SITUATIONAL":
@@ -221,7 +221,7 @@ const InterviewResultPage = () => {
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             >
-              <Loader2 className="h-10 w-10 text-indigo-500" />
+              <Loader2 className="h-10 w-10 text-blue-500" />
             </motion.div>
             <p className="mt-4 text-sm text-zinc-500">
               {t("resultPage.processing")}
@@ -552,7 +552,7 @@ const InterviewResultPage = () => {
                             {isInteractive && (
                               <div>
                                 <div className="mb-2 flex items-center gap-1.5">
-                                  <History className="h-4 w-4 text-indigo-400" />
+                                  <History className="h-4 w-4 text-red-400" />
                                   <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                                     {t("resultPage.conversationHistory")}
                                   </span>
@@ -577,13 +577,13 @@ const InterviewResultPage = () => {
                                           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
                                             msg.role === "USER"
                                               ? "bg-zinc-200"
-                                              : "bg-indigo-100"
+                                              : "bg-blue-100"
                                           }`}
                                         >
                                           {msg.role === "USER" ? (
                                             <User className="h-3.5 w-3.5 text-zinc-600" />
                                           ) : (
-                                            <Bot className="h-3.5 w-3.5 text-indigo-600" />
+                                            <Bot className="h-3.5 w-3.5 text-blue-600" />
                                           )}
                                         </div>
 
@@ -614,7 +614,7 @@ const InterviewResultPage = () => {
                                             className={`rounded-lg px-3 py-2 text-sm leading-relaxed ${
                                               msg.role === "USER"
                                                 ? "bg-zinc-100 text-zinc-700"
-                                                : "border border-indigo-100 bg-indigo-50/50 text-zinc-700"
+                                                : "border border-blue-100 bg-blue-50/50 text-zinc-700"
                                             }`}
                                           >
                                             <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -653,7 +653,7 @@ const InterviewResultPage = () => {
                             {/* AI Feedback */}
                             <div className="relative">
                               <div className="mb-2 flex items-center gap-1.5">
-                                <CheckCircle2 className="h-4 w-4 text-indigo-500" />
+                                <CheckCircle2 className="h-4 w-4 text-blue-500" />
                                 <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                                   {t("resultPage.aiFeedback")}
                                 </span>
@@ -670,7 +670,7 @@ const InterviewResultPage = () => {
                                   <Flag className="h-3.5 w-3.5" />
                                 </button>
                               </div>
-                              <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3">
+                              <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-3">
                                 <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
                                   {q.feedback.feedback}
                                 </p>
@@ -743,7 +743,7 @@ const InterviewResultPage = () => {
                 <h3 className="text-base font-semibold text-zinc-900">
                   {t("resultPage.skillRadarTitle", { defaultValue: "Đánh giá 5 nhóm kỹ năng" })}
                 </h3>
-                <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
+                <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
                   AI Assessment
                 </span>
               </div>

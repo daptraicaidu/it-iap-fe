@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   ChevronDown,
@@ -56,6 +56,37 @@ const getRankColor = (rank: string): string => {
     default:
       return "text-zinc-600 bg-zinc-100 border-zinc-200";
   }
+};
+
+const formatSubscriptionDate = (dateStr: string): string => {
+  if (!dateStr) return "";
+  const dmyMatch = dateStr.match(
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{1,2}))?/
+  );
+  if (dmyMatch) {
+    const [, day, month, year, hours, minutes] = dmyMatch;
+    const formattedDay = day.padStart(2, "0");
+    const formattedMonth = month.padStart(2, "0");
+    if (hours && minutes) {
+      return `${formattedDay}/${formattedMonth}/${year} ${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+    }
+    return `${formattedDay}/${formattedMonth}/${year}`;
+  }
+
+  try {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    }
+  } catch {
+    // Ignore fallback
+  }
+
+  return dateStr;
 };
 
 // ── Gauge Chart (SVG) — 5 discrete color segments semicircle ──
@@ -494,6 +525,7 @@ const getBenchmark = (profile: ProfileSummary | null): number[] => {
 const DashboardPage = () => {
   const { t, i18n } = useTranslation("Dashboard");
   const navigate = useNavigate();
+  const location = useLocation();
   const dashboardRef = useRef<HTMLDivElement>(null);
   const userInfo = useUserStore((s) => s.userInfo);
 
@@ -518,7 +550,15 @@ const DashboardPage = () => {
   const [isExportingImage, setIsExportingImage] = useState(false);
 
   // Upgrade Tier Modal State
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(
+    () => typeof window !== "undefined" && window.location.hash === "#pricing"
+  );
+
+  useEffect(() => {
+    if (location.hash === "#pricing") {
+      setIsUpgradeModalOpen(true);
+    }
+  }, [location.hash]);
 
   // Streak Info Modal State
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
@@ -864,11 +904,7 @@ const DashboardPage = () => {
               <p className="text-xs sm:text-sm text-zinc-600 mt-0.5">
                 {userInfo?.subscriptionEndDate ? (
                   t("subscription.expiresAt", {
-                    date: new Date(userInfo.subscriptionEndDate).toLocaleDateString("vi-VN", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    }),
+                    date: formatSubscriptionDate(userInfo.subscriptionEndDate),
                   })
                 ) : (
                   t("subscription.freeTierDesc")

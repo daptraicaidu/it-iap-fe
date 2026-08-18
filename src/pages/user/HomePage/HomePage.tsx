@@ -196,26 +196,50 @@ const HomePage = () => {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
-            {(["nav.features", "nav.howItWorks"] as const).map((key, i) => (
-              <a
-                key={key}
-                href={i === 0 ? "#features" : "#how-it-works"}
-                className="font-body text-[15px] font-medium transition-colors duration-200 no-underline"
-                style={{
-                  color: isOnHero ? "rgba(255,255,255,0.80)" : "var(--color-body)",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = isOnHero ? "white" : "var(--color-ink)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = isOnHero
-                    ? "rgba(255,255,255,0.80)"
-                    : "var(--color-body)")
-                }
-              >
-                {t(key)}
-              </a>
-            ))}
+            {(["nav.features", "nav.howItWorks", "nav.pricing"] as const).map((key, i) => {
+              if (key === "nav.pricing") {
+                return (
+                  <Link
+                    key={key}
+                    to="/pricing"
+                    className="font-body text-[15px] font-medium transition-colors duration-200 no-underline"
+                    style={{
+                      color: isOnHero ? "rgba(255,255,255,0.80)" : "var(--color-body)",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = isOnHero ? "white" : "var(--color-ink)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = isOnHero
+                        ? "rgba(255,255,255,0.80)"
+                        : "var(--color-body)")
+                    }
+                  >
+                    {t(key)}
+                  </Link>
+                );
+              }
+              return (
+                <a
+                  key={key}
+                  href={i === 0 ? "#features" : "#how-it-works"}
+                  className="font-body text-[15px] font-medium transition-colors duration-200 no-underline"
+                  style={{
+                    color: isOnHero ? "rgba(255,255,255,0.80)" : "var(--color-body)",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = isOnHero ? "white" : "var(--color-ink)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = isOnHero
+                      ? "rgba(255,255,255,0.80)"
+                      : "var(--color-body)")
+                  }
+                >
+                  {t(key)}
+                </a>
+              );
+            })}
 
             {/* Language toggle */}
             <button
@@ -307,6 +331,14 @@ const HomePage = () => {
               >
                 {t("nav.howItWorks")}
               </a>
+              <Link
+                to="/pricing"
+                className="font-body text-[15px] font-medium no-underline transition-colors"
+                style={{ color: isOnHero ? "rgba(255,255,255,0.85)" : "var(--color-body)" }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("nav.pricing")}
+              </Link>
               <button
                 className="font-body text-[15px] font-medium px-5 py-2.5 h-11 transition-all cursor-pointer border-none w-full active:scale-[0.97]"
                 style={{
@@ -976,7 +1008,7 @@ const HomePage = () => {
               </h4>
               <ul className="list-none p-0 m-0 flex flex-col gap-3">
                 <li><a href="#features" className="font-sans text-sm sm:text-[15px] text-gray-300 hover:text-white transition-colors duration-200 no-underline">{t("footer.features")}</a></li>
-                <li><a href="#" className="font-sans text-sm sm:text-[15px] text-gray-300 hover:text-white transition-colors duration-200 no-underline">{t("footer.pricing")}</a></li>
+                <li><Link to="/pricing" className="font-sans text-sm sm:text-[15px] text-gray-300 hover:text-white transition-colors duration-200 no-underline">{t("footer.pricing")}</Link></li>
                 <li><a href="#" className="font-sans text-sm sm:text-[15px] text-gray-300 hover:text-white transition-colors duration-200 no-underline">{t("footer.changelog")}</a></li>
               </ul>
             </div>

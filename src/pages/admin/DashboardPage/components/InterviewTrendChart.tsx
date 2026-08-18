@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   AreaChart,
   Area,
@@ -52,26 +53,105 @@ const InterviewTrendChart = ({
 }: InterviewTrendChartProps) => {
   const { t } = useTranslation("AdminDashboard");
 
-  const chartData = data.map((item, index) => {
-    let label: string;
-    if (timeFilter === "DAY" && item.time) {
-      label = item.time;
-    } else if (item.date) {
-      // Handle "YYYY-MM-DD" format
-      if (item.date.includes("-")) {
-        const parts = item.date.split("-");
-        label = `${parts[2]}/${parts[1]}`;
-      } else if (item.date.includes("/")) {
-        // Handle "DD/MM/YYYY" format
-        label = item.date.substring(0, 5);
-      } else {
-        label = item.date;
+  const chartData = useMemo(() => {
+    const pad = (n: number) => n.toString().padStart(2, "0");
+
+    // Normalize date string to "DD/MM" format
+    const normalizeDateKey = (dateStr?: string): string => {
+      if (!dateStr) return "";
+      if (dateStr.includes("-")) {
+        const parts = dateStr.split("-");
+        if (parts[0].length === 4) {
+          // YYYY-MM-DD -> DD/MM
+          return `${pad(parseInt(parts[2], 10))}/${pad(parseInt(parts[1], 10))}`;
+        }
       }
-    } else {
-      label = `#${index + 1}`;
+      if (dateStr.includes("/")) {
+        const parts = dateStr.split("/");
+        // DD/MM/YYYY or DD/MM
+        return `${pad(parseInt(parts[0], 10))}/${pad(parseInt(parts[1], 10))}`;
+      }
+      return dateStr;
+    };
+
+    // Normalize hour string to number 0..23
+    const normalizeHour = (timeStr?: string): number | null => {
+      if (!timeStr) return null;
+      const match = timeStr.match(/^(\d{1,2})/);
+      return match ? parseInt(match[1], 10) : null;
+    };
+
+    // 1. 24h filter: Generate exactly 24 points (00:00 to 23:00)
+    if (timeFilter === "DAY") {
+      const hourMap = new Map<number, number>();
+      data.forEach((item) => {
+        const h = normalizeHour(item.time || item.date);
+        if (h !== null && h >= 0 && h < 24) {
+          hourMap.set(h, (hourMap.get(h) || 0) + (item.count || 0));
+        }
+      });
+
+      return Array.from({ length: 24 }, (_, h) => ({
+        label: `${pad(h)}:00`,
+        count: hourMap.get(h) ?? 0,
+      }));
     }
-    return { label, count: item.count };
-  });
+
+    // 2. 7 days filter (WEEK): Generate exactly 7 consecutive days
+    if (timeFilter === "WEEK") {
+      const dateMap = new Map<string, number>();
+      data.forEach((item) => {
+        const key = normalizeDateKey(item.date);
+        if (key) {
+          dateMap.set(key, (dateMap.get(key) || 0) + (item.count || 0));
+        }
+      });
+
+      return Array.from({ length: 7 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (6 - i));
+        const key = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+        return {
+          label: key,
+          count: dateMap.get(key) ?? 0,
+        };
+      });
+    }
+
+    // 3. 30 days filter (MONTH): Generate exactly 30 consecutive days
+    if (timeFilter === "MONTH") {
+      const dateMap = new Map<string, number>();
+      data.forEach((item) => {
+        const key = normalizeDateKey(item.date);
+        if (key) {
+          dateMap.set(key, (dateMap.get(key) || 0) + (item.count || 0));
+        }
+      });
+
+      return Array.from({ length: 30 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (29 - i));
+        const key = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+        return {
+          label: key,
+          count: dateMap.get(key) ?? 0,
+        };
+      });
+    }
+
+    // Default / All filter
+    return data.map((item, index) => {
+      let label: string;
+      if (item.time) {
+        label = item.time;
+      } else if (item.date) {
+        label = normalizeDateKey(item.date);
+      } else {
+        label = `#${index + 1}`;
+      }
+      return { label, count: item.count || 0 };
+    });
+  }, [data, timeFilter]);
 
   if (isLoading) {
     return (

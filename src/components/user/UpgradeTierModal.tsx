@@ -47,6 +47,22 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
 
+    // Update URL hash to #pricing if not already present
+    if (window.location.hash !== "#pricing") {
+      window.history.pushState(
+        null,
+        "",
+        window.location.pathname + window.location.search + "#pricing"
+      );
+    }
+
+    const handlePopState = () => {
+      if (window.location.hash !== "#pricing") {
+        onClose();
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+
     // Prevent body scroll when full screen overlay is active
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -82,6 +98,14 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
     return () => {
       document.body.style.overflow = "unset";
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("popstate", handlePopState);
+      if (window.location.hash === "#pricing") {
+        window.history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search
+        );
+      }
     };
   }, [isOpen, onClose]);
 

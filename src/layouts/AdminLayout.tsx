@@ -76,6 +76,7 @@ const AdminLayout = () => {
 
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -142,34 +143,87 @@ const AdminLayout = () => {
     <div className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900">
       <div className="flex flex-1 min-h-0">
         {/* Desktop Sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-zinc-200 bg-white px-4 py-5 md:sticky md:top-0 md:flex md:h-screen md:flex-col">
-          {/* Logo Brand Header */}
-          <div className="mb-6 flex items-center justify-between px-2">
-            <NavLink to="/" className="flex items-center gap-2">
-              <img src={logoImg} alt="Interview AI Logo" className="h-9 w-auto object-contain" />
-            </NavLink>
+        <aside
+          className={`hidden shrink-0 border-r border-blue-200 bg-white py-5 transition-all duration-300 ease-in-out md:sticky md:top-0 md:flex md:h-screen md:flex-col ${
+            isDesktopCollapsed ? "w-[76px] px-2.5" : "w-64 px-4"
+          }`}
+        >
+          {/* Logo Brand Header with Desktop Sidebar Toggle */}
+          <div
+            className={`mb-6 flex items-center ${
+              isDesktopCollapsed
+                ? "flex-col gap-3 justify-center"
+                : "justify-between px-2"
+            }`}
+          >
+            {!isDesktopCollapsed ? (
+              <NavLink to="/" className="flex items-center gap-2 overflow-hidden transition-all duration-200">
+                <img src={logoImg} alt="Interview AI Logo" className="h-9 w-auto object-contain" />
+              </NavLink>
+            ) : (
+              <NavLink to="/" className="flex items-center justify-center transition-all duration-200" title="Interview AI">
+                <img src={logoImg} alt="Interview AI Logo" className="h-8 w-8 object-contain" />
+              </NavLink>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsDesktopCollapsed((prev) => !prev)}
+              className="group relative flex h-8 w-8 items-center justify-center rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-all active:scale-95 shadow-xs"
+              title={isDesktopCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
+            >
+              <div className="relative flex h-4 w-4 items-center justify-center">
+                {/* Top line -> Top wing of arrow */}
+                <span
+                  className={`absolute h-[1.5px] rounded-full bg-zinc-600 transition-all duration-300 ease-in-out origin-left group-hover:bg-zinc-900 ${
+                    isDesktopCollapsed
+                      ? "w-4 -translate-y-1.5 translate-x-0 rotate-0"
+                      : "w-2.5 -translate-x-[6px] -rotate-45"
+                  }`}
+                />
+                {/* Middle line -> Shaft of arrow */}
+                <span
+                  className={`absolute h-[1.5px] w-4 rounded-full bg-zinc-600 transition-all duration-300 ease-in-out group-hover:bg-zinc-900 ${
+                    isDesktopCollapsed ? "translate-x-0" : "translate-x-0.5"
+                  }`}
+                />
+                {/* Bottom line -> Bottom wing of arrow */}
+                <span
+                  className={`absolute h-[1.5px] rounded-full bg-zinc-600 transition-all duration-300 ease-in-out origin-left group-hover:bg-zinc-900 ${
+                    isDesktopCollapsed
+                      ? "w-4 translate-y-1.5 translate-x-0 rotate-0"
+                      : "w-2.5 -translate-x-[6px] rotate-45"
+                  }`}
+                />
+              </div>
+            </button>
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto pr-1">
+          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden pr-0.5 border-b border-blue-200">
             {sidebarItems.map((item) => {
               const Icon = item.icon;
+              const label = t(`menu.${item.key}`);
 
               return (
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  title={isDesktopCollapsed ? label : undefined}
                   className={({ isActive }) =>
                     [
-                      "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                      "flex items-center rounded-xl py-2.5 text-sm font-medium transition-all",
+                      isDesktopCollapsed ? "justify-center px-2" : "gap-3 px-3",
                       isActive
                         ? "bg-zinc-900 text-white shadow-sm"
                         : "text-zinc-600 hover:bg-zinc-100/80 hover:text-zinc-900",
                     ].join(" ")
                   }
                 >
-                  <Icon className="h-4 w-4" strokeWidth={1.8} />
-                  <span>{t(`menu.${item.key}`)}</span>
+                  <Icon className="h-4 w-4 shrink-0" strokeWidth={1.8} />
+                  {!isDesktopCollapsed && (
+                    <span className="truncate whitespace-nowrap">{label}</span>
+                  )}
                 </NavLink>
               );
             })}
@@ -180,20 +234,29 @@ const AdminLayout = () => {
             <button
               type="button"
               onClick={handleSwitchToUserWorkspace}
-              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-[0.98]"
               title={t("sidebar.userPlatform")}
+              className={`flex items-center rounded-xl border border-zinc-200 bg-zinc-50 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-[0.98] ${
+                isDesktopCollapsed ? "justify-center px-2" : "gap-3 px-3"
+              }`}
             >
-              <Compass className="h-4 w-4 text-blue-600" strokeWidth={1.8} />
-              <span className="flex-1 text-left">{t("sidebar.userPlatform")}</span>
+              <Compass className="h-4 w-4 text-blue-600 shrink-0" strokeWidth={1.8} />
+              {!isDesktopCollapsed && (
+                <span className="flex-1 text-left truncate">{t("sidebar.userPlatform")}</span>
+              )}
             </button>
 
             <button
               type="button"
               onClick={handleLogout}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700 active:scale-[0.98]"
+              title={t("sidebar.logout")}
+              className={`flex items-center rounded-xl py-2.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700 active:scale-[0.98] ${
+                isDesktopCollapsed ? "justify-center px-2" : "gap-3 px-3"
+              }`}
             >
-              <LogOut className="h-4 w-4" strokeWidth={1.8} />
-              <span>{t("sidebar.logout")}</span>
+              <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.8} />
+              {!isDesktopCollapsed && (
+                <span className="truncate">{t("sidebar.logout")}</span>
+              )}
             </button>
           </div>
         </aside>
@@ -272,7 +335,7 @@ const AdminLayout = () => {
         {/* Main Content Container */}
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Header */}
-          <header className="sticky top-0 z-30 border-b border-zinc-200 bg-white/95 px-4 py-3 backdrop-blur md:px-6">
+          <header className="sticky top-0 z-30 border-b border-blue-200 bg-white/95 px-4 py-3 backdrop-blur md:px-6">
             <div className="flex items-center justify-between gap-4">
               {/* Left: Mobile Toggle & Page Title */}
               <div className="flex items-center gap-3">

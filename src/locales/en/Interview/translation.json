@@ -10,6 +10,9 @@
     "noProfiles": "No profiles yet. Please create one first.",
     "goToProfiles": "Create Profile",
     "selectMode": "Choose Interview Mode",
+    "selectModeSubtitle": "Select an AI interview mode that best fits your preparation goals",
+    "required": "Required",
+    "loadingProfiles": "Loading profiles list...",
     "createButton": "Create Interview",
     "creating": "Creating...",
     "errors": {
@@ -42,6 +45,24 @@
       "proHint": "Upgrade your plan for more daily interview practice and in-depth AI evaluations.",
       "upgrade": "Upgrade Now",
       "viewTiers": "View Plans"
+    },
+    "sidebar": {
+      "previewTitle": "Session Overview",
+      "previewSubtitle": "Review setup before starting",
+      "sessionName": "Interview Name",
+      "notEntered": "Not named yet",
+      "selectedMode": "Interview Mode",
+      "notSelected": "Not selected",
+      "selectedProfile": "Target CV Profile",
+      "noProfileChosen": "No profile selected",
+      "evalFramework": "Scoring Framework",
+      "evalFrameworkValue": "5-Axis AI Competency Radar",
+      "checklistTitle": "Readiness Checklist",
+      "checklistSubtitle": "Tips for outstanding performance",
+      "checklistItem1": "Ensure a working microphone in a quiet environment.",
+      "checklistItem2": "Apply the STAR method (Situation, Task, Action, Result) in your answers.",
+      "checklistItem3": "AI will generate in-depth feedback and roadmap right after the session.",
+      "currentTierLabel": "Account Tier"
     }
   },
   "prepPage": {

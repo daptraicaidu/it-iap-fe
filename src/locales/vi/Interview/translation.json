@@ -10,6 +10,9 @@
     "noProfiles": "Chưa có hồ sơ nào. Hãy tạo hồ sơ trước.",
     "goToProfiles": "Tạo hồ sơ",
     "selectMode": "Chọn chế độ phỏng vấn",
+    "selectModeSubtitle": "Lựa chọn phương thức phỏng vấn AI phù hợp với mục tiêu của bạn",
+    "required": "Bắt buộc",
+    "loadingProfiles": "Đang tải danh sách hồ sơ...",
     "createButton": "Tạo phỏng vấn",
     "creating": "Đang tạo...",
     "errors": {
@@ -42,6 +45,24 @@
       "proHint": "Nâng cấp gói để mở khóa thêm lượt luyện tập mỗi ngày và nhận phân tích chuyên sâu.",
       "upgrade": "Nâng cấp ngay",
       "viewTiers": "Xem các gói"
+    },
+    "sidebar": {
+      "previewTitle": "Tóm tắt cấu hình",
+      "previewSubtitle": "Kiểm tra trước khi bắt đầu phỏng vấn",
+      "sessionName": "Tên buổi phỏng vấn",
+      "notEntered": "Chưa đặt tên",
+      "selectedMode": "Chế độ phỏng vấn",
+      "notSelected": "Chưa chọn chế độ",
+      "selectedProfile": "Hồ sơ CV áp dụng",
+      "noProfileChosen": "Chưa chọn hồ sơ",
+      "evalFramework": "Khung đánh giá",
+      "evalFrameworkValue": "Radar 5 trục năng lực AI",
+      "checklistTitle": "Checklist sẵn sàng",
+      "checklistSubtitle": "Mẹo hữu ích để đạt điểm cao",
+      "checklistItem1": "Đảm bảo microphone rõ ràng trong không gian yên tĩnh.",
+      "checklistItem2": "Áp dụng phương pháp STAR (Situation, Task, Action, Result) khi trả lời.",
+      "checklistItem3": "AI sẽ chấm điểm chi tiết và gợi ý cải thiện ngay sau buổi phỏng vấn.",
+      "currentTierLabel": "Gói tài khoản"
     }
   },
   "prepPage": {

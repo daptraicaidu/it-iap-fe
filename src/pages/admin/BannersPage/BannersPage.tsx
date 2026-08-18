@@ -192,7 +192,7 @@ const BannersPage: React.FC = () => {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-zinc-900 flex items-center gap-2">
-            <Megaphone className="h-6 w-6 text-600" />
+            {/* <Megaphone className="h-6 w-6 text-600" /> */}
             <span>{t("title")}</span>
           </h2>
           <p className="mt-1 text-sm text-zinc-600">{t("subtitle")}</p>

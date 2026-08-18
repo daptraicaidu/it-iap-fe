@@ -1,8 +1,9 @@
 {
   "nav": {
-    "brand": "Interview with AI",
+    "brand": "Interview AI Practice",
     "features": "Tính năng",
     "howItWorks": "Cách hoạt động",
+    "pricing": "Bảng giá",
     "getStarted": "Đăng ký"
   },
   "hero": {
