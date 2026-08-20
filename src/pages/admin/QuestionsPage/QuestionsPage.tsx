@@ -213,7 +213,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
 };
 
 // ── Skeleton Row ──
-const SkeletonRow = () => (
+const SkeletonRow = ({ showDeleteCol }: { showDeleteCol: boolean }) => (
   <tr className="animate-pulse">
     <td className="px-4 py-3.5 text-center">
       <div className="mx-auto h-4 w-4 rounded bg-zinc-200" />
@@ -248,9 +248,11 @@ const SkeletonRow = () => (
     <td className="px-4 py-3.5">
       <div className="h-4 w-10 rounded bg-zinc-200" />
     </td>
-    <td className="px-4 py-3.5">
-      <div className="h-5 w-20 rounded-full bg-zinc-200" />
-    </td>
+    {showDeleteCol && (
+      <td className="px-4 py-3.5">
+        <div className="h-5 w-20 rounded-full bg-zinc-200" />
+      </td>
+    )}
     <td className="px-4 py-3.5">
       <div className="h-8 w-8 rounded bg-zinc-200" />
     </td>
@@ -349,9 +351,12 @@ const QuestionsPage = () => {
   const [filterCategory, setFilterCategory] = useState("");
   const [filterSource, setFilterSource] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [filterDeleted, setFilterDeleted] = useState<string>("false");
 
-  // Applied filters
-  const [appliedFilters, setAppliedFilters] = useState<GetQuestionsParams>({});
+  // Applied filters (default: isDeleted: false)
+  const [appliedFilters, setAppliedFilters] = useState<GetQuestionsParams>({
+    isDeleted: false,
+  });
 
   // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -475,6 +480,11 @@ const QuestionsPage = () => {
     if (filterCategory) filters.category = filterCategory;
     if (filterSource) filters.source = filterSource;
     if (filterStatus) filters.status = filterStatus;
+    if (filterDeleted === "false") {
+      filters.isDeleted = false;
+    } else if (filterDeleted === "true") {
+      filters.isDeleted = true;
+    } // if "all", leave undefined
     setAppliedFilters(filters);
     setCurrentPage(1);
   };
@@ -486,7 +496,8 @@ const QuestionsPage = () => {
     setFilterCategory("");
     setFilterSource("");
     setFilterStatus("");
-    setAppliedFilters({});
+    setFilterDeleted("false");
+    setAppliedFilters({ isDeleted: false });
     setCurrentPage(1);
   };
 
@@ -523,7 +534,11 @@ const QuestionsPage = () => {
     filterLevel ||
     filterCategory ||
     filterSource ||
-    filterStatus;
+    filterStatus ||
+    filterDeleted !== "false";
+
+  const showDeleteCol =
+    appliedFilters.isDeleted === true || appliedFilters.isDeleted === undefined;
 
   const showingFrom = totalElements === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const showingTo = Math.min(currentPage * pageSize, totalElements);
@@ -682,6 +697,22 @@ const QuestionsPage = () => {
               ))}
             </select>
           </div>
+
+          {/* Deletion Status Filter */}
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-zinc-500">
+              {t("filter.deletedStatus")}
+            </label>
+            <select
+              value={filterDeleted}
+              onChange={(e) => setFilterDeleted(e.target.value)}
+              className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400"
+            >
+              <option value="false">{t("filter.notDeleted")}</option>
+              <option value="true">{t("filter.deleted")}</option>
+              <option value="all">{t("filter.allDeletedStatuses")}</option>
+            </select>
+          </div>
         </div>
 
         {/* Filter Actions */}
@@ -831,12 +862,14 @@ const QuestionsPage = () => {
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
                   {t("table.status")}
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-1 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
                   {t("table.timeLimit")}
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
-                  {t("table.deleteAt")}
-                </th>
+                {showDeleteCol && (
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
+                    {t("table.deleteAt")}
+                  </th>
+                )}
                 <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-zinc-500">
                   {t("table.actions")}
                 </th>
@@ -845,15 +878,15 @@ const QuestionsPage = () => {
             <tbody className="divide-y divide-zinc-100">
               {loading ? (
                 <>
-                  <SkeletonRow />
-                  <SkeletonRow />
-                  <SkeletonRow />
-                  <SkeletonRow />
-                  <SkeletonRow />
+                  <SkeletonRow showDeleteCol={showDeleteCol} />
+                  <SkeletonRow showDeleteCol={showDeleteCol} />
+                  <SkeletonRow showDeleteCol={showDeleteCol} />
+                  <SkeletonRow showDeleteCol={showDeleteCol} />
+                  <SkeletonRow showDeleteCol={showDeleteCol} />
                 </>
               ) : questions.length === 0 ? (
                 <tr>
-                  <td colSpan={13} className="px-4 py-16 text-center">
+                  <td colSpan={showDeleteCol ? 13 : 12} className="px-4 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100">
                         <FileQuestion className="h-6 w-6 text-zinc-400" strokeWidth={1.5} />
@@ -987,18 +1020,20 @@ const QuestionsPage = () => {
                     </td>
 
                     {/* Delete At */}
-                    <td className="px-4 py-3">
-                      {q.deleteAt ? (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">
-                          <Trash2 className="h-3 w-3" strokeWidth={1.5} />
-                          {new Date(q.deleteAt).toLocaleDateString('vi-VN')}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-                          {t("table.notDeleted")}
-                        </span>
-                      )}
-                    </td>
+                    {showDeleteCol && (
+                      <td className="px-4 py-3">
+                        {q.deleteAt ? (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">
+                            <Trash2 className="h-3 w-3" strokeWidth={1.5} />
+                            {new Date(q.deleteAt).toLocaleDateString('vi-VN')}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+                            {t("table.notDeleted")}
+                          </span>
+                        )}
+                      </td>
+                    )}
 
                     {/* Actions */}
                     <td className="px-4 py-3">

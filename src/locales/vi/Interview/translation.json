@@ -161,9 +161,23 @@
       "needsWork": "Cần cải thiện"
     }
   },
+  "skills": {
+    "coreKnowledge": "Kiến thức nền",
+    "problemSolving": "Giải quyết vấn đề",
+    "appliedExperience": "Kinh nghiệm thực tiễn",
+    "logicalArticulation": "Diễn đạt logic",
+    "focusAndCompleteness": "Tập trung & hoàn thiện"
+  },
+  "radar": {
+    "title": "Đánh giá 5 nhóm kỹ năng",
+    "aiAssessment": "Đánh giá bởi AI",
+    "benchmark": "Chuẩn mục tiêu",
+    "userScore": "Điểm của bạn"
+  },
   "historyPage": {
     "title": "Lịch sử phỏng vấn",
     "subtitle": "Xem lại các buổi phỏng vấn bạn đã tham gia",
+    "loading": "Đang tải danh sách lịch sử phỏng vấn...",
     "filterAll": "Tất cả",
     "filterByMode": "Chế độ",
     "status": {

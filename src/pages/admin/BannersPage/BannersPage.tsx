@@ -128,17 +128,16 @@ const BannersPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) {
-      setErrorMsg("Vui lòng điền đầy đủ Tiêu đề và Nội dung bắt buộc.");
-      return;
-    }
 
     setSubmitting(true);
     setErrorMsg(null);
 
+    const finalTitle = title.trim() || "ㅤ";
+    const finalContent = content.trim() || "ㅤ";
+
     const formData = new FormData();
-    formData.append("title", title.trim());
-    formData.append("content", content.trim());
+    formData.append("title", finalTitle);
+    formData.append("content", finalContent);
     formData.append("active", String(isActive));
     if (marquee.trim()) {
       formData.append("marquee", marquee.trim());
@@ -226,12 +225,12 @@ const BannersPage: React.FC = () => {
       <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-16 text-zinc-500 gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
             <p className="text-sm font-medium">Đang tải danh sách banner...</p>
           </div>
         ) : banners.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 mb-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 mb-3">
               <Sparkles className="h-6 w-6" />
             </div>
             <p className="text-sm font-semibold text-zinc-900">{t("emptyState")}</p>
@@ -317,7 +316,7 @@ const BannersPage: React.FC = () => {
                     {/* Marquee */}
                     <td className="px-4 py-3.5">
                       {banner.marquee ? (
-                        <span className="inline-block max-w-[180px] truncate rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700">
+                        <span className="inline-block max-w-[180px] truncate rounded-md bg-blue-50 border border-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
                           {banner.marquee}
                         </span>
                       ) : (
@@ -438,11 +437,10 @@ const BannersPage: React.FC = () => {
               {/* Title Input */}
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 mb-1">
-                  {t("modal.fields.title")} <span className="text-rose-500">*</span>
+                  {t("modal.fields.title")}
                 </label>
                 <input
                   type="text"
-                  required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={t("modal.fields.titlePlaceholder")}
@@ -453,11 +451,10 @@ const BannersPage: React.FC = () => {
               {/* Content Input */}
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 mb-1">
-                  {t("modal.fields.content")} <span className="text-rose-500">*</span>
+                  {t("modal.fields.content")}
                 </label>
                 <textarea
                   rows={3}
-                  required
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder={t("modal.fields.contentPlaceholder")}

@@ -91,7 +91,7 @@ const UserLayout = () => {
     { label: t("navigation.home", "Trang chủ"), to: "/", end: true },
     { label: t("navigation.dashboard", "Dashboard"), to: "/dashboard", end: false },
     { label: t("navigation.interview", "Phỏng vấn"), to: "/interviews", end: false },
-    { label: t("navigation.history", "Lịch sử"), to: "/history", end: false },
+    { label: t("navigation.history", "Lịch sử"), to: "/history", end: true },
     { label: t("navigation.chatbot", "Chatbot"), to: "/chatbot", end: false },
     { label: t("navigation.reports", "Báo cáo & Đánh giá"), to: "/reports_and_feedbacks", end: false },
     { label: t("navigation.forum", "Diễn đàn"), to: "/forum", end: false },
@@ -156,6 +156,11 @@ const UserLayout = () => {
       clearTimeout(timer2);
     };
   }, [location.pathname]);
+
+  // If in active interview session, render full-screen session page without UserLayout header/footer
+  if (location.pathname.includes("/session")) {
+    return <Outlet />;
+  }
 
   return (
     <div className="h-[100dvh] bg-zinc-50 text-zinc-900 flex flex-col overflow-hidden">

@@ -34,7 +34,7 @@ import { useSpeechRecognition } from "../../../hooks/useSpeechRecognition";
 import type { AxiosError } from "axios";
 
 // ── Countdown Timer Hook ──
-function useCountdown(timeEnd: string | null) {
+function useCountdown(timeEnd: string | null, bufferSeconds: number = 3) {
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
 
   useEffect(() => {
@@ -63,7 +63,9 @@ function useCountdown(timeEnd: string | null) {
 
     const calcRemaining = () => {
       const now = new Date();
-      const diff = Math.max(0, Math.floor((endDate.getTime() - now.getTime()) / 1000));
+      // Subtract bufferSeconds so that when countdown hits 0s, actual server still has 3s buffer to process the answer!
+      const rawDiff = Math.floor((endDate.getTime() - now.getTime()) / 1000);
+      const diff = Math.max(0, rawDiff - bufferSeconds);
       setSecondsLeft(diff);
       return diff;
     };
@@ -75,7 +77,7 @@ function useCountdown(timeEnd: string | null) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeEnd]);
+  }, [timeEnd, bufferSeconds]);
 
   return secondsLeft;
 }
@@ -134,6 +136,11 @@ const InterviewSessionPage = () => {
 
   // Local state
   const [userAnswer, setUserAnswer] = useState("");
+  const userAnswerRef = useRef(userAnswer);
+  useEffect(() => {
+    userAnswerRef.current = userAnswer;
+  }, [userAnswer]);
+
   const [hint, setHint] = useState<string | null>(null);
   const [isHintVisible, setIsHintVisible] = useState(false);
   const [isLoadingHint, setIsLoadingHint] = useState(false);
@@ -453,13 +460,14 @@ const InterviewSessionPage = () => {
     }
   }, [currentQuestion, userAnswer, isAnswering, setIsAnswering, addMessage, setIsComplete, t]);
 
-  const handleStressAnswer = useCallback(async () => {
-    if (!currentQuestion || isAnswering) return;
+  const handleStressAnswer = useCallback(async (explicitAnswer?: string) => {
+    if (!currentQuestion || isAnswering || isComplete) return;
 
     setIsAnswering(true);
     setError("");
 
-    const answerText = userAnswer.trim();
+    const rawText = typeof explicitAnswer === "string" ? explicitAnswer : userAnswerRef.current;
+    const answerText = rawText.trim() || "Không có câu trả lời";
 
     try {
       const res = await interviewService.answerStress(
@@ -467,29 +475,39 @@ const InterviewSessionPage = () => {
         answerText
       );
 
-      const nextQuestion = res.data.data;
+      const nextQuestion = res.data?.data;
 
       // Save current to history
       saveCurrentToHistory(answerText);
       setUserAnswer("");
+      userAnswerRef.current = "";
       setHint(null);
       setIsHintVisible(false);
 
       // If the response is a new question, set it
-      if (nextQuestion.interviewQuestionId !== currentQuestion.interviewQuestionId) {
+      const hasValidNext =
+        nextQuestion &&
+        nextQuestion.interviewQuestionId &&
+        nextQuestion.interviewQuestionId !== currentQuestion.interviewQuestionId;
+
+      if (hasValidNext) {
         setCurrentQuestion(nextQuestion);
       } else {
-        // hasNext might be false — last question answered
-        setCurrentQuestion({ ...currentQuestion, hasNext: false });
+        // Last question answered — mark isComplete without calling setCurrentQuestion (which would reset isComplete to false)
         setIsComplete(true);
       }
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
-      setError(axiosErr.response?.data?.message || t("errors.answerFailed"));
+      // If error is 400 because question was already submitted on the last question, mark isComplete
+      if (axiosErr.response?.status === 400 && currentQuestion.hasNext === false) {
+        setIsComplete(true);
+      } else {
+        setError(axiosErr.response?.data?.message || t("errors.answerFailed"));
+      }
     } finally {
       setIsAnswering(false);
     }
-  }, [currentQuestion, userAnswer, isAnswering, setIsAnswering, saveCurrentToHistory, setCurrentQuestion, setIsComplete, t]);
+  }, [currentQuestion, isAnswering, isComplete, setIsAnswering, saveCurrentToHistory, setCurrentQuestion, setIsComplete, t]);
 
   const handleNextInteractive = useCallback(async () => {
     if (!currentQuestion || !isComplete || isAnswering) return;
@@ -507,6 +525,7 @@ const InterviewSessionPage = () => {
       // Save current to history
       saveCurrentToHistory("");
       setUserAnswer("");
+      userAnswerRef.current = "";
       setHint(null);
       setIsHintVisible(false);
       setCurrentQuestion(nextQuestion);
@@ -546,34 +565,13 @@ const InterviewSessionPage = () => {
   }, [currentQuestion, hint, isHintVisible, t]);
 
   const handleFinishInterview = async () => {
-    if (!currentQuestion || isAnswering) return;
+    if (isAnswering) return;
 
-    setIsAnswering(true);
-    setError("");
-
-    try {
-      if (!isInteractive) {
-        // Stress mode: still needs to submit the final answer
-        await interviewService.answerStress(
-          currentQuestion.interviewQuestionId,
-          userAnswer.trim() || "Không có câu trả lời"
-        );
-      }
-      // Interactive mode: scoring was already triggered automatically in handleInteractiveAnswer
-      // when isComplete=true + hasNext=false came back from the answers API.
-      // No need to call /next again here.
-
-      // Exit fullscreen before navigating to result page
-      if (document.fullscreenElement) {
-        await document.exitFullscreen().catch(() => {});
-      }
-      navigate(`/history/${interviewId}/result`);
-    } catch (err) {
-      const axiosErr = err as AxiosError<ApiErrorResponse>;
-      setError(axiosErr.response?.data?.message || t("errors.answerFailed"));
-    } finally {
-      setIsAnswering(false);
+    // Exit fullscreen before navigating to result page
+    if (document.fullscreenElement) {
+      await document.exitFullscreen().catch(() => {});
     }
+    navigate(`/history/${interviewId}/result`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -1199,7 +1197,12 @@ const InterviewSessionPage = () => {
             {/* Next / View Result */}
             {!isViewingPrevious && (
               <>
-                {currentQuestion?.hasNext === false && (isComplete || !isInteractive) ? (
+                {/*
+                  "Xem kết quả" button appears ONLY when:
+                  - In Interactive mode: isComplete === true AND currentQuestion.hasNext === false
+                  - In Stress mode: isComplete === true (after final question was answered via timeout or button)
+                */}
+                {isComplete && (!isInteractive || currentQuestion?.hasNext === false) ? (
                   <button
                     onClick={handleFinishInterview}
                     disabled={isAnswering}
@@ -1219,7 +1222,7 @@ const InterviewSessionPage = () => {
                   </button>
                 ) : (
                   <button
-                    onClick={handleStressAnswer}
+                    onClick={() => handleStressAnswer()}
                     disabled={isAnswering}
                     className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
                   >

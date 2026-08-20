@@ -161,9 +161,23 @@
       "needsWork": "Needs Work"
     }
   },
+  "skills": {
+    "coreKnowledge": "Core Knowledge",
+    "problemSolving": "Problem Solving",
+    "appliedExperience": "Applied Experience",
+    "logicalArticulation": "Logical Articulation",
+    "focusAndCompleteness": "Focus & Completeness"
+  },
+  "radar": {
+    "title": "5 Skill Dimensions Evaluation",
+    "aiAssessment": "AI Assessment",
+    "benchmark": "Target Benchmark",
+    "userScore": "Your Score"
+  },
   "historyPage": {
     "title": "Interview History",
     "subtitle": "Review your past interview sessions",
+    "loading": "Loading interview history...",
     "filterAll": "All",
     "filterByMode": "Mode",
     "status": {

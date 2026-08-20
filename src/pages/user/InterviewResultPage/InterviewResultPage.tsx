@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -25,10 +25,11 @@ import type {
   ApiErrorResponse,
   ChatMessage,
 } from "../../../services/user/interviewService";
-import useInterviewStore from "../../../store/interviewStore";
 import ReportModal from "../../../components/ReportModal";
 import type { AxiosError } from "axios";
 import { RadarChart } from "../DashboardPage/DashboardPage";
+import { getBenchmarkByTitleOrRole } from "../../../utils/benchmark";
+import useInterviewStore from "../../../store/interviewStore";
 
 // Animated counter component
 function AnimatedScore({
@@ -96,6 +97,7 @@ function getQuestionTypeBadge(type: string) {
 const InterviewResultPage = () => {
   const { t } = useTranslation("Interview");
   const navigate = useNavigate();
+  const location = useLocation();
   const { interviewId } = useParams<{ interviewId: string }>();
   const [searchParams] = useSearchParams();
   const highlightQuestionId = searchParams.get("highlightQuestionId");
@@ -212,21 +214,44 @@ const InterviewResultPage = () => {
   };
 
   // ── Loading ──
-  if (isLoading) {
+  // ── Loading & Processing ──
+  if (isLoading || feedbackData?.processing) {
     return (
       <div className="w-full">
         <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center py-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center justify-center py-20 text-center"
+          >
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
-              <Loader2 className="h-10 w-10 text-blue-500" />
+              <Target className="h-10 w-10 text-blue-600" />
             </motion.div>
-            <p className="mt-4 text-sm text-zinc-500">
+            <h2 className="mb-2 text-xl font-semibold text-zinc-900">
               {t("resultPage.processing")}
+            </h2>
+            <p className="text-sm text-zinc-500">
+              {t("resultPage.processingDesc")}
             </p>
-          </div>
+            <div className="mt-6 flex gap-1">
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  className="h-2.5 w-2.5 rounded-full bg-blue-400"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{
+                    duration: 0.8,
+                    delay: i * 0.2,
+                    repeat: Infinity,
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
         </section>
       </div>
     );
@@ -256,49 +281,6 @@ const InterviewResultPage = () => {
     );
   }
 
-  // ── Processing ──
-  if (feedbackData?.processing) {
-    return (
-      <div className="w-full">
-        <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-20"
-          >
-            <motion.div
-              className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Target className="h-10 w-10 text-indigo-600" />
-            </motion.div>
-            <h2 className="mb-2 text-xl font-semibold text-zinc-900">
-              {t("resultPage.processing")}
-            </h2>
-            <p className="text-sm text-zinc-500">
-              {t("resultPage.processingDesc")}
-            </p>
-            <div className="mt-6 flex gap-1">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="h-2.5 w-2.5 rounded-full bg-indigo-400"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{
-                    duration: 0.8,
-                    delay: i * 0.2,
-                    repeat: Infinity,
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </section>
-      </div>
-    );
-  }
-
   if (!feedbackData) return null;
 
   const isInteractive = feedbackData.interviewMode === "INTERACTIVE_INTERVIEW";
@@ -311,7 +293,14 @@ const InterviewResultPage = () => {
     feedbackData.overallResult.focusAndCompleteness ?? 0,
   ];
 
-  const benchmarkValues = [7, 7, 7, 7, 7];
+  const interviewTitle =
+    (location.state as { profileName?: string; profileTitle?: string; interviewTitle?: string } | null)?.profileName ||
+    (location.state as { profileName?: string; profileTitle?: string; interviewTitle?: string } | null)?.profileTitle ||
+    (location.state as { profileName?: string; profileTitle?: string; interviewTitle?: string } | null)?.interviewTitle ||
+    useInterviewStore.getState().interviewTitle ||
+    "";
+
+  const benchmarkValues = getBenchmarkByTitleOrRole(interviewTitle);
 
   const radarLabels = [
     t("skills.coreKnowledge", { defaultValue: "Kiến thức nền" }),
@@ -741,10 +730,10 @@ const InterviewResultPage = () => {
             >
               <div className="mb-4 flex items-center justify-between border-b border-zinc-100 pb-3">
                 <h3 className="text-base font-semibold text-zinc-900">
-                  {t("resultPage.skillRadarTitle", { defaultValue: "Đánh giá 5 nhóm kỹ năng" })}
+                  {t("radar.title", { defaultValue: "Đánh giá 5 nhóm kỹ năng" })}
                 </h3>
                 <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                  AI Assessment
+                  {t("radar.aiAssessment", { defaultValue: "AI Assessment" })}
                 </span>
               </div>
 
@@ -790,31 +779,31 @@ const InterviewResultPage = () => {
               {/* Breakdown List */}
               <div className="mt-4 space-y-2 border-t border-zinc-100 pt-4 text-xs">
                 <div className="flex items-center justify-between text-zinc-600">
-                  <span>Kiến thức nền:</span>
+                  <span>{t("skills.coreKnowledge")}:</span>
                   <span className="font-semibold text-zinc-900">
                     {(feedbackData.overallResult.coreKnowledge ?? 0).toFixed(1)} / 10
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-zinc-600">
-                  <span>Giải quyết vấn đề:</span>
+                  <span>{t("skills.problemSolving")}:</span>
                   <span className="font-semibold text-zinc-900">
                     {(feedbackData.overallResult.problemSolving ?? 0).toFixed(1)} / 10
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-zinc-600">
-                  <span>Kinh nghiệm thực tiễn:</span>
+                  <span>{t("skills.appliedExperience")}:</span>
                   <span className="font-semibold text-zinc-900">
                     {(feedbackData.overallResult.appliedExperience ?? 0).toFixed(1)} / 10
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-zinc-600">
-                  <span>Diễn đạt logic:</span>
+                  <span>{t("skills.logicalArticulation")}:</span>
                   <span className="font-semibold text-zinc-900">
                     {(feedbackData.overallResult.logicalArticulation ?? 0).toFixed(1)} / 10
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-zinc-600">
-                  <span>Tập trung & hoàn thiện:</span>
+                  <span>{t("skills.focusAndCompleteness")}:</span>
                   <span className="font-semibold text-zinc-900">
                     {(feedbackData.overallResult.focusAndCompleteness ?? 0).toFixed(1)} / 10
                   </span>
