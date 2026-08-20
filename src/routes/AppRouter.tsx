@@ -61,10 +61,8 @@ const AppRouter = () => {
         </Route>
 
         <Route element={<ProtectedRoute />}>
-          {/* Interview Session — full-screen, no UserLayout */}
-          <Route path="/interviews/:interviewId/session" element={<InterviewSessionPage />} />
-
           <Route element={<UserLayout />}>
+            <Route path="/interviews/:interviewId/session" element={<InterviewSessionPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/interviews" element={<InterviewsPage />} />
             <Route path="/interviews/:interviewId" element={<InterviewPrepPage />} />

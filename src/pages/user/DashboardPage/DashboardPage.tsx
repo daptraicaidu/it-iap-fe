@@ -317,7 +317,7 @@ export const RadarChart = ({ userValues, benchmarkValues, labels }: RadarChartPr
   );
 };
 
-// ── Activity Heatmap — 13 weeks, large cells with numbers ──
+// ── Activity Heatmap — 91 days aligned strictly to Mon..Sun ──
 interface ActivityHeatmapProps {
   data: { date: string; totalQuestions: number }[];
   labelNoActivity: string;
@@ -335,9 +335,7 @@ const ActivityHeatmap = ({
   labelMany,
   labelDays,
 }: ActivityHeatmapProps) => {
-  const today = new Date();
-  const weeks = 13; // max 91 days from API
-  const totalDays = weeks * 7;
+  const totalDays = 91; // Exactly 91 days range from [today - 90 days ... today]
 
   // Build date→count map
   const map: Record<string, number> = {};
@@ -345,44 +343,96 @@ const ActivityHeatmap = ({
     map[d.date] = d.totalQuestions;
   });
 
-  // Build cells: earliest first
-  const cells: {
-    date: string;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // startDate is 90 days before today
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - (totalDays - 1));
+
+  // Determine Monday of startDate's calendar week
+  const startDayOfWeek = startDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+  const startAdjustedDay = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1; // 0=Mon .. 6=Sun
+  const startWeekMonday = new Date(startDate);
+  startWeekMonday.setDate(startDate.getDate() - startAdjustedDay);
+
+  // Determine Sunday of today's calendar week
+  const todayDayOfWeek = today.getDay();
+  const todayAdjustedDay = todayDayOfWeek === 0 ? 6 : todayDayOfWeek - 1;
+  const endWeekSunday = new Date(today);
+  endWeekSunday.setDate(today.getDate() + (6 - todayAdjustedDay));
+
+  // Total calendar weeks (usually 14)
+  const totalWeeks =
+    Math.round(
+      (endWeekSunday.getTime() - startWeekMonday.getTime()) /
+        (7 * 24 * 60 * 60 * 1000)
+    ) + 1;
+
+  // Build cells: each column is a calendar week (Mon=row 0 .. Sun=row 6)
+  const gridWeeks: {
+    dateStr: string;
+    formattedDate: string;
     count: number;
     weekIdx: number;
     dayIdx: number;
-  }[] = [];
-  for (let i = totalDays - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
-    const dayOfWeek = d.getDay();
-    const adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Mon=0..Sun=6
-    const weekIdx = Math.floor((totalDays - 1 - i) / 7);
-    cells.push({ date: dateStr, count: map[dateStr] ?? 0, weekIdx, dayIdx: adjustedDay });
+    isOutOfRange: boolean;
+  }[][] = [];
+
+  for (let w = 0; w < totalWeeks; w++) {
+    const weekColumn = [];
+    for (let d = 0; d < 7; d++) {
+      const cellDate = new Date(startWeekMonday);
+      cellDate.setDate(startWeekMonday.getDate() + w * 7 + d);
+
+      const isBeforeStart = cellDate.getTime() < startDate.getTime();
+      const isAfterToday = cellDate.getTime() > today.getTime();
+      const isOutOfRange = isBeforeStart || isAfterToday;
+
+      const year = cellDate.getFullYear();
+      const month = String(cellDate.getMonth() + 1).padStart(2, "0");
+      const day = String(cellDate.getDate()).padStart(2, "0");
+      const dateStr = `${year}-${month}-${day}`;
+      const formattedDate = `${day}/${month}/${year}`;
+
+      const count = isOutOfRange ? 0 : (map[dateStr] ?? 0);
+
+      weekColumn.push({
+        dateStr,
+        formattedDate,
+        count,
+        weekIdx: w,
+        dayIdx: d,
+        isOutOfRange,
+      });
+    }
+    gridWeeks.push(weekColumn);
   }
 
   const getBgColor = (count: number) => {
     if (count === 0) return "#f4f4f5"; // zinc-100
-    if (count < 3) return "#a1caffff"; 
-    if (count < 8) return "#6baafcff"; 
-    return "#4393fcff"; 
+    if (count < 3) return "#a1caff"; 
+    if (count < 8) return "#6baafc"; 
+    return "#3b82f6"; 
   };
 
   const getTextColor = (count: number) => {
     if (count === 0) return "#a1a1aa"; // zinc-400
-    if (count < 3) return "#3730a3"; 
+    if (count < 3) return "#1e3a8a"; 
     return "#ffffff";
   };
 
-  // Month labels
+  // Month labels (display month name on the first week column where the month changes)
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const monthLabels: { label: string; weekIdx: number }[] = [];
   let lastMonth = -1;
-  for (let w = 0; w < weeks; w++) {
-    const cell = cells.find((c) => c.weekIdx === w && c.dayIdx === 0);
-    if (cell) {
-      const m = new Date(cell.date).getMonth();
+
+  for (let w = 0; w < totalWeeks; w++) {
+    // Find the first in-range cell in this week column (or first cell)
+    const activeCell = gridWeeks[w].find((c) => !c.isOutOfRange) || gridWeeks[w][0];
+    if (activeCell) {
+      const parts = activeCell.dateStr.split("-");
+      const m = parseInt(parts[1], 10) - 1;
       if (m !== lastMonth) {
         monthLabels.push({ label: monthNames[m], weekIdx: w });
         lastMonth = m;
@@ -390,30 +440,28 @@ const ActivityHeatmap = ({
     }
   }
 
-  const gridByWeekDay: Record<string, (typeof cells)[0]> = {};
-  cells.forEach((c) => {
-    gridByWeekDay[`${c.weekIdx}-${c.dayIdx}`] = c;
-  });
-
-  // Cell dimensions — large enough to fit numbers
-  const CELL = 46; // px width
+  // Dimensions
   const CELL_H = 38; // px height
   const GAP = 4;
   const DAY_LABEL_W = 36;
 
   return (
-    <div className="w-full overflow-x-auto">
-      <div style={{ minWidth: DAY_LABEL_W + weeks * (CELL + GAP) }}>
-        {/* Month header — uses same flex layout as the grid so columns align */}
+    <div className="w-full overflow-x-auto py-2">
+      <div style={{ minWidth: DAY_LABEL_W + totalWeeks * (44 + GAP) }} className="pr-1">
+        {/* Month header — columns aligned with grid columns */}
         <div className="mb-1 flex">
           {/* Spacer matching day-label column */}
           <div className="flex-shrink-0" style={{ width: DAY_LABEL_W }} />
-          {/* Month columns matching grid columns */}
+          {/* Month columns */}
           <div className="flex flex-1" style={{ gap: GAP }}>
-            {Array.from({ length: weeks }).map((_, w) => {
+            {Array.from({ length: totalWeeks }).map((_, w) => {
               const ml = monthLabels.find((m) => m.weekIdx === w);
               return (
-                <div key={w} style={{ flex: 1, minWidth: 0 }} className="text-xs font-medium text-zinc-500">
+                <div
+                  key={w}
+                  style={{ flex: 1, minWidth: 0 }}
+                  className="text-xs font-semibold text-zinc-500 pl-0.5"
+                >
                   {ml?.label ?? ""}
                 </div>
               );
@@ -421,104 +469,130 @@ const ActivityHeatmap = ({
           </div>
         </div>
 
-      <div className="flex">
-        {/* Day labels */}
-        <div
-          className="flex flex-shrink-0 flex-col"
-          style={{ width: DAY_LABEL_W, gap: GAP }}
-        >
-          {labelDays.map((d, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-end pr-2 text-xs font-medium text-zinc-400"
-              style={{ height: CELL_H }}
-            >
-              {d}
-            </div>
-          ))}
+        <div className="flex">
+          {/* Fixed Day labels (Thứ 2 -> Chủ nhật) */}
+          <div
+            className="flex flex-shrink-0 flex-col"
+            style={{ width: DAY_LABEL_W, gap: GAP }}
+          >
+            {labelDays.map((d, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-end pr-2 text-xs font-medium text-zinc-400"
+                style={{ height: CELL_H }}
+              >
+                {d}
+              </div>
+            ))}
+          </div>
+
+          {/* Grid of Calendar Weeks */}
+          <div className="flex flex-1" style={{ gap: GAP }}>
+            {gridWeeks.map((weekColumn, w) => (
+              <div
+                key={w}
+                className="flex flex-col"
+                style={{ flex: 1, gap: GAP }}
+              >
+                {weekColumn.map((cell, d) => {
+                  const { count, formattedDate, isOutOfRange } = cell;
+                  const isTopRow = d <= 1;
+
+                  if (isOutOfRange) {
+                    return (
+                      <div
+                        key={d}
+                        style={{ height: CELL_H }}
+                        className="rounded-lg bg-transparent pointer-events-none"
+                      />
+                    );
+                  }
+
+                  return (
+                    <div
+                      key={d}
+                      className="group relative flex items-center justify-center rounded-lg text-xs font-bold transition-colors duration-150 cursor-pointer hover:ring-2 hover:ring-blue-600/30 hover:brightness-95 hover:z-30"
+                      style={{
+                        height: CELL_H,
+                        backgroundColor: getBgColor(count),
+                        color: getTextColor(count),
+                        fontSize: count >= 100 ? 10 : count >= 10 ? 11 : 12,
+                      }}
+                    >
+                      {count > 0 ? count : ""}
+
+                      {/* Instant 0ms Custom Tooltip with White Theme & Top/Bottom Auto-Placement */}
+                      <div
+                        className={`pointer-events-none absolute z-50 hidden group-hover:flex flex-col whitespace-nowrap animate-fadeIn duration-75 ${
+                          isTopRow ? "top-full mt-2" : "bottom-full mb-2"
+                        } ${
+                          w === 0
+                            ? "left-0 translate-x-0 items-start"
+                            : w === totalWeeks - 1
+                            ? "right-0 left-auto translate-x-0 items-end"
+                            : "left-1/2 -translate-x-1/2 items-center"
+                        }`}
+                      >
+                        {isTopRow && (
+                          <div
+                            className={`h-2 w-2 -mb-1 rotate-45 border-t border-l border-zinc-200 bg-white z-10 ${
+                              w === 0 ? "ml-4" : w === totalWeeks - 1 ? "mr-4" : ""
+                            }`}
+                          />
+                        )}
+                        <div className="rounded-xl bg-white px-3 py-1.5 text-xs text-zinc-900 shadow-xl border border-zinc-200/90 flex items-center gap-2 font-medium">
+                          <span className="text-zinc-500 font-normal">{formattedDate}</span>
+                          <span className="h-3 w-px bg-zinc-200" />
+                          <span className="font-bold text-blue-600">
+                            {count} câu hỏi
+                          </span>
+                        </div>
+                        {!isTopRow && (
+                          <div
+                            className={`h-2 w-2 -mt-1 rotate-45 border-b border-r border-zinc-200 bg-white z-10 ${
+                              w === 0 ? "ml-4" : w === totalWeeks - 1 ? "mr-4" : ""
+                            }`}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Grid */}
-        <div className="flex flex-1" style={{ gap: GAP }}>
-          {Array.from({ length: weeks }).map((_, w) => (
-            <div
-              key={w}
-              className="flex flex-col"
-              style={{ flex: 1, gap: GAP }}
-            >
-              {Array.from({ length: 7 }).map((_, d) => {
-                const cell = gridByWeekDay[`${w}-${d}`];
-                const count = cell?.count ?? 0;
-                const isEmpty = !cell;
-
-                return (
-                  <div
-                    key={d}
-                    title={cell ? `${cell.date}: ${count} câu hỏi` : ""}
-                    className="flex items-center justify-center rounded-md text-xs font-bold transition-transform hover:scale-105"
-                    style={{
-                      height: CELL_H,
-                      backgroundColor: isEmpty ? "transparent" : getBgColor(count),
-                      color: isEmpty ? "transparent" : getTextColor(count),
-                      fontSize: count >= 100 ? 10 : count >= 10 ? 11 : 12,
-                    }}
-                  >
-                    {!isEmpty && count > 0 ? count : !isEmpty ? "" : ""}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+        {/* Legend */}
+        <div className="mt-4 flex flex-wrap items-center justify-end gap-3 text-xs text-zinc-500">
+          <span className="font-medium">{labelNoActivity}:</span>
+          <div className="flex items-center gap-1.5">
+            <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#f4f4f5" }} />
+            <span>0</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#a1caff" }} />
+            <span>{labelFew}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#6baafc" }} />
+            <span>{labelModerate}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#3b82f6" }} />
+            <span>{labelMany}</span>
+          </div>
         </div>
-      </div>
-
-      {/* Legend */}
-      <div className="mt-4 flex flex-wrap items-center justify-end gap-3 text-xs text-zinc-500">
-        <span className="font-medium">{labelNoActivity}:</span>
-        <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#f4f4f5" }} />
-          <span>0</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#a1caffff" }} />
-          <span>{labelFew}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#6baafcff" }} />
-          <span>{labelModerate}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: "#4393fcff" }} />
-          <span>{labelMany}</span>
-        </div>
-      </div>
       </div>
     </div>
   );
 };
 
-// ── Benchmark data by position+level ──
-const BENCHMARK_MAP: Record<string, number[]> = {
-  default: [5, 5, 5, 5, 5],
-  INTERN_FRONTEND: [5, 4, 3, 5, 5],
-  INTERN_BACKEND: [5, 5, 3, 5, 5],
-  INTERN_TESTER: [4, 4, 3, 5, 6],
-  INTERN_DATA_ANALYST: [5, 5, 3, 5, 5],
-  FRESHER_FRONTEND: [6, 5, 4, 6, 6],
-  FRESHER_BACKEND: [7, 6, 4, 6, 6],
-  FRESHER_TESTER: [5, 5, 4, 6, 7],
-  FRESHER_DATA_ANALYST: [6, 6, 4, 6, 6],
-};
+import { getBenchmarkByTitleOrRole } from "../../../utils/benchmark";
 
 const getBenchmark = (profile: ProfileSummary | null): number[] => {
-  if (!profile) return BENCHMARK_MAP["default"];
-  const title = getProfileTitle(profile).toUpperCase();
-  for (const key of Object.keys(BENCHMARK_MAP)) {
-    if (key === "default") continue;
-    const parts = key.split("_");
-    if (parts.every((p) => title.includes(p))) return BENCHMARK_MAP[key];
-  }
-  return BENCHMARK_MAP["default"];
+  if (!profile) return getBenchmarkByTitleOrRole(null);
+  return getBenchmarkByTitleOrRole(getProfileTitle(profile));
 };
 
 // ── Main Component ──

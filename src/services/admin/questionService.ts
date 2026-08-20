@@ -42,6 +42,7 @@ export interface GetQuestionsParams {
   category?: string;
   source?: string;
   status?: string;
+  isDeleted?: boolean;
   page?: number;
   size?: number;
 }

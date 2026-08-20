@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
@@ -47,6 +47,7 @@ const InterviewsPage = () => {
   );
   const [profiles, setProfiles] = useState<ProfileSummary[]>([]);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(
     () => typeof window !== "undefined" && window.location.hash === "#pricing"
   );
@@ -56,6 +57,24 @@ const InterviewsPage = () => {
       setIsUpgradeModalOpen(true);
     }
   }, [location.hash]);
+
+  // Click outside to close profile dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    if (isProfileDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isProfileDropdownOpen]);
 
   // Loading & Error state
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(true);
@@ -172,7 +191,7 @@ const InterviewsPage = () => {
   ];
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-zinc-50/50">
+    <div className="relative min-h-[calc(100vh-4rem)] w-full overflow-x-clip bg-zinc-50/50">
       {/* ────────────────────────────────────────────────────────
           AMBIENT BACKGROUND AURA & GRID PATTERN
       ──────────────────────────────────────────────────────── */}
@@ -511,7 +530,7 @@ const InterviewsPage = () => {
                   </button>
                 </div>
               ) : (
-                <div className="relative">
+                <div className="relative" ref={profileDropdownRef}>
                   <button
                     type="button"
                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
@@ -551,7 +570,7 @@ const InterviewsPage = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute z-30 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-2 shadow-xl"
+                        className="absolute z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-2 shadow-xl [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_theme(colors.zinc.100)]"
                       >
                         {profiles.map((profile) => {
                           const profileTitle = getProfileTitle(profile);

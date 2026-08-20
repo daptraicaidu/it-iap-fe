@@ -15,34 +15,38 @@ const SettingsLayout = () => {
   const location = useLocation();
   const navRef = useRef<HTMLElement | null>(null);
 
+  const isAdmin = location.pathname.startsWith("/admin");
+  const prefix = isAdmin ? "/admin/settings" : "";
+
   const menuItems = [
     {
-      to: "/settings",
+      to: isAdmin ? "/admin/settings" : "/settings",
       icon: Settings,
       label: t("settings.menu.general"),
+      end: true,
     },
     {
-      to: "/userinfo",
+      to: `${prefix}/userinfo`,
       icon: User,
       label: t("settings.menu.userInfo"),
     },
     {
-      to: "/profiles",
+      to: `${prefix}/profiles`,
       icon: UserCog,
       label: t("settings.menu.profiles"),
     },
     {
-      to: "/password_and_security",
+      to: `${prefix}/password_and_security`,
       icon: KeyRound,
       label: t("settings.menu.password"),
     },
     {
-      to: "/active_sessions",
+      to: `${prefix}/active_sessions`,
       icon: ShieldCheck,
       label: t("settings.menu.sessions"),
     },
     {
-      to: "/activities",
+      to: `${prefix}/activities`,
       icon: Activity,
       label: t("settings.menu.activities"),
     },
@@ -101,6 +105,7 @@ const SettingsLayout = () => {
               <NavLink
                 key={item.to}
                 to={item.to}
+                end={item.end}
                 className={({ isActive }) =>
                   [
                     "flex items-center gap-2.5 whitespace-nowrap transition text-sm font-medium shrink-0",
