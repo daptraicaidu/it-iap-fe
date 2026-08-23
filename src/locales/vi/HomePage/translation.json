@@ -44,7 +44,7 @@
     "title": "Trải nghiệm Phỏng vấn IT Toàn diện",
     "card1": {
       "title": "Hệ thống Câu hỏi Đa chiều",
-      "backContent": "AI tự động sinh câu hỏi bám sát CV theo 3 trục: Kỹ năng chuyên môn (Technical), Xử lý tình huống (Situational) và Hành vi thực tế (Behavioral). Kèm giới hạn thời gian và Gợi ý thông minh."
+      "backContent": "AI tự động điều phối câu hỏi theo 3 trục: Kỹ năng chuyên môn (Technical), Xử lý tình huống (Situational) và Hành vi thực tế (Behavioral). Kèm giới hạn thời gian và Gợi ý thông minh."
     },
     "card2": {
       "title": "2 Chế độ Thực chiến",
@@ -72,7 +72,7 @@
     },
     "criteria": {
       "title": "Bộ Tiêu Chí Đánh Giá Chuẩn",
-      "description": "Hệ thống tự động chấm điểm dựa trên năng lực chuyên môn, tư duy giải quyết vấn đề, cấu trúc câu trả lời và mức độ tự tin qua giọng nói."
+      "description": "Hệ thống tự động chấm điểm dựa trên năng lực chuyên môn, tư duy giải quyết vấn đề, cấu trúc câu trả lời và tính mạch lạc qua văn bản."
     }
   },
   "walkthrough": {
@@ -81,11 +81,11 @@
     "stepLabel": "Bước",
     "step1": {
       "title": "Thiết kế lộ trình phỏng vấn cá nhân hóa",
-      "description": "Hệ thống quét CV, cho phép bạn tự do lựa chọn vị trí (Frontend, Backend...) và độ khó. Lộ trình được 'may đo' theo đúng thông số riêng của bạn."
+      "description": "Hệ thống cho phép bạn tự do lựa chọn vị trí (Frontend, Backend...) và độ khó. Lộ trình được 'may đo' theo đúng mục tiêu luyện tập của bạn."
     },
     "step2": {
       "title": "Đối mặt với 'Trưởng phòng Kỹ thuật' AI",
-      "description": "Trải nghiệm áp lực phỏng vấn thật. AI liên tục đặt câu hỏi đào sâu, phản biện qua cả Text và Voice theo sát tiến trình câu trả lời của bạn."
+      "description": "Trải nghiệm áp lực phỏng vấn thật. AI liên tục đặt câu hỏi đào sâu, phản biện qua tin nhắn văn bản (Text-to-Text) theo sát tiến trình câu trả lời của bạn."
     },
     "step3": {
       "title": "Học và theo dõi tiến bộ toàn diện",

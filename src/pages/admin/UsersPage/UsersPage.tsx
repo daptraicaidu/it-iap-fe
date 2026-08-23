@@ -47,6 +47,26 @@ const getDefaultAvatar = (userId: string): string => {
   return DEFAULT_AVATARS[index];
 };
 
+// Format subscription end date correctly (supporting DD/MM/YYYY HH:mm and ISO formats)
+const formatSubscriptionDateTime = (dateStr?: string | null): string => {
+  if (!dateStr || !dateStr.trim()) return "--";
+  const trimmed = dateStr.trim();
+  const ddmmyyyyRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}:\d{2})(?::\d{2})?)?$/;
+  const match = trimmed.match(ddmmyyyyRegex);
+  if (match) {
+    const [, day, month, year, time] = match;
+    const pad = (s: string) => s.padStart(2, "0");
+    return time
+      ? `${pad(day)}/${pad(month)}/${year} ${time}`
+      : `${pad(day)}/${pad(month)}/${year}`;
+  }
+
+  const d = new Date(trimmed);
+  if (isNaN(d.getTime())) return trimmed;
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+
 // ── Pagination Component ──
 interface PaginationProps {
   currentPage: number;
@@ -597,13 +617,7 @@ const UsersPage = () => {
                     {/* Subscription End Date */}
                     <td className="px-4 py-3">
                       <span className="text-sm text-zinc-500 tabular-nums">
-                        {user.subscriptionEndDate
-                          ? new Date(user.subscriptionEndDate).toLocaleDateString("vi-VN", {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                            })
-                          : "--"}
+                        {formatSubscriptionDateTime(user.subscriptionEndDate)}
                       </span>
                     </td>
 

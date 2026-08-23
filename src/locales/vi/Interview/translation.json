@@ -126,7 +126,11 @@
     "exitConfirm": "Bạn có chắc muốn thoát? Tiến trình sẽ bị mất.",
     "exitYes": "Thoát",
     "exitNo": "Tiếp tục phỏng vấn",
-    "timeUp": "Hết thời gian!"
+    "timeUp": "Hết thời gian!",
+    "questionCompletedPlaceholder": "Câu hỏi này đã hoàn thành.",
+    "questionCompletedNote": "Câu hỏi này đã hoàn thành. Vui lòng bấm 'Câu tiếp theo' để tiếp tục.",
+    "interviewFinishedPlaceholder": "Buổi phỏng vấn đã kết thúc.",
+    "interviewFinishedNote": "Buổi phỏng vấn đã kết thúc. Vui lòng bấm 'Xem kết quả' bên dưới để xem đánh giá chi tiết."
   },
   "resultPage": {
     "title": "Kết quả phỏng vấn",
@@ -154,6 +158,11 @@
       "BEHAVIORAL": "Hành vi",
       "SITUATIONAL": "Tình huống"
     },
+    "expandAll": "Mở rộng tất cả",
+    "collapseAll": "Thu gọn tất cả",
+    "mode": "Chế độ phỏng vấn",
+    "interactiveMode": "Phỏng vấn Tương tác",
+    "stressMode": "Phỏng vấn Áp lực",
     "scoreLevel": {
       "excellent": "Xuất sắc",
       "good": "Tốt",

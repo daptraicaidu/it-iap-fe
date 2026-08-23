@@ -5,6 +5,7 @@ import type {
   PaginatedActivities,
   ActionTypeFilter,
 } from "../../../../services/admin/adminDashboardService";
+import CustomDropdown from "../../../../components/CustomDropdown";
 
 interface ActivityLogProps {
   data: PaginatedActivities | null;
@@ -72,19 +73,15 @@ const ActivityLog = ({
           </h3>
         </div>
         <div className="flex items-center gap-2">
-          <select
+          <CustomDropdown
             value={actionTypeFilter}
-            onChange={(e) =>
-              onActionTypeChange(e.target.value as ActionTypeFilter)
-            }
-            className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-700 outline-none transition-colors hover:border-zinc-300 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400"
-          >
-            {ACTION_TYPE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {t(opt.labelKey)}
-              </option>
-            ))}
-          </select>
+            options={ACTION_TYPE_OPTIONS.map((opt) => ({
+              value: opt.value,
+              label: t(opt.labelKey),
+            }))}
+            onChange={onActionTypeChange}
+            menuClassName="min-w-[200px]"
+          />
 
           <button
             onClick={onRefresh}

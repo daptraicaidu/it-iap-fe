@@ -1,14 +1,14 @@
 {
   "hero": {
     "headline_prefix": "",
-    "headline_highlight": "AI Powered",
+    "headline_highlight": "AI-Powered",
     "headline_suffix": " IT Interview Platform",
-    "subtext": "Simulate real interviews with specialized AI Mentors. We analyze your CV, personalize your learning path, and comprehensively evaluate your skills to help you ace any technical interview."
+    "subtext": "Simulate real interviews with specialized AI Mentors. Wide range of technical positions, personalized practice paths, and comprehensive text-to-text evaluation to help you ace any IT interview."
   },
   "tech": {
     "feature1": {
-      "title": "CV Analysis & Unique Question Generation",
-      "description": "Our AI understands your CV to generate interview questions tailored to your actual experience, accurately mirroring employer expectations."
+      "title": "Comprehensive Question Bank & Specialized Tests",
+      "description": "Our platform provides diverse interview questions categorized by technical roles and experience levels, accurately mirroring IT employer expectations."
     },
     "feature2": {
       "title": "Time Pressure Mock Exams",
@@ -19,8 +19,8 @@
       "description": "Face off against AI Mentors with diverse interview styles, from friendly to extremely challenging, helping you adapt to any scenario."
     },
     "feature4": {
-      "title": "Voice Processing & Detailed Evaluation",
-      "description": "Proprietary voice analysis technology evaluates your attitude, intonation, and technical knowledge, returning a detailed report with actionable feedback."
+      "title": "Text Evaluation & Detailed Feedback",
+      "description": "Advanced AI analyzes your written answers (text-to-text), evaluating technical accuracy, problem-solving logic, and providing detailed suggestions for improvement."
     }
   },
   "team": {
@@ -42,20 +42,20 @@
     },
     "section1": {
       "title": "Article 1: Transparent Data Collection",
-      "body": "Our system solely collects basic registration data including your Email, text information extracted from your submitted PDF or Word CV, and temporary raw audio data from your microphone during the interview session."
+      "body": "Our system solely collects basic account information required for authentication and session management (such as Email and Display Name). We do not require CV uploads and do not collect user personal data to generate questions."
     },
     "section2": {
       "title": "Article 2: Secure AI Data Processing",
-      "body": "Your CV data is utilized strictly as internal context for the AI to generate relevant questions. Voice data sent through the speech recognition service is processed on the fly.",
-      "callout": "The system automatically destroys all raw audio files immediately after scoring is completed, pledging absolutely no retention of voice biometric data and prohibiting the use of profile data to train public AI models."
+      "body": "Your text-to-text interview answers are processed strictly internally for scoring and generating feedback from the AI.",
+      "callout": "We pledge never to collect or analyze voice audio data, never harvest personal user data to generate questions, and prohibit using your interview data to train public AI models."
     },
     "section3": {
       "title": "Article 3: Advanced Technical Security Safeguards",
-      "body": "The platform is fortified by cutting edge technology standards, featuring data encryption over HTTPS, strict role based API access control, and absolute account security via two factor authentication to prevent unauthorized intrusion."
+      "body": "The platform is fortified by cutting-edge technology standards, featuring data encryption over HTTPS, strict role-based API access control, and absolute account security via two-factor authentication to prevent unauthorized intrusion."
     },
     "section4": {
       "title": "Article 4: Candidate Control Rights",
-      "body": "You maintain total authority to edit, update, or execute a permanent deletion of your CV profile and entire interview history from our servers at any time."
+      "body": "You maintain total authority to edit your account details or permanently delete your entire interview history from our servers at any time."
     }
   },
   "terms": {

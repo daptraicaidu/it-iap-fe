@@ -8,8 +8,9 @@ import {
   Loader2,
   AlertCircle,
   ChevronDown,
+  ChevronUp,
   MessageSquare,
-  Star,
+  Trophy,
   Target,
   CheckCircle2,
   Flag,
@@ -129,6 +130,7 @@ const InterviewResultPage = () => {
         Number(interviewId)
       );
       const data = res.data.data;
+      if (!data) return;
 
       if (data.processing) {
         // Poll again after 5 seconds
@@ -138,12 +140,12 @@ const InterviewResultPage = () => {
         setFeedbackData(data);
         // Expand all questions by default
         const allIndexes = new Set(
-          data.feedbackForQuestions.map((_: FeedbackQuestion, i: number) => i)
+          (data.feedbackForQuestions || []).map((_: FeedbackQuestion, i: number) => i)
         );
         setExpandedQuestions(allIndexes);
 
         // Load messages for interactive interview questions
-        if (data.interviewMode === "INTERACTIVE_INTERVIEW") {
+        if (data.interviewMode === "INTERACTIVE_INTERVIEW" && data.feedbackForQuestions) {
           data.feedbackForQuestions.forEach((q: FeedbackQuestion) => {
             fetchMessages(q.interviewQuestionId);
           });
@@ -163,10 +165,12 @@ const InterviewResultPage = () => {
     setLoadingMessages((prev) => new Set(prev).add(questionId));
     try {
       const res = await interviewService.getInteractiveMessages(questionId);
-      setQuestionMessages((prev) => ({
-        ...prev,
-        [questionId]: res.data.data,
-      }));
+      if (res.data?.data) {
+        setQuestionMessages((prev) => ({
+          ...prev,
+          [questionId]: res.data.data ?? [],
+        }));
+      }
     } catch {
       // Silently fail - messages are supplementary
     } finally {
@@ -206,6 +210,23 @@ const InterviewResultPage = () => {
       }
       return next;
     });
+  };
+
+  const allExpanded =
+    feedbackData !== null &&
+    feedbackData.feedbackForQuestions.length > 0 &&
+    expandedQuestions.size === feedbackData.feedbackForQuestions.length;
+
+  const toggleExpandAll = () => {
+    if (!feedbackData) return;
+    if (allExpanded) {
+      setExpandedQuestions(new Set());
+    } else {
+      const allIndexes = new Set(
+        feedbackData.feedbackForQuestions.map((_, i) => i)
+      );
+      setExpandedQuestions(allIndexes);
+    }
   };
 
   const handleRetry = () => {
@@ -318,14 +339,29 @@ const InterviewResultPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
         >
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
-            {t("resultPage.title")}
-          </h1>
-          <p className="mt-2 text-base text-zinc-600">
-            {t("resultPage.subtitle")}
-          </p>
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
+                {t("resultPage.title")}
+              </h1>
+              {feedbackData.interviewMode === "INTERACTIVE_INTERVIEW" ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 shadow-2xs">
+                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
+                  {t("resultPage.interactiveMode")}
+                </span>
+              ) : feedbackData.interviewMode === "STRESS_INTERVIEW" ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 shadow-2xs">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
+                  {t("resultPage.stressMode")}
+                </span>
+              ) : null}
+            </div>
+            <p className="mt-2 text-base text-zinc-600">
+              {t("resultPage.subtitle")}
+            </p>
+          </div>
         </motion.div>
 
         {/* 2-Column Grid Layout */}
@@ -417,9 +453,28 @@ const InterviewResultPage = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              <h2 className="mb-4 text-lg font-semibold text-zinc-900">
-                {t("resultPage.questionResults")}
-              </h2>
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-zinc-900">
+                  {t("resultPage.questionResults")}
+                </h2>
+                <button
+                  type="button"
+                  onClick={toggleExpandAll}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-95 shadow-2xs"
+                >
+                  {allExpanded ? (
+                    <>
+                      <ChevronUp className="h-3.5 w-3.5 text-zinc-500" />
+                      <span>{t("resultPage.collapseAll")}</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-3.5 w-3.5 text-zinc-500" />
+                      <span>{t("resultPage.expandAll")}</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
           <div className="space-y-3">
             {feedbackData.feedbackForQuestions.map(
@@ -463,7 +518,7 @@ const InterviewResultPage = () => {
                       <div
                         className={`flex items-center gap-1 rounded-full border px-2.5 py-1 ${getScoreBg(q.feedback.point)}`}
                       >
-                        <Star
+                        <Trophy
                           className={`h-3.5 w-3.5 ${getScoreColor(q.feedback.point)}`}
                         />
                         <span
@@ -512,7 +567,7 @@ const InterviewResultPage = () => {
                             {/* Question Text with Report Flag */}
                             <div className="relative group/question">
                               <div className="mb-2 flex items-center gap-1.5">
-                                <MessageSquare className="h-4 w-4 text-zinc-400" />
+                                <MessageSquare className="h-4 w-4 text-blue-400" />
                                 <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                                   {t("resultPage.questionLabel")}
                                 </span>
@@ -554,71 +609,79 @@ const InterviewResultPage = () => {
                                       {t("resultPage.loadingMessages")}
                                     </span>
                                   </div>
-                                ) : messages && messages.length > 0 ? (
-                                  <div className="space-y-2">
-                                    {messages.map((msg, msgIdx) => (
-                                      <div
-                                        key={msgIdx}
-                                        className={`flex gap-2 ${msg.role === "USER" ? "" : ""}`}
-                                      >
-                                        {/* Avatar */}
-                                        <div
-                                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
-                                            msg.role === "USER"
-                                              ? "bg-zinc-200"
-                                              : "bg-blue-100"
-                                          }`}
-                                        >
-                                          {msg.role === "USER" ? (
-                                            <User className="h-3.5 w-3.5 text-zinc-600" />
-                                          ) : (
-                                            <Bot className="h-3.5 w-3.5 text-blue-600" />
-                                          )}
-                                        </div>
+                                ) : (() => {
+                                  // Exclude the last message (AI feedback) to prevent duplication with the AI feedback card below
+                                  const displayMessages =
+                                    messages && messages.length > 0
+                                      ? messages.slice(0, -1)
+                                      : [];
 
-                                        {/* Message */}
-                                        <div className="flex-1 min-w-0">
-                                          <div className="flex items-center gap-2 mb-0.5">
-                                            <span className="text-xs font-semibold text-zinc-600">
-                                              {msg.role === "USER"
-                                                ? t("resultPage.you")
-                                                : t("resultPage.ai")}
-                                            </span>
-                                            {/* Report flag for AI messages */}
-                                            {msg.role === "ASSISTANT" && (
-                                              <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  setReportQuestionId(q.interviewQuestionId);
-                                                }}
-                                                className="rounded-full p-0.5 text-zinc-300 transition hover:bg-amber-50 hover:text-amber-500"
-                                                title={t("resultPage.reportTooltip")}
-                                              >
-                                                <Flag className="h-3 w-3" />
-                                              </button>
-                                            )}
-                                          </div>
+                                  return displayMessages.length > 0 ? (
+                                    <div className="space-y-2">
+                                      {displayMessages.map((msg, msgIdx) => (
+                                        <div
+                                          key={msgIdx}
+                                          className={`flex gap-2 ${msg.role === "USER" ? "" : ""}`}
+                                        >
+                                          {/* Avatar */}
                                           <div
-                                            className={`rounded-lg px-3 py-2 text-sm leading-relaxed ${
+                                            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
                                               msg.role === "USER"
-                                                ? "bg-zinc-100 text-zinc-700"
-                                                : "border border-blue-100 bg-blue-50/50 text-zinc-700"
+                                                ? "bg-zinc-200"
+                                                : "bg-blue-100"
                                             }`}
                                           >
-                                            <p className="whitespace-pre-wrap">{msg.content}</p>
+                                            {msg.role === "USER" ? (
+                                              <User className="h-3.5 w-3.5 text-zinc-600" />
+                                            ) : (
+                                              <Bot className="h-3.5 w-3.5 text-blue-600" />
+                                            )}
+                                          </div>
+
+                                          {/* Message */}
+                                          <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 mb-0.5">
+                                              <span className="text-xs font-semibold text-zinc-600">
+                                                {msg.role === "USER"
+                                                  ? t("resultPage.you")
+                                                  : t("resultPage.ai")}
+                                              </span>
+                                              {/* Report flag for AI messages */}
+                                              {msg.role === "ASSISTANT" && (
+                                                <button
+                                                  type="button"
+                                                  onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setReportQuestionId(q.interviewQuestionId);
+                                                  }}
+                                                  className="rounded-full p-0.5 text-zinc-300 transition hover:bg-amber-50 hover:text-amber-500"
+                                                  title={t("resultPage.reportTooltip")}
+                                                >
+                                                  <Flag className="h-3 w-3" />
+                                                </button>
+                                              )}
+                                            </div>
+                                            <div
+                                              className={`rounded-lg px-3 py-2 text-sm leading-relaxed ${
+                                                msg.role === "USER"
+                                                  ? "bg-zinc-100 text-zinc-700"
+                                                  : "border border-blue-100 bg-blue-50/50 text-zinc-700"
+                                              }`}
+                                            >
+                                              <p className="whitespace-pre-wrap">{msg.content}</p>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                ) : !isInteractive ? null : (
-                                  <div className="rounded-lg bg-zinc-50 p-3">
-                                    <p className="text-xs text-zinc-400 italic">
-                                      {t("resultPage.loadingMessages")}
-                                    </p>
-                                  </div>
-                                )}
+                                      ))}
+                                    </div>
+                                  ) : !isInteractive ? null : (
+                                    <div className="rounded-lg bg-zinc-50 p-3">
+                                      <p className="text-xs text-zinc-400 italic">
+                                        {t("resultPage.loadingMessages")}
+                                      </p>
+                                    </div>
+                                  );
+                                })()}
                               </div>
                             )}
 
@@ -626,7 +689,7 @@ const InterviewResultPage = () => {
                             {!isInteractive && q.userAnswer && (
                               <div>
                                 <div className="mb-2 flex items-center gap-1.5">
-                                  <MessageSquare className="h-4 w-4 text-zinc-400" />
+                                  <MessageSquare className="h-4 w-4 text-blue-400" />
                                   <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                                     {t("resultPage.yourAnswer")}
                                   </span>

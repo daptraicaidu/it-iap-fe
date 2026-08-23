@@ -228,7 +228,17 @@ const InterviewSessionPage = () => {
     [isListening, restartListening]
   );
 
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const isInteractive = interviewMode === "INTERACTIVE_INTERVIEW" || currentQuestion?.interviewMode === "INTERACTIVE_INTERVIEW";
+  const isViewingPrevious = viewingPreviousIndex !== null;
+  const isInterviewFinished = isInteractive
+    ? isComplete && currentQuestion?.hasNext === false
+    : isComplete;
+  const isInputDisabled = isInteractive ? isComplete || isAnswering : isInterviewFinished || isAnswering;
+
   const handleToggleMic = useCallback(() => {
+    if (isInputDisabled) return;
     if (isListening) {
       stopListening();
     } else {
@@ -237,12 +247,14 @@ const InterviewSessionPage = () => {
       speechInsertionStartRef.current = Math.max(0, Math.min(pos, userAnswer.length));
       startListening();
     }
-  }, [isListening, startListening, stopListening, userAnswer]);
+  }, [isInputDisabled, isListening, startListening, stopListening, userAnswer]);
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  const isInteractive = interviewMode === "INTERACTIVE_INTERVIEW" || currentQuestion?.interviewMode === "INTERACTIVE_INTERVIEW";
-  const isViewingPrevious = viewingPreviousIndex !== null;
+  // Stop mic automatically if question/interview becomes complete
+  useEffect(() => {
+    if (isComplete && isListening) {
+      stopListening();
+    }
+  }, [isComplete, isListening, stopListening]);
 
   const secondsLeft = useCountdown(
     isViewingPrevious ? null : currentQuestion?.timeEnd ?? null
@@ -577,7 +589,7 @@ const InterviewSessionPage = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (isInteractive) {
+      if (isInteractive && !isComplete && !isAnswering) {
         handleInteractiveAnswer();
       }
     }
@@ -591,6 +603,8 @@ const InterviewSessionPage = () => {
   const displayQuestion = viewedQuestion?.question || currentQuestion;
   const questionNumber = isViewingPrevious
     ? (viewingPreviousIndex ?? 0) + 1
+    : !isInteractive && isComplete
+    ? Math.max(1, previousQuestions.length)
     : previousQuestions.length + 1;
 
   const getCategoryLabel = (category: string): string => {
@@ -989,8 +1003,11 @@ const InterviewSessionPage = () => {
                     {sttSupported && (
                       <button
                         onClick={handleToggleMic}
+                        disabled={isComplete || isAnswering}
                         className={`shrink-0 rounded-full p-2.5 transition ${
-                          isListening
+                          isComplete || isAnswering
+                            ? "opacity-40 cursor-not-allowed bg-zinc-100 text-zinc-400"
+                            : isListening
                             ? "bg-rose-100 text-rose-600 animate-pulse"
                             : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
                         }`}
@@ -1040,10 +1057,16 @@ const InterviewSessionPage = () => {
                         )
                       }
                       onKeyDown={handleKeyDown}
-                      placeholder={t("sessionPage.chatPlaceholder")}
-                      disabled={isAnswering}
+                      placeholder={
+                        isInterviewFinished
+                          ? t("sessionPage.interviewFinishedPlaceholder")
+                          : isComplete
+                          ? t("sessionPage.questionCompletedPlaceholder")
+                          : t("sessionPage.chatPlaceholder")
+                      }
+                      disabled={isAnswering || isComplete}
                       rows={1}
-                      className="flex-1 resize-none rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-100 disabled:opacity-50"
+                      className="flex-1 resize-none rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-100 disabled:opacity-60 disabled:bg-zinc-100/80 disabled:cursor-not-allowed"
                       style={{ maxHeight: "120px" }}
                       onInput={(e) => {
                         const target = e.target as HTMLTextAreaElement;
@@ -1055,7 +1078,7 @@ const InterviewSessionPage = () => {
 
                     <button
                       onClick={handleInteractiveAnswer}
-                      disabled={!userAnswer.trim() || isAnswering}
+                      disabled={!userAnswer.trim() || isAnswering || isComplete}
                       className="shrink-0 rounded-full bg-zinc-900 p-2.5 text-white transition hover:bg-zinc-800 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       {isAnswering ? (
@@ -1066,12 +1089,22 @@ const InterviewSessionPage = () => {
                     </button>
                   </div>
 
-                  {/* Interactive Not Complete Warning */}
-                  {!isComplete && messages.length > 0 && (
+                  {/* Finished notice or Question Completed notice or Not Complete Warning */}
+                  {isInterviewFinished ? (
+                    <p className="mt-2.5 text-xs font-medium text-blue-600 flex items-center gap-1.5 animate-fadeIn">
+                      <CheckCircle2 className="h-4 w-4 shrink-0" />
+                      <span>{t("sessionPage.interviewFinishedNote")}</span>
+                    </p>
+                  ) : isComplete ? (
+                    <p className="mt-2.5 text-xs font-medium text-emerald-600 flex items-center gap-1.5 animate-fadeIn">
+                      <CheckCircle2 className="h-4 w-4 shrink-0" />
+                      <span>{t("sessionPage.questionCompletedNote")}</span>
+                    </p>
+                  ) : messages.length > 0 ? (
                     <p className="mt-2 text-xs text-zinc-400">
                       {t("sessionPage.interactiveNotComplete")}
                     </p>
-                  )}
+                  ) : null}
                 </div>
               )}
             </div>
@@ -1123,36 +1156,47 @@ const InterviewSessionPage = () => {
                           e.currentTarget.value.length
                       )
                     }
-                    placeholder={t("sessionPage.answerPlaceholder")}
-                    disabled={isAnswering}
-                    className="flex-1 w-full resize-none rounded-sm border-0 bg-transparent text-sm text-zinc-900 placeholder-zinc-400 outline-none disabled:opacity-50"
+                    placeholder={
+                      isInterviewFinished
+                        ? t("sessionPage.interviewFinishedPlaceholder")
+                        : t("sessionPage.answerPlaceholder")
+                    }
+                    disabled={isAnswering || isInterviewFinished}
+                    className="flex-1 w-full resize-none rounded-sm border-0 bg-transparent text-sm text-zinc-900 placeholder-zinc-400 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
                     style={{ minHeight: "180px" }}
                   />
 
-                  {/* Mic */}
-                  {sttSupported && (
-                    <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-zinc-100 pt-3">
-                      <button
-                        onClick={handleToggleMic}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
-                          isListening
-                            ? "bg-rose-100 text-rose-600 animate-pulse"
-                            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
-                      >
-                        {isListening ? (
-                          <>
-                            <MicOff className="h-3.5 w-3.5" />
-                            {t("sessionPage.stopMic")}
-                          </>
-                        ) : (
-                          <>
-                            <Mic className="h-3.5 w-3.5" />
-                            {t("sessionPage.startMic")}
-                          </>
-                        )}
-                      </button>
+                  {/* Finished notice or Mic */}
+                  {isInterviewFinished ? (
+                    <div className="mt-3 flex items-center gap-2 border-t border-zinc-100 pt-3 text-xs font-medium text-blue-600 animate-fadeIn">
+                      <CheckCircle2 className="h-4 w-4 shrink-0" />
+                      <span>{t("sessionPage.interviewFinishedNote")}</span>
                     </div>
+                  ) : (
+                    sttSupported && (
+                      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-zinc-100 pt-3">
+                        <button
+                          onClick={handleToggleMic}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                            isListening
+                              ? "bg-rose-100 text-rose-600 animate-pulse"
+                              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                          }`}
+                        >
+                          {isListening ? (
+                            <>
+                              <MicOff className="h-3.5 w-3.5" />
+                              {t("sessionPage.stopMic")}
+                            </>
+                          ) : (
+                            <>
+                              <Mic className="h-3.5 w-3.5" />
+                              {t("sessionPage.startMic")}
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )
                   )}
                 </div>
               )}

@@ -126,7 +126,11 @@
     "exitConfirm": "Are you sure? Progress will be lost.",
     "exitYes": "Exit",
     "exitNo": "Continue Interview",
-    "timeUp": "Time's up!"
+    "timeUp": "Time's up!",
+    "questionCompletedPlaceholder": "This question has been completed.",
+    "questionCompletedNote": "This question is completed. Please click 'Next Question' to proceed.",
+    "interviewFinishedPlaceholder": "The interview session has ended.",
+    "interviewFinishedNote": "The interview has ended. Please click 'View Result' below to see detailed evaluation."
   },
   "resultPage": {
     "title": "Interview Results",
@@ -154,6 +158,11 @@
       "BEHAVIORAL": "Behavioral",
       "SITUATIONAL": "Situational"
     },
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "mode": "Interview Mode",
+    "interactiveMode": "Interactive Interview",
+    "stressMode": "Stress Interview",
     "scoreLevel": {
       "excellent": "Excellent",
       "good": "Good",
