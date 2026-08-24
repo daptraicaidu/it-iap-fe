@@ -692,7 +692,7 @@ const DashboardPage = () => {
     (async () => {
       try {
         const res = await dashboardService.getProgress();
-        setProgressData(res.data.data);
+        setProgressData(res.data.data ?? null);
       } catch {
         // ignore
       } finally {
@@ -701,23 +701,41 @@ const DashboardPage = () => {
     })();
   }, []);
 
+  const LAST_SELECTED_PROFILE_KEY = "dashboard_selected_profile_id";
+
   const handleSelectProfileDashboard = useCallback(
-    async (targetProfile: ProfileSummary) => {
+    async (targetProfile: ProfileSummary, fallbackProfile?: ProfileSummary) => {
       setProfileDropdownOpen(false);
       setProfileLoading(true);
       setProfileError(false);
 
       try {
         const res = await dashboardService.getProfileStats(targetProfile.id);
-        setProfileData(res.data.data);
+        setProfileData(res.data.data ?? null);
         setSelectedProfile(targetProfile);
         setProfileSwitchError(null);
+        localStorage.setItem(LAST_SELECTED_PROFILE_KEY, String(targetProfile.id));
         if (profileErrorTimerRef.current) {
           clearTimeout(profileErrorTimerRef.current);
           profileErrorTimerRef.current = null;
         }
       } catch (err: unknown) {
         console.error("Failed to load profile stats:", err);
+
+        // Fallback: If loading the targeted profile fails and a fallback profile is provided, try the fallback
+        if (fallbackProfile && fallbackProfile.id !== targetProfile.id) {
+          try {
+            const fallbackRes = await dashboardService.getProfileStats(fallbackProfile.id);
+            setProfileData(fallbackRes.data.data ?? null);
+            setSelectedProfile(fallbackProfile);
+            setProfileSwitchError(null);
+            localStorage.setItem(LAST_SELECTED_PROFILE_KEY, String(fallbackProfile.id));
+            return;
+          } catch (fallbackErr) {
+            console.error("Failed to load fallback profile stats:", fallbackErr);
+          }
+        }
+
         let errorMsg = "Không thể tải dữ liệu hồ sơ này.";
         if (axios.isAxiosError(err)) {
           errorMsg = err.response?.data?.message || errorMsg;
@@ -753,7 +771,16 @@ const DashboardPage = () => {
         const list = res.data.data ?? [];
         setProfiles(list);
         if (list.length > 0) {
-          void handleSelectProfileDashboard(list[0]);
+          const savedId = localStorage.getItem(LAST_SELECTED_PROFILE_KEY);
+          const savedProfile = savedId
+            ? list.find((p) => String(p.id) === savedId)
+            : null;
+
+          if (savedProfile) {
+            void handleSelectProfileDashboard(savedProfile, list[0]);
+          } else {
+            void handleSelectProfileDashboard(list[0]);
+          }
         }
       } catch {
         // ignore
