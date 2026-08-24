@@ -7,6 +7,8 @@ import {
   Flame,
   Trophy,
   TrendingUp,
+  TrendingDown,
+  Minus,
   BarChart3,
   Brain,
   Eye,
@@ -690,7 +692,7 @@ const DashboardPage = () => {
     (async () => {
       try {
         const res = await dashboardService.getProgress();
-        setProgressData(res.data.data);
+        setProgressData(res.data.data ?? null);
       } catch {
         // ignore
       } finally {
@@ -699,23 +701,41 @@ const DashboardPage = () => {
     })();
   }, []);
 
+  const LAST_SELECTED_PROFILE_KEY = "dashboard_selected_profile_id";
+
   const handleSelectProfileDashboard = useCallback(
-    async (targetProfile: ProfileSummary) => {
+    async (targetProfile: ProfileSummary, fallbackProfile?: ProfileSummary) => {
       setProfileDropdownOpen(false);
       setProfileLoading(true);
       setProfileError(false);
 
       try {
         const res = await dashboardService.getProfileStats(targetProfile.id);
-        setProfileData(res.data.data);
+        setProfileData(res.data.data ?? null);
         setSelectedProfile(targetProfile);
         setProfileSwitchError(null);
+        localStorage.setItem(LAST_SELECTED_PROFILE_KEY, String(targetProfile.id));
         if (profileErrorTimerRef.current) {
           clearTimeout(profileErrorTimerRef.current);
           profileErrorTimerRef.current = null;
         }
       } catch (err: unknown) {
         console.error("Failed to load profile stats:", err);
+
+        // Fallback: If loading the targeted profile fails and a fallback profile is provided, try the fallback
+        if (fallbackProfile && fallbackProfile.id !== targetProfile.id) {
+          try {
+            const fallbackRes = await dashboardService.getProfileStats(fallbackProfile.id);
+            setProfileData(fallbackRes.data.data ?? null);
+            setSelectedProfile(fallbackProfile);
+            setProfileSwitchError(null);
+            localStorage.setItem(LAST_SELECTED_PROFILE_KEY, String(fallbackProfile.id));
+            return;
+          } catch (fallbackErr) {
+            console.error("Failed to load fallback profile stats:", fallbackErr);
+          }
+        }
+
         let errorMsg = "Không thể tải dữ liệu hồ sơ này.";
         if (axios.isAxiosError(err)) {
           errorMsg = err.response?.data?.message || errorMsg;
@@ -751,7 +771,16 @@ const DashboardPage = () => {
         const list = res.data.data ?? [];
         setProfiles(list);
         if (list.length > 0) {
-          void handleSelectProfileDashboard(list[0]);
+          const savedId = localStorage.getItem(LAST_SELECTED_PROFILE_KEY);
+          const savedProfile = savedId
+            ? list.find((p) => String(p.id) === savedId)
+            : null;
+
+          if (savedProfile) {
+            void handleSelectProfileDashboard(savedProfile, list[0]);
+          } else {
+            void handleSelectProfileDashboard(list[0]);
+          }
         }
       } catch {
         // ignore
@@ -1195,38 +1224,70 @@ const DashboardPage = () => {
           </div>
 
           {/* Card 3: Improvement rate */}
-          <div className="rounded-2xl border border-zinc-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-emerald-200 transition-all duration-200">
-            <div className="mb-3.5 flex items-center justify-between">
-              <span className="text-xs sm:text-sm font-semibold text-zinc-600">
-                {t("stats.improvementRate")}
-              </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-xs">
-                <TrendingUp className="h-4 w-4" />
-              </div>
-            </div>
-            {profileLoading ? (
-              <div className="h-12 w-24 animate-pulse rounded-lg bg-zinc-100" />
-            ) : profileData?.improvementRate !== null &&
-              profileData?.improvementRate !== undefined ? (
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-emerald-600">
-                  {profileData.improvementRate > 0
-                    ? `+${profileData.improvementRate}`
-                    : profileData.improvementRate}%
-                </span>
-              </div>
-            ) : (
-              <div className="flex items-start gap-2 rounded-xl bg-amber-50/90 border border-amber-200/70 p-2.5">
-                <AlertCircle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-amber-600" />
-                <p className="text-xs font-medium text-amber-800 leading-snug">
-                  {t("stats.notEnoughData")}
+          {(() => {
+            const rate = profileData?.improvementRate;
+            const hasRate = rate !== null && rate !== undefined;
+            const isPos = hasRate && rate > 0;
+            const isNeg = hasRate && rate < 0;
+
+            const cardBorderHover = isPos
+              ? "hover:border-emerald-200"
+              : isNeg
+              ? "hover:border-rose-200"
+              : "hover:border-zinc-300";
+
+            return (
+              <div
+                className={`rounded-2xl border border-zinc-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md ${cardBorderHover} transition-all duration-200`}
+              >
+                <div className="mb-3.5 flex items-center justify-between">
+                  <span className="text-xs sm:text-sm font-semibold text-zinc-600">
+                    {t("stats.improvementRate")}
+                  </span>
+                  {isPos ? (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-xs">
+                      <TrendingUp className="h-4 w-4" />
+                    </div>
+                  ) : isNeg ? (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-50 text-rose-600 border border-rose-100 shadow-xs">
+                      <TrendingDown className="h-4 w-4" />
+                    </div>
+                  ) : (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-400 border border-zinc-200 shadow-xs">
+                      <Minus className="h-4 w-4" />
+                    </div>
+                  )}
+                </div>
+                {profileLoading ? (
+                  <div className="h-12 w-24 animate-pulse rounded-lg bg-zinc-100" />
+                ) : hasRate ? (
+                  <div className="flex items-baseline gap-1">
+                    <span
+                      className={`text-4xl sm:text-5xl font-extrabold tracking-tight ${
+                        isPos
+                          ? "text-emerald-600"
+                          : isNeg
+                          ? "text-rose-600"
+                          : "text-zinc-600"
+                      }`}
+                    >
+                      {isPos ? `+${rate}` : rate}%
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-start gap-2 rounded-xl bg-amber-50/90 border border-amber-200/70 p-2.5">
+                    <AlertCircle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-amber-600" />
+                    <p className="text-xs font-medium text-amber-800 leading-snug">
+                      {t("stats.notEnoughData")}
+                    </p>
+                  </div>
+                )}
+                <p className="mt-2 text-xs text-zinc-400 font-medium">
+                  {t("stats.improvementDesc")}
                 </p>
               </div>
-            )}
-            <p className="mt-2 text-xs text-zinc-400 font-medium">
-              {t("stats.improvementDesc")}
-            </p>
-          </div>
+            );
+          })()}
         </div>
 
         {/* ── Row 4: 3 large cards ── */}

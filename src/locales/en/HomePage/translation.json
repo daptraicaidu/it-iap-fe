@@ -44,7 +44,7 @@
     "title": "Comprehensive IT Interview Experience",
     "card1": {
       "title": "Multi-dimensional Question System",
-      "backContent": "AI automatically generates questions tailored to your CV across 3 axes: Technical Skills, Situational Handling, and Behavioral Insights, complete with time limits and smart hints."
+      "backContent": "AI intelligently orchestrates questions across 3 axes: Technical Skills, Situational Handling, and Behavioral Insights, complete with time limits and smart hints."
     },
     "card2": {
       "title": "2 Battle-tested Modes",
@@ -72,7 +72,7 @@
     },
     "criteria": {
       "title": "Professional Evaluation Criteria",
-      "description": "Our system automatically scores your performance based on technical proficiency, problem-solving mindset, answer structure, and vocal confidence."
+      "description": "Our system automatically scores your performance based on technical proficiency, problem-solving mindset, answer structure, and written clarity."
     }
   },
   "walkthrough": {
@@ -81,11 +81,11 @@
     "stepLabel": "Step",
     "step1": {
       "title": "Tailored Personal Interview Roadmap",
-      "description": "System scans your CV, allowing you to freely choose your target role (Frontend, Backend...) and difficulty level. A roadmap tailored to your specific profile."
+      "description": "Allows you to freely choose your target role (Frontend, Backend...) and difficulty level. A roadmap tailored to your specific practice goals."
     },
     "step2": {
       "title": "Face off against the AI Technical Lead",
-      "description": "Experience real interview pressure. AI continuously drills down and counter-argues via both Text and Voice based on your responses."
+      "description": "Experience real interview pressure. AI continuously drills down and counter-argues via Text-to-Text messages based on your responses."
     },
     "step3": {
       "title": "Learn and track comprehensive progress",

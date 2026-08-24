@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import authService, {
   type RegisterRequest,
   type LoginRequest,
@@ -32,13 +33,15 @@ interface AuthState {
   clearError: () => void;
 }
 
-const useAuthStore = create<AuthState>((set) => ({
-  roles: [],
-  isAuthenticated: false,
-  isLoading: false,
-  error: null,
-  requires2fa: false,
-  pendingRoles: [],
+const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      roles: [],
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+      requires2fa: false,
+      pendingRoles: [],
 
   login: async (payload) => {
     set({ isLoading: true, error: null });
@@ -158,9 +161,18 @@ const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  clearAuth: () => set({ roles: [], isAuthenticated: false, error: null }),
+      clearAuth: () => set({ roles: [], isAuthenticated: false, error: null }),
 
-  clearError: () => set({ error: null }),
-}));
+      clearError: () => set({ error: null }),
+    }),
+    {
+      name: "auth-storage",
+      partialize: (state) => ({
+        roles: state.roles,
+        isAuthenticated: state.isAuthenticated,
+      }),
+    }
+  )
+);
 
 export default useAuthStore;

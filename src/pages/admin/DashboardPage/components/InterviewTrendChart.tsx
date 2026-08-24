@@ -168,7 +168,7 @@ const InterviewTrendChart = ({
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-6">
       <div className="mb-4 flex items-center gap-2.5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
           <TrendingUp size={18} />
         </div>
         <h3 className="text-base font-semibold text-zinc-900">
@@ -188,8 +188,8 @@ const InterviewTrendChart = ({
           >
             <defs>
               <linearGradient id="colorInterview" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.15} />
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f4f4f5" />
@@ -215,11 +215,11 @@ const InterviewTrendChart = ({
             <Area
               type="monotone"
               dataKey="count"
-              stroke="#6366f1"
+              stroke="#2563eb"
               strokeWidth={2}
               fill="url(#colorInterview)"
-              dot={{ r: 3, fill: "#6366f1", strokeWidth: 0 }}
-              activeDot={{ r: 5, fill: "#6366f1", strokeWidth: 2, stroke: "#fff" }}
+              dot={{ r: 3, fill: "#2563eb", strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: "#2563eb", strokeWidth: 2, stroke: "#fff" }}
             />
           </AreaChart>
         </ResponsiveContainer>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 
 const apiClient = axios.create({
   baseURL: "/api/v1",
@@ -8,24 +8,20 @@ const apiClient = axios.create({
   withCredentials: true, // Send cookies with every request
 });
 
-// ── Token Refresh Interceptor ──
-// When access token expires (401), automatically call /auth/refresh
-// to get a new token (stored in cookies by backend), then retry the original request.
-let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (value?: unknown) => void;
-  reject: (reason?: unknown) => void;
-}> = [];
+// ── Singleton Refresh Promise ──
+// Guarantees only ONE /auth/refresh HTTP request is active at any given moment.
+// All concurrent 401 requests share this single Promise and retry upon completion.
+let refreshPromise: Promise<AxiosResponse<unknown>> | null = null;
 
-const processQueue = (error: unknown | null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve();
-    }
-  });
-  failedQueue = [];
+export const refreshAuthToken = <T = unknown>(): Promise<AxiosResponse<T>> => {
+  if (!refreshPromise) {
+    refreshPromise = apiClient
+      .post<T>("/auth/refresh")
+      .finally(() => {
+        refreshPromise = null;
+      }) as Promise<AxiosResponse<unknown>>;
+  }
+  return refreshPromise as Promise<AxiosResponse<T>>;
 };
 
 apiClient.interceptors.response.use(
@@ -33,40 +29,31 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Only intercept 401 errors, skip if it's the refresh endpoint itself
+    // Do not intercept if:
+    // 1. Not a 401 Unauthorized status
+    // 2. Request was already retried once
+    // 3. The failing endpoint itself is an auth endpoint (/auth/refresh, /auth/login, etc.)
     if (
       error.response?.status !== 401 ||
       originalRequest._retry ||
-      originalRequest.url === "/auth/refresh" ||
-      originalRequest.url === "/auth/login"
+      originalRequest.url?.includes("/auth/refresh") ||
+      originalRequest.url?.includes("/auth/login") ||
+      originalRequest.url?.includes("/auth/register")
     ) {
       return Promise.reject(error);
     }
 
-    // If already refreshing, queue the request
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      }).then(() => apiClient(originalRequest));
-    }
-
     originalRequest._retry = true;
-    isRefreshing = true;
 
     try {
-      await apiClient.post("/auth/refresh");
-      processQueue(null);
-      // Retry the original request with the new token (in cookies)
+      // Wait for the single in-flight refresh request
+      await refreshAuthToken();
+      // Retry the original request with refreshed cookies
       return apiClient(originalRequest);
     } catch (refreshError) {
-      processQueue(refreshError);
-      // Refresh failed → session is invalid.
-      // Dispatch a custom event so the React app can handle logout
-      // via React Router (without a full page reload that loses SPA state).
+      // Refresh failed → session is truly expired
       window.dispatchEvent(new CustomEvent("auth:session-expired"));
       return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
     }
   }
 );

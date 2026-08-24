@@ -1,6 +1,7 @@
 import { RefreshCw, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { TimeFilter } from "../../../../services/admin/adminDashboardService";
+import CustomDropdown from "../../../../components/CustomDropdown";
 
 interface DashboardHeaderProps {
   timeFilter: TimeFilter;
@@ -66,17 +67,14 @@ const DashboardHeader = ({
       </div>
 
       <div className="flex items-center gap-3">
-        <select
+        <CustomDropdown
           value={timeFilter}
-          onChange={(e) => onTimeFilterChange(e.target.value as TimeFilter)}
-          className="rounded-full border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 outline-none transition-colors hover:border-zinc-400 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-400 shadow-xs"
-        >
-          {TIME_FILTER_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {t(opt.labelKey)}
-            </option>
-          ))}
-        </select>
+          options={TIME_FILTER_OPTIONS.map((opt) => ({
+            value: opt.value,
+            label: t(opt.labelKey),
+          }))}
+          onChange={onTimeFilterChange}
+        />
 
         <button
           onClick={onReloadAll}

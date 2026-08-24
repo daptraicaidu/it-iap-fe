@@ -117,28 +117,32 @@ const HomePage = () => {
 
   const features3D = [
     {
-      icon: <Database className="w-12 h-12 md:w-16 md:h-16 text-white mb-4 md:mb-6 drop-shadow-md" />,
+      icon: <Database className="w-7 h-7 text-blue-600" />,
+      iconBg: "bg-blue-100/80 border border-blue-200/80",
+      cardBg: "bg-gradient-to-b from-blue-200 border-blue-300 hover:border-blue-200",
       title: t("features3D.card1.title"),
       backContent: t("features3D.card1.backContent"),
-      gradient: "from-blue-600 to-cyan-500"
     },
     {
-      icon: <MessageCircle className="w-12 h-12 md:w-16 md:h-16 text-white mb-4 md:mb-6 drop-shadow-md" />,
+      icon: <MessageCircle className="w-7 h-7 text-indigo-600" />,
+      iconBg: "bg-indigo-100/80 border border-indigo-200/80",
+      cardBg: "bg-gradient-to-b from-indigo-200 border-indigo-3000 hover:border-indigo-200",
       title: t("features3D.card2.title"),
       backContent: t("features3D.card2.backContent"),
-      gradient: "from-indigo-600 to-purple-600"
     },
     {
-      icon: <ShieldCheck className="w-12 h-12 md:w-16 md:h-16 text-white mb-4 md:mb-6 drop-shadow-md" />,
+      icon: <ShieldCheck className="w-7 h-7 text-emerald-600" />,
+      iconBg: "bg-emerald-100/80 border border-emerald-200/80",
+      cardBg: "bg-gradient-to-b from-emerald-200 border-emerald-300 hover:border-emerald-200",
       title: t("features3D.card3.title"),
       backContent: t("features3D.card3.backContent"),
-      gradient: "from-emerald-500 to-teal-500"
     },
     {
-      icon: <Radar className="w-12 h-12 md:w-16 md:h-16 text-white mb-4 md:mb-6 drop-shadow-md" />,
+      icon: <Radar className="w-7 h-7 text-violet-600" />,
+      iconBg: "bg-violet-100/80 border border-violet-200/80",
+      cardBg: "bg-gradient-to-b from-violet-200 border-violet-300 hover:border-violet-200",
       title: t("features3D.card4.title"),
       backContent: t("features3D.card4.backContent"),
-      gradient: "from-[#0B2A6B] to-blue-700"
     }
   ];
 
@@ -430,7 +434,7 @@ const HomePage = () => {
       {/* ════════════════════════════════════════════════════
           FEATURES SECTION — 3D Flip Cards
       ════════════════════════════════════════════════════ */}
-      <section id="features" className="py-16 sm:py-24 bg-[#FFFFFF]">
+      <section id="features" className="py-16 sm:py-24 bg-[#F8FAFC] border-y border-slate-200/60">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <motion.h2 
             className="text-center mb-12 sm:mb-16 font-sans font-extrabold text-2xl sm:text-4xl lg:text-5xl tracking-tight text-[#0A2558]"
@@ -463,30 +467,39 @@ const HomePage = () => {
                   onClick={() => setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }))}
                 >
                   <div
-                    className={`relative h-full w-full rounded-2xl transition-all duration-[800ms] ease-in-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] ${
+                    className={`relative h-full w-full rounded-2xl transition-all duration-[700ms] ease-in-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] ${
                       isFlipped ? "[transform:rotateY(180deg)]" : ""
-                    } shadow-xl`}
+                    } shadow-md hover:shadow-xl`}
                   >
                     {/* Front Face */}
-                    <div className={`absolute inset-0 h-full w-full rounded-2xl [backface-visibility:hidden] bg-gradient-to-br ${feature.gradient} flex flex-col items-start justify-between p-6 text-white`}>
+                    <div className={`absolute inset-0 h-full w-full rounded-2xl [backface-visibility:hidden] ${feature.cardBg} flex flex-col items-start justify-between p-6 sm:p-7 text-zinc-900 transition-all`}>
                       <div>
-                        {feature.icon}
-                        <h3 className="font-sans font-bold text-xl sm:text-2xl leading-snug">
+                        <div className={`w-13 h-13 rounded-2xl ${feature.iconBg} flex items-center justify-center mb-6 shadow-xs`}>
+                          {feature.icon}
+                        </div>
+                        <h3 className="font-sans font-bold text-lg sm:text-xl text-zinc-900 leading-snug">
                           {feature.title}
                         </h3>
                       </div>
-                      <div className="self-end w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
-                        <RefreshCcw className="w-5 h-5 text-white" />
+                      <div className="self-end flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white border border-zinc-200/90 text-zinc-600 text-xs font-semibold shadow-2xs group-hover:border-zinc-300 group-hover:text-zinc-900 transition-colors">
+                        <span>Chi tiết</span>
+                        <RefreshCcw className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-600" />
                       </div>
                     </div>
                     {/* Back Face */}
-                    <div className="absolute inset-0 h-full w-full rounded-2xl bg-[#0A1A3A] text-white [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center p-6 text-left">
-                      <h4 className="font-sans font-bold text-lg sm:text-xl mb-3 sm:mb-4 text-blue-200">
-                        {feature.title}
-                      </h4>
-                      <p className="font-sans text-sm sm:text-[16px] leading-relaxed text-blue-50/90">
-                        {feature.backContent}
-                      </p>
+                    <div className="absolute inset-0 h-full w-full rounded-2xl bg-[#0B1528] border border-slate-700/80 text-white [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-between p-6 sm:p-7 text-left shadow-2xl">
+                      <div>
+                        <h4 className="font-sans font-bold text-base sm:text-lg mb-3 text-white">
+                          {feature.title}
+                        </h4>
+                        <p className="font-sans text-xs sm:text-sm leading-relaxed text-slate-300">
+                          {feature.backContent}
+                        </p>
+                      </div>
+                      <div className="self-end flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+                        <RefreshCcw className="w-3 h-3 text-slate-400" />
+                        <span>Quay lại</span>
+                      </div>
                     </div>
                   </div>
                 </div>

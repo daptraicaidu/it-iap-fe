@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "../routes/AppRouter";
 import useAuthStore from "../store/authStore";
 import "../i18n";
 
 function App() {
-  const refreshToken = useAuthStore((s) => s.refreshToken);
   const clearAuth = useAuthStore((s) => s.clearAuth);
-  const [isReady, setIsReady] = useState(false);
-
-  // On app mount, attempt to restore auth session via refresh token cookie
-  useEffect(() => {
-    refreshToken().finally(() => setIsReady(true));
-  }, [refreshToken]);
 
   // Listen for session-expired events dispatched by the Axios interceptor
-  // when a token refresh fails. This avoids a full page reload (window.location.href)
+  // when a token refresh fails (401 error). This avoids a full page reload
   // and lets React Router handle the redirect to /login gracefully.
   useEffect(() => {
     const handleSessionExpired = () => {
@@ -31,9 +24,6 @@ function App() {
       window.removeEventListener("auth:session-expired", handleSessionExpired);
     };
   }, [clearAuth]);
-
-  // Show nothing while checking auth — prevents flash of wrong route
-  if (!isReady) return null;
 
   return (
     <BrowserRouter>

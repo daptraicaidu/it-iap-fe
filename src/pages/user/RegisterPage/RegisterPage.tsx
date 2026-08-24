@@ -85,7 +85,7 @@ const RegisterPage = () => {
     <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-zinc-50 px-4 py-12">
       {/* Background Image & Soft Light Overlay */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.14] mix-blend-multiply filter blur-[0.5px]"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.8] mix-blend-multiply filter blur-[0.5px]"
         style={{ backgroundImage: `url(${authBg})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-zinc-50/70 to-zinc-100/90 backdrop-blur-[1px]" />

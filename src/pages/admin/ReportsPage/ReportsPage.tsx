@@ -472,7 +472,7 @@ const AdminReportsPage = () => {
                 {/* View Context Button */}
                 <div className="flex">
                   <a
-                    href={`/interviews/${selectedReport.interviewId}/result?highlightQuestionId=${selectedReport.interviewQuestionId}&viewMode=admin`}
+                    href={`/history/${selectedReport.interviewId}/result?highlightQuestionId=${selectedReport.interviewQuestionId}&viewMode=admin`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:bg-blue-100"

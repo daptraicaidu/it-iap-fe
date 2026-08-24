@@ -132,8 +132,8 @@ const BannersPage: React.FC = () => {
     setSubmitting(true);
     setErrorMsg(null);
 
-    const finalTitle = title.trim() || "ㅤ";
-    const finalContent = content.trim() || "ㅤ";
+    const finalTitle = title.trim() || null;
+    const finalContent = content.trim() || null;
 
     const formData = new FormData();
     formData.append("title", finalTitle);

@@ -8,6 +8,7 @@ import {
 import { Briefcase } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { PositionItem, LevelFilter } from "../../../../services/admin/adminDashboardService";
+import CustomDropdown from "../../../../components/CustomDropdown";
 
 interface PositionPieChartProps {
   data: PositionItem[];
@@ -99,17 +100,14 @@ const PositionPieChart = ({
             {t("pieChart.title")}
           </h3>
         </div>
-        <select
+        <CustomDropdown
           value={levelFilter}
-          onChange={(e) => onLevelFilterChange(e.target.value as LevelFilter)}
-          className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-700 outline-none transition-colors hover:border-zinc-300 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400"
-        >
-          {LEVEL_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {t(opt.labelKey)}
-            </option>
-          ))}
-        </select>
+          options={LEVEL_OPTIONS.map((opt) => ({
+            value: opt.value,
+            label: t(opt.labelKey),
+          }))}
+          onChange={onLevelFilterChange}
+        />
       </div>
 
       {chartData.length === 0 || total === 0 ? (

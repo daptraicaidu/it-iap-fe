@@ -1,4 +1,4 @@
-import apiClient from "../../utils/axios";
+import apiClient, { refreshAuthToken } from "../../utils/axios";
 import type { ApiResponse } from "../common/apiResponse";
 
 export type { ApiResponse };
@@ -77,7 +77,7 @@ const authService = {
     apiClient.post<ApiResponse>("/auth/resend-otp", payload),
 
   refreshToken: () =>
-    apiClient.post<ApiResponse<AuthData>>("/auth/refresh"),
+    refreshAuthToken<ApiResponse<AuthData>>(),
 
   logout: () => apiClient.post<ApiResponse<string>>("/auth/logout"),
 
