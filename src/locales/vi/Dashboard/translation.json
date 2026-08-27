@@ -76,9 +76,9 @@
     "error": "Không thể tải dữ liệu",
     "legend": {
       "noActivity": "Không hoạt động",
-      "few": "1-2 câu",
-      "moderate": "3-7 câu",
-      "many": "≥8 câu"
+      "few": "1-6 câu",
+      "moderate": "7-9 câu",
+      "many": "≥10 câu"
     },
     "days": {
       "mon": "T2",

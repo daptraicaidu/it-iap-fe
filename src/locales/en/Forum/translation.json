@@ -61,5 +61,7 @@
   "allVisible": "All posts",
   "onlyVisible": "Visible",
   "onlyHidden": "Hidden",
-  "radarTitle": "Skill Overview Chart"
+  "radarTitle": "Skill Overview Chart",
+  "leaderboardEmpty": "No one on the leaderboard yet",
+  "leaderboardEmptyDesc": "Start an interview now to claim your spot on the leaderboard!"
 }

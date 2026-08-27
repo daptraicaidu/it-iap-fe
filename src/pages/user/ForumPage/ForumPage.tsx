@@ -906,9 +906,9 @@ const StreakLeaderboard = ({ hideHeader = false }: { hideHeader?: boolean }) => 
 
   if (isLoadingLeaderboard) {
     return (
-      <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
+      <div className={`rounded-xl border border-zinc-200 bg-white p-5 shadow-xs ${hideHeader ? "border-0 shadow-none p-2" : ""}`}>
         <div className="animate-pulse space-y-3">
-          <div className="h-5 w-32 rounded bg-zinc-200" />
+          {!hideHeader && <div className="h-5 w-32 rounded bg-zinc-200" />}
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full bg-zinc-200" />
@@ -920,8 +920,6 @@ const StreakLeaderboard = ({ hideHeader = false }: { hideHeader?: boolean }) => 
       </div>
     );
   }
-
-  if (leaderboard.length === 0) return null;
 
   const getMedalIcon = (index: number) => {
     if (index === 0) return "🥇";
@@ -940,48 +938,62 @@ const StreakLeaderboard = ({ hideHeader = false }: { hideHeader?: boolean }) => 
           </h3>
         </div>
       )}
-      <div className="divide-y divide-zinc-100">
-        {leaderboard.map((entry, index) => (
-          <div
-            key={`${entry.fullName}-${index}`}
-            className={`flex items-center gap-3 px-4 py-3 transition hover:bg-zinc-50 ${index < 3 ? "bg-amber-50/20" : ""}`}
-          >
-            {/* Rank number / medal */}
-            <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
-              {getMedalIcon(index) ? (
-                <span className="text-base">{getMedalIcon(index)}</span>
-              ) : (
-                <span className="text-xs font-bold text-zinc-400">
-                  {index + 1}
-                </span>
-              )}
-            </div>
-            {/* Avatar */}
-            <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100">
-              {entry.avatarUrl ? (
-                <img
-                  src={entry.avatarUrl}
-                  alt={entry.fullName}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-zinc-400 font-bold text-xs">
-                  {entry.fullName.charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
-            {/* Name */}
-            <span className="flex-1 truncate text-sm font-semibold text-zinc-800">
-              {entry.fullName}
-            </span>
-            {/* Streak */}
-            <div className="flex items-center gap-1 text-sm font-extrabold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-200">
-              <Flame className="h-3.5 w-3.5" />
-              {entry.currentStreak}
-            </div>
+      {leaderboard.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 mb-3">
+            <Flame className="h-6 w-6 text-amber-500" />
           </div>
-        ))}
-      </div>
+          <p className="text-sm font-semibold text-zinc-800">
+            {t("leaderboardEmpty")}
+          </p>
+          <p className="mt-1 text-xs text-zinc-500 max-w-[220px]">
+            {t("leaderboardEmptyDesc")}
+          </p>
+        </div>
+      ) : (
+        <div className="divide-y divide-zinc-100">
+          {leaderboard.map((entry, index) => (
+            <div
+              key={`${entry.fullName}-${index}`}
+              className={`flex items-center gap-3 px-4 py-3 transition hover:bg-zinc-50 ${index < 3 ? "bg-amber-50/20" : ""}`}
+            >
+              {/* Rank number / medal */}
+              <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
+                {getMedalIcon(index) ? (
+                  <span className="text-base">{getMedalIcon(index)}</span>
+                ) : (
+                  <span className="text-xs font-bold text-zinc-400">
+                    {index + 1}
+                  </span>
+                )}
+              </div>
+              {/* Avatar */}
+              <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100">
+                {entry.avatarUrl ? (
+                  <img
+                    src={entry.avatarUrl}
+                    alt={entry.fullName}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-zinc-400 font-bold text-xs">
+                    {entry.fullName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
+              {/* Name */}
+              <span className="flex-1 truncate text-sm font-semibold text-zinc-800">
+                {entry.fullName}
+              </span>
+              {/* Streak */}
+              <div className="flex items-center gap-1 text-sm font-extrabold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-200">
+                <Flame className="h-3.5 w-3.5" />
+                {entry.currentStreak}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

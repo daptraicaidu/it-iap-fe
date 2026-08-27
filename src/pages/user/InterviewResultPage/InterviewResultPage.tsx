@@ -820,6 +820,7 @@ const InterviewResultPage = () => {
                       strokeWidth="2"
                       strokeDasharray="4,3"
                     />
+                    <circle cx="10" cy="4" r="3" fill="#eab308" />
                   </svg>
                   <span>{t("radar.benchmark", { defaultValue: "Chuẩn mục tiêu" })}</span>
                 </div>

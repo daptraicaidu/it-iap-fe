@@ -61,5 +61,7 @@
   "allVisible": "Tất cả bài",
   "onlyVisible": "Đang hiện",
   "onlyHidden": "Đã ẩn",
-  "radarTitle": "Biểu đồ tổng quan năng lực"
+  "radarTitle": "Biểu đồ tổng quan năng lực",
+  "leaderboardEmpty": "Chưa có ai trên bảng xếp hạng",
+  "leaderboardEmptyDesc": "Hãy bắt đầu phỏng vấn ngay để ghi danh trên bảng xếp hạng!"
 }
