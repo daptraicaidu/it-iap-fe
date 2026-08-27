@@ -97,23 +97,23 @@ const BannerModal: React.FC<BannerModalProps> = ({ banner }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 16 }}
             transition={{ type: "spring", duration: 0.45, bounce: 0.1 }}
-            className="relative z-10 max-h-[85vh] max-w-[90vw] md:max-w-2xl lg:max-w-3xl overflow-hidden rounded-3xl border border-white/20 bg-zinc-950/30 p-1 shadow-2xl backdrop-blur-xs"
+            className="relative z-10 max-h-[85vh] max-w-[90vw] md:max-w-2xl lg:max-w-3xl overflow-hidden rounded-2xl shadow-2xl"
           >
             {/* Close button - Clicking X dismisses for 24h */}
             <button
               type="button"
               onClick={handleDismiss24h}
-              className="absolute right-3 top-3 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-zinc-900/70 text-white backdrop-blur-md transition-all hover:bg-zinc-900 hover:scale-105 active:scale-95 shadow-lg border border-white/20"
+              className="absolute right-3 top-3 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 shadow-lg border border-white/15 cursor-pointer"
               title="Đóng trong 24h"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4 text-white" />
             </button>
 
             {/* Banner Full Image (Aspect ratio preserved, not cropped) */}
             <img
               src={banner.imageUrl}
               alt="Banner"
-              className="h-auto max-h-[80vh] w-full object-contain rounded-2xl shadow-sm"
+              className="h-auto max-h-[85vh] w-full object-contain rounded-2xl"
             />
           </motion.div>
         ) : (
@@ -131,10 +131,10 @@ const BannerModal: React.FC<BannerModalProps> = ({ banner }) => {
             <button
               type="button"
               onClick={handleDismiss24h}
-              className="absolute right-4 top-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100/80 text-zinc-500 transition-all hover:bg-zinc-200 hover:text-zinc-900 active:scale-95"
+              className="absolute right-4 top-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 shadow-md border border-white/15 cursor-pointer"
               title="Đóng trong 24h"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4 text-white" />
             </button>
 
             {/* Modal Header */}
@@ -150,11 +150,11 @@ const BannerModal: React.FC<BannerModalProps> = ({ banner }) => {
             <div className="max-h-[60vh] overflow-y-auto px-6 py-3 space-y-4">
               {/* Banner Image */}
               {hasImage && (
-                <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-zinc-50 shadow-xs flex items-center justify-center">
+                <div className="relative overflow-hidden rounded-2xl flex items-center justify-center">
                   <img
                     src={banner.imageUrl}
                     alt={banner.title || "Banner Image"}
-                    className="max-h-72 w-full object-contain transition-transform duration-500 group-hover:scale-[1.01]"
+                    className="max-h-72 w-full object-contain rounded-2xl"
                   />
                 </div>
               )}
