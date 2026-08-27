@@ -186,9 +186,26 @@ interface RadarChartProps {
   userValues: number[]; // 0..10
   benchmarkValues: number[]; // 0..10
   labels: string[];
+  benchmarkLabel?: string;
+  userScoreLabel?: string;
 }
 
-export const RadarChart = ({ userValues, benchmarkValues, labels }: RadarChartProps) => {
+export const RadarChart = ({
+  userValues,
+  benchmarkValues,
+  labels,
+  benchmarkLabel,
+  userScoreLabel,
+}: RadarChartProps) => {
+  const { t } = useTranslation(["Dashboard", "Interview"]);
+  const [hoveredPoint, setHoveredPoint] = useState<{
+    type: "benchmark" | "user";
+    index: number;
+    x: number;
+    y: number;
+    value: number;
+  } | null>(null);
+
   // Expanded viewBox (500x370) for big, bold, prominent 17.5px labels
   const cx = 250;
   const cy = 185;
@@ -220,102 +237,230 @@ export const RadarChart = ({ userValues, benchmarkValues, labels }: RadarChartPr
     return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
   };
 
+  const resolvedBenchmarkLabel =
+    benchmarkLabel ||
+    t("Dashboard:radar.benchmark", {
+      defaultValue: t("Interview:radar.benchmark", "Chuẩn mục tiêu"),
+    });
+
+  const resolvedUserScoreLabel =
+    userScoreLabel ||
+    t("Dashboard:radar.yourScore", {
+      defaultValue: t("Interview:radar.userScore", "Điểm của bạn"),
+    });
+
   return (
-    <svg viewBox="0 0 500 370" className="w-full max-w-[420px] h-auto mx-auto">
-      {/* Grid polygons */}
-      {Array.from({ length: levels }).map((_, li) => {
-        const r = ((li + 1) / levels) * maxR;
-        const pts = Array.from({ length: n })
-          .map((_, i) => {
-            const p = pointOnAxis(i, r);
-            return `${p.x.toFixed(2)},${p.y.toFixed(2)}`;
-          })
-          .join(" ");
-        return (
-          <polygon
-            key={li}
-            points={pts}
-            fill={li % 2 === 0 ? "rgba(244,244,245,0.6)" : "none"}
-            stroke="#e4e4e7"
-            strokeWidth="1"
-          />
-        );
-      })}
+    <div className="relative w-full max-w-[420px] mx-auto">
+      <svg
+        viewBox="0 0 500 370"
+        className="w-full h-auto mx-auto overflow-visible select-none"
+      >
+        {/* Grid polygons */}
+        {Array.from({ length: levels }).map((_, li) => {
+          const r = ((li + 1) / levels) * maxR;
+          const pts = Array.from({ length: n })
+            .map((_, i) => {
+              const p = pointOnAxis(i, r);
+              return `${p.x.toFixed(2)},${p.y.toFixed(2)}`;
+            })
+            .join(" ");
+          return (
+            <polygon
+              key={li}
+              points={pts}
+              fill={li % 2 === 0 ? "rgba(244,244,245,0.6)" : "none"}
+              stroke="#e4e4e7"
+              strokeWidth="1"
+            />
+          );
+        })}
 
-      {/* Axes */}
-      {Array.from({ length: n }).map((_, i) => {
-        const p = pointOnAxis(i, maxR);
-        return (
-          <line
-            key={i}
-            x1={cx}
-            y1={cy}
-            x2={p.x}
-            y2={p.y}
-            stroke="#d4d4d8"
-            strokeWidth="1"
-          />
-        );
-      })}
+        {/* Axes */}
+        {Array.from({ length: n }).map((_, i) => {
+          const p = pointOnAxis(i, maxR);
+          return (
+            <line
+              key={i}
+              x1={cx}
+              y1={cy}
+              x2={p.x}
+              y2={p.y}
+              stroke="#d4d4d8"
+              strokeWidth="1"
+            />
+          );
+        })}
 
-      {/* Benchmark (dashed yellow) */}
-      <path
-        d={toPath(benchmarkValues)}
-        fill="rgba(234,179,8,0.08)"
-        stroke="#eab308"
-        strokeWidth="2"
-        strokeDasharray="5,4"
-      />
+        {/* Benchmark (dashed yellow) */}
+        <path
+          d={toPath(benchmarkValues)}
+          fill="rgba(234,179,8,0.08)"
+          stroke="#eab308"
+          strokeWidth="2"
+          strokeDasharray="5,4"
+        />
 
-      {/* User (solid purple) */}
-      <path
-        d={toPath(userValues)}
-        fill="rgba(109,40,217,0.15)"
-        stroke="#7c3aed"
-        strokeWidth="2.5"
-      />
+        {/* User (solid purple) */}
+        <path
+          d={toPath(userValues)}
+          fill="rgba(109,40,217,0.15)"
+          stroke="#7c3aed"
+          strokeWidth="2.5"
+        />
 
-      {/* Data point dots for user */}
-      {userValues.map((v, i) => {
-        const p = pointOnAxis(i, (v / 10) * maxR);
-        return <circle key={i} cx={p.x} cy={p.y} r="3.5" fill="#7c3aed" />;
-      })}
+        {/* Benchmark data point dots (Yellow) */}
+        {benchmarkValues.map((v, i) => {
+          const p = pointOnAxis(i, (v / 10) * maxR);
+          const isHovered =
+            hoveredPoint?.type === "benchmark" && hoveredPoint?.index === i;
+          return (
+            <g key={`bm-${i}`}>
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={isHovered ? 5.5 : 3.5}
+                fill="#eab308"
+                stroke="#ffffff"
+                strokeWidth={isHovered ? 2 : 1}
+                className="transition-all duration-150"
+              />
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={12}
+                fill="transparent"
+                className="cursor-pointer"
+                onMouseEnter={() =>
+                  setHoveredPoint({
+                    type: "benchmark",
+                    index: i,
+                    x: p.x,
+                    y: p.y,
+                    value: v,
+                  })
+                }
+                onMouseLeave={() => setHoveredPoint(null)}
+              />
+            </g>
+          );
+        })}
 
-      {/* Labels — multi-line, positioned at correct axis endpoints */}
-      {labels.map((label, i) => {
-        const p = pointOnAxis(i, maxR + labelOffset);
-        const anchor =
-          Math.abs(p.x - cx) < 10 ? "middle" : p.x < cx ? "end" : "start";
-        const lines = splitLabel(label);
-        const lineHeight = 19;
-        // Center the text block vertically around p.y
-        const startDy = -(((lines.length - 1) * lineHeight) / 2);
+        {/* User data point dots (Purple) */}
+        {userValues.map((v, i) => {
+          const p = pointOnAxis(i, (v / 10) * maxR);
+          const isHovered =
+            hoveredPoint?.type === "user" && hoveredPoint?.index === i;
+          return (
+            <g key={`user-${i}`}>
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={isHovered ? 6 : 4}
+                fill="#7c3aed"
+                stroke="#ffffff"
+                strokeWidth={isHovered ? 2 : 1}
+                className="transition-all duration-150"
+              />
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={12}
+                fill="transparent"
+                className="cursor-pointer"
+                onMouseEnter={() =>
+                  setHoveredPoint({
+                    type: "user",
+                    index: i,
+                    x: p.x,
+                    y: p.y,
+                    value: v,
+                  })
+                }
+                onMouseLeave={() => setHoveredPoint(null)}
+              />
+            </g>
+          );
+        })}
 
-        return (
-          <text
-            key={i}
-            x={p.x.toFixed(2)}
-            y={p.y.toFixed(2)}
-            textAnchor={anchor}
-            fontSize="17.5"
-            fill="#09090b"
-            fontFamily="system-ui, sans-serif"
-            fontWeight="500"
-            dominantBaseline="middle"
-          >
-            {lines.map((line, li) => (
-              <tspan
-                key={li}
-                x={p.x.toFixed(2)}
-                dy={li === 0 ? startDy : lineHeight}
+        {/* Labels — multi-line, positioned at correct axis endpoints */}
+        {labels.map((label, i) => {
+          const p = pointOnAxis(i, maxR + labelOffset);
+          const anchor =
+            Math.abs(p.x - cx) < 10 ? "middle" : p.x < cx ? "end" : "start";
+          const lines = splitLabel(label);
+          const lineHeight = 19;
+          // Center the text block vertically around p.y
+          const startDy = -(((lines.length - 1) * lineHeight) / 2);
+
+          return (
+            <text
+              key={i}
+              x={p.x.toFixed(2)}
+              y={p.y.toFixed(2)}
+              textAnchor={anchor}
+              fontSize="17.5"
+              fill="#09090b"
+              fontFamily="system-ui, sans-serif"
+              fontWeight="500"
+              dominantBaseline="middle"
+            >
+              {lines.map((line, li) => (
+                <tspan
+                  key={li}
+                  x={p.x.toFixed(2)}
+                  dy={li === 0 ? startDy : lineHeight}
+                >
+                  {line}
+                </tspan>
+              ))}
+            </text>
+          );
+        })}
+      </svg>
+
+      {/* Floating Tooltip */}
+      {hoveredPoint && (
+        <div
+          className="pointer-events-none absolute z-30 flex flex-col items-center -translate-x-1/2 -translate-y-full transition-all duration-100 ease-out animate-fadeIn"
+          style={{
+            left: `${(hoveredPoint.x / 500) * 100}%`,
+            top: `${(hoveredPoint.y / 370) * 100}%`,
+            marginTop: "-10px",
+          }}
+        >
+          <div className="rounded-xl bg-white px-3.5 py-2 text-xs text-zinc-900 shadow-xl border border-zinc-200/90 flex flex-col items-center whitespace-nowrap">
+            <span className="text-[11px] font-semibold text-zinc-500">
+              {labels[hoveredPoint.index]}
+            </span>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  hoveredPoint.type === "benchmark"
+                    ? "bg-amber-500 ring-2 ring-amber-400/30"
+                    : "bg-purple-600 ring-2 ring-purple-500/30"
+                }`}
+              />
+              <span className="text-xs font-semibold text-zinc-800">
+                {hoveredPoint.type === "benchmark"
+                  ? resolvedBenchmarkLabel
+                  : resolvedUserScoreLabel}
+                :
+              </span>
+              <span
+                className={`text-xs font-extrabold ${
+                  hoveredPoint.type === "benchmark"
+                    ? "text-amber-600"
+                    : "text-purple-600"
+                }`}
               >
-                {line}
-              </tspan>
-            ))}
-          </text>
-        );
-      })}
-    </svg>
+                {Number(hoveredPoint.value).toFixed(1)} / 10
+              </span>
+            </div>
+          </div>
+          <div className="h-2 w-2 -mt-1 rotate-45 bg-white border-r border-b border-zinc-200/90" />
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -413,14 +558,14 @@ const ActivityHeatmap = ({
 
   const getBgColor = (count: number) => {
     if (count === 0) return "#f4f4f5"; // zinc-100
-    if (count < 3) return "#a1caff"; 
-    if (count < 8) return "#6baafc"; 
-    return "#3b82f6"; 
+    if (count < 7) return "#a1caff"; // 1-6
+    if (count < 10) return "#6baafc"; // 7-9
+    return "#3b82f6"; // >= 10
   };
 
   const getTextColor = (count: number) => {
     if (count === 0) return "#a1a1aa"; // zinc-400
-    if (count < 3) return "#1e3a8a"; 
+    if (count < 7) return "#1e3a8a"; 
     return "#ffffff";
   };
 
@@ -1337,6 +1482,7 @@ const DashboardPage = () => {
                         strokeWidth="2"
                         strokeDasharray="4,3"
                       />
+                      <circle cx="10" cy="4" r="3" fill="#eab308" />
                     </svg>
                     <span>{t("radar.benchmark")}</span>
                   </div>

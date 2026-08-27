@@ -76,9 +76,9 @@
     "error": "Unable to load data",
     "legend": {
       "noActivity": "No activity",
-      "few": "1-2 questions",
-      "moderate": "3-7 questions",
-      "many": "≥8 questions"
+      "few": "1-6 questions",
+      "moderate": "7-9 questions",
+      "many": "≥10 questions"
     },
     "days": {
       "mon": "Mon",
