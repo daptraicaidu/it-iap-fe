@@ -155,7 +155,7 @@ const ProfilesPage = () => {
     null
   );
   const [form, setForm] = useState<ProfilePayload>(createEmptyPayload);
-  const [isCreating, setIsCreating] = useState(false);
+  const [isCreating, setIsCreating] = useState(true);
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -177,9 +177,11 @@ const ProfilesPage = () => {
 
     try {
       const response = await profileService.getProfile(profileId);
-      setForm(normalizeProfile(response.data.data));
-      setSelectedProfileId(profileId);
-      setIsCreating(false);
+      if (response.data.data) {
+        setForm(normalizeProfile(response.data.data));
+        setSelectedProfileId(profileId);
+        setIsCreating(false);
+      }
     } catch (err: unknown) {
       setError(getErrorMessage(err, t("messages.loadDetailError")));
       // Keep previous selectedProfileId and form intact on failure
@@ -197,9 +199,8 @@ const ProfilesPage = () => {
       const items = response.data.data ?? [];
       setProfiles(items);
 
-      const targetId = nextSelectedId ?? items[0]?.id ?? null;
-      if (targetId !== null) {
-        await fetchAndSelectProfile(targetId);
+      if (nextSelectedId) {
+        await fetchAndSelectProfile(nextSelectedId);
       } else {
         setSelectedProfileId(null);
         setIsCreating(true);
@@ -330,10 +331,12 @@ const ProfilesPage = () => {
           : await profileService.updateProfile(selectedProfileId, payload);
 
       const savedProfile = response.data.data;
-      setIsCreating(false);
-      setSelectedProfileId(savedProfile.id);
-      setForm(normalizeProfile(savedProfile));
-      await loadProfiles(savedProfile.id);
+      if (savedProfile) {
+        setIsCreating(false);
+        setSelectedProfileId(savedProfile.id);
+        setForm(normalizeProfile(savedProfile));
+        await loadProfiles(savedProfile.id);
+      }
       setMessage(t("messages.saveSuccess"));
     } catch (err: unknown) {
       setError(getErrorMessage(err, t("messages.saveError")));
@@ -495,24 +498,46 @@ const ProfilesPage = () => {
           </aside>
 
           <section className="rounded-xl border border-zinc-200 bg-white">
-            <div className="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-xs font-medium text-blue-600">
-                  {isCreating ? t("form.modeCreate") : t("form.modeEdit")}
+            {selectedProfileId === null && !isCreating ? (
+              <div className="flex min-h-[460px] flex-col items-center justify-center p-8 text-center">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400">
+                  <FileText className="h-8 w-8" />
+                </div>
+                <h3 className="text-base font-semibold text-zinc-900">
+                  {t("list.noSelectionTitle")}
+                </h3>
+                <p className="mt-1.5 max-w-sm text-sm text-zinc-500">
+                  {t("list.noSelectionDesc")}
                 </p>
-                <h2 className="mt-1 text-lg font-semibold text-zinc-900">
-                  {isCreating
-                    ? t("form.newProfile")
-                  : selectedTitle || t("list.untitled")}
-                </h2>
-              </div>
-            </div>
-
-            {isLoadingDetail ? (
-              <div className="flex min-h-[420px] items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+                <button
+                  type="button"
+                  onClick={handleCreateNew}
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  <Plus className="h-4 w-4" />
+                  {t("actions.create")}
+                </button>
               </div>
             ) : (
+              <>
+                <div className="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-blue-600">
+                      {isCreating ? t("form.modeCreate") : t("form.modeEdit")}
+                    </p>
+                    <h2 className="mt-1 text-lg font-semibold text-zinc-900">
+                      {isCreating
+                        ? t("form.newProfile")
+                        : selectedTitle || t("list.untitled")}
+                    </h2>
+                  </div>
+                </div>
+
+                {isLoadingDetail ? (
+                  <div className="flex min-h-[420px] items-center justify-center">
+                    <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+                  </div>
+                ) : (
               <div className="space-y-6 p-5 sm:p-6">
                 <div className="grid gap-4 md:grid-cols-3">
                   <Field
@@ -783,10 +808,12 @@ const ProfilesPage = () => {
                     )}
                     {t("actions.save")}
                   </button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </section>
+              )}
+            </>
+          )}
+        </section>
         </div>
 
       <ConfirmDialog

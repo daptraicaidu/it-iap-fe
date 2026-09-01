@@ -20,6 +20,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import useForumStore from "../../../store/forumStore";
+import { RadarChart } from "../DashboardPage/DashboardPage";
+import { getBenchmarkByTitleOrRole } from "../../../utils/benchmark";
 import type {
   ForumPost,
   ReactionType,
@@ -77,125 +79,6 @@ const getRankBadgeStyle = (rank: UserRank | string | null | undefined): string =
     default:
       return "text-zinc-600 bg-zinc-100 border-zinc-200";
   }
-};
-
-// ── Radar Chart SVG Component (from Dashboard) ──
-interface RadarChartProps {
-  userValues: number[]; // 5 skills 0..10
-  benchmarkValues: number[]; // 5 skills 0..10
-  labels: string[];
-}
-
-const RadarChart = ({ userValues, benchmarkValues, labels }: RadarChartProps) => {
-  const cx = 200;
-  const cy = 140;
-  const maxR = 85;
-  const levels = 5;
-  const n = labels.length;
-  const labelOffset = 24;
-
-  const angleFor = (i: number) => (2 * Math.PI * i) / n - Math.PI / 2;
-
-  const pointOnAxis = (i: number, r: number) => ({
-    x: cx + r * Math.cos(angleFor(i)),
-    y: cy + r * Math.sin(angleFor(i)),
-  });
-
-  const toPath = (values: number[]) =>
-    values
-      .map((v, i) => {
-        const clamped = Math.max(0, Math.min(10, v));
-        const p = pointOnAxis(i, (clamped / 10) * maxR);
-        return `${i === 0 ? "M" : "L"}${p.x.toFixed(2)},${p.y.toFixed(2)}`;
-      })
-      .join(" ") + " Z";
-
-  return (
-    <svg viewBox="0 0 400 280" className="w-full max-w-[340px] h-auto mx-auto drop-shadow-sm">
-      {/* Grid polygons */}
-      {Array.from({ length: levels }).map((_, li) => {
-        const r = ((li + 1) / levels) * maxR;
-        const pts = Array.from({ length: n })
-          .map((_, i) => {
-            const p = pointOnAxis(i, r);
-            return `${p.x.toFixed(2)},${p.y.toFixed(2)}`;
-          })
-          .join(" ");
-        return (
-          <polygon
-            key={li}
-            points={pts}
-            fill={li % 2 === 0 ? "rgba(244,244,245,0.5)" : "none"}
-            stroke="#e4e4e7"
-            strokeWidth="1"
-          />
-        );
-      })}
-
-      {/* Axes */}
-      {Array.from({ length: n }).map((_, i) => {
-        const p = pointOnAxis(i, maxR);
-        return (
-          <line
-            key={i}
-            x1={cx}
-            y1={cy}
-            x2={p.x}
-            y2={p.y}
-            stroke="#d4d4d8"
-            strokeWidth="1"
-          />
-        );
-      })}
-
-      {/* Benchmark (dashed yellow) */}
-      <path
-        d={toPath(benchmarkValues)}
-        fill="rgba(234,179,8,0.06)"
-        stroke="#eab308"
-        strokeWidth="1.5"
-        strokeDasharray="4,3"
-      />
-
-      {/* User (solid indigo) */}
-      <path
-        d={toPath(userValues)}
-        fill="rgba(99,102,241,0.2)"
-        stroke="#6366f1"
-        strokeWidth="2.2"
-      />
-
-      {/* Dots */}
-      {userValues.map((v, i) => {
-        const clamped = Math.max(0, Math.min(10, v));
-        const p = pointOnAxis(i, (clamped / 10) * maxR);
-        return <circle key={i} cx={p.x} cy={p.y} r="3" fill="#4f46e5" stroke="#ffffff" strokeWidth="1" />;
-      })}
-
-      {/* Labels */}
-      {labels.map((label, i) => {
-        const p = pointOnAxis(i, maxR + labelOffset);
-        const anchor =
-          Math.abs(p.x - cx) < 10 ? "middle" : p.x < cx ? "end" : "start";
-
-        return (
-          <text
-            key={i}
-            x={p.x.toFixed(2)}
-            y={p.y.toFixed(2)}
-            textAnchor={anchor}
-            fontSize="12.5"
-            fill="#3f3f46"
-            fontFamily="system-ui, sans-serif"
-            fontWeight="600"
-            dominantBaseline="middle"
-          >
-            {label}
-          </text>
-        );
-      })}
-    </svg>
-  );
 };
 
 // ── Streak Content Card (With Special Effects for Large Streaks) ──
@@ -278,11 +161,9 @@ const StreakCard = ({ data, t }: { data: StreakSharedData; t: (key: string, opts
 const GradeCard = ({
   data,
   t,
-  lang,
 }: {
   data: GradeSharedData;
   t: (key: string, opts?: Record<string, unknown>) => string;
-  lang: string;
 }) => {
   const rank: UserRank = data.userRank ?? "BRONZE";
   const rankLower = rank.charAt(0) + rank.slice(1).toLowerCase();
@@ -294,9 +175,13 @@ const GradeCard = ({
 
   const skills: SkillOverviewDTO | null = data.profileSkillsOverview;
 
-  const radarLabels = lang.startsWith("vi")
-    ? ["Kiến thức nền", "Giải quyết VĐ", "Kinh nghiệm", "Diễn đạt logic", "Tập trung"]
-    : ["Core Tech", "Problem Solving", "Experience", "Logic", "Completeness"];
+  const radarLabels = [
+    t("Interview:skills.coreKnowledge", { defaultValue: "Kiến thức nền" }),
+    t("Interview:skills.problemSolving", { defaultValue: "Giải quyết vấn đề" }),
+    t("Interview:skills.appliedExperience", { defaultValue: "Kinh nghiệm thực tiễn" }),
+    t("Interview:skills.logicalArticulation", { defaultValue: "Diễn đạt logic" }),
+    t("Interview:skills.focusAndCompleteness", { defaultValue: "Tập trung & hoàn thiện" }),
+  ];
 
   const userValues = skills
     ? [
@@ -308,7 +193,11 @@ const GradeCard = ({
       ]
     : [0, 0, 0, 0, 0];
 
-  const benchmarkValues = [5, 5, 5, 5, 5];
+  const benchmarkRole =
+    data.level && data.position
+      ? `${data.level}_${data.position}`
+      : data.position || data.level || "default";
+  const benchmarkValues = getBenchmarkByTitleOrRole(benchmarkRole);
 
   const hasProfileDetails =
     Boolean(data.position) ||
@@ -367,15 +256,64 @@ const GradeCard = ({
 
       {/* Radar Chart Display */}
       {skills && (
-        <div className="mt-4 rounded-xl border border-zinc-200/80 bg-white/70 p-2.5 backdrop-blur-xs">
-          <p className="text-center text-xs font-semibold text-zinc-600 mb-1">
-            {t("radarTitle")}
+        <div className="mt-4 rounded-xl border border-zinc-200/80 bg-white/80 p-3.5 shadow-2xs backdrop-blur-xs">
+          <p className="text-center text-xs font-semibold text-zinc-700 mb-1">
+            {t("radarTitle", { defaultValue: "Biểu đồ tổng quan năng lực" })}
           </p>
-          <RadarChart
-            userValues={userValues}
-            benchmarkValues={benchmarkValues}
-            labels={radarLabels}
-          />
+          <div className="flex justify-center">
+            <RadarChart
+              userValues={userValues}
+              benchmarkValues={benchmarkValues}
+              labels={radarLabels}
+              benchmarkLabel={t("Interview:radar.benchmark", {
+                defaultValue: "Chuẩn mục tiêu",
+              })}
+              userScoreLabel={t("Interview:radar.userScore", {
+                defaultValue: "Điểm của bạn",
+              })}
+            />
+          </div>
+
+          {/* 2 Legend Notes */}
+          <div className="mt-2 flex items-center justify-center gap-5 text-xs text-zinc-500">
+            <div className="flex items-center gap-1.5">
+              <svg width="20" height="8">
+                <line
+                  x1="0"
+                  y1="4"
+                  x2="20"
+                  y2="4"
+                  stroke="#eab308"
+                  strokeWidth="2"
+                  strokeDasharray="4,3"
+                />
+                <circle cx="10" cy="4" r="3" fill="#eab308" />
+              </svg>
+              <span className="font-medium text-zinc-600">
+                {t("Interview:radar.benchmark", {
+                  defaultValue: "Chuẩn mục tiêu",
+                })}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <svg width="20" height="8">
+                <line
+                  x1="0"
+                  y1="4"
+                  x2="20"
+                  y2="4"
+                  stroke="#7c3aed"
+                  strokeWidth="2.5"
+                />
+                <circle cx="10" cy="4" r="3" fill="#7c3aed" />
+              </svg>
+              <span className="font-medium text-zinc-600">
+                {t("Interview:radar.userScore", {
+                  defaultValue: "Điểm của bạn",
+                })}
+              </span>
+            </div>
+          </div>
         </div>
       )}
 
@@ -843,7 +781,7 @@ const PostCard = ({
         {isStreak ? (
           <StreakCard data={post.sharedData as StreakSharedData} t={t} />
         ) : (
-          <GradeCard data={post.sharedData as GradeSharedData} t={t} lang={lang} />
+          <GradeCard data={post.sharedData as GradeSharedData} t={t} />
         )}
       </div>
 
@@ -1000,7 +938,7 @@ const StreakLeaderboard = ({ hideHeader = false }: { hideHeader?: boolean }) => 
 
 // ── Main Forum Page ──
 const ForumPage = () => {
-  const { t, i18n } = useTranslation("Forum");
+  const { t, i18n } = useTranslation(["Forum", "Interview"]);
   const [isMobileLeaderboardOpen, setIsMobileLeaderboardOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -1008,6 +946,7 @@ const ForumPage = () => {
     message: string;
     type: "success" | "error";
   } | null>(null);
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
   const {
     posts,
@@ -1035,6 +974,31 @@ const ForumPage = () => {
     return () => reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Infinite scroll observer: Automatically triggers loadMore when sentinel enters viewport
+  useEffect(() => {
+    if (!hasNext || isLoading || isLoadingMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          void loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "250px" }
+    );
+
+    const currentTarget = observerRef.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasNext, isLoading, isLoadingMore, loadMore]);
 
   const handleReact = useCallback(
     (postId: number, reactType: ReactionType | "") => {
@@ -1185,22 +1149,15 @@ const ForumPage = () => {
               )}
             </div>
 
-            {/* Load More */}
-            {hasNext && !isLoading && (
-              <div className="mt-8 flex justify-center">
-                <button
-                  type="button"
-                  onClick={loadMore}
-                  disabled={isLoadingMore}
-                  className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-60 shadow-xs cursor-pointer"
-                >
-                  {isLoadingMore ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                  {isLoadingMore ? t("loading") : t("loadMore")}
-                </button>
+            {/* Infinite Scroll Sentinel & Loading Indicator */}
+            {hasNext && (
+              <div ref={observerRef} className="py-6 flex justify-center">
+                {isLoadingMore && (
+                  <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-xs">
+                    <Loader2 className="h-4 w-4 animate-spin text-zinc-500" />
+                    <span>{t("loading")}</span>
+                  </div>
+                )}
               </div>
             )}
           </div>

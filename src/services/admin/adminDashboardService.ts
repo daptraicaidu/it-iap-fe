@@ -38,12 +38,17 @@ export interface TrendItem {
   count: number;
 }
 
+export interface InterviewTrendsData {
+  interactiveInterviewTrends: TrendItem[];
+  stressInterviewTrends: TrendItem[];
+}
+
 export interface OverviewData {
   userStats: UserStats;
   interviewStats: InterviewStats;
   aiGradingStats: AiGradingStats;
   revenueStats: RevenueStats;
-  interviewTrends: TrendItem[];
+  interviewTrends: InterviewTrendsData;
   revenueTrends: TrendItem[];
 }
 

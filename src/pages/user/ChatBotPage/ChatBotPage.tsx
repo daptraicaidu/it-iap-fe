@@ -367,7 +367,7 @@ const ChatBotPage = () => {
                         flex-shrink-0 rounded-lg p-1 transition-all
                         ${
                           activeSessionId === session.id
-                            ? "text-slate-400 hover:bg-indigo-100 hover:text-rose-500"
+                            ? "text-slate-400 hover:bg-blue-100 hover:text-rose-500"
                             : "text-zinc-300 opacity-0 group-hover:opacity-100 hover:bg-zinc-100 hover:text-rose-500"
                         }
                       `}
@@ -447,7 +447,7 @@ const ChatBotPage = () => {
                       setInputValue(suggestion);
                       textareaRef.current?.focus();
                     }}
-                    className="rounded-xl border border-zinc-200 bg-white px-4 py-3 text-left text-xs text-zinc-600 transition-all hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 active:scale-[0.98]"
+                    className="rounded-xl border border-zinc-200 bg-white px-4 py-3 text-left text-xs text-zinc-600 transition-all hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 active:scale-[0.98]"
                   >
                     {suggestion}
                   </button>
@@ -465,7 +465,7 @@ const ChatBotPage = () => {
                   }`}
                 >
                   {msg.role === "assistant" && (
-                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-50">
+                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-50">
                       <Bot size={16} className="text-600" />
                     </div>
                   )}
@@ -504,7 +504,7 @@ const ChatBotPage = () => {
                             <li className="leading-relaxed">{children}</li>
                           ),
                           blockquote: ({ children }) => (
-                            <blockquote className="my-2 border-l-3 border-indigo-300 bg-indigo-50/50 py-1 pl-3 pr-2 text-zinc-600 italic rounded-r-lg">
+                            <blockquote className="my-2 border-l-3 border-blue-300 bg-blue-50/50 py-1 pl-3 pr-2 text-zinc-600 italic rounded-r-lg">
                               {children}
                             </blockquote>
                           ),
@@ -518,7 +518,7 @@ const ChatBotPage = () => {
                               );
                             }
                             return (
-                              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-indigo-600">
+                              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-blue-600">
                                 {children}
                               </code>
                             );
@@ -534,7 +534,7 @@ const ChatBotPage = () => {
                             <hr className="my-3 border-zinc-200" />
                           ),
                           a: ({ href, children }) => (
-                            <a href={href} target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline hover:text-indigo-500">
+                            <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-500">
                               {children}
                             </a>
                           ),

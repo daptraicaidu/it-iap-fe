@@ -22,7 +22,13 @@
   "trendChart": {
     "title": "Xu hướng lượt phỏng vấn",
     "yAxis": "Số lượng",
-    "tooltipLabel": "Lượt phỏng vấn"
+    "tooltipLabel": "Lượt phỏng vấn",
+    "interactive": "Phỏng vấn tương tác",
+    "stress": "Phỏng vấn áp lực",
+    "total": "Tổng cộng",
+    "interactiveBadge": "Tương tác",
+    "stressBadge": "Áp lực",
+    "totalBadge": "Tổng"
   },
   "revenueChart": {
     "title": "Biểu đồ doanh thu",

@@ -18,6 +18,7 @@ import {
   User,
   Bot,
   X,
+  ExternalLink,
 } from "lucide-react";
 import interviewService from "../../../services/user/interviewService";
 import type {
@@ -107,6 +108,13 @@ const InterviewResultPage = () => {
 
   const [feedbackData, setFeedbackData] =
     useState<InterviewFeedbackData | null>(null);
+
+  const highlightedQuestion = feedbackData?.feedbackForQuestions?.find(
+    (q: FeedbackQuestion) =>
+      highlightQuestionId
+        ? String(q.interviewQuestionId) === highlightQuestionId
+        : false
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(
@@ -564,33 +572,49 @@ const InterviewResultPage = () => {
                               )}
                             </span>
 
-                            {/* Question Text with Report Flag */}
-                            <div className="relative group/question">
-                              <div className="mb-2 flex items-center gap-1.5">
-                                <MessageSquare className="h-4 w-4 text-blue-400" />
-                                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
-                                  {t("resultPage.questionLabel")}
-                                </span>
-                                {/* Report flag for question */}
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setReportQuestionId(q.interviewQuestionId);
-                                  }}
-                                  className="ml-auto inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-zinc-500 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600"
-                                  title={t("resultPage.reportTooltip")}
-                                >
-                                  <Flag className="h-3 w-3" />
-                                  <span className="text-[11px] font-medium">Báo cáo</span>
-                                </button>
+                              {/* Question Text with Report Flag / Admin View Question */}
+                              <div className="relative group/question">
+                                <div className="mb-2 flex items-center gap-1.5">
+                                  <MessageSquare className="h-4 w-4 text-blue-400" />
+                                  <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+                                    {t("resultPage.questionLabel")}
+                                  </span>
+                                  {/* Action button: Admin View Question or User Report Flag */}
+                                  {viewMode === "admin" ? (
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const url = `/admin/questions?content=${encodeURIComponent(q.questionContent)}`;
+                                        window.open(url, "_blank");
+                                      }}
+                                      className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition hover:bg-blue-100 active:scale-[0.98]"
+                                      title={t("resultPage.viewQuestionInAdmin")}
+                                    >
+                                      <ExternalLink className="h-3.5 w-3.5 text-blue-600" />
+                                      <span>{t("resultPage.viewQuestionInAdmin")}</span>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setReportQuestionId(q.interviewQuestionId);
+                                      }}
+                                      className="ml-auto inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-zinc-500 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600"
+                                      title={t("resultPage.reportTooltip")}
+                                    >
+                                      <Flag className="h-3 w-3" />
+                                      <span className="text-[11px] font-medium">Báo cáo</span>
+                                    </button>
+                                  )}
+                                </div>
+                                <div className="rounded-lg bg-zinc-50 p-3">
+                                  <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
+                                    {q.questionContent}
+                                  </p>
+                                </div>
                               </div>
-                              <div className="rounded-lg bg-zinc-50 p-3">
-                                <p className="text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
-                                  {q.questionContent}
-                                </p>
-                              </div>
-                            </div>
 
                             {/* Interactive: Conversation History */}
                             {isInteractive && (
@@ -747,6 +771,19 @@ const InterviewResultPage = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-wrap items-center justify-center gap-3"
           >
+            {highlightedQuestion && (
+              <button
+                type="button"
+                onClick={() => {
+                  const url = `/admin/questions?content=${encodeURIComponent(highlightedQuestion.questionContent)}`;
+                  window.open(url, "_blank");
+                }}
+                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700 active:scale-[0.98] shadow-sm"
+              >
+                <ExternalLink className="h-4 w-4" />
+                <span>{t("resultPage.viewQuestionInAdmin")}</span>
+              </button>
+            )}
             <button
               onClick={() => window.close()}
               className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98]"

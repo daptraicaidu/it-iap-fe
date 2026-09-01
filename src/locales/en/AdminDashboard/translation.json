@@ -22,7 +22,13 @@
   "trendChart": {
     "title": "Interview Trends",
     "yAxis": "Count",
-    "tooltipLabel": "Interviews"
+    "tooltipLabel": "Interviews",
+    "interactive": "Interactive Interview",
+    "stress": "Stress Interview",
+    "total": "Total",
+    "interactiveBadge": "Interactive",
+    "stressBadge": "Stress",
+    "totalBadge": "Total"
   },
   "revenueChart": {
     "title": "Revenue Chart",

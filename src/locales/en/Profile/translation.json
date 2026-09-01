@@ -164,7 +164,9 @@
     "title": "Profile list",
     "count": "{{count}} profiles",
     "empty": "No profiles yet. Create your first profile to get started.",
-    "untitled": "Untitled profile"
+    "untitled": "Untitled profile",
+    "noSelectionTitle": "No profile selected",
+    "noSelectionDesc": "Select a profile from the left list to view and edit, or create a new profile."
   },
   "form": {
     "modeCreate": "Create",

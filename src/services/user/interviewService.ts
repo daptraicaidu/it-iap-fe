@@ -88,6 +88,7 @@ export interface InterviewHistoryItem {
   profileId: number;
   profileTitle: string;
   interviewId: number;
+  totalPoint?: number | null;
 }
 
 export interface InterviewHistoryParams {
