@@ -147,7 +147,7 @@ const DashboardPage = () => {
       {/* Interview Trends Chart (Full width) */}
       <div>
         <InterviewTrendChart
-          data={overviewData?.interviewTrends ?? []}
+          data={overviewData?.interviewTrends}
           timeFilter={timeFilter}
           isLoading={isOverviewLoading}
         />

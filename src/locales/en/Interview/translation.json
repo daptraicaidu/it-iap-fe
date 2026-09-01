@@ -151,6 +151,7 @@
     "conversationHistory": "Conversation History",
     "loadingMessages": "Loading history...",
     "reportTooltip": "Report issue",
+    "viewQuestionInAdmin": "View Question",
     "you": "You",
     "ai": "AI",
     "questionType": {
@@ -201,6 +202,7 @@
     "startedAt": "Started",
     "completedAt": "Completed",
     "profile": "Profile",
+    "totalScore": "Score: {{score}} / 10",
     "viewResult": "View Result",
     "continueInterview": "Continue",
     "startInterview": "Start",

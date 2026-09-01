@@ -10,38 +10,71 @@ import {
 } from "recharts";
 import { TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import type { TrendItem, TimeFilter } from "../../../../services/admin/adminDashboardService";
+import type { InterviewTrendsData, TimeFilter } from "../../../../services/admin/adminDashboardService";
 
 interface InterviewTrendChartProps {
-  data: TrendItem[];
+  data?: InterviewTrendsData | null;
   timeFilter: TimeFilter;
   isLoading: boolean;
 }
 
 interface TooltipPayloadItem {
-  value: number;
-  color: string;
+  dataKey?: string;
+  name?: string;
+  value?: number;
+  color?: string;
+  stroke?: string;
 }
 
 const CustomTooltip = ({
   active,
   payload,
   label,
-  tooltipLabel,
+  t,
 }: {
   active?: boolean;
   payload?: TooltipPayloadItem[];
   label?: string;
-  tooltipLabel: string;
+  t: (key: string) => string;
 }) => {
-  if (!active || !payload?.length) return null;
+  if (!active || !payload || payload.length === 0) return null;
+
+  const interactiveItem = payload.find((p) => p.dataKey === "interactive");
+  const stressItem = payload.find((p) => p.dataKey === "stress");
+
+  const interactiveVal = Number(interactiveItem?.value ?? 0);
+  const stressVal = Number(stressItem?.value ?? 0);
+  const totalVal = interactiveVal + stressVal;
 
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2 shadow-lg">
-      <p className="text-xs font-medium text-zinc-500">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold text-zinc-900">
-        {tooltipLabel}: {payload[0].value.toLocaleString("vi-VN")}
-      </p>
+    <div className="min-w-[190px] rounded-xl border border-zinc-200 bg-white p-3 shadow-lg">
+      <p className="mb-2 text-xs font-semibold text-zinc-500">{label}</p>
+      <div className="space-y-1.5 text-xs">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-indigo-600" />
+            <span className="text-zinc-600">{t("trendChart.interactive")}</span>
+          </div>
+          <span className="font-semibold text-zinc-900">
+            {interactiveVal.toLocaleString("vi-VN")}
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-amber-500" />
+            <span className="text-zinc-600">{t("trendChart.stress")}</span>
+          </div>
+          <span className="font-semibold text-zinc-900">
+            {stressVal.toLocaleString("vi-VN")}
+          </span>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between gap-4 border-t border-zinc-100 pt-2 font-semibold">
+          <span className="text-zinc-700">{t("trendChart.total")}</span>
+          <span className="text-zinc-900">{totalVal.toLocaleString("vi-VN")}</span>
+        </div>
+      </div>
     </div>
   );
 };
@@ -53,8 +86,32 @@ const InterviewTrendChart = ({
 }: InterviewTrendChartProps) => {
   const { t } = useTranslation("AdminDashboard");
 
+  // Calculate totals for quick overview in chart header
+  const { totalInteractive, totalStress, totalAll } = useMemo(() => {
+    const interactiveList = data?.interactiveInterviewTrends ?? [];
+    const stressList = data?.stressInterviewTrends ?? [];
+
+    const totalInteractive = interactiveList.reduce(
+      (acc, cur) => acc + (cur.count || 0),
+      0
+    );
+    const totalStress = stressList.reduce(
+      (acc, cur) => acc + (cur.count || 0),
+      0
+    );
+
+    return {
+      totalInteractive,
+      totalStress,
+      totalAll: totalInteractive + totalStress,
+    };
+  }, [data]);
+
   const chartData = useMemo(() => {
     const pad = (n: number) => n.toString().padStart(2, "0");
+
+    const interactiveList = data?.interactiveInterviewTrends ?? [];
+    const stressList = data?.stressInterviewTrends ?? [];
 
     // Normalize date string to "DD/MM" format
     const normalizeDateKey = (dateStr?: string): string => {
@@ -81,29 +138,98 @@ const InterviewTrendChart = ({
       return match ? parseInt(match[1], 10) : null;
     };
 
+    // Parse date string to timestamp for chronological ordering
+    const parseDateToTimestamp = (dateStr: string): number => {
+      if (!dateStr) return 0;
+      if (dateStr.includes("/")) {
+        const parts = dateStr.split("/");
+        if (parts.length === 3) {
+          return new Date(
+            parseInt(parts[2], 10),
+            parseInt(parts[1], 10) - 1,
+            parseInt(parts[0], 10)
+          ).getTime();
+        }
+        if (parts.length === 2) {
+          return new Date(
+            new Date().getFullYear(),
+            parseInt(parts[1], 10) - 1,
+            parseInt(parts[0], 10)
+          ).getTime();
+        }
+      }
+      if (dateStr.includes("-")) {
+        const parts = dateStr.split("-");
+        if (parts[0].length === 4) {
+          return new Date(
+            parseInt(parts[0], 10),
+            parseInt(parts[1], 10) - 1,
+            parseInt(parts[2], 10)
+          ).getTime();
+        }
+      }
+      return 0;
+    };
+
     // 1. 24h filter: Generate exactly 24 points (00:00 to 23:00)
     if (timeFilter === "DAY") {
-      const hourMap = new Map<number, number>();
-      data.forEach((item) => {
+      const interactiveHourMap = new Map<number, number>();
+      const stressHourMap = new Map<number, number>();
+
+      interactiveList.forEach((item) => {
         const h = normalizeHour(item.time || item.date);
         if (h !== null && h >= 0 && h < 24) {
-          hourMap.set(h, (hourMap.get(h) || 0) + (item.count || 0));
+          interactiveHourMap.set(
+            h,
+            (interactiveHourMap.get(h) || 0) + (item.count || 0)
+          );
         }
       });
 
-      return Array.from({ length: 24 }, (_, h) => ({
-        label: `${pad(h)}:00`,
-        count: hourMap.get(h) ?? 0,
-      }));
+      stressList.forEach((item) => {
+        const h = normalizeHour(item.time || item.date);
+        if (h !== null && h >= 0 && h < 24) {
+          stressHourMap.set(
+            h,
+            (stressHourMap.get(h) || 0) + (item.count || 0)
+          );
+        }
+      });
+
+      return Array.from({ length: 24 }, (_, h) => {
+        const interactive = interactiveHourMap.get(h) ?? 0;
+        const stress = stressHourMap.get(h) ?? 0;
+        return {
+          label: `${pad(h)}:00`,
+          interactive,
+          stress,
+          total: interactive + stress,
+        };
+      });
     }
 
     // 2. 7 days filter (WEEK): Generate exactly 7 consecutive days
     if (timeFilter === "WEEK") {
-      const dateMap = new Map<string, number>();
-      data.forEach((item) => {
+      const interactiveMap = new Map<string, number>();
+      const stressMap = new Map<string, number>();
+
+      interactiveList.forEach((item) => {
         const key = normalizeDateKey(item.date);
         if (key) {
-          dateMap.set(key, (dateMap.get(key) || 0) + (item.count || 0));
+          interactiveMap.set(
+            key,
+            (interactiveMap.get(key) || 0) + (item.count || 0)
+          );
+        }
+      });
+
+      stressList.forEach((item) => {
+        const key = normalizeDateKey(item.date);
+        if (key) {
+          stressMap.set(
+            key,
+            (stressMap.get(key) || 0) + (item.count || 0)
+          );
         }
       });
 
@@ -111,20 +237,39 @@ const InterviewTrendChart = ({
         const d = new Date();
         d.setDate(d.getDate() - (6 - i));
         const key = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+        const interactive = interactiveMap.get(key) ?? 0;
+        const stress = stressMap.get(key) ?? 0;
         return {
           label: key,
-          count: dateMap.get(key) ?? 0,
+          interactive,
+          stress,
+          total: interactive + stress,
         };
       });
     }
 
     // 3. 30 days filter (MONTH): Generate exactly 30 consecutive days
     if (timeFilter === "MONTH") {
-      const dateMap = new Map<string, number>();
-      data.forEach((item) => {
+      const interactiveMap = new Map<string, number>();
+      const stressMap = new Map<string, number>();
+
+      interactiveList.forEach((item) => {
         const key = normalizeDateKey(item.date);
         if (key) {
-          dateMap.set(key, (dateMap.get(key) || 0) + (item.count || 0));
+          interactiveMap.set(
+            key,
+            (interactiveMap.get(key) || 0) + (item.count || 0)
+          );
+        }
+      });
+
+      stressList.forEach((item) => {
+        const key = normalizeDateKey(item.date);
+        if (key) {
+          stressMap.set(
+            key,
+            (stressMap.get(key) || 0) + (item.count || 0)
+          );
         }
       });
 
@@ -132,24 +277,59 @@ const InterviewTrendChart = ({
         const d = new Date();
         d.setDate(d.getDate() - (29 - i));
         const key = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+        const interactive = interactiveMap.get(key) ?? 0;
+        const stress = stressMap.get(key) ?? 0;
         return {
           label: key,
-          count: dateMap.get(key) ?? 0,
+          interactive,
+          stress,
+          total: interactive + stress,
         };
       });
     }
 
-    // Default / All filter
-    return data.map((item, index) => {
-      let label: string;
-      if (item.time) {
-        label = item.time;
-      } else if (item.date) {
-        label = normalizeDateKey(item.date);
-      } else {
-        label = `#${index + 1}`;
+    // 4. Default / All filter: Merge all distinct dates and sort chronologically
+    const interactiveMap = new Map<string, number>();
+    const stressMap = new Map<string, number>();
+    const allRawDates = new Set<string>();
+
+    interactiveList.forEach((item) => {
+      const rawDate = item.date || item.time || "";
+      if (rawDate) {
+        allRawDates.add(rawDate);
+        interactiveMap.set(
+          rawDate,
+          (interactiveMap.get(rawDate) || 0) + (item.count || 0)
+        );
       }
-      return { label, count: item.count || 0 };
+    });
+
+    stressList.forEach((item) => {
+      const rawDate = item.date || item.time || "";
+      if (rawDate) {
+        allRawDates.add(rawDate);
+        stressMap.set(
+          rawDate,
+          (stressMap.get(rawDate) || 0) + (item.count || 0)
+        );
+      }
+    });
+
+    const sortedDates = Array.from(allRawDates).sort((a, b) => {
+      const timeA = parseDateToTimestamp(a);
+      const timeB = parseDateToTimestamp(b);
+      return timeA - timeB;
+    });
+
+    return sortedDates.map((rawDate) => {
+      const interactive = interactiveMap.get(rawDate) ?? 0;
+      const stress = stressMap.get(rawDate) ?? 0;
+      return {
+        label: normalizeDateKey(rawDate),
+        interactive,
+        stress,
+        total: interactive + stress,
+      };
     });
   }, [data, timeFilter]);
 
@@ -167,13 +347,45 @@ const InterviewTrendChart = ({
 
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-6">
-      <div className="mb-4 flex items-center gap-2.5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-          <TrendingUp size={18} />
+      {/* Header with Title and Summary Badges */}
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <TrendingUp size={18} />
+          </div>
+          <h3 className="text-base font-semibold text-zinc-900">
+            {t("trendChart.title")}
+          </h3>
         </div>
-        <h3 className="text-base font-semibold text-zinc-900">
-          {t("trendChart.title")}
-        </h3>
+
+        {/* Legend & Period Summary Counts */}
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          {/* Total Badge */}
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1 font-medium text-zinc-700">
+            <span>{t("trendChart.totalBadge")}:</span>
+            <span className="font-semibold text-zinc-900">
+              {totalAll.toLocaleString("vi-VN")}
+            </span>
+          </div>
+
+          {/* Interactive Badge */}
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 font-medium text-indigo-700">
+            <span className="h-2 w-2 rounded-full bg-indigo-600" />
+            <span>{t("trendChart.interactiveBadge")}:</span>
+            <span className="font-semibold text-indigo-900">
+              {totalInteractive.toLocaleString("vi-VN")}
+            </span>
+          </div>
+
+          {/* Stress Badge */}
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-100 bg-amber-50 px-3 py-1 font-medium text-amber-700">
+            <span className="h-2 w-2 rounded-full bg-amber-500" />
+            <span>{t("trendChart.stressBadge")}:</span>
+            <span className="font-semibold text-amber-900">
+              {totalStress.toLocaleString("vi-VN")}
+            </span>
+          </div>
+        </div>
       </div>
 
       {chartData.length === 0 ? (
@@ -184,15 +396,19 @@ const InterviewTrendChart = ({
         <ResponsiveContainer width="100%" height={280}>
           <AreaChart
             data={chartData}
-            margin={{ top: 5, right: 5, left: -10, bottom: 0 }}
+            margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
           >
             <defs>
-              <linearGradient id="colorInterview" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.15} />
-                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+              <linearGradient id="colorInteractive" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="colorStress" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f4f4f5" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f4f4f5" vertical={false} />
             <XAxis
               dataKey="label"
               tick={{ fontSize: 12, fill: "#a1a1aa" }}
@@ -205,21 +421,38 @@ const InterviewTrendChart = ({
               tickLine={false}
               allowDecimals={false}
             />
-            <Tooltip
-              content={
-                <CustomTooltip
-                  tooltipLabel={t("trendChart.tooltipLabel")}
-                />
-              }
-            />
+            <Tooltip content={<CustomTooltip t={t} />} />
+            {/* Interactive Interview Line (Indigo) */}
             <Area
               type="monotone"
-              dataKey="count"
-              stroke="#2563eb"
+              dataKey="interactive"
+              name={t("trendChart.interactive")}
+              stroke="#4f46e5"
               strokeWidth={2}
-              fill="url(#colorInterview)"
-              dot={{ r: 3, fill: "#2563eb", strokeWidth: 0 }}
-              activeDot={{ r: 5, fill: "#2563eb", strokeWidth: 2, stroke: "#fff" }}
+              fill="url(#colorInteractive)"
+              dot={{ r: 3, fill: "#4f46e5", strokeWidth: 0 }}
+              activeDot={{
+                r: 5,
+                fill: "#4f46e5",
+                strokeWidth: 2,
+                stroke: "#fff",
+              }}
+            />
+            {/* Stress Interview Line (Amber) */}
+            <Area
+              type="monotone"
+              dataKey="stress"
+              name={t("trendChart.stress")}
+              stroke="#f59e0b"
+              strokeWidth={2}
+              fill="url(#colorStress)"
+              dot={{ r: 3, fill: "#f59e0b", strokeWidth: 0 }}
+              activeDot={{
+                r: 5,
+                fill: "#f59e0b",
+                strokeWidth: 2,
+                stroke: "#fff",
+              }}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -229,3 +462,4 @@ const InterviewTrendChart = ({
 };
 
 export default InterviewTrendChart;
+

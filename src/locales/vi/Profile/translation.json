@@ -164,7 +164,9 @@
     "title": "Danh sách hồ sơ",
     "count": "{{count}} hồ sơ",
     "empty": "Chưa có hồ sơ nào. Hãy tạo hồ sơ đầu tiên để bắt đầu.",
-    "untitled": "Hồ sơ chưa đặt tên"
+    "untitled": "Hồ sơ chưa đặt tên",
+    "noSelectionTitle": "Chưa chọn hồ sơ",
+    "noSelectionDesc": "Chọn một hồ sơ từ danh sách bên trái để xem và chỉnh sửa, hoặc tạo hồ sơ mới."
   },
   "form": {
     "modeCreate": "Tạo mới",

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Search,
   Plus,
@@ -337,6 +338,13 @@ const QuestionsPage = () => {
   const { t } = useTranslation("AdminQuestions");
 
   // Data state
+  const [searchParams] = useSearchParams();
+  const queryContent =
+    searchParams.get("content") ||
+    searchParams.get("search") ||
+    searchParams.get("keyword") ||
+    "";
+
   const [questions, setQuestions] = useState<QuestionEntity[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
@@ -345,7 +353,7 @@ const QuestionsPage = () => {
   const [loading, setLoading] = useState(true);
 
   // Filter state
-  const [filterContent, setFilterContent] = useState("");
+  const [filterContent, setFilterContent] = useState(queryContent);
   const [filterPosition, setFilterPosition] = useState("");
   const [filterLevel, setFilterLevel] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
@@ -353,9 +361,10 @@ const QuestionsPage = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [filterDeleted, setFilterDeleted] = useState<string>("false");
 
-  // Applied filters (default: isDeleted: false)
+  // Applied filters (default: isDeleted: false, plus content if query param exists)
   const [appliedFilters, setAppliedFilters] = useState<GetQuestionsParams>({
     isDeleted: false,
+    ...(queryContent ? { content: queryContent } : {}),
   });
 
   // Modal state
@@ -401,6 +410,17 @@ const QuestionsPage = () => {
   useEffect(() => {
     fetchQuestions(1, appliedFilters);
   }, [fetchQuestions, appliedFilters]);
+
+  useEffect(() => {
+    if (queryContent) {
+      setFilterContent(queryContent);
+      setAppliedFilters((prev) => ({
+        ...prev,
+        content: queryContent,
+        isDeleted: false,
+      }));
+    }
+  }, [queryContent]);
 
   // Bulk handlers
   const handleSelectAllOnPage = () => {

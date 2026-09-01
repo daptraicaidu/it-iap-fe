@@ -12,6 +12,7 @@ import {
   Briefcase,
   Calendar,
   UserCircle,
+  Award,
 } from "lucide-react";
 import interviewService from "../../../services/user/interviewService";
 import type {
@@ -118,8 +119,10 @@ const InterviewHistoryPage = () => {
 
       const res = await interviewService.getInterviewHistory(params);
       const data = res.data.data;
-      setItems(data.content);
-      setTotalPages(data.totalPages);
+      if (data) {
+        setItems(data.content ?? []);
+        setTotalPages(data.totalPages ?? 0);
+      }
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
       setError(
@@ -314,6 +317,12 @@ const InterviewHistoryPage = () => {
                         <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${statusCfg.bg}`}>
                           {t(`historyPage.status.${item.status}`)}
                         </span>
+                        {item.totalPoint !== undefined && item.totalPoint !== null && (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                            <Award className="h-3.5 w-3.5 text-blue-600" />
+                            <span>{t("historyPage.totalScore", { score: item.totalPoint })}</span>
+                          </span>
+                        )}
                       </div>
 
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">

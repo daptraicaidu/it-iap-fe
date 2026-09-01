@@ -151,6 +151,7 @@
     "conversationHistory": "Lịch sử trao đổi",
     "loadingMessages": "Đang tải lịch sử...",
     "reportTooltip": "Báo cáo vấn đề",
+    "viewQuestionInAdmin": "Xem câu hỏi",
     "you": "Bạn",
     "ai": "AI",
     "questionType": {
@@ -201,6 +202,7 @@
     "startedAt": "Bắt đầu",
     "completedAt": "Hoàn thành",
     "profile": "Hồ sơ",
+    "totalScore": "Điểm: {{score}} / 10",
     "viewResult": "Xem kết quả",
     "continueInterview": "Tiếp tục",
     "startInterview": "Bắt đầu",
