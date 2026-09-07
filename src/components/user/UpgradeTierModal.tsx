@@ -134,20 +134,20 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
       return [
         isEn ? (
           <>
-            Up to <strong className="font-semibold text-zinc-900">12</strong> interview profiles
+            Up to <strong className="font-semibold text-zinc-900">6</strong> interview profiles
           </>
         ) : (
           <>
-            Tối đa <strong className="font-semibold text-zinc-900">12</strong> hồ sơ phỏng vấn
+            Tối đa <strong className="font-semibold text-zinc-900">6</strong> hồ sơ phỏng vấn
           </>
         ),
         isEn ? (
           <>
-            <strong className="font-semibold text-zinc-900">20</strong> AI interviews per day
+            <strong className="font-semibold text-zinc-900">15</strong> AI interviews per day
           </>
         ) : (
           <>
-            <strong className="font-semibold text-zinc-900">20</strong> lượt phỏng vấn AI mỗi ngày
+            <strong className="font-semibold text-zinc-900">15</strong> lượt phỏng vấn AI mỗi ngày
           </>
         ),
         isEn ? (
@@ -167,29 +167,29 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
       return [
         isEn ? (
           <>
-            Up to <strong className="font-semibold text-zinc-900">6</strong> interview profiles
+            Up to <strong className="font-semibold text-zinc-900">3</strong> interview profiles
           </>
         ) : (
           <>
-            Tối đa <strong className="font-semibold text-zinc-900">6</strong> hồ sơ phỏng vấn
+            Tối đa <strong className="font-semibold text-zinc-900">3</strong> hồ sơ phỏng vấn
           </>
         ),
         isEn ? (
           <>
-            <strong className="font-semibold text-zinc-900">10</strong> AI interviews per day
+            <strong className="font-semibold text-zinc-900">6</strong> AI interviews per day
           </>
         ) : (
           <>
-            <strong className="font-semibold text-zinc-900">10</strong> lượt phỏng vấn AI mỗi ngày
+            <strong className="font-semibold text-zinc-900">6</strong> lượt phỏng vấn AI mỗi ngày
           </>
         ),
         isEn ? (
           <>
-            Chatbot context window: <strong className="font-semibold text-zinc-900">32,000</strong> tokens
+            Chatbot context window: <strong className="font-semibold text-zinc-900">24,000</strong> tokens
           </>
         ) : (
           <>
-            Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">32,000</strong> tokens
+            Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">24,000</strong> tokens
           </>
         ),
         isEn ? "Detailed skill score & improvement suggestions" : "Chấm điểm chi tiết & gợi ý cải thiện",
@@ -199,29 +199,29 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
     return [
       isEn ? (
         <>
-          Up to <strong className="font-semibold text-zinc-900">3</strong> interview profiles
+          Up to <strong className="font-semibold text-zinc-900">1</strong> interview profile
         </>
       ) : (
         <>
-          Tối đa <strong className="font-semibold text-zinc-900">3</strong> hồ sơ phỏng vấn
+          Tối đa <strong className="font-semibold text-zinc-900">1</strong> hồ sơ phỏng vấn
         </>
       ),
       isEn ? (
         <>
-          <strong className="font-semibold text-zinc-900">5</strong> AI interviews per day
+          <strong className="font-semibold text-zinc-900">2</strong> AI interviews per day
         </>
       ) : (
         <>
-          <strong className="font-semibold text-zinc-900">5</strong> lượt phỏng vấn AI mỗi ngày
+          <strong className="font-semibold text-zinc-900">2</strong> lượt phỏng vấn AI mỗi ngày
         </>
       ),
       isEn ? (
         <>
-          Chatbot context window: <strong className="font-semibold text-zinc-900">16,000</strong> tokens
+          Chatbot context window: <strong className="font-semibold text-zinc-900">8,000</strong> tokens
         </>
       ) : (
         <>
-          Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">16,000</strong> tokens
+          Ngữ cảnh hội thoại Chatbot: <strong className="font-semibold text-zinc-900">8,000</strong> tokens
         </>
       ),
       isEn ? "Standard competency benchmark review" : "Đánh giá theo khung năng lực cơ bản",
@@ -271,7 +271,15 @@ const UpgradeTierModal: React.FC<UpgradeTierModalProps> = ({
               <p className="text-sm font-medium">Đang tải danh sách các gói dịch vụ...</p>
             </div>
           ) : (
-            <div className="pt-4 grid gap-4 xl:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 items-stretch">
+            <div
+              className={`pt-4 grid gap-6 items-stretch ${
+                tiers.length <= 3
+                  ? "sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto w-full"
+                  : tiers.length === 4
+                  ? "sm:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto w-full"
+                  : "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+              }`}
+            >
               {tiers.map((tier) => {
                 const isCurrent =
                   currentTier.toUpperCase() === tier.tierCode.toUpperCase();

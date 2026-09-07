@@ -41,36 +41,16 @@ const TIERS_CONFIG = [
     isPro: false,
     isYear: false,
     benefitsVi: [
-      "Tối đa 6 hồ sơ phỏng vấn",
-      "10 lượt phỏng vấn AI mỗi ngày",
-      "Ngữ cảnh hội thoại: 32,000 tokens",
+      "Tối đa 3 hồ sơ phỏng vấn",
+      "6 lượt phỏng vấn AI mỗi ngày",
+      "Ngữ cảnh hội thoại: 24,000 tokens",
       "Chấm điểm chi tiết & gợi ý cải thiện",
     ],
     benefitsEn: [
-      "Up to 6 interview profiles",
-      "10 AI interviews per day",
-      "Chatbot context: 32,000 tokens",
+      "Up to 3 interview profiles",
+      "6 AI interviews per day",
+      "Chatbot context: 24,000 tokens",
       "Detailed skill score & feedback",
-    ],
-  },
-  {
-    code: "PLUS_YEAR",
-    nameVi: "Gói Plus (1 Năm)",
-    nameEn: "Plus Plan (1 Year)",
-    badge: "Plus 1Y",
-    isPro: false,
-    isYear: true,
-    benefitsVi: [
-      "Tối đa 6 hồ sơ phỏng vấn",
-      "10 lượt phỏng vấn AI mỗi ngày",
-      "Tiết kiệm chi phí so với gói tháng",
-      "Lưu trữ toàn bộ lịch sử phỏng vấn",
-    ],
-    benefitsEn: [
-      "Up to 6 interview profiles",
-      "10 AI interviews per day",
-      "Cost-saving yearly billing",
-      "Full interview transcript storage",
     ],
   },
   {
@@ -81,36 +61,16 @@ const TIERS_CONFIG = [
     isPro: true,
     isYear: false,
     benefitsVi: [
-      "Tối đa 12 hồ sơ phỏng vấn",
-      "20 lượt phỏng vấn AI mỗi ngày",
+      "Tối đa 6 hồ sơ phỏng vấn",
+      "15 lượt phỏng vấn AI mỗi ngày",
       "Ngữ cảnh hội thoại: 48,000 tokens",
       "Chuyên sâu 5 kỹ năng & ưu tiên AI",
     ],
     benefitsEn: [
-      "Up to 12 interview profiles",
-      "20 AI interviews per day",
+      "Up to 6 interview profiles",
+      "15 AI interviews per day",
       "Chatbot context: 48,000 tokens",
       "Comprehensive 5 skills review",
-    ],
-  },
-  {
-    code: "PRO_YEAR",
-    nameVi: "Gói Pro (1 Năm)",
-    nameEn: "Pro Plan (1 Year)",
-    badge: "Tối ưu nhất",
-    isPro: true,
-    isYear: true,
-    benefitsVi: [
-      "Tối đa 12 hồ sơ phỏng vấn",
-      "20 lượt phỏng vấn AI mỗi ngày",
-      "Ưu tiên tối đa hạ tầng AI siêu tốc",
-      "Tiết kiệm chi phí tối đa",
-    ],
-    benefitsEn: [
-      "Up to 12 interview profiles",
-      "20 AI interviews per day",
-      "Priority fast AI queue processing",
-      "Best long-term value",
     ],
   },
 ];
@@ -127,8 +87,11 @@ const CheckoutPage: React.FC = () => {
   const tierFromQuery = queryParams.get("tier");
   const tierFromState = (location.state as { selectedTier?: string })?.selectedTier;
   const initialTier = tierFromQuery || tierFromState || "PRO_MONTH";
+  const resolvedInitialTier = TIERS_CONFIG.some((t) => t.code === initialTier)
+    ? initialTier
+    : "PRO_MONTH";
 
-  const [selectedTier, setSelectedTier] = useState<string>(initialTier);
+  const [selectedTier, setSelectedTier] = useState<string>(resolvedInitialTier);
   const [quantity, setQuantity] = useState<number>(1);
   const [preview, setPreview] = useState<OrderPreviewData | null>(null);
   const [previewLoading, setPreviewLoading] = useState<boolean>(true);
@@ -189,7 +152,8 @@ const CheckoutPage: React.FC = () => {
     };
   }, [selectedTier, quantity, t]);
 
-  const currentConfig = TIERS_CONFIG.find((t) => t.code === selectedTier) || TIERS_CONFIG[2];
+  const currentConfig =
+    TIERS_CONFIG.find((t) => t.code === selectedTier) || TIERS_CONFIG[1] || TIERS_CONFIG[0];
 
   const handleCreateOrder = async () => {
     setSubmitError(null);
