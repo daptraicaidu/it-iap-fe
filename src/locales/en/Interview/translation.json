@@ -1,0 +1,253 @@
+{
+  "createPage": {
+    "title": "Create Interview",
+    "subtitle": "Set up a new AI interview session — choose mode, profile and start practicing",
+    "badge": "AI Interview",
+    "interviewTitle": "Interview Name",
+    "interviewTitlePlaceholder": "E.g.: Frontend Developer Interview...",
+    "selectProfile": "Select Profile",
+    "selectProfilePlaceholder": "Choose an interview profile...",
+    "noProfiles": "No profiles yet. Please create one first.",
+    "goToProfiles": "Create Profile",
+    "selectMode": "Choose Interview Mode",
+    "selectModeSubtitle": "Select an AI interview mode that best fits your preparation goals",
+    "required": "Required",
+    "loadingProfiles": "Loading profiles list...",
+    "createButton": "Create Interview",
+    "creating": "Creating...",
+    "errors": {
+      "titleRequired": "Please enter the interview name",
+      "modeRequired": "Please select an interview mode",
+      "profileRequired": "Please select a profile"
+    },
+    "modes": {
+      "interactive": {
+        "title": "Interactive Interview",
+        "description": "Answer questions and discuss in depth with AI. Receive detailed feedback after each answer, AI will ask follow-up questions if needed.",
+        "features": ["Two-way Q&A", "Real-time evaluation", "Instant improvement tips"],
+        "recommended": "Recommended"
+      },
+      "stress": {
+        "title": "Stress Interview",
+        "description": "Simulate a real interview environment. Answer questions one by one with time limits. View comprehensive results upon completion.",
+        "features": ["Time limited", "Realistic pressure", "Comprehensive final review"]
+      }
+    },
+    "quota": {
+      "basic": "You have 2 AI interview sessions today (resets daily at 00:00).",
+      "plus": "Your account is on the {{tier}} tier — 6 AI interview sessions per day.",
+      "pro": "Your account is on the {{tier}} tier — 15 AI interview sessions per day.",
+      "proHintBasic": "Upgrade your plan for up to 15 daily AI interviews and in-depth evaluations.",
+      "proHintPlus": "Upgrade to Pro for 15 daily AI interviews and comprehensive scoring.",
+      "proHintPro": "Enjoy 15 daily AI interview sessions and comprehensive AI feedback.",
+      "viewPlans": "View Plans",
+      "unlimited": "Your account is on the {{tier}} tier — 6 AI interview sessions per day.",
+      "proHint": "Upgrade your plan for more daily interview practice and in-depth AI evaluations.",
+      "upgrade": "Upgrade Now",
+      "viewTiers": "View Plans"
+    },
+    "sidebar": {
+      "previewTitle": "Session Overview",
+      "previewSubtitle": "Review setup before starting",
+      "sessionName": "Interview Name",
+      "notEntered": "Not named yet",
+      "selectedMode": "Interview Mode",
+      "notSelected": "Not selected",
+      "selectedProfile": "Target CV Profile",
+      "noProfileChosen": "No profile selected",
+      "evalFramework": "Scoring Framework",
+      "evalFrameworkValue": "5-Axis AI Competency Radar",
+      "checklistTitle": "Readiness Checklist",
+      "checklistSubtitle": "Tips for outstanding performance",
+      "checklistItem1": "Ensure a working microphone in a quiet environment.",
+      "checklistItem2": "Apply the STAR method (Situation, Task, Action, Result) in your answers.",
+      "checklistItem3": "AI will generate in-depth feedback and roadmap right after the session.",
+      "currentTierLabel": "Account Tier"
+    }
+  },
+  "prepPage": {
+    "title": "Ready for Interview",
+    "subtitle": "Review your setup before starting",
+    "interviewName": "Interview Name",
+    "mode": "Mode",
+    "profile": "Profile",
+    "startButton": "Start Interview",
+    "starting": "Initializing...",
+    "tips": {
+      "title": "Before You Begin",
+      "items": [
+        "Ensure stable internet connection",
+        "Prepare your microphone for voice answers",
+        "Read questions carefully before answering",
+        "Do not leave the page during the interview"
+      ]
+    },
+    "interactiveMode": "Interactive Interview",
+    "stressMode": "Stress Interview"
+  },
+  "sessionPage": {
+    "question": "Question",
+    "of": "of",
+    "category": {
+      "TECHNICAL": "Technical",
+      "BEHAVIORAL": "Behavioral",
+      "SITUATIONAL": "Situational"
+    },
+    "categoryLabel": {
+      "Câu hỏi kỹ thuật": "Technical",
+      "Câu hỏi hành vi": "Behavioral",
+      "Câu hỏi tình huống": "Situational"
+    },
+    "answerPlaceholder": "Type your answer...",
+    "sendAnswer": "Send",
+    "sending": "Sending...",
+    "nextQuestion": "Next Question",
+    "previousQuestion": "Previous",
+    "viewResult": "View Results",
+    "showHint": "Show Hint",
+    "hideHint": "Hide Hint",
+    "hintTitle": "Hint",
+    "loadingHint": "Loading hint...",
+    "listenQuestion": "Listen to question",
+    "stopListening": "Stop listening",
+    "startMic": "Start microphone",
+    "stopMic": "Stop microphone",
+    "micNotSupported": "Speech recognition not supported",
+    "ttsNotSupported": "Text-to-speech not supported",
+    "timeRemaining": "Time remaining",
+    "timeElapsed": "Time",
+    "interactiveNotComplete": "Please answer fully to proceed",
+    "viewingPrevious": "Viewing previous question (read-only)",
+    "backToCurrent": "Back to current question",
+    "chatPlaceholder": "Discuss more about this question...",
+    "completedBadge": "Completed",
+    "listenAI": "Listen to AI response",
+    "exitInterview": "Exit Interview",
+    "exitConfirm": "Are you sure? Progress will be lost.",
+    "exitYes": "Exit",
+    "exitNo": "Continue Interview",
+    "timeUp": "Time's up!",
+    "questionCompletedPlaceholder": "This question has been completed.",
+    "questionCompletedNote": "This question is completed. Please click 'Next Question' to proceed.",
+    "interviewFinishedPlaceholder": "The interview session has ended.",
+    "interviewFinishedNote": "The interview has ended. Please click 'View Result' below to see detailed evaluation."
+  },
+  "resultPage": {
+    "title": "Interview Results",
+    "subtitle": "View detailed AI evaluation of your interview",
+    "processing": "AI is analyzing your results...",
+    "processingDesc": "Please wait a moment while we process your evaluation.",
+    "overallScore": "Overall Score",
+    "overallFeedback": "Overall Feedback",
+    "questionResults": "Question-by-Question Results",
+    "questionLabel": "Question",
+    "yourAnswer": "Your Answer",
+    "aiFeedback": "AI Feedback",
+    "score": "Score",
+    "outOf": "/ 10",
+    "retryInterview": "Try Again",
+    "backToDashboard": "Back to Dashboard",
+    "backToHistory": "Interview History",
+    "conversationHistory": "Conversation History",
+    "loadingMessages": "Loading history...",
+    "reportTooltip": "Report issue",
+    "viewQuestionInAdmin": "View Question",
+    "you": "You",
+    "ai": "AI",
+    "questionType": {
+      "TECHNICAL": "Technical",
+      "BEHAVIORAL": "Behavioral",
+      "SITUATIONAL": "Situational"
+    },
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "mode": "Interview Mode",
+    "interactiveMode": "Interactive Interview",
+    "stressMode": "Stress Interview",
+    "scoreLevel": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "average": "Average",
+      "needsWork": "Needs Work"
+    }
+  },
+  "skills": {
+    "coreKnowledge": "Core Knowledge",
+    "problemSolving": "Problem Solving",
+    "appliedExperience": "Applied Experience",
+    "logicalArticulation": "Logical Articulation",
+    "focusAndCompleteness": "Focus & Completeness"
+  },
+  "radar": {
+    "title": "5 Skill Dimensions Evaluation",
+    "aiAssessment": "AI Assessment",
+    "benchmark": "Target Benchmark",
+    "userScore": "Your Score"
+  },
+  "historyPage": {
+    "title": "Interview History",
+    "subtitle": "Review your past interview sessions",
+    "loading": "Loading interview history...",
+    "filterAll": "All",
+    "filterByMode": "Mode",
+    "status": {
+      "COMPLETED": "Completed",
+      "IN_PROGRESS": "In Progress",
+      "PENDING": "Pending"
+    },
+    "mode": {
+      "INTERACTIVE_INTERVIEW": "Interactive",
+      "STRESS_INTERVIEW": "Stress"
+    },
+    "startedAt": "Started",
+    "completedAt": "Completed",
+    "profile": "Profile",
+    "totalScore": "Score: {{score}} / 10",
+    "viewResult": "View Result",
+    "continueInterview": "Continue",
+    "startInterview": "Start",
+    "emptyTitle": "No interviews yet",
+    "emptyDescription": "Start a new interview to begin practicing.",
+    "startNew": "Create New Interview",
+    "autoCloseExpired": "This interview will auto-close soon, please complete it as soon as possible.",
+    "autoCloseInDays": "The interview will automatically close in {{count}} days.",
+    "autoCloseInHours": "The interview will automatically close in {{count}} hours.",
+    "confirmContinue": {
+      "title": "Continue Interview?",
+      "message": "Would you like to continue this interview? You'll return to the session.",
+      "confirm": "Continue",
+      "cancel": "Cancel"
+    }
+  },
+  "reportModal": {
+    "title": "Report an Issue",
+    "description": "Let us know about any issues you found with this content.",
+    "typeLabel": "Report Type",
+    "detailLabel": "Description",
+    "detailPlaceholder": "Describe the issue you encountered...",
+    "submit": "Submit Report",
+    "cancel": "Cancel",
+    "success": "Report submitted successfully!",
+    "descriptionRequired": "Please enter a description",
+    "types": {
+      "INACCURATE_CONTENT": "Inaccurate Content",
+      "OUTDATED": "Outdated Knowledge",
+      "DUPLICATE": "Duplicate Question",
+      "POOR_FORMATTING": "Poor Formatting / Typos",
+      "SPAM_OR_IRRELEVANT": "Spam / Irrelevant",
+      "INAPPROPRIATE": "Inappropriate Content",
+      "OTHER": "Other"
+    }
+  },
+  "errors": {
+    "createFailed": "Failed to create interview",
+    "startFailed": "Failed to start interview",
+    "answerFailed": "Failed to submit answer",
+    "nextFailed": "Failed to proceed to next question",
+    "hintFailed": "Failed to load hint",
+    "feedbackFailed": "Failed to load results",
+    "sessionNotFound": "Interview session not found",
+    "historyFailed": "Failed to load interview history",
+    "generic": "An error occurred. Please try again."
+  }
+}

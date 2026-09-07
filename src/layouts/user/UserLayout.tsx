@@ -1,34 +1,101 @@
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   ChevronDown,
   LogOut,
   User,
   UserCog,
-  Mail,
-  Settings
+  Settings,
+  Shield,
 } from "lucide-react";
+import NotificationDropdown from "../../components/NotificationDropdown";
 import useAuthStore from "../../store/authStore";
+import useUserStore from "../../store/userStore";
+import useNotificationStore from "../../store/notificationStore";
 import { useState, useRef, useEffect } from "react";
+import logoImg from "../../assets/logo/logo.png";
+import avatar1 from "../../assets/avatardefault/avatar1.png";
+import avatar2 from "../../assets/avatardefault/avatar2.png";
+import avatar3 from "../../assets/avatardefault/avatar3.png";
+import avatar4 from "../../assets/avatardefault/avatar4.png";
+import avatar5 from "../../assets/avatardefault/avatar5.png";
+import userInfoService from "../../services/user/userInfoService";
+import bannerService, { type ActiveBanner } from "../../services/user/bannerService";
+import MarqueeBar from "../../components/user/MarqueeBar";
+import BannerModal from "../../components/user/BannerModal";
+
+const DEFAULT_AVATARS = [avatar1, avatar2, avatar3, avatar4, avatar5];
+
+const getDefaultAvatar = (identifier: string) => {
+  let hash = 0;
+  for (let i = 0; i < identifier.length; i++) {
+    hash = identifier.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % DEFAULT_AVATARS.length;
+  return DEFAULT_AVATARS[index];
+};
 
 const UserLayout = () => {
   const { t } = useTranslation("Dashboard");
   const navigate = useNavigate();
+  const location = useLocation();
   const logout = useAuthStore((s) => s.logout);
+  const roles = useAuthStore((s) => s.roles);
+  const isAdmin = roles.includes("ADMIN");
+  const userInfo = useUserStore((s) => s.userInfo);
+  const setUserInfo = useUserStore((s) => s.setUserInfo);
+  const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+  const [activeBanner, setActiveBanner] = useState<ActiveBanner | null>(null);
 
-  const user = {
-    name: t("user.name", "User"),
-    avatarUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=96&q=80",
-  };
+  useEffect(() => {
+    // Fetch user notifications to display badge immediately
+    fetchNotifications(1);
+
+    userInfoService
+      .getUserInfo()
+      .then((res) => {
+        if (res.data.data) {
+          setUserInfo({
+            fullName: res.data.data.fullName,
+            avatarUrl: res.data.data.avatarUrl || null,
+            email: res.data.data.email,
+            activeTier: res.data.data.activeTier || "BASIC",
+            subscriptionEndDate: res.data.data.subscriptionEndDate || null,
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback silently if API fails or unauthorized
+      });
+
+    bannerService
+      .getActiveBanner()
+      .then((res) => {
+        if (res.data?.data) {
+          setActiveBanner(res.data.data);
+        }
+      })
+      .catch(() => {
+        // Fallback silently if active banner API fails or no active banner
+      });
+  }, [setUserInfo, fetchNotifications]);
+
+  const displayName = userInfo?.fullName || t("user.name", "User");
+  const displayAvatar =
+    userInfo?.avatarUrl || getDefaultAvatar(displayName);
 
   const navigationItems = [
+    { label: t("navigation.home", "Trang chủ"), to: "/", end: true },
     { label: t("navigation.dashboard", "Dashboard"), to: "/dashboard", end: false },
-    { label: t("navigation.interview", "Bắt đầu phỏng vấn"), to: "/interview", end: true },
-    { label: t("navigation.reviewResult", "Kết quả phỏng vấn"), to: "/interview/review_result", end: false },
+    { label: t("navigation.interview", "Phỏng vấn"), to: "/interviews", end: false },
+    { label: t("navigation.history", "Lịch sử"), to: "/history", end: true },
     { label: t("navigation.chatbot", "Chatbot"), to: "/chatbot", end: false },
+    { label: t("navigation.reports", "Báo cáo & Đánh giá"), to: "/reports_and_feedbacks", end: false },
+    { label: t("navigation.forum", "Diễn đàn"), to: "/forum", end: false },
+    { label: t("navigation.orders", "Lịch sử đơn hàng"), to: "/orders", end: false },
   ];
 
   const handleLogout = () => {
@@ -61,22 +128,57 @@ const UserLayout = () => {
     };
   }, []);
 
+  // Auto-scroll active nav link into view on route change / reload (especially for mobile horizontal scrollbar)
+  useEffect(() => {
+    const scrollToActive = () => {
+      if (!navRef.current) return;
+      const activeEl = navRef.current.querySelector<HTMLElement>("a.active");
+      if (activeEl) {
+        const navContainer = navRef.current;
+        const scrollLeft =
+          activeEl.offsetLeft -
+          navContainer.clientWidth / 2 +
+          activeEl.clientWidth / 2;
+
+        navContainer.scrollTo({
+          left: Math.max(0, scrollLeft),
+          behavior: "smooth",
+        });
+      }
+    };
+
+    scrollToActive();
+    const timer1 = setTimeout(scrollToActive, 50);
+    const timer2 = setTimeout(scrollToActive, 150);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [location.pathname]);
+
+  // If in active interview session, render full-screen session page without UserLayout header/footer
+  if (location.pathname.includes("/session")) {
+    return <Outlet />;
+  }
+
   return (
-    <div className="min-h-[100dvh] bg-zinc-50 text-zinc-900 flex flex-col">
-      <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
+    <div className="h-[100dvh] bg-zinc-50 text-zinc-900 flex flex-col overflow-hidden">
+      <header className="shrink-0 border-b border-zinc-200 bg-white/80 backdrop-blur-md z-50">
         <div className="mx-auto flex flex-wrap items-center justify-between gap-y-3 px-4 py-3 sm:px-6 md:h-16 md:flex-nowrap md:py-0 lg:px-8">
           <div className="flex items-center">
             <Link
               to="/"
-              className="shrink-0 text-lg font-bold tracking-tight text-zinc-900"
+              className="shrink-0 flex items-center gap-2 text-lg font-bold tracking-tight text-zinc-900"
             >
-              AntiGravity
+              <img src={logoImg} alt="Logo" className="h-8 w-auto object-contain" />
             </Link>
           </div>
 
           <nav
+            ref={navRef}
             aria-label="Main Navigation"
-            className="order-3 flex w-full gap-1 overflow-x-auto md:order-2 md:mx-8 md:w-auto md:flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="order-3 flex w-full gap-1 overflow-x-auto pb-2 pt-0.5 md:pb-0 md:order-2 md:mx-8 md:w-auto md:flex-1 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-zinc-100 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-zinc-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-zinc-400 md:[&::-webkit-scrollbar]:hidden [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_theme(colors.zinc.100)] md:[scrollbar-width:none]"
           >
             {navigationItems.map((item) => (
               <NavLink
@@ -87,7 +189,7 @@ const UserLayout = () => {
                   [
                     "whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition",
                     isActive
-                      ? "bg-zinc-900 text-white"
+                      ? "bg-zinc-900 text-white active"
                       : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
                   ].join(" ")
                 }
@@ -98,14 +200,8 @@ const UserLayout = () => {
           </nav>
 
           <div className="order-2 flex items-center gap-4 md:order-3">
-            {/* Notification Mailbox */}
-            <Link
-              to="/notifications"
-              className="relative rounded-full p-2 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
-            >
-              <Mail className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
-            </Link>
+            {/* Notification Dropdown */}
+            <NotificationDropdown />
 
             {/* User Dropdown */}
             <div ref={userMenuRef} className="relative">
@@ -117,12 +213,12 @@ const UserLayout = () => {
                 className="flex items-center gap-2 rounded-full border border-zinc-200 p-1 pr-2 transition hover:bg-zinc-50"
               >
                 <img
-                  src={user.avatarUrl}
-                  alt={user.name}
+                  src={displayAvatar}
+                  alt={displayName}
                   className="h-8 w-8 rounded-full object-cover"
                 />
                 <span className="hidden text-sm font-medium text-zinc-700 md:block max-w-[100px] truncate">
-                  {user.name}
+                  {displayName}
                 </span>
                 <ChevronDown
                   className={`h-4 w-4 text-zinc-500 transition ${
@@ -160,6 +256,17 @@ const UserLayout = () => {
                     <Settings className="h-4 w-4 text-zinc-500" />
                     Cài đặt chung
                   </Link>
+
+                  {isAdmin && (
+                    <Link
+                      to="/admin/dashboard"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900"
+                    >
+                      <Shield className="h-4 w-4 text-zinc-500" />
+                      Admin Console
+                    </Link>
+                  )}
                   
                   <div className="my-1 h-px bg-zinc-100" />
                   
@@ -177,8 +284,14 @@ const UserLayout = () => {
         </div>
       </header>
 
+      {/* Marquee Announcement Bar */}
+      {activeBanner?.marquee && <MarqueeBar text={activeBanner.marquee} />}
+
+      {/* Active Banner Modal */}
+      <BannerModal banner={activeBanner} />
+
       {/* Main Content Area */}
-      <main className="flex-1 w-full relative">
+      <main className="flex-1 w-full relative overflow-y-auto">
         <Outlet />
       </main>
     </div>

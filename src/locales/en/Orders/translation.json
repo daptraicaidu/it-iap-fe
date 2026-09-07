@@ -1,0 +1,75 @@
+{
+  "orders": {
+    "title": "Transaction & Order History",
+    "subtitle": "Track and manage your subscription orders and payment history",
+    "refresh": "Refresh",
+    "upgradeNow": "Upgrade New Plan",
+    "payNow": "Pay Now",
+    "continuePayment": "Continue Payment",
+    "upgradeButtons": {
+      "upgradePro": "Upgrade to Pro",
+      "switchTier": "Upgrade/ Switch Plans",
+      "viewPlans": "View Plans"
+    },
+    "empty": "No transactions yet",
+    "emptyDesc": "Upgrade your subscription plan to unlock more AI interviews and premium features!",
+    "table": {
+      "orderCode": "Order Code",
+      "productName": "Product Name",
+      "quantity": "Quantity",
+      "originalPrice": "Original Price",
+      "discountAmount": "Promo Discount",
+      "upgradeDiscount": "Upgrade Credit",
+      "amount": "Final Amount",
+      "status": "Status",
+      "createdAt": "Transaction Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "PAID": "Paid",
+      "PENDING": "Pending",
+      "EXPIRED": "Expired",
+      "FAILED": "Failed",
+      "CANCELLED": "Cancelled"
+    },
+    "alerts": {
+      "paymentSuccessTitle": "Payment Successful!",
+      "paymentSuccessDesc": "Your account has been successfully upgraded. Enjoy your enhanced interview preparation experience!",
+      "paymentCancelledTitle": "Order Cancelled",
+      "paymentCancelledDesc": "The payment transaction was cancelled. You can upgrade again at any time.",
+      "fetchError": "Failed to load order history. Please try again later.",
+      "copied": "Order code copied to clipboard!"
+    }
+  },
+  "checkout": {
+    "title": "Subscription Upgrade & Checkout",
+    "subtitle": "Select the right plan to unlock the full power of AI interview practice",
+    "selectTier": "Select subscription tier",
+    "orderSummary": "Payment Summary",
+    "tierInfo": "Plan Information",
+    "quantity": "Quantity / Duration",
+    "originalPrice": "Original Plan Price",
+    "remainingValue": "Upgrade Credit from Current Plan",
+    "promotionDiscount": "Promotional Discount",
+    "finalAmount": "Total Amount to Pay",
+    "freePlan": "100% Free",
+    "confirmPay": "Create Order & Pay Now",
+    "confirmFree": "Activate Free Now",
+    "processing": "Processing your order...",
+    "errorPreview": "Failed to preview payment details",
+    "errorCreate": "Failed to create order. Please try again later.",
+    "freeSuccess": "Subscription activated successfully!",
+    "tiers": {
+      "PLUS_MONTH": "Plus Plan (1 Month)",
+      "PLUS_YEAR": "Plus Plan (1 Year)",
+      "PRO_MONTH": "Pro Plan (1 Month)",
+      "PRO_YEAR": "Pro Plan (1 Year)"
+    },
+    "benefits": {
+      "instant": "Instant automated activation after QR payment",
+      "secure": "Secure checkout powered by VietQR / PayOS",
+      "support": "24/7 dedicated support throughout your subscription"
+    },
+    "backToHistory": "View Order History"
+  }
+}

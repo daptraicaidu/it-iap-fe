@@ -14,6 +14,40 @@ import enFooterPages from "../locales/en/FooterPages/translation.json";
 import viFooterPages from "../locales/vi/FooterPages/translation.json";
 import enAdminUsers from "../locales/en/AdminUsers/translation.json";
 import viAdminUsers from "../locales/vi/AdminUsers/translation.json";
+import enAdminQuestions from "../locales/en/AdminQuestions/translation.json";
+import viAdminQuestions from "../locales/vi/AdminQuestions/translation.json";
+import enAdminPrompts from "../locales/en/AdminPrompts/translation.json";
+import viAdminPrompts from "../locales/vi/AdminPrompts/translation.json";
+import enInterview from "../locales/en/Interview/translation.json";
+import viInterview from "../locales/vi/Interview/translation.json";
+import enChatbot from "../locales/en/Chatbot/translation.json";
+import viChatbot from "../locales/vi/Chatbot/translation.json";
+import enReport from "../locales/en/Report/translation.json";
+import viReport from "../locales/vi/Report/translation.json";
+import enAdminReports from "../locales/en/AdminReports/translation.json";
+import viAdminReports from "../locales/vi/AdminReports/translation.json";
+import enFeedback from "../locales/en/Feedback/translation.json";
+import viFeedback from "../locales/vi/Feedback/translation.json";
+import enAdminFeedbacks from "../locales/en/AdminFeedbacks/translation.json";
+import viAdminFeedbacks from "../locales/vi/AdminFeedbacks/translation.json";
+import enNotification from "../locales/en/Notification/translation.json";
+import viNotification from "../locales/vi/Notification/translation.json";
+import enAdminNotifications from "../locales/en/AdminNotifications/translation.json";
+import viAdminNotifications from "../locales/vi/AdminNotifications/translation.json";
+import enAdminLayout from "../locales/en/AdminLayout/translation.json";
+import viAdminLayout from "../locales/vi/AdminLayout/translation.json";
+import enAdminBanners from "../locales/en/AdminBanners/translation.json";
+import viAdminBanners from "../locales/vi/AdminBanners/translation.json";
+import enForum from "../locales/en/Forum/translation.json";
+import viForum from "../locales/vi/Forum/translation.json";
+import enAdminDashboard from "../locales/en/AdminDashboard/translation.json";
+import viAdminDashboard from "../locales/vi/AdminDashboard/translation.json";
+import enAdminPromotions from "../locales/en/AdminPromotions/translation.json";
+import viAdminPromotions from "../locales/vi/AdminPromotions/translation.json";
+import enOrders from "../locales/en/Orders/translation.json";
+import viOrders from "../locales/vi/Orders/translation.json";
+import enPricing from "../locales/en/Pricing/translation.json";
+import viPricing from "../locales/vi/Pricing/translation.json";
 
 i18n
   .use(LanguageDetector)
@@ -27,6 +61,23 @@ i18n
         Profile: enProfile,
         FooterPages: enFooterPages,
         AdminUsers: enAdminUsers,
+        AdminQuestions: enAdminQuestions,
+        AdminPrompts: enAdminPrompts,
+        Interview: enInterview,
+        Chatbot: enChatbot,
+        Report: enReport,
+        AdminReports: enAdminReports,
+        Feedback: enFeedback,
+        AdminFeedbacks: enAdminFeedbacks,
+        Notification: enNotification,
+        AdminNotifications: enAdminNotifications,
+        AdminLayout: enAdminLayout,
+        AdminBanners: enAdminBanners,
+        AdminPromotions: enAdminPromotions,
+        Orders: enOrders,
+        Pricing: enPricing,
+        Forum: enForum,
+        AdminDashboard: enAdminDashboard,
       },
       vi: {
         HomePage: viHomePage,
@@ -35,11 +86,52 @@ i18n
         Profile: viProfile,
         FooterPages: viFooterPages,
         AdminUsers: viAdminUsers,
+        AdminQuestions: viAdminQuestions,
+        AdminPrompts: viAdminPrompts,
+        Interview: viInterview,
+        Chatbot: viChatbot,
+        Report: viReport,
+        AdminReports: viAdminReports,
+        Feedback: viFeedback,
+        AdminFeedbacks: viAdminFeedbacks,
+        Notification: viNotification,
+        AdminNotifications: viAdminNotifications,
+        AdminLayout: viAdminLayout,
+        AdminBanners: viAdminBanners,
+        AdminPromotions: viAdminPromotions,
+        Orders: viOrders,
+        Pricing: viPricing,
+        Forum: viForum,
+        AdminDashboard: viAdminDashboard,
       },
     },
     fallbackLng: "vi",
     defaultNS: "HomePage",
-    ns: ["HomePage", "Auth", "Dashboard", "Profile", "FooterPages", "AdminUsers"],
+    ns: [
+      "HomePage",
+      "Auth",
+      "Dashboard",
+      "Profile",
+      "FooterPages",
+      "AdminUsers",
+      "AdminQuestions",
+      "AdminPrompts",
+      "Interview",
+      "Chatbot",
+      "Report",
+      "AdminReports",
+      "Feedback",
+      "AdminFeedbacks",
+      "Notification",
+      "AdminNotifications",
+      "AdminLayout",
+      "AdminBanners",
+      "AdminPromotions",
+      "Orders",
+      "Pricing",
+      "Forum",
+      "AdminDashboard",
+    ],
     interpolation: {
       escapeValue: false,
     },

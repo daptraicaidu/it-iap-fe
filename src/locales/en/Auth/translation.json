@@ -12,7 +12,16 @@
     "register": "Sign up",
     "orContinueWith": "or continue with",
     "google": "Continue with Google",
-    "forgotPassword": "Forgot password?"
+    "forgotPassword": "Forgot password?",
+    "twoFa": {
+      "title": "Two-factor authentication",
+      "subtitle": "Enter the 6-digit code from your authenticator app",
+      "placeholder": "Enter TOTP code",
+      "submit": "Verify",
+      "submitting": "Verifying...",
+      "error": "Invalid authentication code. Please try again.",
+      "backToLogin": "Back to login"
+    }
   },
   "register": {
     "title": "Create an account",
@@ -90,6 +99,19 @@
     "passwordSpecial": "Password must contain at least 1 special character",
     "fullNameRequired": "Full name is required",
     "otpRequired": "Please enter the full 6-digit code"
+  },
+  "reset2fa": {
+    "loadingTitle": "Processing 2FA reset request...",
+    "loadingDesc": "Please wait a moment",
+    "cancelSuccessTitle": "2FA reset request cancelled",
+    "confirmSuccessTitle": "2FA reset successfully confirmed",
+    "backToDashboard": "Back to dashboard",
+    "errorTitle": "Operation unsuccessful",
+    "backToLogin": "Back to login",
+    "invalidToken": "Invalid link (Missing authentication token)",
+    "cancelSuccessMsg": "2FA reset request cancelled. Your account remains protected with two-factor authentication.",
+    "confirmSuccessMsg": "2FA reset request confirmed successfully.",
+    "defaultErrorMsg": "2FA recovery link is invalid or has expired"
   }
 }
 

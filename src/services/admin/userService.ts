@@ -1,12 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
 
-// ── Shared API Response ──
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
-}
+export type { ApiResponse };
 
 // ── User Entity ──
 export interface UserEntity {
@@ -15,6 +10,8 @@ export interface UserEntity {
   fullName: string;
   phoneNumber: string;
   avatarUrl: string;
+  activeTier?: string;
+  subscriptionEndDate?: string | null;
   createAt: string;
   deletedAt: string | null;
   active: boolean;

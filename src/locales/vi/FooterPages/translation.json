@@ -3,12 +3,12 @@
     "headline_prefix": "Nền tảng luyện phỏng vấn IT bằng ",
     "headline_highlight": "AI",
     "headline_suffix": "",
-    "subtext": "Mô phỏng trải nghiệm phỏng vấn thực tế với các Mentor AI chuyên sâu. Phân tích CV, cá nhân hóa lộ trình và đánh giá năng lực một cách toàn diện để giúp bạn tự tin vượt qua mọi vòng tuyển dụng."
+    "subtext": "Mô phỏng trải nghiệm phỏng vấn thực tế với các Mentor AI chuyên sâu. Đa dạng vị trí chuyên môn, cá nhân hóa lộ trình và đánh giá câu trả lời dạng văn bản (text-to-text) toàn diện để giúp bạn tự tin vượt qua mọi vòng tuyển dụng IT."
   },
   "tech": {
     "feature1": {
-      "title": "Phân tích CV & Sinh đề độc bản",
-      "description": "AI đọc hiểu CV của bạn, từ đó sinh ra bộ câu hỏi phỏng vấn sát với kinh nghiệm thực tế, mô phỏng chính xác kỳ vọng của nhà tuyển dụng."
+      "title": "Ngân hàng câu hỏi & Đề thi chuyên sâu",
+      "description": "Hệ thống cung cấp bộ câu hỏi phỏng vấn đa dạng theo từng vị trí và cấp độ lập trình, mô phỏng chính xác kỳ vọng của nhà tuyển dụng IT."
     },
     "feature2": {
       "title": "Thi thử áp lực đếm ngược",
@@ -19,8 +19,8 @@
       "description": "Đối mặt với các Mentor AI sở hữu phong cách phỏng vấn đa dạng từ thân thiện đến hóc búa, giúp bạn làm quen với mọi tình huống."
     },
     "feature4": {
-      "title": "Xử lý giọng nói & Đánh giá chi tiết",
-      "description": "Công nghệ phân tích giọng nói độc quyền giúp đánh giá cả thái độ, ngữ điệu lẫn kiến thức chuyên môn, trả về báo cáo chi tiết kèm gợi ý cải thiện."
+      "title": "Đánh giá câu trả lời & Phản hồi chi tiết",
+      "description": "Công nghệ AI phân tích chuyên sâu câu trả lời văn bản (text-to-text), đánh giá độ chính xác về mặt kỹ thuật, logic giải thuật và đưa ra gợi ý tối ưu chi tiết."
     }
   },
   "team": {
@@ -42,12 +42,12 @@
     },
     "section1": {
       "title": "Điều 1: Thu thập thông tin minh bạch",
-      "body": "Hệ thống chỉ thu thập dữ liệu đăng ký cơ bản bao gồm Email, thông tin văn bản trích xuất từ file CV ứng tuyển định dạng PDF hoặc Word và dữ liệu âm thanh thô tạm thời từ Microphone trong phiên trả lời phỏng vấn."
+      "body": "Hệ thống chỉ thu thập thông tin tài khoản cơ bản cần thiết cho việc xác thực và quản lý phiên làm việc (như Email, Tên hiển thị). Hệ thống hoàn toàn không yêu cầu tải lên file CV và không thu thập bất kỳ thông tin cá nhân nào để tạo câu hỏi."
     },
     "section2": {
       "title": "Điều 2: Cơ chế xử lý dữ liệu AI an toàn",
-      "body": "Dữ liệu CV của bạn chỉ được sử dụng làm ngữ cảnh nội bộ để AI sinh đề thi phù hợp. Dữ liệu giọng nói qua bộ chuyển đổi âm thanh thành văn bản được xử lý tức thì.",
-      "callout": "Hệ thống tự động hủy toàn bộ file ghi âm thô ngay sau khi hoàn thành chấm điểm, cam kết tuyệt đối không lưu giữ dữ liệu sinh trắc học giọng nói và không dùng dữ liệu hồ sơ để huấn luyện các mô hình AI công cộng."
+      "body": "Dữ liệu các câu trả lời phỏng vấn dạng văn bản (text-to-text) của bạn chỉ được xử lý nội bộ nhằm mục đích chấm điểm và đưa ra nhận xét phản hồi từ AI.",
+      "callout": "Hệ thống cam kết tuyệt đối không thu thập hay phân tích âm thanh giọng nói, không khai thác thông tin cá nhân người dùng để tạo câu hỏi và không dùng dữ liệu phỏng vấn của bạn để huấn luyện các mô hình AI công cộng."
     },
     "section3": {
       "title": "Điều 3: Giải pháp bảo mật kỹ thuật nâng cao",
@@ -55,7 +55,7 @@
     },
     "section4": {
       "title": "Điều 4: Quyền kiểm soát của ứng viên",
-      "body": "Bạn có toàn quyền chỉnh sửa, cập nhật hoặc thực hiện lệnh xóa vĩnh viễn hồ sơ CV cùng toàn bộ lịch sử phỏng vấn ra khỏi máy chủ hệ thống bất cứ lúc nào bạn muốn."
+      "body": "Bạn có toàn quyền chỉnh sửa thông tin tài khoản hoặc thực hiện lệnh xóa vĩnh viễn toàn bộ lịch sử phỏng vấn ra khỏi máy chủ hệ thống bất cứ lúc nào bạn muốn."
     }
   },
   "terms": {

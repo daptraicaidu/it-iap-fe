@@ -1,0 +1,75 @@
+{
+  "orders": {
+    "title": "Lịch sử Giao dịch & Đơn hàng",
+    "subtitle": "Quản lý và tra cứu các giao dịch thanh toán gói cước của tài khoản",
+    "refresh": "Làm mới",
+    "upgradeNow": "Nâng cấp gói mới",
+    "payNow": "Thanh toán ngay",
+    "continuePayment": "Tiếp tục thanh toán",
+    "upgradeButtons": {
+      "upgradePro": "Nâng cấp gói Pro",
+      "switchTier": "Nâng cấp / Đổi gói",
+      "viewPlans": "Xem các gói"
+    },
+    "empty": "Bạn chưa có giao dịch nào",
+    "emptyDesc": "Hãy nâng cấp gói cước để mở khóa thêm nhiều lượt phỏng vấn và tính năng cao cấp của AI!",
+    "table": {
+      "orderCode": "Mã đơn hàng",
+      "productName": "Gói dịch vụ",
+      "quantity": "Số lượng",
+      "originalPrice": "Giá gốc",
+      "discountAmount": "Giảm giá KM",
+      "upgradeDiscount": "Ưu đãi nâng cấp",
+      "amount": "Thực thanh toán",
+      "status": "Trạng thái",
+      "createdAt": "Thời gian giao dịch",
+      "actions": "Thao tác"
+    },
+    "status": {
+      "PAID": "Đã thanh toán",
+      "PENDING": "Đang xử lý",
+      "EXPIRED": "Đã hết hạn",
+      "FAILED": "Thất bại",
+      "CANCELLED": "Đã hủy"
+    },
+    "alerts": {
+      "paymentSuccessTitle": "Thanh toán thành công!",
+      "paymentSuccessDesc": "Tài khoản của bạn đã được nâng cấp lên gói dịch vụ mới. Chúc bạn có trải nghiệm luyện phỏng vấn hiệu quả!",
+      "paymentCancelledTitle": "Đơn hàng đã được hủy",
+      "paymentCancelledDesc": "Giao dịch thanh toán đã bị hủy. Bạn có thể tiến hành nâng cấp lại bất cứ lúc nào.",
+      "fetchError": "Không thể tải danh sách đơn hàng. Vui lòng thử lại sau.",
+      "copied": "Đã sao chép mã đơn hàng!"
+    }
+  },
+  "checkout": {
+    "title": "Nâng cấp & Thanh toán Gói dịch vụ",
+    "subtitle": "Chọn gói dịch vụ phù hợp để mở khóa toàn bộ tiềm năng phỏng vấn cùng AI",
+    "selectTier": "Chọn gói dịch vụ muốn nâng cấp",
+    "orderSummary": "Chi tiết thanh toán",
+    "tierInfo": "Thông tin gói",
+    "quantity": "Số lượng / Thời hạn",
+    "originalPrice": "Giá gốc gói cước",
+    "remainingValue": "Khấu trừ từ gói hiện tại (Upgrade)",
+    "promotionDiscount": "Khuyến mãi giảm giá",
+    "finalAmount": "Tổng tiền thanh toán",
+    "freePlan": "Miễn phí 100%",
+    "confirmPay": "Tạo đơn hàng & Thanh toán",
+    "confirmFree": "Kích hoạt miễn phí ngay",
+    "processing": "Đang xử lý đơn hàng...",
+    "errorPreview": "Không thể xem trước thông tin thanh toán",
+    "errorCreate": "Không thể tạo đơn hàng. Vui lòng thử lại sau.",
+    "freeSuccess": "Kích hoạt gói dịch vụ thành công!",
+    "tiers": {
+      "PLUS_MONTH": "Gói Plus (1 Tháng)",
+      "PLUS_YEAR": "Gói Plus (1 Năm)",
+      "PRO_MONTH": "Gói Pro (1 Tháng)",
+      "PRO_YEAR": "Gói Pro (1 Năm)"
+    },
+    "benefits": {
+      "instant": "Kích hoạt tự động ngay sau khi quét mã QR thành công",
+      "secure": "Cổng thanh toán bảo mật chuẩn VietQR / PayOS",
+      "support": "Hỗ trợ 24/7 trong suốt thời gian sử dụng dịch vụ"
+    },
+    "backToHistory": "Xem lịch sử đơn hàng"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "title": "Promotions Management",
+  "subtitle": "Create and manage promotional discount codes and subscription pricing campaigns",
+  "kpi": {
+    "total": "Total Promotions",
+    "active": "Active Promotions",
+    "inactive": "Paused / Expired",
+    "percentage": "Percentage Discounts",
+    "fixedAmount": "Fixed Amount Discounts"
+  },
+  "buttons": {
+    "create": "New Promotion",
+    "refresh": "Refresh",
+    "previewUserModal": "Preview User Modal",
+    "previewUserModalTooltip": "Open the upgrade tier modal to preview the end-user experience",
+    "filter": "Filter",
+    "resetFilter": "Reset Filters",
+    "cancel": "Cancel",
+    "save": "Create Promotion",
+    "saving": "Creating...",
+    "copyCode": "Copy code",
+    "copied": "Copied!",
+    "toggleActive": "Enable",
+    "toggleInactive": "Disable"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by promotion code or campaign name...",
+    "tierPlaceholder": "All Tiers",
+    "typePlaceholder": "All Discount Types",
+    "statusPlaceholder": "All Statuses",
+    "all": "All",
+    "active": "Active",
+    "inactive": "Inactive",
+    "percentage": "Percentage (%)",
+    "fixedAmount": "Fixed (VND)"
+  },
+  "tiers": {
+    "PLUS_MONTH": "Plus Plan (1 Month)",
+    "PLUS_YEAR": "Plus Plan (1 Year)",
+    "PRO_MONTH": "Pro Plan (1 Month)",
+    "PRO_YEAR": "Pro Plan (1 Year)",
+    "BASIC": "Basic Plan",
+    "UNKNOWN": "Other Tier"
+  },
+  "discountTypes": {
+    "PERCENTAGE": "Percentage (%)",
+    "FIXED_AMOUNT": "Fixed Amount"
+  },
+  "table": {
+    "codeAndName": "Code & Campaign Name",
+    "applicableTier": "Applicable Tier",
+    "discount": "Discount Value",
+    "estimatedPrice": "Discounted Price",
+    "originalPrice": "Original Price",
+    "duration": "Validity Period",
+    "status": "Status",
+    "actions": "Actions",
+    "empty": "No promotions found",
+    "emptyFiltered": "No promotions match your filter criteria",
+    "from": "From",
+    "to": "To",
+    "forever": "Unlimited",
+    "expired": "Expired",
+    "activeNow": "Active",
+    "scheduled": "Scheduled"
+  },
+  "modal": {
+    "createTitle": "Create New Promotion",
+    "createDesc": "Set up a new discount code and apply it to subscription tiers",
+    "codeLabel": "Promotion Code",
+    "codePlaceholder": "e.g. PROMO2026, SUMMER50...",
+    "codeHelp": "Code will automatically be capitalized without whitespace",
+    "nameLabel": "Campaign Name",
+    "namePlaceholder": "e.g. Summer Super Sale, New Year Launch...",
+    "descriptionLabel": "Detailed Description",
+    "descriptionPlaceholder": "e.g. 50% discount for all users subscribing to the Pro 1-year tier...",
+    "tierLabel": "Applicable Subscription Tier",
+    "tierSelectPlaceholder": "-- Select a tier --",
+    "discountTypeLabel": "Discount Type",
+    "discountValueLabel": "Discount Value",
+    "discountValuePercentagePlaceholder": "Enter % (1 - 100)",
+    "discountValueFixedPlaceholder": "Enter VND amount (e.g. 50000)",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "previewSection": "Price Calculation Preview",
+    "originalPriceText": "Tier Original Price:",
+    "discountAmountText": "Discount Amount:",
+    "finalPriceText": "User Final Price:",
+    "errors": {
+      "codeRequired": "Promotion code is required",
+      "nameRequired": "Campaign name is required",
+      "tierRequired": "Please select an applicable tier",
+      "discountValueInvalid": "Invalid discount value",
+      "percentageRange": "Percentage discount must be between 1% and 100%",
+      "fixedAmountMin": "Fixed discount amount must be greater than 0",
+      "fixedAmountExceed": "Discount amount cannot exceed original tier price",
+      "startDateRequired": "Start date is required",
+      "endDateRequired": "End date is required",
+      "endDateBeforeStart": "End date must be after start date"
+    }
+  },
+  "toast": {
+    "fetchError": "Failed to load promotions list",
+    "createSuccess": "Promotion created successfully!",
+    "createError": "Failed to create promotion",
+    "conflictError": "This promotion code already exists in the system",
+    "toggleSuccess": "Promotion status updated successfully",
+    "toggleError": "Failed to update promotion status"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "total": "Total",
+    "items": "promotions",
+    "goTo": "Go to",
+    "jump": "Go"
+  }
+}

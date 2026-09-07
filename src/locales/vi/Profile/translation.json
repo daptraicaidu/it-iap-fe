@@ -93,6 +93,67 @@
       "mismatch": "Mật khẩu xác nhận chưa khớp với mật khẩu mới.",
       "success": "Đã cập nhật mật khẩu thành công.",
       "error": "Không thể cập nhật mật khẩu. Vui lòng thử lại."
+    },
+    "forgotPasswordLink": "Quên mật khẩu?",
+    "forgotModal": {
+      "title": "Quên mật khẩu",
+      "subtitleConfirm": "Xác nhận gửi mã OTP đến email để đặt lại mật khẩu.",
+      "subtitleOtp": "Nhập mã OTP 6 chữ số đã gửi đến email của bạn.",
+      "subtitlePassword": "Tạo mật khẩu mới cho tài khoản của bạn.",
+      "confirmEmailText": "Mã xác thực (OTP) sẽ được gửi đến email:",
+      "sendOtp": "Xác nhận gửi OTP",
+      "sendingOtp": "Đang gửi OTP...",
+      "emailRequired": "Vui lòng nhập địa chỉ email.",
+      "emailInvalid": "Email không hợp lệ.",
+      "enterEmail": "Nhập địa chỉ email của bạn",
+      "otpLabel": "Mã xác minh (OTP)",
+      "continue": "Tiếp tục",
+      "resendOtp": "Gửi lại mã",
+      "resendingOtp": "Đang gửi...",
+      "resendIn": "Gửi lại sau {{seconds}}s",
+      "wrongEmail": "Đổi email khác",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu mới",
+      "resetPassword": "Đặt lại mật khẩu",
+      "resettingPassword": "Đang đặt lại...",
+      "successTitle": "Đặt lại mật khẩu thành công!",
+      "successDesc": "Mật khẩu mới của bạn đã được cập nhật thành công.",
+      "close": "Đóng"
+    }
+  },
+  "twoFa": {
+    "title": "Xác thực 2 bước (2FA)",
+    "description": "Thêm lớp bảo vệ tài khoản bằng ứng dụng xác thực như Google Authenticator hoặc Authy.",
+    "statusEnabled": "Đã kích hoạt",
+    "statusDisabled": "Chưa kích hoạt",
+    "enableButton": "Bật xác thực 2 bước",
+    "disableButton": "Tắt xác thực 2 bước",
+    "requestResetButton": "Yêu cầu gỡ 2FA qua Email",
+    "setup": {
+      "title": "Thiết lập xác thực 2 bước",
+      "step1": "Quét mã QR bên dưới bằng ứng dụng xác thực của bạn",
+      "step2": "Hoặc nhập thủ công mã khóa bí mật sau:",
+      "step3": "Nhập mã 6 chữ số từ ứng dụng để xác nhận",
+      "totpPlaceholder": "Nhập mã TOTP",
+      "confirm": "Xác nhận bật 2FA",
+      "confirming": "Đang xác nhận...",
+      "cancel": "Hủy",
+      "copySecret": "Sao chép",
+      "copied": "Đã sao chép!"
+    },
+    "disable": {
+      "title": "Tắt xác thực 2 bước",
+      "description": "Nhập mã TOTP 6 chữ số từ ứng dụng xác thực để xác nhận tắt.",
+      "totpPlaceholder": "Nhập mã TOTP",
+      "confirm": "Xác nhận tắt 2FA",
+      "confirming": "Đang xử lý...",
+      "cancel": "Hủy"
+    },
+    "messages": {
+      "enableSuccess": "Bật xác thực 2 bước thành công!",
+      "disableSuccess": "Đã tắt xác thực 2 bước.",
+      "error": "Có lỗi xảy ra. Vui lòng thử lại.",
+      "loadError": "Không thể tải trạng thái 2FA."
     }
   },
   "manage": {
@@ -103,7 +164,9 @@
     "title": "Danh sách hồ sơ",
     "count": "{{count}} hồ sơ",
     "empty": "Chưa có hồ sơ nào. Hãy tạo hồ sơ đầu tiên để bắt đầu.",
-    "untitled": "Hồ sơ chưa đặt tên"
+    "untitled": "Hồ sơ chưa đặt tên",
+    "noSelectionTitle": "Chưa chọn hồ sơ",
+    "noSelectionDesc": "Chọn một hồ sơ từ danh sách bên trái để xem và chỉnh sửa, hoặc tạo hồ sơ mới."
   },
   "form": {
     "modeCreate": "Tạo mới",
@@ -137,7 +200,9 @@
     "remove": "Xóa mục",
     "addSkill": "Thêm kỹ năng",
     "addExperience": "Thêm kinh nghiệm",
-    "addProject": "Thêm dự án"
+    "addProject": "Thêm dự án",
+    "import": "Nhập hồ sơ",
+    "export": "Xuất hồ sơ"
   },
   "messages": {
     "loadListError": "Không thể tải danh sách hồ sơ.",
@@ -147,30 +212,88 @@
     "deleteSuccess": "Đã xóa hồ sơ.",
     "deleteError": "Không thể xóa hồ sơ.",
     "deleteConfirm": "Bạn có chắc muốn xóa hồ sơ này?",
-    "titleRequired": "Vui lòng nhập tên hồ sơ."
+    "titleRequired": "Vui lòng nhập tên hồ sơ.",
+    "importError": "Không thể đọc file. Vui lòng kiểm tra định dạng JSON.",
+    "importSuccess": "Đã nhập hồ sơ. Kiểm tra và bấm Lưu để hoàn tất."
   },
   "deleteDialog": {
     "title": "Xóa hồ sơ?",
     "description": "Hồ sơ này sẽ bị xóa khỏi danh sách của bạn. Hành động này không thể hoàn tác.",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "confirm": "Xóa hồ sơ"
   },
   "settings": {
     "menu": {
       "userInfo": "Thông tin cá nhân",
       "profiles": "Quản lý hồ sơ",
       "general": "Cài đặt chung",
-      "password": "Đổi mật khẩu",
-      "activities": "Hoạt động"
+      "password": "Bảo mật tài khoản",
+      "activities": "Hoạt động",
+      "sessions": "Phiên đăng nhập"
     },
     "activities": {
-      "title": "Hoạt động",
-      "description": "Lịch sử các hoạt động, đăng nhập và các sự kiện bảo mật khác sẽ được hiển thị tại đây.",
+      "title": "Nhật ký hoạt động",
+      "description": "Theo dõi lịch sử đăng nhập, thay đổi bảo mật và các thao tác trên hồ sơ tài khoản.",
       "emptyTitle": "Chưa có hoạt động nào",
-      "emptyDescription": "Các hoạt động gần đây của bạn sẽ xuất hiện ở đây."
+      "emptyDescription": "Các hoạt động tương ứng với bộ lọc sẽ xuất hiện tại đây.",
+      "refresh": "Làm mới",
+      "filterAll": "Tất cả hoạt động",
+      "filterLabel": "Lọc theo loại hành động",
+      "types": {
+        "LOGIN": "Đăng nhập",
+        "CHANGE_PASSWORD": "Đổi mật khẩu",
+        "RESET_PASSWORD": "Đặt lại mật khẩu",
+        "UPDATE_PROFILE": "Cập nhật thông tin cá nhân",
+        "DELETE_PROFILE": "Xóa hồ sơ",
+        "ENABLE_2FA": "Bật xác thực 2FA",
+        "DISABLE_2FA": "Tắt xác thực 2FA"
+      },
+      "pagination": {
+        "showing": "Hiển thị",
+        "to": "đến",
+        "of": "trên tổng số",
+        "results": "hoạt động",
+        "prev": "Trước",
+        "next": "Sau",
+        "page": "Trang"
+      }
     },
     "general": {
       "title": "Cài đặt chung",
-      "description": "Quản lý các cài đặt chung cho giao diện và tài khoản của bạn."
+      "description": "Quản lý các cài đặt chung cho giao diện và tài khoản của bạn.",
+      "languageSection": "Ngôn ngữ hiển thị",
+      "languageDescription": "Chọn ngôn ngữ bạn muốn sử dụng trên toàn bộ giao diện nền tảng.",
+      "vietnamese": "Tiếng Việt",
+      "vietnameseDesc": "Giao diện bằng Tiếng Việt",
+      "english": "English",
+      "englishDesc": "English interface",
+      "activeLanguage": "Đang sử dụng"
+    }
+  },
+  "sessions": {
+    "title": "Quản lý phiên đăng nhập",
+    "description": "Danh sách các thiết bị và trình duyệt hiện đang đăng nhập vào tài khoản của bạn. Bạn có thể đăng xuất khỏi các phiên không mong muốn.",
+    "revokeAllOthers": "Đăng xuất tất cả thiết bị khác",
+    "revokingAll": "Đang xử lý...",
+    "currentDevice": "Thiết bị này",
+    "lastActive": "Hoạt động gần nhất",
+    "ip": "Địa chỉ IP",
+    "location": "Vị trí",
+    "revoke": "Đăng xuất",
+    "revoking": "Đang đăng xuất...",
+    "emptyTitle": "Không có phiên đăng nhập nào",
+    "emptyDescription": "Hiện tại không tìm thấy thông tin phiên đăng nhập.",
+    "confirmRevokeOneTitle": "Đăng xuất phiên đăng nhập?",
+    "confirmRevokeOneDesc": "Phiên đăng nhập trên thiết bị này sẽ bị chấm dứt.",
+    "confirmRevokeCurrentDesc": "Bạn đang thực hiện đăng xuất khỏi thiết bị hiện tại. Bạn sẽ cần đăng nhập lại.",
+    "confirmRevokeOthersTitle": "Đăng xuất tất cả thiết bị khác?",
+    "confirmRevokeOthersDesc": "Tất cả các phiên đăng nhập trên những thiết bị khác ngoại trừ thiết bị này sẽ bị chấm dứt ngay lập tức.",
+    "messages": {
+      "loadError": "Không thể tải danh sách phiên đăng nhập.",
+      "revokeSuccess": "Đã đăng xuất phiên thành công.",
+      "revokeError": "Không thể đăng xuất phiên.",
+      "revokeOthersSuccess": "Đã đăng xuất tất cả các phiên khác.",
+      "revokeOthersError": "Không thể đăng xuất các phiên khác."
     }
   }
 }

@@ -1,0 +1,27 @@
+{
+  "title": "My Reports",
+  "subtitle": "Review your submitted reports and admin responses",
+  "filterAll": "All",
+  "filterByType": "Report Type",
+  "filterByStatus": "Status",
+  "interviewId": "Interview #{{id}}",
+  "createdAt": "Created",
+  "adminReply": "Admin Reply",
+  "noReply": "No reply yet",
+  "emptyTitle": "No reports yet",
+  "emptyDescription": "You haven't submitted any reports. Use the report button on interview results to flag issues.",
+  "reportType": {
+    "INACCURATE_CONTENT": "Inaccurate Content",
+    "OUTDATED": "Outdated",
+    "DUPLICATE": "Duplicate",
+    "POOR_FORMATTING": "Poor Formatting",
+    "SPAM_OR_IRRELEVANT": "Spam/Irrelevant",
+    "INAPPROPRIATE": "Inappropriate",
+    "OTHER": "Other"
+  },
+  "status": {
+    "PENDING": "Pending",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected"
+  }
+}

@@ -1,41 +1,154 @@
 {
-  "brand": "Interview with AI",
-  "logout": "Đăng xuất",
-  "badge": "Không gian luyện tập cá nhân",
-  "title": "Chọn cách bạn muốn luyện phỏng vấn hôm nay",
-  "subtitle": "Dashboard tập trung vào ba luồng chính: bắt đầu buổi phỏng vấn mô phỏng, hỏi chatbot khi cần chuẩn bị nhanh, hoặc xem lại feedback để cải thiện câu trả lời.",
-  "openAction": "Mở",
+  "brand": "Interview AI Practice",
+  "greeting": {
+    "morning": "Chào buổi sáng",
+    "afternoon": "Chào buổi chiều",
+    "evening": "Chào buổi tối"
+  },
+  "noRank": "Chưa xếp hạng",
+  "exportPdf": "Xuất báo cáo PDF",
+  "exportImage": "Xuất ảnh báo cáo",
+  "selectProfile": "Chọn hồ sơ",
+  "noProfiles": "Chưa có hồ sơ nào",
+  "streak": "Đang duy trì chuỗi {{count}} ngày luyện tập",
+  "streakModal": {
+    "title": "Thông tin Chuỗi luyện tập",
+    "days": "ngày liên tiếp",
+    "longestStreak": "Chuỗi dài nhất",
+    "slogan": "Giữ chuỗi thật lâu, hiểu biết thêm sâu",
+    "subtitle": "Duy trì thói quen luyện tập phỏng vấn AI mỗi ngày để nâng cao phản xạ và bứt phá sự nghiệp.",
+    "milestonesTitle": "Hành trình cột mốc",
+    "targetLabel": "Mục tiêu",
+    "steps": {
+      "step1": "Hoàn thành ít nhất 1 buổi phỏng vấn",
+      "step2": "Duy trì chuỗi hàng ngày bằng việc luyện tập",
+      "step3": "Mở khoá các cột mốc mới theo tiến độ"
+    },
+    "gotIt": "Đã hiểu & Tiếp tục"
+  },
+  "share": {
+    "shareGrade": "Chia sẻ điểm GPA",
+    "shareStreak": "Chia sẻ chuỗi",
+    "sharing": "Đang chia sẻ...",
+    "confirmTitleGrade": "Chia sẻ điểm GPA lên Diễn đàn",
+    "confirmTitleStreak": "Chia sẻ chuỗi ngày lên Diễn đàn",
+    "confirmDescGrade": "Bạn có chắc chắn muốn chia sẻ thành tích của hồ sơ \"{{title}}\" với điểm GPA {{score}}/10 lên Diễn đàn cộng đồng?",
+    "confirmDescStreak": "Bạn có chắc chắn muốn chia sẻ chuỗi {{count}} ngày luyện tập liên tục lên Diễn đàn cộng đồng?",
+    "confirmBtn": "Xác nhận chia sẻ",
+    "cancelBtn": "Hủy bỏ",
+    "closeBtn": "Đóng",
+    "shareSuccessTitle": "Chia sẻ lên Diễn đàn thành công!",
+    "shareSuccessDesc": "Bài viết của bạn đã được đăng công khai lên Diễn đàn cộng đồng.",
+    "successMessage": "Chia sẻ lên Diễn đàn thành công!",
+    "viewForum": "Xem trên Diễn đàn",
+    "errorMessage": "Chia sẻ thất bại. Vui lòng thử lại sau.",
+    "selectProfileFirst": "Vui lòng chọn một hồ sơ trước khi chia sẻ điểm GPA."
+  },
+  "stats": {
+    "interviewsThisWeek": "Buổi phỏng vấn tuần này",
+    "vsLastWeek": "So với tuần trước",
+    "avgScore": "Điểm trung bình",
+    "last10Sessions": "10 buổi phỏng vấn gần nhất",
+    "improvementRate": "Tỷ lệ cải thiện",
+    "improvementDesc": "Dựa trên xu hướng điểm số",
+    "notEnoughData": "Cần ít nhất 10 buổi phỏng vấn"
+  },
+  "readiness": {
+    "title": "Độ sẵn sàng phỏng vấn",
+    "levels": {
+      "novice": "Mới bắt đầu",
+      "beginner": "Cơ bản",
+      "developing": "Đang tiến bộ",
+      "maturing": "Thành thạo",
+      "expert": "Chuyên gia"
+    }
+  },
+  "radar": {
+    "title": "Tổng quan năng lực",
+    "benchmark": "Chuẩn mục tiêu",
+    "yourScore": "Điểm của bạn"
+  },
+  "review": {
+    "title": "Xem đánh giá từ AI",
+    "description": "Nhận xét chuyên sâu về kết quả học tập, điểm mạnh và lộ trình cải thiện từ AI.",
+    "cta": "Xem kết quả"
+  },
+  "heatmap": {
+    "title": "Tần suất học tập",
+    "error": "Không thể tải dữ liệu",
+    "legend": {
+      "noActivity": "Không hoạt động",
+      "few": "1-6 câu",
+      "moderate": "7-9 câu",
+      "many": "≥10 câu"
+    },
+    "days": {
+      "mon": "T2",
+      "tue": "T3",
+      "wed": "T4",
+      "thu": "T5",
+      "fri": "T6",
+      "sat": "T7",
+      "sun": "CN"
+    }
+  },
+  "skills": {
+    "coreKnowledge": "Kiến thức nền",
+    "problemSolving": "Giải quyết vấn đề",
+    "appliedExperience": "Kinh nghiệm",
+    "logicalArticulation": "Diễn đạt logic",
+    "focusAndCompleteness": "Tập trung & hoàn thiện"
+  },
   "navigation": {
-    "label": "Điều hướng Dashboard",
+    "label": "Điều hướng",
+    "home": "Trang chủ",
     "dashboard": "Dashboard",
-    "history": "Lịch sử phỏng vấn",
+    "history": "Lịch sử",
     "chatbot": "Chatbot",
-    "interview": "Bắt đầu phỏng vấn",
-    "reviewResult": "Kết quả phỏng vấn"
+    "interview": "Phỏng vấn",
+    "forum": "Diễn đàn",
+    "orders": "Lịch sử đơn hàng",
+    "checkout": "Thanh toán & Nâng cấp",
+    "reviewResult": "Kết quả phỏng vấn",
+    "reports": "Báo cáo và Đánh giá"
   },
   "user": {
-    "name": "Nguyễn Minh Anh",
-    "avatarAlt": "Ảnh đại diện người dùng"
+    "name": "Người dùng",
+    "avatarAlt": "Ảnh đại diện"
   },
-  "userMenu": {
-    "personalInfo": "Thông tin cá nhân",
-    "manageProfile": "Quản lý hồ sơ"
-  },
-  "actions": {
-    "interview": {
-      "label": "Interview",
-      "title": "Phỏng vấn",
-      "description": "Bắt đầu một buổi phỏng vấn mô phỏng với AI theo vai trò IT và cấp độ kinh nghiệm của bạn."
+  "subscription": {
+    "currentTier": "Gói dịch vụ hiện tại",
+    "freeTierDesc": "Gói cơ bản miễn phí (2 lượt phỏng vấn AI mỗi ngày)",
+    "expiresAt": "Thời hạn sử dụng đến: {{date}}",
+    "upgradePro": "Nâng cấp gói Pro",
+    "switchTier": "Nâng cấp / Đổi gói",
+    "viewPlans": "Xem các gói",
+    "modalTitle": "Chọn gói dịch vụ phù hợp với bạn",
+    "modalSubtitle": "Mở khóa số lượt phỏng vấn không giới hạn, chấm điểm AI chuyên sâu và ngữ cảnh chatbot mở rộng.",
+    "badgeTitle": "Nâng tầm sự nghiệp công nghệ thông tin",
+    "popularBadge": "Phổ biến nhất",
+    "saveBadge": "Tiết kiệm lớn",
+    "perMonth": "/tháng",
+    "perYear": "/năm",
+    "forever": "vĩnh viễn",
+    "free": "Miễn phí",
+    "features": {
+      "title": "Quyền lợi bao gồm:",
+      "maxProfiles": "Tối đa {{count}} hồ sơ phỏng vấn",
+      "dailyInterviews": "{{count}} lượt phỏng vấn AI mỗi ngày",
+      "chatbotContext": "Ngữ cảnh hội thoại Chatbot {{tokens}} tokens",
+      "detailedGrading": "Chấm điểm & phân tích chi tiết kỹ năng",
+      "unlimited": "Phỏng vấn AI không giới hạn số lượt mỗi ngày",
+      "priority": "Ưu tiên xử lý trên hạ tầng AI siêu tốc"
     },
-    "chatbot": {
-      "label": "Chatbot",
-      "title": "Chatbot",
-      "description": "Trao đổi nhanh với trợ lý AI để ôn câu hỏi kỹ thuật, behavioral questions và cách trình bày câu trả lời."
+    "buttons": {
+      "current": "Gói bạn đang sử dụng",
+      "default": "Gói mặc định",
+      "subscribe": "Đăng ký ngay"
     },
-    "feedback": {
-      "label": "Feedback",
-      "title": "Feedback",
-      "description": "Xem lại nhận xét, điểm mạnh và các phần cần cải thiện sau những phiên luyện tập trước đó."
+    "guarantee": {
+      "secure": "Thanh toán bảo mật an toàn 100%",
+      "instant": "Kích hoạt quyền lợi tài khoản ngay lập tức"
     }
   }
 }

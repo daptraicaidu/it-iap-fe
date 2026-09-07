@@ -1,15 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import axios from "axios";
+
 import { useTranslation } from "react-i18next";
 import {
-  ArrowLeft,
   BriefcaseBusiness,
+  Download,
   FileText,
   Loader2,
   Plus,
   Save,
   Trash2,
+  Upload,
   X,
+  UserCog,
 } from "lucide-react";
 import profileService, {
   getProfileTitle,
@@ -20,9 +23,9 @@ import profileService, {
 } from "../../../services/user/profileService";
 
 const emptyResumeData = (): ResumeData => ({
-  skills: [{ name: "", level: "", years: 0 }],
-  experiences: [{ position: "", descriptions: [""] }],
-  projects: [{ name: "", role: "", technologies: [""], descriptions: [""] }],
+  skills: [],
+  experiences: [],
+  projects: [],
 });
 
 const targetPositionOptions = [
@@ -71,28 +74,79 @@ const normalizeProfile = (profile: ProfileDetail): ProfilePayload => ({
   ),
   targetLevel: normalizeOptionValue(profile.targetLevel, targetLevelOptions),
   resumeData: {
-    skills:
-      profile.resumeData?.skills?.length > 0
-        ? profile.resumeData.skills
-        : emptyResumeData().skills,
-    experiences:
-      profile.resumeData?.experiences?.length > 0
-        ? profile.resumeData.experiences
-        : emptyResumeData().experiences,
-    projects:
-      profile.resumeData?.projects?.length > 0
-        ? profile.resumeData.projects
-        : emptyResumeData().projects,
+    skills: profile.resumeData?.skills ?? [],
+    experiences: profile.resumeData?.experiences ?? [],
+    projects: profile.resumeData?.projects ?? [],
   },
 });
 
 const toLines = (values: string[]) => values.join("\n");
 
-const fromLines = (value: string) =>
-  value
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
+const fromLines = (value: string) => value.split("\n");
+
+const cleanResumeData = (data: ResumeData): ResumeData => ({
+  skills: data.skills
+    .map((s) => ({
+      ...s,
+      name: s.name.trim(),
+    }))
+    .filter((s) => s.name.length > 0),
+  experiences: data.experiences
+    .map((exp) => ({
+      ...exp,
+      position: exp.position.trim(),
+      descriptions: exp.descriptions
+        .map((d) => d.trim())
+        .filter(Boolean),
+    }))
+    .filter((exp) => exp.position.length > 0 || exp.descriptions.length > 0),
+  projects: data.projects
+    .map((proj) => ({
+      ...proj,
+      name: proj.name.trim(),
+      role: proj.role.trim(),
+      technologies: proj.technologies
+        .map((t) => t.trim())
+        .filter(Boolean),
+      descriptions: proj.descriptions
+        .map((d) => d.trim())
+        .filter(Boolean),
+    }))
+    .filter(
+      (proj) =>
+        proj.name.length > 0 ||
+        proj.role.length > 0 ||
+        proj.technologies.length > 0 ||
+        proj.descriptions.length > 0
+    ),
+});
+
+const getErrorMessage = (err: unknown, defaultMessage: string): string => {
+  if (axios.isAxiosError(err)) {
+    const resData = err.response?.data;
+    if (resData) {
+      if (resData.data && typeof resData.data === "object") {
+        const errorValues = Object.values(resData.data).filter(
+          (val) => typeof val === "string" && val.trim() !== ""
+        );
+        if (errorValues.length > 0) {
+          return errorValues.join(", ");
+        }
+      }
+      if (typeof resData.data === "string" && resData.data.trim()) {
+        return resData.data;
+      }
+      if (typeof resData.message === "string" && resData.message.trim()) {
+        return resData.message;
+      }
+    }
+    return err.message || defaultMessage;
+  }
+  if (err instanceof Error) {
+    return err.message;
+  }
+  return defaultMessage;
+};
 
 const ProfilesPage = () => {
   const { t } = useTranslation("Profile");
@@ -101,7 +155,7 @@ const ProfilesPage = () => {
     null
   );
   const [form, setForm] = useState<ProfilePayload>(createEmptyPayload);
-  const [isCreating, setIsCreating] = useState(false);
+  const [isCreating, setIsCreating] = useState(true);
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -109,11 +163,32 @@ const ProfilesPage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedTitle = useMemo(() => {
     const selected = profiles.find((profile) => profile.id === selectedProfileId);
     return selected ? getProfileTitle(selected) : "";
   }, [profiles, selectedProfileId]);
+
+  const fetchAndSelectProfile = async (profileId: number) => {
+    setIsLoadingDetail(true);
+    setError(null);
+    setMessage(null);
+
+    try {
+      const response = await profileService.getProfile(profileId);
+      if (response.data.data) {
+        setForm(normalizeProfile(response.data.data));
+        setSelectedProfileId(profileId);
+        setIsCreating(false);
+      }
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, t("messages.loadDetailError")));
+      // Keep previous selectedProfileId and form intact on failure
+    } finally {
+      setIsLoadingDetail(false);
+    }
+  };
 
   const loadProfiles = async (nextSelectedId?: number) => {
     setIsLoadingList(true);
@@ -124,15 +199,15 @@ const ProfilesPage = () => {
       const items = response.data.data ?? [];
       setProfiles(items);
 
-      const fallbackId = items[0]?.id ?? null;
-      setSelectedProfileId(nextSelectedId ?? fallbackId);
-
-      if (!nextSelectedId && fallbackId === null) {
+      if (nextSelectedId) {
+        await fetchAndSelectProfile(nextSelectedId);
+      } else {
+        setSelectedProfileId(null);
         setIsCreating(true);
         setForm(createEmptyPayload());
       }
-    } catch {
-      setError(t("messages.loadListError"));
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, t("messages.loadListError")));
     } finally {
       setIsLoadingList(false);
     }
@@ -141,28 +216,6 @@ const ProfilesPage = () => {
   useEffect(() => {
     void loadProfiles();
   }, []);
-
-  useEffect(() => {
-    if (selectedProfileId === null || isCreating) {
-      return;
-    }
-
-    const loadProfileDetail = async () => {
-      setIsLoadingDetail(true);
-      setError(null);
-
-      try {
-        const response = await profileService.getProfile(selectedProfileId);
-        setForm(normalizeProfile(response.data.data));
-      } catch {
-        setError(t("messages.loadDetailError"));
-      } finally {
-        setIsLoadingDetail(false);
-      }
-    };
-
-    void loadProfileDetail();
-  }, [isCreating, selectedProfileId, t]);
 
   const updateResumeData = (resumeData: ResumeData) => {
     setForm((current) => ({ ...current, resumeData }));
@@ -176,11 +229,81 @@ const ProfilesPage = () => {
     setError(null);
   };
 
+  const handleExport = () => {
+    const payload: ProfilePayload = {
+      title: form.title,
+      targetPosition: form.targetPosition,
+      targetLevel: form.targetLevel,
+      resumeData: cleanResumeData(form.resumeData),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `profile-${form.title.trim() || "untitled"}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+
+        // Validate basic structure
+        if (!data || typeof data !== "object") {
+          setError(t("messages.importError"));
+          return;
+        }
+
+        const imported: ProfilePayload = {
+          title: data.title ?? "",
+          targetPosition: normalizeOptionValue(
+            data.targetPosition,
+            targetPositionOptions
+          ),
+          targetLevel: normalizeOptionValue(
+            data.targetLevel,
+            targetLevelOptions
+          ),
+          resumeData: {
+            skills: Array.isArray(data.resumeData?.skills)
+              ? data.resumeData.skills
+              : [],
+            experiences: Array.isArray(data.resumeData?.experiences)
+              ? data.resumeData.experiences
+              : [],
+            projects: Array.isArray(data.resumeData?.projects)
+              ? data.resumeData.projects
+              : [],
+          },
+        };
+
+        // Switch to create mode with imported data
+        setSelectedProfileId(null);
+        setIsCreating(true);
+        setForm(imported);
+        setError(null);
+        setMessage(t("messages.importSuccess"));
+      } catch {
+        setError(t("messages.importError"));
+      }
+    };
+    reader.readAsText(file);
+
+    // Reset input so the same file can be re-selected
+    event.target.value = "";
+  };
+
   const handleSelectProfile = (profileId: number) => {
-    setSelectedProfileId(profileId);
-    setIsCreating(false);
-    setMessage(null);
-    setError(null);
+    if (profileId === selectedProfileId && !isCreating) return;
+    void fetchAndSelectProfile(profileId);
   };
 
   const handleSave = async () => {
@@ -199,6 +322,7 @@ const ProfilesPage = () => {
         title: form.title.trim(),
         targetPosition: form.targetPosition.trim(),
         targetLevel: form.targetLevel.trim(),
+        resumeData: cleanResumeData(form.resumeData),
       };
 
       const response =
@@ -207,13 +331,15 @@ const ProfilesPage = () => {
           : await profileService.updateProfile(selectedProfileId, payload);
 
       const savedProfile = response.data.data;
-      setIsCreating(false);
-      setSelectedProfileId(savedProfile.id);
-      setForm(normalizeProfile(savedProfile));
-      await loadProfiles(savedProfile.id);
+      if (savedProfile) {
+        setIsCreating(false);
+        setSelectedProfileId(savedProfile.id);
+        setForm(normalizeProfile(savedProfile));
+        await loadProfiles(savedProfile.id);
+      }
       setMessage(t("messages.saveSuccess"));
-    } catch {
-      setError(t("messages.saveError"));
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, t("messages.saveError")));
     } finally {
       setIsSaving(false);
     }
@@ -243,8 +369,8 @@ const ProfilesPage = () => {
       setIsDeleteDialogOpen(false);
       await loadProfiles();
       setMessage(t("messages.deleteSuccess"));
-    } catch {
-      setError(t("messages.deleteError"));
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, t("messages.deleteError")));
     } finally {
       setIsDeleting(false);
     }
@@ -252,9 +378,19 @@ const ProfilesPage = () => {
 
   return (
     <div className="w-full">
+      {/* Hidden file input for import */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        onChange={handleImportFile}
+        className="hidden"
+      />
+
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-900 flex items-center gap-2">
+              <UserCog className="h-6 w-6 text-blue-600" />
               {t("manage.title")}
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
@@ -262,14 +398,33 @@ const ProfilesPage = () => {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCreateNew}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Plus className="h-4 w-4" />
-            {t("actions.create")}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50"
+            >
+              <Upload className="h-4 w-4 text-zinc-500" />
+              {t("actions.import")}
+            </button>
+            <button
+              type="button"
+              onClick={handleExport}
+              disabled={isCreating && !form.title.trim()}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Download className="h-4 w-4 text-zinc-500" />
+              {t("actions.export")}
+            </button>
+            <button
+              type="button"
+              onClick={handleCreateNew}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Plus className="h-4 w-4" />
+              {t("actions.create")}
+            </button>
+          </div>
         </div>
 
         {(message || error) && (
@@ -315,13 +470,13 @@ const ProfilesPage = () => {
                       type="button"
                       onClick={() => handleSelectProfile(profile.id)}
                       className={`flex w-full items-center gap-3 px-5 py-4 text-left transition ${
-                        isActive ? "bg-indigo-50" : "hover:bg-zinc-50"
+                        isActive ? "bg-blue-50" : "hover:bg-zinc-50"
                       }`}
                     >
                       <span
                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
                           isActive
-                            ? "bg-white text-indigo-600"
+                            ? "bg-white text-blue-600"
                             : "bg-zinc-100 text-zinc-500"
                         }`}
                       >
@@ -343,24 +498,46 @@ const ProfilesPage = () => {
           </aside>
 
           <section className="rounded-xl border border-zinc-200 bg-white">
-            <div className="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-xs font-medium text-indigo-600">
-                  {isCreating ? t("form.modeCreate") : t("form.modeEdit")}
+            {selectedProfileId === null && !isCreating ? (
+              <div className="flex min-h-[460px] flex-col items-center justify-center p-8 text-center">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400">
+                  <FileText className="h-8 w-8" />
+                </div>
+                <h3 className="text-base font-semibold text-zinc-900">
+                  {t("list.noSelectionTitle")}
+                </h3>
+                <p className="mt-1.5 max-w-sm text-sm text-zinc-500">
+                  {t("list.noSelectionDesc")}
                 </p>
-                <h2 className="mt-1 text-lg font-semibold text-zinc-900">
-                  {isCreating
-                    ? t("form.newProfile")
-                  : selectedTitle || t("list.untitled")}
-                </h2>
-              </div>
-            </div>
-
-            {isLoadingDetail ? (
-              <div className="flex min-h-[420px] items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+                <button
+                  type="button"
+                  onClick={handleCreateNew}
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  <Plus className="h-4 w-4" />
+                  {t("actions.create")}
+                </button>
               </div>
             ) : (
+              <>
+                <div className="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-blue-600">
+                      {isCreating ? t("form.modeCreate") : t("form.modeEdit")}
+                    </p>
+                    <h2 className="mt-1 text-lg font-semibold text-zinc-900">
+                      {isCreating
+                        ? t("form.newProfile")
+                        : selectedTitle || t("list.untitled")}
+                    </h2>
+                  </div>
+                </div>
+
+                {isLoadingDetail ? (
+                  <div className="flex min-h-[420px] items-center justify-center">
+                    <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+                  </div>
+                ) : (
               <div className="space-y-6 p-5 sm:p-6">
                 <div className="grid gap-4 md:grid-cols-3">
                   <Field
@@ -375,6 +552,7 @@ const ProfilesPage = () => {
                     value={form.targetPosition}
                     placeholder={t("fields.targetPositionPlaceholder")}
                     options={targetPositionOptions}
+                    disabled={!isCreating}
                     onChange={(value) =>
                       setForm((current) => ({
                         ...current,
@@ -387,6 +565,7 @@ const ProfilesPage = () => {
                     value={form.targetLevel}
                     placeholder={t("fields.targetLevelPlaceholder")}
                     options={targetLevelOptions}
+                    disabled={!isCreating}
                     onChange={(value) =>
                       setForm((current) => ({ ...current, targetLevel: value }))
                     }
@@ -629,10 +808,12 @@ const ProfilesPage = () => {
                     )}
                     {t("actions.save")}
                   </button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </section>
+              )}
+            </>
+          )}
+        </section>
         </div>
 
       <ConfirmDialog
@@ -674,6 +855,7 @@ interface SelectFieldProps {
   placeholder: string;
   options: Array<{ value: string; label: string }>;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 const SelectField = ({
@@ -682,13 +864,19 @@ const SelectField = ({
   placeholder,
   options,
   onChange,
+  disabled,
 }: SelectFieldProps) => (
   <label className="block">
     <span className="text-xs font-medium text-zinc-700">{label}</span>
     <select
       value={value}
+      disabled={disabled}
       onChange={(event) => onChange(event.target.value)}
-      className="mt-1 h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100"
+      className={`mt-1 h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100 ${
+        disabled
+          ? "cursor-not-allowed bg-zinc-100/90 text-zinc-500 opacity-80"
+          : ""
+      }`}
     >
       <option value="">{placeholder}</option>
       {options.map((option) => (

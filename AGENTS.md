@@ -23,7 +23,7 @@ Dự án phục vụ cả **Admin** và **User**. Các module nào dùng chung s
 - `src/pages/`: Chứa các màn hình chính. BẮT BUỘC chia theo `admin/` và `user/`. 
   - *Quy tắc:* Mỗi page là một folder (VD: `src/pages/user/HomePage/HomePage.tsx`).
 - `src/routes/`: Chứa logic điều hướng (React Router). Tách bạch route của admin và user.
-- `src/services/`: Quản lý gọi API (Axios/Fetch). BẮT BUỘC chia folder `admin/` và `user/`.
+- `src/services/`: Quản lý gọi API (Axios/Fetch). BẮT BUỘC chia folder `admin/` và `user/`. Folder `src/services/common` chứa các service dùng chung.
 - `src/store/`: Quản lý global state với Zustand. Tách file store logic rõ ràng (vd: `authStore.ts`, `cartStore.ts`).
 - `src/utils/`: Chứa các functions tiện ích thuần túy (formatDate, parseCurrency...).
 - `src/locales/`: Chứa các folder ngôn ngữ `en/` và `vi/` dạng file JSON. BẮT BUỘC phải update cả 2 file ngôn ngữ khi thêm tính năng có text mới.
@@ -45,6 +45,7 @@ Khi dev yêu cầu viết code để gọi API trong `src/services/`, bạn BẮ
   - KHÔNG tự ý tạo thêm các file `.css` rời (ví dụ: `HomePage.css`) để viết style. 
   - Chỉ trong trường hợp bất khả kháng không thể dùng Tailwind (ví dụ: ghi đè style của thư viện ngoài quá phức tạp), mới được phép sử dụng CSS Modules (ví dụ: `HomePage.module.css`).
 - Khai báo TypeScript Interfaces/Types đầy đủ cho Props và API Responses. Tuyệt đối không lạm dụng type `any`.
+- Nếu được yêu cầu sửa tính năng thì chỉ sửa tính năng đó mà không được sửa đổi màu sắc của các component trong tính năng đó, nếu đề xuất sửa màu thì hãy hỏi ý kiến của dev trước. Còn nếu đó là tính năng mới thì cứ làm như bình thường, tự chọn các màu hợp lý.
 
 ## 6. GLOBAL DESIGN SYSTEM (UI/UX)
 Dự án là nền tảng Luyện Phỏng Vấn AI. Trang chủ đã theo phong cách "ElevenLabs" (Editorial, Minimalism, Off-white & Ink). Các trang App/Dashboard (Admin/User) BẮT BUỘC phải tuân thủ các token Tailwind sau để giữ tính đồng nhất:

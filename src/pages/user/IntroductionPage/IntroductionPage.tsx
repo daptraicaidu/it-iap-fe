@@ -4,6 +4,11 @@ import { motion, type Variants } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Link } from 'react-router-dom';
+import TienThanhImg from '../../../assets/avatar/TienThanh.jpg';
+import QuangThaiImg from '../../../assets/avatar/QuangThai.png';
+import SonImg from '../../../assets/avatar/Son.png';
+import ThanhTungImg from '../../../assets/avatar/ThanhTung.png';
+import MinhThangImg from '../../../assets/avatar/MinhThang.png';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -27,31 +32,31 @@ const MEMBERS = [
     name: "Bùi Tiến Thành",
     id: "BIT230385",
     role: "Frontend Developer",
-    src: "src/assets/avatar/TienThanh.jpg"
+    src: TienThanhImg
   },
   {
     name: "Nguyễn Quang Thái",
     id: "BIT230373",
     role: "Frontend Developer",
-    src: "src/assets/avatar/QuangThai.png"
+    src: QuangThaiImg
   },
   {
     name: "Trần Phạm Minh Sơn",
     id: "BIT230367",
     role: "Frontend Developer",
-    src: "src/assets/avatar/Son.png"
+    src: SonImg
   },
   {
     name: "Mai Thanh Tùng",
     id: "BIT230434",
     role: "Backend Developer",
-    src: "src/assets/avatar/ThanhTung.png"
+    src: ThanhTungImg
   },
   {
     name: "Vũ Minh Thắng",
     id: "BIT230377",
     role: "Backend Developer",
-    src: "src/assets/avatar/MinhThang.png"
+    src: MinhThangImg
   }
 ];
 

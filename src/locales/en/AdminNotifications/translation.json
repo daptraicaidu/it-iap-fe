@@ -1,0 +1,40 @@
+{
+  "title": "Admin Notification Management",
+  "subtitle": "Create new announcements for users and manage created notifications",
+  "createCard": {
+    "title": "Create New Notification",
+    "subtitle": "This notification will be broadcast to all users",
+    "fieldTitle": "Notification Title",
+    "titlePlaceholder": "Enter title...",
+    "fieldContent": "Notification Content",
+    "contentPlaceholder": "Enter notification content...",
+    "fieldLink": "Link (Optional URL)",
+    "linkPlaceholder": "e.g. https://example.com/update (leave blank if none)",
+    "submitBtn": "Send Notification",
+    "submittingBtn": "Sending...",
+    "successMessage": "Notification created successfully!",
+    "errorMessage": "Failed to create notification. Please check your inputs."
+  },
+  "listCard": {
+    "title": "Notifications Created by Admin",
+    "count": "Total: {{total}} notifications",
+    "code": "ID Code",
+    "link": "Link",
+    "noLink": "No link",
+    "createdAt": "Created At",
+    "delete": "Delete",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "You have not created any notifications.",
+    "loadMore": "Load More Notifications",
+    "loadingMore": "Loading..."
+  },
+  "deleteModal": {
+    "title": "Confirm Delete Notification",
+    "message": "Are you sure you want to delete this notification? This action cannot be undone.",
+    "confirm": "Delete Notification",
+    "cancel": "Cancel",
+    "deleting": "Deleting...",
+    "successMessage": "Notification deleted successfully!",
+    "errorMessage": "Failed to delete notification."
+  }
+}

@@ -93,6 +93,67 @@
       "mismatch": "The confirmation password does not match the new password.",
       "success": "Password updated successfully.",
       "error": "Could not update password. Please try again."
+    },
+    "forgotPasswordLink": "Forgot password?",
+    "forgotModal": {
+      "title": "Forgot Password",
+      "subtitleConfirm": "Confirm sending OTP code to your email to reset password.",
+      "subtitleOtp": "Enter the 6-digit OTP code sent to your email.",
+      "subtitlePassword": "Create a new password for your account.",
+      "confirmEmailText": "An OTP verification code will be sent to email:",
+      "sendOtp": "Confirm & Send OTP",
+      "sendingOtp": "Sending OTP...",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "Invalid email address.",
+      "enterEmail": "Enter your email address",
+      "otpLabel": "Verification Code (OTP)",
+      "continue": "Continue",
+      "resendOtp": "Resend Code",
+      "resendingOtp": "Sending...",
+      "resendIn": "Resend in {{seconds}}s",
+      "wrongEmail": "Change email",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "resetPassword": "Reset Password",
+      "resettingPassword": "Resetting...",
+      "successTitle": "Password Reset Successfully!",
+      "successDesc": "Your new password has been updated successfully.",
+      "close": "Close"
+    }
+  },
+  "twoFa": {
+    "title": "Two-Factor Authentication (2FA)",
+    "description": "Add an extra layer of security to your account using an authenticator app like Google Authenticator or Authy.",
+    "statusEnabled": "Enabled",
+    "statusDisabled": "Not enabled",
+    "enableButton": "Enable two-factor authentication",
+    "disableButton": "Disable two-factor authentication",
+    "requestResetButton": "Request 2FA Reset via Email",
+    "setup": {
+      "title": "Set up two-factor authentication",
+      "step1": "Scan the QR code below with your authenticator app",
+      "step2": "Or manually enter this secret key:",
+      "step3": "Enter the 6-digit code from the app to confirm",
+      "totpPlaceholder": "Enter TOTP code",
+      "confirm": "Confirm & enable 2FA",
+      "confirming": "Confirming...",
+      "cancel": "Cancel",
+      "copySecret": "Copy",
+      "copied": "Copied!"
+    },
+    "disable": {
+      "title": "Disable two-factor authentication",
+      "description": "Enter the 6-digit TOTP code from your authenticator app to confirm.",
+      "totpPlaceholder": "Enter TOTP code",
+      "confirm": "Confirm & disable 2FA",
+      "confirming": "Processing...",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "enableSuccess": "Two-factor authentication enabled!",
+      "disableSuccess": "Two-factor authentication disabled.",
+      "error": "Something went wrong. Please try again.",
+      "loadError": "Could not load 2FA status."
     }
   },
   "manage": {
@@ -103,7 +164,9 @@
     "title": "Profile list",
     "count": "{{count}} profiles",
     "empty": "No profiles yet. Create your first profile to get started.",
-    "untitled": "Untitled profile"
+    "untitled": "Untitled profile",
+    "noSelectionTitle": "No profile selected",
+    "noSelectionDesc": "Select a profile from the left list to view and edit, or create a new profile."
   },
   "form": {
     "modeCreate": "Create",
@@ -137,7 +200,9 @@
     "remove": "Remove item",
     "addSkill": "Add skill",
     "addExperience": "Add experience",
-    "addProject": "Add project"
+    "addProject": "Add project",
+    "import": "Import",
+    "export": "Export"
   },
   "messages": {
     "loadListError": "Could not load profiles.",
@@ -147,30 +212,88 @@
     "deleteSuccess": "Profile deleted.",
     "deleteError": "Could not delete profile.",
     "deleteConfirm": "Are you sure you want to delete this profile?",
-    "titleRequired": "Please enter a profile name."
+    "titleRequired": "Please enter a profile name.",
+    "importError": "Could not read file. Please check the JSON format.",
+    "importSuccess": "Profile imported. Review and click Save to confirm."
   },
   "deleteDialog": {
     "title": "Delete profile?",
     "description": "This profile will be removed from your list. This action cannot be undone.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirm": "Delete"
   },
   "settings": {
     "menu": {
       "userInfo": "Personal Information",
       "profiles": "Manage Profiles",
       "general": "General Settings",
-      "password": "Change Password",
-      "activities": "Activities"
+      "password": "Security",
+      "activities": "Activities",
+      "sessions": "Active Sessions"
     },
     "activities": {
-      "title": "Activities",
-      "description": "Your activity history, logins, and other security events will be displayed here.",
-      "emptyTitle": "No activities yet",
-      "emptyDescription": "Your recent activities will appear here."
+      "title": "Activity Logs",
+      "description": "Track your login history, security changes, and profile actions.",
+      "emptyTitle": "No activities found",
+      "emptyDescription": "Activities matching your selected filter will appear here.",
+      "refresh": "Refresh",
+      "filterAll": "All Activities",
+      "filterLabel": "Filter by action type",
+      "types": {
+        "LOGIN": "Login",
+        "CHANGE_PASSWORD": "Change Password",
+        "RESET_PASSWORD": "Reset Password",
+        "UPDATE_PROFILE": "Update User Info",
+        "DELETE_PROFILE": "Delete Profile",
+        "ENABLE_2FA": "Enable 2FA",
+        "DISABLE_2FA": "Disable 2FA"
+      },
+      "pagination": {
+        "showing": "Showing",
+        "to": "to",
+        "of": "of",
+        "results": "activities",
+        "prev": "Previous",
+        "next": "Next",
+        "page": "Page"
+      }
     },
     "general": {
       "title": "General Settings",
-      "description": "Manage general settings for your interface and account."
+      "description": "Manage general settings for your interface and account.",
+      "languageSection": "Display Language",
+      "languageDescription": "Choose the language you prefer for the interface across the platform.",
+      "vietnamese": "Vietnamese",
+      "vietnameseDesc": "Tiếng Việt",
+      "english": "English",
+      "englishDesc": "English interface",
+      "activeLanguage": "Active"
+    }
+  },
+  "sessions": {
+    "title": "Active Sessions",
+    "description": "Devices and browsers currently logged into your account. You can log out from any unrecognized sessions.",
+    "revokeAllOthers": "Log out all other devices",
+    "revokingAll": "Processing...",
+    "currentDevice": "This device",
+    "lastActive": "Last active",
+    "ip": "IP Address",
+    "location": "Location",
+    "revoke": "Log out",
+    "revoking": "Logging out...",
+    "emptyTitle": "No active sessions",
+    "emptyDescription": "No session information could be found at this time.",
+    "confirmRevokeOneTitle": "Log out session?",
+    "confirmRevokeOneDesc": "The session on this device will be terminated.",
+    "confirmRevokeCurrentDesc": "You are logging out from your current device. You will need to log in again.",
+    "confirmRevokeOthersTitle": "Log out all other devices?",
+    "confirmRevokeOthersDesc": "All active sessions on other devices except this current device will be terminated immediately.",
+    "messages": {
+      "loadError": "Could not load active sessions.",
+      "revokeSuccess": "Session logged out successfully.",
+      "revokeError": "Could not log out session.",
+      "revokeOthersSuccess": "Logged out of all other sessions.",
+      "revokeOthersError": "Could not log out other sessions."
     }
   }
 }

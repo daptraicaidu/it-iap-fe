@@ -1,4 +1,7 @@
 import apiClient from "../../utils/axios";
+import type { ApiResponse } from "../common/apiResponse";
+
+export type { ApiResponse };
 
 // ── Interfaces ──
 
@@ -11,6 +14,8 @@ export interface UserInfo {
   createAt: string;
   deletedAt: string | null;
   active: boolean;
+  activeTier?: string;
+  subscriptionEndDate?: string | null;
 }
 
 export interface UpdateUserInfoPayload {
@@ -24,13 +29,6 @@ export interface ChangeEmailPayload {
 
 export interface VerifyChangeEmailPayload {
   otp: string;
-}
-
-export interface ApiResponse<T = undefined> {
-  code: number;
-  message?: string;
-  data?: T;
-  timestamp: string;
 }
 
 // Error response for validation

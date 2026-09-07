@@ -1,41 +1,154 @@
 {
-  "brand": "Interview with AI",
-  "logout": "Log out",
-  "badge": "Personal practice workspace",
-  "title": "Choose how you want to practice today",
-  "subtitle": "The dashboard focuses on three core flows: start a simulated interview, ask the chatbot when you need quick preparation, or review feedback to improve your answers.",
-  "openAction": "Open",
+  "brand": "Interview AI Practice",
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "noRank": "Unranked",
+  "exportPdf": "Export PDF Report",
+  "exportImage": "Export Report Image",
+  "selectProfile": "Select profile",
+  "noProfiles": "No profiles yet",
+  "streak": "Maintaining a {{count}}-day practice streak",
+  "streakModal": {
+    "title": "Practice Streak Info",
+    "days": "day streak",
+    "longestStreak": "Longest streak",
+    "slogan": "Keep your streak alive, deepen your insight",
+    "subtitle": "Maintain your daily AI interview practice habit to boost reflexes and accelerate your IT career.",
+    "milestonesTitle": "Milestone Journey",
+    "targetLabel": "Next Target",
+    "steps": {
+      "step1": "Complete at least 1 interview session",
+      "step2": "Maintain your daily streak by practicing",
+      "step3": "Unlock new milestones as you progress"
+    },
+    "gotIt": "Got it & Continue"
+  },
+  "share": {
+    "shareGrade": "Share GPA",
+    "shareStreak": "Share Streak",
+    "sharing": "Sharing...",
+    "confirmTitleGrade": "Share GPA to Forum",
+    "confirmTitleStreak": "Share Streak to Forum",
+    "confirmDescGrade": "Are you sure you want to share achievements for profile \"{{title}}\" with GPA {{score}}/10 to the Community Forum?",
+    "confirmDescStreak": "Are you sure you want to share your {{count}}-day practice streak to the Community Forum?",
+    "confirmBtn": "Confirm Share",
+    "cancelBtn": "Cancel",
+    "closeBtn": "Close",
+    "shareSuccessTitle": "Shared to Forum successfully!",
+    "shareSuccessDesc": "Your post has been published to the Community Forum.",
+    "successMessage": "Shared to Forum successfully!",
+    "viewForum": "View in Forum",
+    "errorMessage": "Failed to share. Please try again later.",
+    "selectProfileFirst": "Please select a profile before sharing GPA."
+  },
+  "stats": {
+    "interviewsThisWeek": "Interviews this week",
+    "vsLastWeek": "Compared to last week",
+    "avgScore": "Average score",
+    "last10Sessions": "Last 10 interview sessions",
+    "improvementRate": "Improvement rate",
+    "improvementDesc": "Based on score trends",
+    "notEnoughData": "Need at least 10 interview sessions"
+  },
+  "readiness": {
+    "title": "Interview readiness",
+    "levels": {
+      "novice": "Novice",
+      "beginner": "Beginner",
+      "developing": "Developing",
+      "maturing": "Maturing",
+      "expert": "Expert"
+    }
+  },
+  "radar": {
+    "title": "Skill overview",
+    "benchmark": "Target benchmark",
+    "yourScore": "Your score"
+  },
+  "review": {
+    "title": "View AI Evaluation",
+    "description": "Get an in-depth review of your learning results, strengths, and improvement roadmap from AI.",
+    "cta": "View result"
+  },
+  "heatmap": {
+    "title": "Learning frequency",
+    "error": "Unable to load data",
+    "legend": {
+      "noActivity": "No activity",
+      "few": "1-6 questions",
+      "moderate": "7-9 questions",
+      "many": "≥10 questions"
+    },
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  },
+  "skills": {
+    "coreKnowledge": "Core Knowledge",
+    "problemSolving": "Problem Solving",
+    "appliedExperience": "Applied Experience",
+    "logicalArticulation": "Logical Articulation",
+    "focusAndCompleteness": "Focus & Completeness"
+  },
   "navigation": {
     "label": "Dashboard navigation",
+    "home": "Home",
     "dashboard": "Dashboard",
-    "history": "Interview history",
+    "history": "History",
     "chatbot": "Chatbot",
-    "interview": "Start Interview",
-    "reviewResult": "Review Result"
+    "interview": "Interview",
+    "forum": "Forum",
+    "orders": "Order History",
+    "checkout": "Checkout & Upgrade",
+    "reviewResult": "Review Result",
+    "reports": "Reports and Feedbacks"
   },
   "user": {
-    "name": "Nguyen Minh Anh",
+    "name": "User",
     "avatarAlt": "User avatar"
   },
-  "userMenu": {
-    "personalInfo": "Personal information",
-    "manageProfile": "Manage profile"
-  },
-  "actions": {
-    "interview": {
-      "label": "Interview",
-      "title": "Interview",
-      "description": "Start a simulated AI interview based on your IT role and experience level."
+  "subscription": {
+    "currentTier": "Current Plan",
+    "freeTierDesc": "Free Basic Plan (2 AI interview sessions per day)",
+    "expiresAt": "Valid until: {{date}}",
+    "upgradePro": "Upgrade to Pro",
+    "switchTier": "Upgrade/ Switch Plans",
+    "viewPlans": "View Plans",
+    "modalTitle": "Choose the Plan That Fits Your Goals",
+    "modalSubtitle": "Unlock unlimited AI interviews, in-depth scoring, and expanded chatbot context.",
+    "badgeTitle": "Elevate Your IT Career with AI",
+    "popularBadge": "Most Popular",
+    "saveBadge": "Best Value",
+    "perMonth": "/month",
+    "perYear": "/year",
+    "forever": "forever",
+    "free": "Free",
+    "features": {
+      "title": "Included benefits:",
+      "maxProfiles": "Up to {{count}} interview profiles",
+      "dailyInterviews": "{{count}} AI interviews per day",
+      "chatbotContext": "Chatbot context window up to {{tokens}} tokens",
+      "detailedGrading": "Detailed skill scoring & analysis",
+      "unlimited": "Unlimited daily AI interviews",
+      "priority": "Priority processing on high-speed AI infrastructure"
     },
-    "chatbot": {
-      "label": "Chatbot",
-      "title": "Chatbot",
-      "description": "Talk with the AI assistant to review technical questions, behavioral questions, and answer structure."
+    "buttons": {
+      "current": "Your Current Plan",
+      "default": "Default Plan",
+      "subscribe": "Get Started"
     },
-    "feedback": {
-      "label": "Feedback",
-      "title": "Feedback",
-      "description": "Review comments, strengths, and improvement areas from your previous practice sessions."
+    "guarantee": {
+      "secure": "100% Secure & encrypted checkout",
+      "instant": "Instant account upgrade activation"
     }
   }
 }
