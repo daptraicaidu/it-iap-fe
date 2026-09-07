@@ -9,15 +9,37 @@ interface StreakInfoModalProps {
   longestStreak?: number;
 }
 
+const MILESTONES = [1, 3, 7, 14, 30];
+
 const StreakInfoModal: React.FC<StreakInfoModalProps> = ({
   isOpen,
   onClose,
   currentStreak = 0,
   longestStreak = 0,
 }) => {
-  const { t } = useTranslation("Dashboard");
+  const { t, i18n } = useTranslation("Dashboard");
+  const isEn = i18n.language?.startsWith("en");
 
   if (!isOpen) return null;
+
+  const nextMilestone = MILESTONES.find((m) => m > currentStreak) ?? null;
+
+  // Calculate progress percent along milestone nodes (0%, 25%, 50%, 75%, 100%)
+  const calculateProgress = (): number => {
+    if (currentStreak <= 0) return 0;
+    if (currentStreak >= 30) return 100;
+    for (let i = 0; i < MILESTONES.length - 1; i++) {
+      const start = MILESTONES[i];
+      const end = MILESTONES[i + 1];
+      if (currentStreak >= start && currentStreak < end) {
+        const stepFraction = (currentStreak - start) / (end - start);
+        return (i / (MILESTONES.length - 1)) * 100 + stepFraction * (100 / (MILESTONES.length - 1));
+      }
+    }
+    return 0;
+  };
+
+  const progressPercent = calculateProgress();
 
   return (
     <div
@@ -109,8 +131,82 @@ const StreakInfoModal: React.FC<StreakInfoModalProps> = ({
         </p>
       </div>
 
+      {/* Milestone Journey Roadmap */}
+      <div className="mt-4 rounded-xl border border-amber-200/80 bg-gradient-to-b from-amber-50/70 to-orange-50/50 p-3.5 shadow-2xs">
+        <div className="flex items-center justify-between text-xs font-bold text-zinc-800 mb-2.5">
+          <span className="flex items-center gap-1.5 text-amber-950">
+            <Sparkles className="h-3.5 w-3.5 text-orange-500 fill-orange-500/30" />
+            <span>{t("streakModal.milestonesTitle", { defaultValue: "Hành trình cột mốc" })}</span>
+          </span>
+          {nextMilestone ? (
+            <span className="text-[10px] font-bold text-orange-700 bg-orange-100/90 border border-orange-200 px-2 py-0.5 rounded-full">
+              {t("streakModal.targetLabel", { defaultValue: "Mục tiêu" })}: {nextMilestone} {isEn ? "days" : "ngày"}
+            </span>
+          ) : (
+            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/90 border border-emerald-200 px-2 py-0.5 rounded-full">
+              Max 🏆
+            </span>
+          )}
+        </div>
+
+        {/* Track Line and Milestone Circular Nodes */}
+        <div className="relative flex items-center justify-between px-2 pt-1 pb-1">
+          {/* Background Gray Track */}
+          <div className="absolute top-4 left-5 right-5 h-1 -translate-y-1/2 bg-zinc-200/80 rounded-full z-0" />
+
+          {/* Active Orange Track */}
+          <div
+            className="absolute top-4 left-5 h-1 -translate-y-1/2 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 rounded-full z-0 transition-all duration-500"
+            style={{ width: `calc(${progressPercent}% * (100% - 40px) / 100)` }}
+          />
+
+          {MILESTONES.map((m) => {
+            const isAchieved = currentStreak >= m;
+            const isNext = m === nextMilestone;
+
+            return (
+              <div key={m} className="relative z-10 flex flex-col items-center gap-1">
+                <div
+                  className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs font-black transition-all ${
+                    isAchieved
+                      ? "bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xs ring-2 ring-orange-200/90"
+                      : isNext
+                      ? "border-2 border-orange-500 bg-orange-50 text-orange-600 ring-2 ring-orange-300 shadow-xs animate-pulse"
+                      : "border border-zinc-200 bg-white text-zinc-400 font-bold"
+                  }`}
+                >
+                  {m}
+                </div>
+                <span
+                  className={`text-[10px] font-bold tracking-tight ${
+                    isAchieved
+                      ? "text-orange-700"
+                      : isNext
+                      ? "text-orange-600 font-extrabold"
+                      : "text-zinc-400"
+                  }`}
+                >
+                  {m}{isEn ? "d" : "N"}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Motivational Status Footer */}
+        <p className="mt-2.5 text-center text-[11px] font-semibold text-orange-900 bg-orange-100/50 py-1.5 px-2.5 rounded-lg border border-orange-200/60 leading-tight">
+          {nextMilestone
+            ? isEn
+              ? `${nextMilestone - currentStreak} more day${nextMilestone - currentStreak > 1 ? "s" : ""} to reach the ${nextMilestone}-day milestone! 🔥`
+              : `Còn ${nextMilestone - currentStreak} ngày nữa để chạm mốc ${nextMilestone} ngày liên tiếp! 🔥`
+            : isEn
+            ? "Awesome! You have achieved all major milestones! 🏆"
+            : "Xuất sắc! Bạn đã chinh phục mọi cột mốc thử thách! 🏆"}
+        </p>
+      </div>
+
       {/* Numbered Rule Steps (1, 2, 3 in circles) */}
-      <div className="mt-5 space-y-2.5 rounded-xl border border-zinc-100 bg-zinc-50/90 p-3.5">
+      <div className="mt-3.5 space-y-2.5 rounded-xl border border-zinc-100 bg-zinc-50/90 p-3.5">
         {/* Step 1 */}
         <div className="flex items-start gap-3">
           <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-amber-200 bg-amber-100 text-[11px] font-extrabold text-amber-900 shadow-xs mt-0.5">

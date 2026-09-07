@@ -35,7 +35,6 @@ const PricingPage: React.FC = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const roles = useAuthStore((s) => s.roles);
 
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
   const [tiers, setTiers] = useState<TierItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -92,18 +91,12 @@ const PricingPage: React.FC = () => {
     return originalPrice;
   };
 
-  // Helper to find tier by code prefix and cycle
-  const getTierForCycle = (prefix: "PLUS" | "PRO"): TierItem | undefined => {
-    const targetCode =
-      billingCycle === "monthly" ? `${prefix}_MONTH` : `${prefix}_YEAR`;
-    return (
-      tiers.find((tier) => tier.tierCode.toUpperCase() === targetCode) ||
-      tiers.find((tier) => tier.tierCode.toUpperCase().startsWith(prefix))
-    );
-  };
-
-  const plusTier = getTierForCycle("PLUS");
-  const proTier = getTierForCycle("PRO");
+  const plusTier =
+    tiers.find((tier) => tier.tierCode.toUpperCase() === "PLUS_MONTH") ||
+    tiers.find((tier) => tier.tierCode.toUpperCase().startsWith("PLUS"));
+  const proTier =
+    tiers.find((tier) => tier.tierCode.toUpperCase() === "PRO_MONTH") ||
+    tiers.find((tier) => tier.tierCode.toUpperCase().startsWith("PRO"));
 
   const plusOriginalPrice = plusTier?.originalPrice ?? "Login";
   const plusFinalPrice = plusTier
@@ -307,35 +300,6 @@ const PricingPage: React.FC = () => {
           <p className="mt-5 text-base sm:text-lg text-zinc-600 max-w-2xl mx-auto leading-relaxed">
             {t("hero.subtitle")}
           </p>
-
-          {/* Billing Switcher Toggle */}
-          <div className="mt-10 inline-flex items-center p-1.5 bg-zinc-200/70 rounded-full border border-zinc-200">
-            <button
-              type="button"
-              onClick={() => setBillingCycle("monthly")}
-              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                billingCycle === "monthly"
-                  ? "bg-white text-zinc-900 shadow-sm"
-                  : "text-zinc-600 hover:text-zinc-900"
-              }`}
-            >
-              {t("hero.monthly")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setBillingCycle("yearly")}
-              className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                billingCycle === "yearly"
-                  ? "bg-white text-zinc-900 shadow-sm"
-                  : "text-zinc-600 hover:text-zinc-900"
-              }`}
-            >
-              <span>{t("hero.yearly")}</span>
-              <span className="inline-block bg-emerald-100 text-emerald-700 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full border border-emerald-300">
-                {t("hero.yearlyBadge")}
-              </span>
-            </button>
-          </div>
         </div>
       </section>
 
@@ -442,7 +406,7 @@ const PricingPage: React.FC = () => {
                       {plusFinalPrice.toLocaleString("vi-VN")}
                     </span>
                     <span className="text-sm text-zinc-500 font-medium">
-                      đ /{billingCycle === "monthly" ? t("tiers.plus.periodMonth") : t("tiers.plus.periodYear")}
+                      đ /{t("tiers.plus.periodMonth")}
                     </span>
                   </div>
                   <div className="h-5 mt-1 flex items-center gap-2">
@@ -457,7 +421,7 @@ const PricingPage: React.FC = () => {
                       </>
                     ) : (
                       <span className="text-xs text-zinc-400">
-                        {billingCycle === "yearly" ? t("tiers.plus.yearlyNote") : t("tiers.plus.monthlyNote")}
+                        {t("tiers.plus.monthlyNote")}
                       </span>
                     )}
                   </div>
@@ -487,7 +451,7 @@ const PricingPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() =>
-                    handleSelectTier(plusTier?.tierCode || (billingCycle === "monthly" ? "PLUS_MONTH" : "PLUS_YEAR"))
+                    handleSelectTier(plusTier?.tierCode || "PLUS_MONTH")
                   }
                   className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-rose-600 hover:bg-rose-700 text-white py-3.5 text-center text-sm font-bold transition-all shadow-md shadow-rose-200 cursor-pointer active:scale-98"
                 >
@@ -533,7 +497,7 @@ const PricingPage: React.FC = () => {
                       {proFinalPrice.toLocaleString("vi-VN")}
                     </span>
                     <span className="text-sm text-zinc-500 font-medium">
-                      đ /{billingCycle === "monthly" ? t("tiers.pro.periodMonth") : t("tiers.pro.periodYear")}
+                      đ /{t("tiers.pro.periodMonth")}
                     </span>
                   </div>
                   <div className="h-5 mt-1 flex items-center gap-2">
@@ -548,7 +512,7 @@ const PricingPage: React.FC = () => {
                       </>
                     ) : (
                       <span className="text-xs text-blue-600 font-medium">
-                        {billingCycle === "yearly" ? t("tiers.pro.yearlyNote") : t("tiers.pro.monthlyNote")}
+                        {t("tiers.pro.monthlyNote")}
                       </span>
                     )}
                   </div>
@@ -580,7 +544,7 @@ const PricingPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() =>
-                    handleSelectTier(proTier?.tierCode || (billingCycle === "monthly" ? "PRO_MONTH" : "PRO_YEAR"))
+                    handleSelectTier(proTier?.tierCode || "PRO_MONTH")
                   }
                   className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 text-center text-sm font-bold transition-all shadow-lg shadow-blue-500/25 cursor-pointer active:scale-98"
                 >
@@ -641,10 +605,10 @@ const PricingPage: React.FC = () => {
                   <td className="p-4 sm:px-5 text-zinc-700">
                     {t("comparison.items.profiles")}
                   </td>
-                  <td className="p-4 text-center font-medium text-zinc-800">3</td>
-                  <td className="p-4 text-center font-bold text-rose-600 bg-rose-50/20">6</td>
+                  <td className="p-4 text-center font-medium text-zinc-800">1</td>
+                  <td className="p-4 text-center font-bold text-rose-600 bg-rose-50/20">3</td>
                   <td className="p-4 text-center font-bold text-blue-600 bg-blue-50/20">
-                    12
+                    6
                   </td>
                 </tr>
                 <tr>
@@ -652,13 +616,13 @@ const PricingPage: React.FC = () => {
                     {t("comparison.items.dailyQuota")}
                   </td>
                   <td className="p-4 text-center font-medium text-zinc-800">
-                    5 {t("comparison.sessionsPerDay")}
+                    2 {t("comparison.sessionsPerDay")}
                   </td>
                   <td className="p-4 text-center font-bold text-rose-600 bg-rose-50/20">
-                    10 {t("comparison.sessionsPerDay")}
+                    6 {t("comparison.sessionsPerDay")}
                   </td>
                   <td className="p-4 text-center font-bold text-blue-600 bg-blue-50/20">
-                    20 {t("comparison.sessionsPerDay")}
+                    15 {t("comparison.sessionsPerDay")}
                   </td>
                 </tr>
                 <tr>
@@ -749,8 +713,8 @@ const PricingPage: React.FC = () => {
                   <td className="p-4 sm:px-5 text-zinc-700">
                     {t("comparison.items.chatbotTokens")}
                   </td>
-                  <td className="p-4 text-center text-zinc-700 font-medium">16,000 tokens</td>
-                  <td className="p-4 text-center text-rose-600 font-bold bg-rose-50/20">32,000 tokens</td>
+                  <td className="p-4 text-center text-zinc-700 font-medium">8,000 tokens</td>
+                  <td className="p-4 text-center text-rose-600 font-bold bg-rose-50/20">24,000 tokens</td>
                   <td className="p-4 text-center font-bold text-blue-600 bg-blue-50/20">
                     48,000 tokens
                   </td>

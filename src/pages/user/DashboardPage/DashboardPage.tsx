@@ -745,6 +745,7 @@ const getBenchmark = (profile: ProfileSummary | null): number[] => {
 // ── Main Component ──
 const DashboardPage = () => {
   const { t, i18n } = useTranslation("Dashboard");
+  const isEn = i18n.language?.startsWith("en");
   const navigate = useNavigate();
   const location = useLocation();
   const dashboardRef = useRef<HTMLDivElement>(null);
@@ -1277,19 +1278,25 @@ const DashboardPage = () => {
                 type="button"
                 onClick={() => setIsStreakModalOpen((prev) => !prev)}
                 title={t("streakModal.title")}
-                className={`group inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer ${
+                className={`group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 sm:px-3.5 sm:py-1.5 shadow-xs transition-all cursor-pointer ${
                   isStreakModalOpen
-                    ? "border-amber-300 bg-amber-100/90 text-amber-900 shadow-sm ring-2 ring-amber-200"
-                    : "border-amber-200/80 bg-gradient-to-r from-amber-50/90 via-orange-50/90 to-rose-50/90 text-amber-900 hover:border-amber-300 hover:from-amber-100 hover:via-orange-100 hover:to-rose-100 hover:shadow-sm active:scale-[0.98]"
+                    ? "border-amber-300 bg-amber-100/90 text-amber-950 shadow-sm ring-2 ring-amber-200"
+                    : "border-amber-200/90 bg-gradient-to-r from-amber-50/95 via-orange-50/90 to-rose-50/90 text-amber-950 hover:border-amber-300 hover:from-amber-100 hover:via-orange-100 hover:to-rose-100 hover:shadow-sm active:scale-[0.98]"
                 }`}
               >
-                <div className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xs group-hover:scale-110 transition-transform">
-                  <Flame className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current animate-pulse" />
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xs group-hover:scale-110 transition-transform shrink-0">
+                  <Flame className="h-3.5 w-3.5 fill-current animate-pulse" />
                 </div>
-                <span>
-                  {t("streak", {
-                    count: progressData?.streak.currentStreak ?? 0,
-                  })}
+                <span className="text-xs sm:text-sm font-semibold text-zinc-700">
+                  {isEn ? "Streak:" : "Chuỗi:"}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 py-0.5 text-white shadow-xs">
+                  <span className="text-xs sm:text-sm font-black tracking-tight">
+                    {progressData?.streak.currentStreak ?? 0}
+                  </span>
+                  <span className="text-[11px] sm:text-xs font-bold text-amber-100">
+                    {isEn ? "days" : "ngày"}
+                  </span>
                 </span>
               </button>
 

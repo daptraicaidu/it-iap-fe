@@ -17,6 +17,8 @@
     "longestStreak": "Longest streak",
     "slogan": "Keep your streak alive, deepen your insight",
     "subtitle": "Maintain your daily AI interview practice habit to boost reflexes and accelerate your IT career.",
+    "milestonesTitle": "Milestone Journey",
+    "targetLabel": "Next Target",
     "steps": {
       "step1": "Complete at least 1 interview session",
       "step2": "Maintain your daily streak by practicing",
@@ -116,7 +118,7 @@
   },
   "subscription": {
     "currentTier": "Current Plan",
-    "freeTierDesc": "Free Basic Plan (5 AI interview sessions per day)",
+    "freeTierDesc": "Free Basic Plan (2 AI interview sessions per day)",
     "expiresAt": "Valid until: {{date}}",
     "upgradePro": "Upgrade to Pro",
     "switchTier": "Upgrade/ Switch Plans",

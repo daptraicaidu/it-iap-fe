@@ -34,14 +34,14 @@
       }
     },
     "quota": {
-      "basic": "You have 5 AI interview sessions today (resets daily at 00:00).",
-      "plus": "Your account is on the {{tier}} tier — 10 AI interview sessions per day.",
-      "pro": "Your account is on the {{tier}} tier — 20 AI interview sessions per day.",
-      "proHintBasic": "Upgrade your plan for up to 20 daily AI interviews and in-depth evaluations.",
-      "proHintPlus": "Upgrade to Pro for 20 daily AI interviews and comprehensive scoring.",
-      "proHintPro": "Enjoy 20 daily AI interview sessions and comprehensive AI feedback.",
+      "basic": "You have 2 AI interview sessions today (resets daily at 00:00).",
+      "plus": "Your account is on the {{tier}} tier — 6 AI interview sessions per day.",
+      "pro": "Your account is on the {{tier}} tier — 15 AI interview sessions per day.",
+      "proHintBasic": "Upgrade your plan for up to 15 daily AI interviews and in-depth evaluations.",
+      "proHintPlus": "Upgrade to Pro for 15 daily AI interviews and comprehensive scoring.",
+      "proHintPro": "Enjoy 15 daily AI interview sessions and comprehensive AI feedback.",
       "viewPlans": "View Plans",
-      "unlimited": "Your account is on the {{tier}} tier — 10 AI interview sessions per day.",
+      "unlimited": "Your account is on the {{tier}} tier — 6 AI interview sessions per day.",
       "proHint": "Upgrade your plan for more daily interview practice and in-depth AI evaluations.",
       "upgrade": "Upgrade Now",
       "viewTiers": "View Plans"

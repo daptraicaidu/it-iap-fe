@@ -455,9 +455,7 @@ const PromotionsPage: React.FC = () => {
             >
               <option value="ALL">{t("filters.tierPlaceholder")}</option>
               <option value="PLUS_MONTH">{t("tiers.PLUS_MONTH")}</option>
-              <option value="PLUS_YEAR">{t("tiers.PLUS_YEAR")}</option>
               <option value="PRO_MONTH">{t("tiers.PRO_MONTH")}</option>
-              <option value="PRO_YEAR">{t("tiers.PRO_YEAR")}</option>
             </select>
           </div>
 

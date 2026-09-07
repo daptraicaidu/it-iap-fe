@@ -17,6 +17,8 @@
     "longestStreak": "Chuỗi dài nhất",
     "slogan": "Giữ chuỗi thật lâu, hiểu biết thêm sâu",
     "subtitle": "Duy trì thói quen luyện tập phỏng vấn AI mỗi ngày để nâng cao phản xạ và bứt phá sự nghiệp.",
+    "milestonesTitle": "Hành trình cột mốc",
+    "targetLabel": "Mục tiêu",
     "steps": {
       "step1": "Hoàn thành ít nhất 1 buổi phỏng vấn",
       "step2": "Duy trì chuỗi hàng ngày bằng việc luyện tập",
@@ -116,7 +118,7 @@
   },
   "subscription": {
     "currentTier": "Gói dịch vụ hiện tại",
-    "freeTierDesc": "Gói cơ bản miễn phí (5 lượt phỏng vấn AI mỗi ngày)",
+    "freeTierDesc": "Gói cơ bản miễn phí (2 lượt phỏng vấn AI mỗi ngày)",
     "expiresAt": "Thời hạn sử dụng đến: {{date}}",
     "upgradePro": "Nâng cấp gói Pro",
     "switchTier": "Nâng cấp / Đổi gói",

@@ -56,9 +56,7 @@ export interface CreatePromotionPayload {
 
 export const TIER_OPTIONS = [
   { value: "PLUS_MONTH", labelVi: "Gói Plus (1 Tháng)", labelEn: "Plus Plan (1 Month)" },
-  { value: "PLUS_YEAR", labelVi: "Gói Plus (1 Năm)", labelEn: "Plus Plan (1 Year)" },
   { value: "PRO_MONTH", labelVi: "Gói Pro (1 Tháng)", labelEn: "Pro Plan (1 Month)" },
-  { value: "PRO_YEAR", labelVi: "Gói Pro (1 Năm)", labelEn: "Pro Plan (1 Year)" },
 ];
 
 export const DISCOUNT_TYPE_OPTIONS = [
